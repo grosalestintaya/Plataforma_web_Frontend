@@ -1,77 +1,144 @@
-import { useState } from "react";
+import React from "react";
+import { NavLink, Outlet } from "react-router-dom";
+import {
+  Users,
+  BarChart2,
+  PieChart,
+  Award,
+  UserPlus,
+  UserCog,
+} from "lucide-react";
+import {
+  FaUsers,
+  FaChartBar,
+  FaChartPie,
+  FaTrophy,
+  FaUserPlus,
+  FaUserCog,
+} from "react-icons/fa";
 
-function Sidebar() {
-  const [active, setActive] = useState("inicio");
+import {
+  Home,
+  User,
+  Trophy,
+  Settings,
+  LogOut,
+  BookOpen,
+  Shield,
+} from "lucide-react";
+import { useAuth } from "../context/AuthContext";
 
-  const menuItems = [
-    { id: "inicio", label: "Inicio", icon: "bi-house-door-fill" },
-    { id: "perfil", label: "Perfil", icon: "bi-person-circle" },
-    { id: "ranking", label: "Ranking", icon: "bi-trophy-fill" },
-    { id: "ajustes", label: "Ajustes", icon: "bi-gear-fill" },
+const SideBar = () => {
+  const { user } = useAuth();
+
+  // ----- menu x rols -----
+  const baseItems = [{ name: "Inicio", path: "/", icon: <Home size={20} /> }];
+  // ----------------------------------------------
+  const studentItems = [
+    { name: "Ranking", path: "/ranking", icon: <Trophy size={20} /> },
+  ];
+  // ------------------------------------------------------------
+  const teacherItems = [
+    { name: "Estudiantes", path: "/students", icon: <FaUsers size={20} /> },
+    {
+      name: "Estadisticas",
+      path: "/statistics",
+      icon: <BarChart2 size={20} />,
+    },
+    { name: "Gráficas", path: "/graphs", icon: <PieChart size={20} /> },
+    { name: "Ranking", path: "/ranking", icon: <Trophy size={20} /> },
+  ];
+  // -------------------------------------------------//
+  const adminItems = [
+    { name: "Usuarios", path: "/admin/users", icon: <FaUsers size={20} /> },
+    {
+      name: "Agregar usuario",
+      path: "/admin/add_user",
+      icon: <FaUserPlus size={20} />,
+    },
+        { name: "Administrar sistema", path: "/admin/", icon: <Settings size={20} /> },
+
   ];
 
+  // Construcción dinámica del menú
+  let menuItems = [...baseItems];
+
+  if (user?.role === "Estudiante") menuItems.push(...studentItems);
+
+  if (user?.role === "Docente") menuItems.push(...teacherItems);
+
+  if (user?.role === "Administrador") menuItems.push(...adminItems); // Admin ve todo
+
+  // Agregar ajustes al final
+  menuItems.push(
+    { name: "Perfil", path: "/perfil", icon: <User size={20} /> },
+
+    {
+      name: "Ajustes",
+      path: "/ajustes",
+      icon: <FaUserCog size={20} />,
+    }
+  );
+
   return (
-    <div
-      className="d-flex justify-content-center align-items-center bg-white text-white"
-      style={{ width: "260px", height: "100vh" }}
-    >
-      {/* 🔹 Contenedor interior del sidebar */}
+    <div className="flex">
+      {/* Sidebar */}
       <div
-        className="d-flex flex-column flex-shrink-0 p-3 bg-dark text-white shadow"
-        style={{
-          width: "95%",
-          height: "95%",
-          borderRadius: "10px",
-          border: "1px solid #2E2E2E",
-        }}
-      >
-        {/* 🔹 Logo o título */}
-        <div className="d-flex align-items-center justify-content-center mb-4 mt-2">
-          <i className="bi bi-controller fs-2 me-2 text-primary"></i>
-          <span className="fs-4 fw-bold">Quipus</span>
+        className="h-[94vh] w-50 bg-[#00C853] text-white shadow-lg 
+        flex flex-col justify-between rounded-tr-2xl rounded-br-2xl 
+        mt-5 mb-3 fixed left-0">
+        {/* Header */}
+        <div>
+          <div className="flex flex-col items-center py-4">
+            <img
+              src="src/assets/logo.png"
+              alt="Logo"
+              className="w-12 h-12 object-contain mb-2"
+            />
+            <h2 className="text-xl font-bold">uipus</h2>
+            <p className="text-xs opacity-80">Rol: {user?.role}</p>
+          </div>
+
+          {/* Menu dinámico */}
+          <nav className="flex flex-col">
+            {menuItems.map((item, index) => (
+              <NavLink
+                key={index}
+                to={item.path}
+                end
+                className={({ isActive }) =>
+                  `flex items-center gap-3 py-2 px-4 my-1 rounded-xl mx-3 transition-colors duration-200 ${
+                    isActive ? "bg-[#0A7136]" : "hover:bg-[#0A7136]/70"
+                  }`
+                }>
+                {item.icon}
+                <span>{item.name}</span>
+              </NavLink>
+            ))}
+          </nav>
         </div>
 
-        {/* 🔹 Menú principal */}
-        <ul className="nav nav-pills flex-column mb-auto">
-          {menuItems.map((item) => (
-            <li key={item.id} className="nav-item">
-              <button
-                onClick={() => setActive(item.id)}
-                className={`nav-link text-start w-100 d-flex align-items-center ${
-                  active === item.id ? "active bg-primary" : "text-white"
-                }`}
-                style={{
-                  border: "none",
-                  background: "none",
-                }}
-              >
-                <i className={`${item.icon} me-2 fs-5`}></i>
-                {item.label}
-              </button>
-            </li>
-          ))}
-        </ul>
-
-        {/* 🔹 Separador */}
-        <hr className="text-secondary" />
-
-        {/* 🔹 Cerrar sesión al final */}
-        <div className="mt-auto mb-2">
-          <button
-            className="nav-link text-start w-100 d-flex align-items-center text-white"
-            style={{ border: "none", background: "none" }}
-            onClick={() => alert("Sesión cerrada")}
-          >
-            <i className="bi bi-box-arrow-right me-2 fs-5 text-danger"></i>
-            Cerrar sesión
-          </button>
+        {/* Logout */}
+        <div className="mb-4">
+          <NavLink
+            to="/logout"
+            className={({ isActive }) =>
+              `flex items-center gap-3 py-2 px-4 rounded-xl mx-3 transition-colors duration-200 ${
+                isActive ? "bg-[#0A7136]" : "hover:bg-[#0A7136]/70"
+              }`
+            }>
+            <LogOut size={20} />
+            <span>Salir</span>
+          </NavLink>
         </div>
-
-        {/* 🔹 Footer */}
-        <div className="text-center text-secondary small">© 2025 Quipus</div>
       </div>
+
+      {/* Contenido principal */}
+      <main className="flex-1 ml-50 p-6">
+        <Outlet />
+      </main>
     </div>
   );
-}
+};
 
-export default Sidebar;
+export default SideBar;

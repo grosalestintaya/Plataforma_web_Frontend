@@ -1,1 +1,35 @@
 @import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap");
+
+@theme {
+  /* fuente primaria  */
+  --font-primary: "Rubik", sans-serif;
+
+  /* paleta de colores de proyecto en figma */
+  /* verdes */
+  --color-green1: #1fc16b;
+  --color-green2: #;
+  --color-green3: #;
+  --color-green3: #1fc16b;
+
+  /* azules */
+  --color-blue1: #;
+  --color-blue2: #;
+  --color-blue3: #;
+  /* oros */
+  --color-gold1: #;
+  --color-gold2: #;
+  --color-gold3: #;
+  /* Lilas */
+  --color-lilac1: #;
+  --color-lilac2: #;
+  --color-lilac3: #f01253;
+  /* Morados */
+  --color-purple1: #;
+  --color-purple2: #;
+  --color-purple3: #;
+}
+
+.clip-hex {
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+}
