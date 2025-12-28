@@ -1,3 +1,4 @@
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
@@ -8,25 +9,21 @@ export default function LogoutModal({ open, onClose }) {
   if (!open) return null;
 
   const handleLogout = () => {
-    logout();            // limpia contexto + localStorage
-    navigate("/login");  // redirige
+    logout();
+    navigate("/login");
   };
 
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-      <div className="bg-white rounded-2xl shadow-xl w-[420px] max-w-[90%] p-6">
-        
-        {/* Título */}
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+      <div className="bg-white rounded-xl w-[420px] p-6 shadow-xl">
         <h2 className="text-xl font-semibold text-gray-800 mb-3">
           Cerrar sesión
         </h2>
 
-        {/* Descripción */}
         <p className="text-gray-600 mb-6">
           ¿Estás seguro de que deseas cerrar sesión?
         </p>
 
-        {/* Acciones */}
         <div className="flex justify-end gap-3">
           <button
             onClick={onClose}
