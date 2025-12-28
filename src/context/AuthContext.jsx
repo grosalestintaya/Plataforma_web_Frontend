@@ -19,49 +19,44 @@ export const AuthProvider = ({ children }) => {
   // -----------------------------------------
   // CARGA INICIAL DE SESIÓN
   // -----------------------------------------
-  useEffect(() => {
+useEffect(() => {
+  const initAuth = async () => {
     console.log("AuthProvider: iniciando carga de sesión...");
+
     const savedToken = localStorage.getItem("token");
     const savedUser = localStorage.getItem("user");
 
     if (savedToken && savedToken !== "undefined") {
-      console.log("AuthProvider: token encontrado en localStorage");
       setToken(savedToken);
 
-      if (savedUser && savedUser !== "undefined") {
-        try {
+      try {
+        if (savedUser && savedUser !== "undefined") {
           const parsed = JSON.parse(savedUser);
           const normalized = normalizeUser(parsed);
           setUser(normalized);
           localStorage.setItem("user", JSON.stringify(normalized));
-          console.log("AuthProvider: user cargado:", normalized);
-        } catch (err) {
-          console.warn("AuthProvider: savedUser inválido, decodificando token");
-          try {
-            const decoded = jwtDecode(savedToken);
-            const normalized = normalizeUser(decoded);
-            setUser(normalized);
-            localStorage.setItem("user", JSON.stringify(normalized));
-          } catch (e) {
-            console.error("AuthProvider: error al decodificar token:", e);
-          }
-        }
-      } else {
-        try {
+        } else {
           const decoded = jwtDecode(savedToken);
           const normalized = normalizeUser(decoded);
           setUser(normalized);
           localStorage.setItem("user", JSON.stringify(normalized));
-        } catch (err) {
-          console.error("AuthProvider: error decodificando token:", err);
         }
+
+        // 🔥 AQUÍ ESTÁ LA CLAVE
+        await checkSession();
+
+      } catch (err) {
+        console.warn("AuthProvider: sesión inválida");
+        logout();
       }
-    } else {
-      console.log("AuthProvider: no hay token");
     }
 
     setLoadingAuth(false);
-  }, []);
+  };
+
+  initAuth();
+}, []);
+
 
   // -----------------------------------------
   // LOGIN
@@ -95,6 +90,40 @@ export const AuthProvider = ({ children }) => {
 
     console.log("AuthProvider: usuario activado en contexto:", updated);
   };
+
+  ////////////////////////////////////const para el chekeo de session 
+  const checkSession = async () => {
+  const savedToken = localStorage.getItem("token");
+  if (!savedToken) return logout();
+
+  try {
+    const res = await fetch(
+      "http://localhost:5000/api/user/check-session",
+      {
+        headers: {
+          Authorization: `Bearer ${savedToken}`,
+        },
+      }
+    );
+
+    if (!res.ok) throw new Error("Token inválido");
+
+    const data = await res.json();
+
+    if (!data.valid) {
+      logout();
+      return;
+    }
+
+    // sesión válida → no hacemos nada
+    console.log("✅ Sesión válida");
+
+  } catch (err) {
+    console.warn("⛔ Sesión expirada o inválida");
+    logout();
+  }
+};
+
 
   // -----------------------------------------
   // LOGOUT
