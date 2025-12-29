@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
+
 import {
   BarChart2,
   PieChart,
@@ -71,6 +72,7 @@ const SideBar = () => {
 
   return (
     <div className="flex">
+
       {/* Sidebar */}
       <div
         className="h-[94vh] w-50 bg-[#00C853] text-white shadow-lg
@@ -134,7 +136,8 @@ const SideBar = () => {
       <LogoutModal
         open={openLogout}
         onClose={() => setOpenLogout(false)}
-      />
+      />\
+{/* ? de paguinas apra la siguente funcion de modulos de las unidades */}
     </div>
   );
 };

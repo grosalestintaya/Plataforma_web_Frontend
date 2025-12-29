@@ -33,3 +33,14 @@
 .clip-hex {
   clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
 }
+/* ------------------------------------------------------- */
+:root{
+  --qp-bg: #6F50FF;       /* morado principal (fondo) */
+  --qp-topbar: #A78BFA;   /* lila claro (franja superior) */
+  --qp-card: #FFFFFF;     /* tarjetas blancas */
+  --qp-ink: #111827;      /* texto negro */
+  --qp-muted: #4B5563;    /* texto secundario */
+  --qp-accent: #22C55E;   /* verde (botón iniciar) */
+  --qp-accent2: #FF4081;  /* rosa (alterno) */
+  --qp-blue: #5991FF;     /* azul alterno */
+}
