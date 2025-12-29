@@ -30,7 +30,7 @@ export default {
       id: "s3",
       type: "content",
       variant: "split",
-      title: "Definición simple",
+      title: "Definición simple",z
       body:
         "Las finanzas personales son la forma en la que administras tu dinero:\n" +
         "- lo que ganas (ingresos)\n" +
