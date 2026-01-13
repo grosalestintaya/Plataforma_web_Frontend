@@ -1,5 +1,5 @@
 import React from "react";
-import ShowDashboardTitle from "../../../../Components/Ui/ShowDashboardTitle";
+import ShowDashboardTitle from "../../../../components/ui/ShowDashboardTitle";
 
 const ManageInsignia = () => {
   return (

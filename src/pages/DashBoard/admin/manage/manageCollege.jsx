@@ -1,45 +1,97 @@
-import { useEffect, useState } from "react";
-import ShowDashboardTitle from "../../../../Components/Ui/ShowDashboardTitle";
+import { useEffect, useMemo, useState } from "react";
+import ShowDashboardTitle from "../../../../components/ui/ShowDashboardTitle";
 import { useNavigate } from "react-router-dom";
+import { School, Plus, ArrowLeft, Pencil, MapPin, Search } from "lucide-react";
+
+const API_BASE = "http://localhost:5000/api";
 
 export default function ManageCollege() {
   const [schools, setSchools] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const [showModal, setShowModal] = useState(false);
-  const [modalMode, setModalMode] = useState("add"); // add o edit
-const navigate = useNavigate();
+  const [modalMode, setModalMode] = useState("add"); // add | edit
 
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
-
   const [editId, setEditId] = useState(null);
 
+  const [query, setQuery] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [toast, setToast] = useState({ type: "", msg: "" });
+
+  const navigate = useNavigate();
   const token = localStorage.getItem("token");
+
+  // ========================
+  // Helpers UI
+  // ========================
+  const inputBase = "w-full h-11 rounded-xl px-3 border outline-none transition";
+  const ringFocus = "0 0 0 4px var(--sidebar-accent)";
+  const surfaceStyle = {
+    backgroundColor: "var(--ui-surface, #fff)",
+    borderColor: "var(--card-border)",
+  };
+
+  const inputStyle = {
+    backgroundColor: "white",
+    borderColor: "var(--card-border)",
+    color: "var(--card-text)",
+  };
+
+  const showToast = (type, msg) => {
+    setToast({ type, msg });
+    setTimeout(() => setToast({ type: "", msg: "" }), 1800);
+  };
 
   // ========================
   // 📌 OBTENER COLEGIOS
   // ========================
   const fetchSchools = async () => {
+    setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/api/data/schools", {
+      const res = await fetch(`${API_BASE}/data/schools`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
-      if (Array.isArray(data)) setSchools(data);
-      else setSchools([]);
+      setSchools(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error("Error al listar colegios:", err);
+      setSchools([]);
+      showToast("error", "No se pudieron cargar los colegios");
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchSchools();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // ========================
+  // Filtro
+  // ========================
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return schools;
+
+    return schools.filter((s) =>
+      `${s?.name ?? ""} ${s?.address ?? ""}`.toLowerCase().includes(q)
+    );
+  }, [schools, query]);
+
+  const stats = useMemo(() => {
+    const total = schools.length;
+    return { total };
+  }, [schools]);
 
   // ========================
   // 📌 ABRIR MODAL
   // ========================
   const openAddModal = () => {
     setModalMode("add");
+    setEditId(null);
     setName("");
     setAddress("");
     setShowModal(true);
@@ -48,9 +100,14 @@ const navigate = useNavigate();
   const openEditModal = (school) => {
     setModalMode("edit");
     setEditId(school.id_school);
-    setName(school.name);
-    setAddress(school.address);
+    setName(school.name ?? "");
+    setAddress(school.address ?? "");
     setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setSaving(false);
   };
 
   // ========================
@@ -58,142 +115,314 @@ const navigate = useNavigate();
   // ========================
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setToast({ type: "", msg: "" });
 
-    if (!name || !address) return alert("Llena todos los campos");
+    const n = name.trim();
+    const a = address.trim();
+    if (!n || !a) {
+      showToast("error", "Completa nombre y dirección");
+      return;
+    }
 
     const url =
-      modalMode === "add"
-        ? "http://localhost:5000/api/schools"
-        : `http://localhost:5000/api/schools/${editId}`;
-
+      modalMode === "add" ? `${API_BASE}/schools` : `${API_BASE}/schools/${editId}`;
     const method = modalMode === "add" ? "POST" : "PUT";
 
     try {
+      setSaving(true);
+
       const res = await fetch(url, {
         method,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ name, address }),
+        body: JSON.stringify({ name: n, address: a }),
       });
 
       const data = await res.json();
-      if (data.error) alert("Error: " + data.error);
-      else {
-        alert(modalMode === "add" ? "Colegio agregado" : "Colegio actualizado");
-        setShowModal(false);
-        fetchSchools();
+
+      if (!res.ok || data?.error) {
+        throw new Error(data?.error || "Error al guardar");
       }
+
+      showToast("ok", modalMode === "add" ? "Colegio agregado" : "Colegio actualizado");
+      closeModal();
+      fetchSchools();
     } catch (err) {
       console.error("Error al guardar colegio:", err);
+      showToast("error", "No se pudo guardar el colegio");
+    } finally {
+      setSaving(false);
     }
   };
 
   return (
     <div className="p-6 relative">
-        
-        <ShowDashboardTitle>Administrar colegios</ShowDashboardTitle>
-        <br />
+      <ShowDashboardTitle>Administrar colegios</ShowDashboardTitle>
 
-
-<div className="flex justify-end gap-9 mb-6">
-  <button
-    onClick={openAddModal}
-    className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
-  >
-    Agregar Colegio
-  </button>
-
-  <button
-    onClick={() => navigate(-1)}
-    className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500 transition"
-  >
-    ← Volver
-  </button>
-</div>
-
-
-
-      {/* ======================== LISTA DE COLEGIOS ======================== */}
-      {schools.length === 0 ? (
-        <p>No hay colegios registrados.</p>
-      ) : (
-        <ul className="space-y-3">
-          {schools.map((school) => (
-            <li
-              key={school.id_school}
-              className="p-3 bg-gray-100 rounded-lg shadow flex justify-between items-center"
+      {/* Toolbar particular (badge + búsqueda + acciones) */}
+      <div
+        className="mt-6 rounded-3xl border p-5 shadow-sm"
+        style={{ backgroundColor: "var(--chip-bg)", borderColor: "var(--card-border)" }}
+      >
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex items-start gap-3">
+            <div
+              className="h-12 w-12 rounded-2xl border flex items-center justify-center"
+              style={{
+                backgroundColor: "rgba(41,98,255,0.08)",
+                borderColor: "rgba(41,98,255,0.18)",
+                color: "var(--sidebar)",
+              }}
             >
+              <School size={22} />
+            </div>
+
+            <div>
+              <p className="text-sm font-bold" style={{ color: "var(--card-text)" }}>
+                Catálogo de colegios
+              </p>
+              <p className="text-xs mt-1" style={{ color: "var(--card-muted)" }}>
+                Total registrados: <span className="font-semibold">{stats.total}</span>
+              </p>
+            </div>
+          </div>
+
+          <div className="flex gap-3 flex-col sm:flex-row sm:items-center">
+            {/* Search */}
+            <div className="relative w-full sm:w-[360px]">
+              <Search
+                size={18}
+                className="absolute left-3 top-1/2 -translate-y-1/2 opacity-60"
+                style={{ color: "var(--card-muted)" }}
+              />
+              <input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Buscar por nombre o dirección..."
+                className={`${inputBase} pl-10`}
+                style={inputStyle}
+                onFocus={(e) => (e.currentTarget.style.boxShadow = ringFocus)}
+                onBlur={(e) => (e.currentTarget.style.boxShadow = "none")}
+              />
+            </div>
+
+            {/* Buttons */}
+            <button
+              onClick={openAddModal}
+              className="h-11 px-4 rounded-xl font-semibold shadow transition flex items-center justify-center gap-2"
+              style={{ backgroundColor: "var(--sidebar)", color: "var(--sidebar-foreground)" }}
+            >
+              <Plus size={18} />
+              Agregar
+            </button>
+
+            <button
+              onClick={() => navigate(-1)}
+              className="h-11 px-4 rounded-xl border font-semibold transition flex items-center justify-center gap-2"
+              style={{ backgroundColor: "white", borderColor: "var(--card-border)", color: "var(--card-text)" }}
+            >
+              <ArrowLeft size={18} />
+              Volver
+            </button>
+          </div>
+        </div>
+
+        {/* Toast */}
+        {toast.msg ? (
+          <div
+            className="mt-4 rounded-2xl border p-3 text-sm"
+            style={{
+              borderColor: toast.type === "error" ? "rgba(255,64,129,0.35)" : "rgba(0,200,83,0.30)",
+              backgroundColor: toast.type === "error" ? "rgba(255,64,129,0.10)" : "rgba(0,200,83,0.10)",
+              color: "var(--card-text)",
+            }}
+          >
+            <span className="font-semibold">{toast.type === "error" ? "Error:" : "Listo:"}</span>{" "}
+            <span style={{ color: "var(--card-muted)" }}>{toast.msg}</span>
+          </div>
+        ) : null}
+      </div>
+
+      {/* List */}
+      <div className="mt-6">
+        {loading ? (
+          <p className="text-sm" style={{ color: "var(--card-muted)" }}>
+            Cargando colegios...
+          </p>
+        ) : filtered.length === 0 ? (
+          <div
+            className="rounded-3xl border p-6"
+            style={{ ...surfaceStyle, backgroundColor: "var(--ui-surface, #fff)" }}
+          >
+            <p className="text-sm font-semibold" style={{ color: "var(--card-text)" }}>
+              No hay colegios registrados.
+            </p>
+            <p className="text-xs mt-1" style={{ color: "var(--card-muted)" }}>
+              Puedes crear uno con el botón “Agregar”.
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+            {filtered.map((school) => (
+              <div
+                key={school.id_school}
+                className="rounded-3xl border p-5 shadow-lg transition"
+                style={surfaceStyle}
+                onMouseEnter={(e) => (e.currentTarget.style.boxShadow = "0 0 0 4px var(--sidebar-accent)")}
+                onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "none")}
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="text-sm font-bold capitalize truncate" style={{ color: "var(--card-text)" }}>
+                      {school.name}
+                    </p>
+                    <div className="flex items-center gap-2 mt-2">
+                      <MapPin size={16} style={{ color: "var(--card-muted)" }} />
+                      <p className="text-xs truncate" style={{ color: "var(--card-muted)" }}>
+                        {school.address}
+                      </p>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => openEditModal(school)}
+                    className="h-10 px-3 rounded-xl border font-semibold transition flex items-center gap-2 shrink-0"
+                    style={{
+                      backgroundColor: "rgba(255,196,0,0.14)",
+                      borderColor: "rgba(255,196,0,0.35)",
+                      color: "#8A6B00",
+                    }}
+                  >
+                    <Pencil size={16} />
+                    Editar
+                  </button>
+                </div>
+
+                {/* Mini footer particular: ID tag */}
+                <div className="mt-4 flex items-center justify-between">
+                  <span
+                    className="text-[11px] font-semibold px-3 py-1 rounded-xl border"
+                    style={{
+                      backgroundColor: "var(--chip-bg)",
+                      borderColor: "var(--card-border)",
+                      color: "var(--card-muted)",
+                    }}
+                  >
+                    ID: {school.id_school}
+                  </span>
+
+                  <span className="text-[11px]" style={{ color: "var(--card-muted)" }}>
+                    Gestión de entidad base
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* MODAL */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black/30 flex justify-center items-center z-50">
+          <div
+            className="rounded-3xl shadow-xl p-6 w-[460px] max-w-[92vw] border relative"
+            style={{ backgroundColor: "var(--ui-surface, #fff)", borderColor: "var(--card-border)" }}
+          >
+            <div className="flex items-start justify-between gap-3">
               <div>
-                <p className="font-semibold capitalize">{school.name}</p>
-                <p className="text-sm text-gray-700">{school.address}</p>
+                <h2 className="text-lg font-bold" style={{ color: "var(--card-text)" }}>
+                  {modalMode === "add" ? "Agregar colegio" : "Editar colegio"}
+                </h2>
+                <p className="text-xs mt-1" style={{ color: "var(--card-muted)" }}>
+                  {modalMode === "add"
+                    ? "Crea un nuevo colegio para asignarlo a estudiantes/docentes."
+                    : "Actualiza los datos del colegio seleccionado."}
+                </p>
               </div>
 
               <button
-                onClick={() => openEditModal(school)}
-                className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
+                type="button"
+                onClick={closeModal}
+                className="h-10 px-4 rounded-xl border font-semibold transition"
+                style={{
+                  backgroundColor: "white",
+                  borderColor: "var(--card-border)",
+                  color: "var(--card-text)",
+                }}
               >
-                Editar
+                Cerrar
               </button>
-            </li>
-          ))}
-        </ul>
-      )}
+            </div>
 
-      {/* ======================== MODAL SUPERPUESTO ======================== */}
-      {showModal && (
-        <div className="fixed inset-0 bg-black/30 flex justify-center items-center z-50">
-          <div className="bg-white rounded-2xl shadow-xl p-6 w-96 relative">
-            <h2 className="text-xl font-semibold mb-4">
-              {modalMode === "add" ? "Agregar Colegio" : "Editar Colegio"}
-            </h2>
+            <form onSubmit={handleSubmit} className="space-y-4 mt-5">
+              <div className="space-y-2">
+                <label className="text-sm font-semibold" style={{ color: "var(--card-muted)" }}>
+                  Nombre del colegio
+                </label>
+                <input
+                  type="text"
+                  placeholder="Ej: I.E. José María Arguedas"
+                  className={inputBase}
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  style={inputStyle}
+                  onFocus={(e) => (e.currentTarget.style.boxShadow = ringFocus)}
+                  onBlur={(e) => (e.currentTarget.style.boxShadow = "none")}
+                  autoComplete="off"
+                />
+              </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <input
-                type="text"
-                placeholder="Nombre del colegio"
-                className="w-full p-2 border rounded"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
+              <div className="space-y-2">
+                <label className="text-sm font-semibold" style={{ color: "var(--card-muted)" }}>
+                  Dirección
+                </label>
+                <input
+                  type="text"
+                  placeholder="Ej: Av. Principal 123"
+                  className={inputBase}
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  style={inputStyle}
+                  onFocus={(e) => (e.currentTarget.style.boxShadow = ringFocus)}
+                  onBlur={(e) => (e.currentTarget.style.boxShadow = "none")}
+                  autoComplete="street-address"
+                />
+              </div>
 
-              <input
-                type="text"
-                placeholder="Dirección"
-                className="w-full p-2 border rounded"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-              />
-
-              <div className="flex justify-end gap-3">
+              <div className="flex justify-end gap-3 pt-2">
                 <button
                   type="button"
-                  onClick={() => setShowModal(false)}
-                  className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
+                  onClick={closeModal}
+                  disabled={saving}
+                  className="h-11 px-4 rounded-xl border font-semibold transition disabled:opacity-60"
+                  style={{
+                    backgroundColor: "white",
+                    borderColor: "var(--card-border)",
+                    color: "var(--card-text)",
+                  }}
                 >
                   Cancelar
                 </button>
 
                 <button
                   type="submit"
-                  className={`px-4 py-2 rounded text-white ${
-                    modalMode === "add" ? "bg-blue-600 hover:bg-blue-700" : "bg-green-600 hover:bg-green-700"
-                  }`}
+                  disabled={saving}
+                  className="h-11 px-5 rounded-xl font-semibold shadow transition disabled:opacity-60 flex items-center gap-2"
+                  style={{
+                    backgroundColor: modalMode === "add" ? "var(--sidebar)" : "var(--qy-green, #00C853)",
+                    color: "white",
+                  }}
                 >
-                  {modalMode === "add" ? "Agregar" : "Guardar"}
+                  {saving ? "Guardando..." : modalMode === "add" ? "Agregar" : "Guardar"}
                 </button>
               </div>
             </form>
           </div>
-          
         </div>
-        
       )}
-       <div className="p-6 flex justify-end">
-
-</div>
     </div>
-    
   );
 }
+ 

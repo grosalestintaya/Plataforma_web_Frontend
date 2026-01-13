@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Card, CardContent } from "../../Components/Ui/card";
-import { Button } from "../../Components/Ui/button";
+import { Card, CardContent } from "../../components/ui/card";
+import { Button } from "../../components/ui/button";
 import { useAuth } from "../../context/AuthContext";
 
 export default function Introduccion() {

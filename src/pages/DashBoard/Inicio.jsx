@@ -1,18 +1,18 @@
 import React from "react";
-import UserCard from "../../Components/Usercards/UserCard";
-import UserBody from "../../Components/Usercards/UserBody";
-import NivelActualCard from "../../Components/Usercards/NivelActualCard";
-import InsigniasCard from "../../Components/Usercards/InsigniasCard";
+import UserCard from "../../components/Usercards/UserCard";
+import UserBody from "../../components/Usercards/UserBody";
+import NivelActualCard from "../../components/Usercards/NivelActualCard";
+import InsigniasCard from "../../components/Usercards/InsigniasCard";
 
 const Inicio = () => {
   const user = {
     nombre: "George Rosales Tintaya",
-    puntos: 3000,
+    puntos: 300,
     nivel: "Chasque",
-    progreso: 70,
+    progreso: 98,
     institucion: "IE San Francisco",
     seccion: "3ro Grado",
-    monedas: 69,
+    monedas: 100,
     foto: "https://unavatar.io/kikobeats",
   };
 

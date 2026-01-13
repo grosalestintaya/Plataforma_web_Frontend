@@ -1,35 +1,355 @@
-@import "tailwindcss";
+/* global.css */
+
+/* Fuente */
 @import url("https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap");
 
-@theme {
-  /* fuente primaria  */
-  --font-primary: "Rubik", sans-serif;
+/* Tailwind v4 */
+@import "tailwindcss";
 
-  /* paleta de colores de proyecto en figma */
-  /* verdes */
-  --color-green1: #1fc16b;
-  --color-green2: #;
-  --color-green3: #;
-  --color-green3: #1fc16b;
+/* Animations (elige uno). Recomendado: tailwindcss-animate */
+@plugin "tailwindcss-animate";
+/* =========================
+   UserCard tokens (defaults)
+   ========================= */
 
-  /* azules */
-  --color-blue1: #;
-  --color-blue2: #;
-  --color-blue3: #;
-  /* oros */
-  --color-gold1: #;
-  --color-gold2: #;
-  --color-gold3: #;
-  /* Lilas */
-  --color-lilac1: #;
-  --color-lilac2: #;
-  --color-lilac3: #f01253;
-  /* Morados */
-  --color-purple1: #;
-  --color-purple2: #;
-  --color-purple3: #;
+:root {
+  --card-bg: rgba(255, 255, 255, 0.75);
+  --card-border: rgba(15, 23, 42, 0.10);
+  --card-text: #0f172a;
+  --card-muted: rgba(15, 23, 42, 0.65);
+
+  --progress-track: rgba(15, 23, 42, 0.15);
+
+  --chip-bg: rgba(255, 255, 255, 0.90);
+  --chip-text: rgba(15, 23, 42, 0.80);
+
+  /* Área de monedas */
+
 }
 
+
+/* =========================================
+   THEMES por usuario: theme-lila/blue/green
+   Remapean tokens UI (sidebar/primary/accent)
+   ========================================= */
+
+/* LILA: sidebar base = #FF4081 */
+.theme-lila {
+  /* Sidebar */
+  --sidebar: #ff4081;
+  --sidebar-foreground: #ffffff;
+
+  /* Botones / elementos destacados dentro de sidebar */
+  --sidebar-primary: #ffffff;
+  --sidebar-primary-foreground: #ff4081;
+
+  /* Acentos / highlights */
+  --sidebar-accent: rgba(255, 255, 255, 0.18);
+  --sidebar-accent-foreground: #ffffff;
+
+  --sidebar-border: rgba(255, 255, 255, 0.22);
+  --sidebar-ring: rgba(255, 255, 255, 0.35);
+
+  /* UI general */
+  --primary: #ff4081;
+  --primary-foreground: #ffffff;
+
+  --accent: #7c4dff;
+  --accent-foreground: #ffffff;
+
+  /* Marca */
+  --qy-pink: #ff4081;
+  --qy-purple: #7c4dff;
+    --app-bg: #fff0f6;      /* rosado muy suave */
+    
+  --dash-title-bg: #FF40811A;
+  --dash-title-text: #C2185B;
+
+    --usercard-bg: rgba(255, 64, 129, 0.10);
+  --usercard-border: rgba(255, 64, 129, 0.25);
+  --usercard-accent: #ff4081;
+  --usercard-accent-2: #7c4dff;
+  --coin-panel-bg: #ffc400;
+  --coin-panel-text: #ffffff;
+  
+}
+
+/* BLUE: sidebar base = #2962FF */
+.theme-blue {
+  --sidebar: #2962ff;
+  --sidebar-foreground: #ffffff;
+
+  --sidebar-primary: #ffffff;
+  --sidebar-primary-foreground: #2962ff;
+
+  --sidebar-accent: rgba(255, 255, 255, 0.18);
+  --sidebar-accent-foreground: #ffffff;
+
+  --sidebar-border: rgba(255, 255, 255, 0.22);
+  --sidebar-ring: rgba(255, 255, 255, 0.35);
+
+  --primary: #2962ff;
+  --primary-foreground: #ffffff;
+
+  --accent: #00b0ff;
+  --accent-foreground: #0b1220;
+
+  --qy-blue: #2962ff;
+  --app-bg: #eef3ff;      /* azul muy suave */
+    --dash-title-bg: #2962FF1A;
+  --dash-title-text: #2962ff;
+
+    --usercard-bg: rgba(41, 98, 255, 0.10);
+  --usercard-border: rgba(41, 98, 255, 0.25);
+  --usercard-accent: #2962ff;
+  --usercard-accent-2: #00c853;
+  --coin-panel-bg: #ffc400;
+  --coin-panel-text: #ffffff;
+}
+
+/* GREEN: sidebar base = #00C853 */
+.theme-green {
+  --sidebar: #00c853;
+  --sidebar-foreground: #ffffff;
+
+  --sidebar-primary: #ffffff;
+  --sidebar-primary-foreground: #00c853;
+
+  --sidebar-accent: rgba(255, 255, 255, 0.18);
+  --sidebar-accent-foreground: #ffffff;
+
+  --sidebar-border: rgba(255, 255, 255, 0.22);
+  --sidebar-ring: rgba(255, 255, 255, 0.35);
+
+  --primary: #00c853;
+  --primary-foreground: #ffffff;
+
+  --accent: #ffc400;
+  --accent-foreground: #111827;
+
+  --qy-green: #00c853;
+  --qy-gold: #ffc400;
+    --app-bg: #f0fff6;      /* verde muy suave */
+  --dash-title-bg: #00C8531A;   /* 10% alpha (suave) */
+  --dash-title-text: #0A7136;   /* verde oscuro (alto contraste) */
+    --usercard-bg: rgba(0, 200, 83, 0.10);
+  --usercard-border: rgba(0, 200, 83, 0.25);
+  --usercard-accent: #00c853;          /* barra progreso / acentos */
+  --usercard-accent-2: #2962ff;        /* institución */
+
+
+  
+    --coin-panel-bg: #ffc400;
+  --coin-panel-text: #ffffff;
+
+}
+
+
+
+/* -----------------------------
+   Tokens de Marca (Quipu Yachay)
+   ----------------------------- */
+@theme {
+  --font-primary: "Rubik", sans-serif;
+
+  /* Paleta principal (tu proyecto) */
+  --qy-green: #00c853;
+  --qy-blue: #2962ff;
+  --qy-gold: #ffc400;
+  --qy-pink: #ff4081;
+  --qy-purple: #7c4dff;
+  --qy-orange: #ff890a;
+
+  /* Escalas (3 niveles) - sin valores vacíos */
+  --color-green1: #00c853;
+  --color-green2: #1fc16b;
+  --color-green3: #0ea75a;
+
+  --color-blue1: #2962ff;
+  --color-blue2: #1e4fd6;
+  --color-blue3: #163aa3;
+
+  --color-gold1: #ffc400;
+  --color-gold2: #ffb300;
+  --color-gold3: #ff9800;
+
+  --color-lilac1: #c4b5fd;
+  --color-lilac2: #a78bfa;
+  --color-lilac3: #7c4dff;
+
+  --color-purple1: #7c4dff;
+  --color-purple2: #6a3cff;
+  --color-purple3: #5522ff;
+}
+
+/* Utilidad */
 .clip-hex {
   clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+}
+
+/* -------------------------------------------------
+   Tokens UI tipo shadcn (OKLCH) + mapeo a Tailwind
+   ------------------------------------------------- */
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  /* base */
+  --radius: 0.625rem;
+
+  /* tipografía */
+  font-family: var(--font-primary);
+
+  /* UI tokens (modo único; sin dark) */
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+
+  /* Si quieres que el "primary" sea tu verde de marca, aquí está el cambio simple:
+     antes era neutral; ahora usamos el verde de marca en forma HEX vía token qy.
+     Para no mezclar formatos, dejamos primary neutral OKLCH y usas --qy-green en componentes.
+     (Esto evita inconsistencias raras con utilidades que esperan OKLCH).
+  */
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+
+  --destructive: oklch(0.577 0.245 27.325);
+
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-primary);
+  }
+}
+/* =========================
+   Sidebar interactions
+   ========================= */
+
+.sidebar-link {
+  background-color: transparent;
+  color: var(--sidebar-foreground);
+}
+
+.sidebar-link:hover {
+  background-color: var(--sidebar-accent);
+}
+
+.sidebar-link--active {
+  background-color: var(--sidebar-accent);
+  font-weight: 500;
+}
+
+/* Botón Salir */
+.sidebar-logout {
+  background-color: rgba(255, 255, 255, 0.14);
+  color: var(--sidebar-foreground);
+}
+
+.sidebar-logout:hover {
+  background-color: rgba(255, 255, 255, 0.26);
+}
+.theme-lila,
+.theme-blue,
+.theme-green {
+  transition: background-color 300ms ease, color 300ms ease;
+}
+/* Dashboard title */
+/* =========================
+   Dashboard Title tokens
+   Basados en --sidebar
+   ========================= */
+
+:root {
+  /* Fondo suave derivado del sidebar */
+  --dash-title-bg: color-mix(in srgb, var(--sidebar) 12%, transparent);
+
+  /* Texto fuerte */
+  --dash-title-text: var(--sidebar);
 }
