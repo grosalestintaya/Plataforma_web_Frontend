@@ -5,7 +5,7 @@ import { jwtDecode } from "jwt-decode";
 
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
-
+import { AuthService } from "../../services/Auth.Service"; 
 
 export default function Login() {
   const navigate = useNavigate();
@@ -36,21 +36,16 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:5000/api/user/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username: form.username,
-          password: form.password,
-        }),
+      // ✅ ya no usas localhost hardcodeado
+      const data = await AuthService.login({
+        username: form.username,
+        password: form.password,
       });
 
-      if (!response.ok) {
-        setError("Usuario o contraseña incorrectos.");
+      if (!data?.token) {
+        setError("Respuesta inválida del servidor (no llegó token).");
         return;
       }
-
-      const data = await response.json();
 
       // 🔐 Guardar token en el AuthContext
       login(data.token);
@@ -64,15 +59,25 @@ export default function Login() {
         console.warn("⚠️ ADVERTENCIA: El JWT NO contiene is_active");
       }
 
-      // 🔀 Redirigir según estado del usuario
       if (decoded?.is_active) {
-        navigate("/", { replace: true });
+        // 🔀 Redirigir según estado del usuario
+        if (decoded?.is_active && decoded?.role === "Docente") {
+          navigate("/app/teacher/heatmap", { replace: true });
+        } else {
+          navigate("/app", { replace: true });
+        }
       } else {
         navigate("/i", { replace: true });
       }
     } catch (err) {
       console.error(err);
-      setError("Error al conectar con el servidor.");
+
+      // ✅ Mensaje más preciso (sin romper tu UI)
+      if (err?.status === 401) {
+        setError("Usuario o contraseña incorrectos.");
+      } else {
+        setError(err?.message || "Error al conectar con el servidor.");
+      }
     } finally {
       setLoading(false);
     }

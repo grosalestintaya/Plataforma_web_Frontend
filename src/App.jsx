@@ -34,10 +34,12 @@ import ManageCollege from "./pages/DashBoard/admin/manage/manageCollege.jsx";
 import ManageGrade from "./pages/DashBoard/admin/manage/manageGrade.jsx";
 import ManageInsignia from "./pages/DashBoard/admin/manage/manageInsignia.jsx";
 import ManageRol from "./pages/DashBoard/admin/manage/manageRol.jsx";
- import TeacherGrades from "./pages/DashBoard/teacher/TeacherGrades.jsx";
- import GradeStudents from "./pages/DashBoard/teacher/GradeStudents.jsx";
- import StudentDetails from "./pages/DashBoard/teacher/StudentDetails.jsx";
- import Store from "./pages/DashBoard/Store.jsx";
+import TeacherGrades from "./pages/DashBoard/teacher/TeacherGrades.jsx";
+import GradeStudents from "./pages/DashBoard/teacher/GradeStudents.jsx";
+import StudentDetails from "./pages/DashBoard/teacher/StudentDetails.jsx";
+import Store from "./pages/DashBoard/Store.jsx";
+
+ import HeatMap from "./pages/DashBoard/heatMap.jsx";
 function App() {
   return (
     <BrowserRouter>
@@ -93,6 +95,7 @@ function App() {
           {/* teacher */}
           <Route path="teacher/graphs" element={<Graficos />} />
           <Route path="teacher/statistics" element={<Estadisticas />} />
+          <Route path="teacher/heatmap" element={<HeatMap />} />
 
           {/* manage */}
           <Route path="manage/college" element={<ManageCollege />} />
@@ -104,12 +107,10 @@ function App() {
 
           <Route path="teacher/students" element={<TeacherGrades />} />
            <Route path="teacher/students/:id_grade" element={<GradeStudents />} />
-
            <Route path="teacher/students/view/:id_user" element={<StudentDetails />} />
-
         </Route>
 
-
+          
 
 
 

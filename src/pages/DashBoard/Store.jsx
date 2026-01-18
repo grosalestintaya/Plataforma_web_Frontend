@@ -16,7 +16,12 @@ function Store() {
 
     return (
         <div className="store-container">
-            <ShowDashboardTitle>Tienda de monedas</ShowDashboardTitle>
+            <ShowDashboardTitle>tienda de pepipto</ShowDashboardTitle>
+            <br />
+                        <ShowDashboardTitle>tienda delucho</ShowDashboardTitle>
+                        <br />
+                        <ShowDashboardTitle>tienda carlos</ShowDashboardTitle>
+
             <h1>Próximooo</h1>
             <div className="products-grid">
                 {products.map((product) => (

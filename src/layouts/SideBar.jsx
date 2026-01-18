@@ -1,10 +1,11 @@
 import React, { useMemo, useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import { BarChart2, PieChart, Home, User, Trophy, Settings, LogOut,Store } from "lucide-react";
-import { FaUsers, FaUserPlus, FaUserCog } from "react-icons/fa";
+import { FaUsers, FaUserPlus, FaUserCog ,FaChartPie,FaTh,FaThLarge} from "react-icons/fa";
 
 import { useAuth } from "../context/AuthContext";
 import LogoutModal from "../components/Modals/LogoutModal";
+import HeatMap from "@/pages/DashBoard/heatMap";
 
 const SideBar = () => {
   const { user } = useAuth();
@@ -12,15 +13,16 @@ const SideBar = () => {
 
   const themeClass = useMemo(() => `theme-${user?.style ?? "green"}`, [user?.style]);
 
-  const baseItems = [{ name: "Inicio", path: "", icon: <Home size={20} /> }];
+  const baseItems = [];
 
-  const studentItems = [ { name: "Tienda", path: "store", icon: <Store size={20} /> },{ name: "Ranking", path: "ranking", icon: <Trophy size={20} /> }, 
+  const studentItems = [{ name: "Inicio", path: "", icon: <Home size={20} /> }, { name: "Tienda", path: "store", icon: <Store size={20} /> },{ name: "Ranking", path: "ranking", icon: <Trophy size={20} /> }, 
    ];
 
   const teacherItems = [
+        { name: "General", path: "teacher/heatmap", icon: <FaThLarge size={20} /> },
     { name: "Estudiantes", path: "teacher/students", icon: <FaUsers size={20} /> },
     { name: "Estadisticas", path: "teacher/statistics", icon: <BarChart2 size={20} /> },
-    { name: "Gráficas", path: "teacher/graphs", icon: <PieChart size={20} /> },
+    { name: "Gráficas", path: "teacher/graphs", icon: <FaChartPie size={20} /> },
     { name: "Ranking", path: "ranking", icon: <Trophy size={20} /> },
   ];
 

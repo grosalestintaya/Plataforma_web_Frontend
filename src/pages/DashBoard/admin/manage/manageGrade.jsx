@@ -3,7 +3,8 @@ import ShowDashboardTitle from "../../../../components/ui/ShowDashboardTitle";
 import { useNavigate } from "react-router-dom";
 import { GraduationCap, Plus, ArrowLeft, Pencil, Search, Layers3 } from "lucide-react";
 
-const API_BASE = "http://localhost:5000/api";
+import { DataService } from "../../../../services/data.service";
+import { GradesService } from "../../../../services/grades.service";
 
 export default function ManageGrade() {
   const [grades, setGrades] = useState([]);
@@ -19,7 +20,6 @@ export default function ManageGrade() {
   const [toast, setToast] = useState({ type: "", msg: "" });
 
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
 
   // UI helpers (consistente con tu theme)
   const inputBase = "w-full h-11 rounded-xl px-3 border outline-none transition";
@@ -45,15 +45,15 @@ export default function ManageGrade() {
   const fetchGrades = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/data/grades`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await res.json();
+      const data = await DataService.grades();
       setGrades(Array.isArray(data) ? data : []);
     } catch (err) {
-      console.error("Error al listar grados:", err);
-      setGrades([]);
-      showToast("error", "No se pudieron cargar los grados");
+      // 401 lo maneja apiClient (logout + redirect)
+      if (err?.status !== 401) {
+        console.error("Error al listar grados:", err);
+        setGrades([]);
+        showToast("error", err?.message || "No se pudieron cargar los grados");
+      }
     } finally {
       setLoading(false);
     }
@@ -109,31 +109,23 @@ export default function ManageGrade() {
       return;
     }
 
-    const url =
-      modalMode === "add" ? `${API_BASE}/grades` : `${API_BASE}/grades/${editId}`;
-    const method = modalMode === "add" ? "POST" : "PUT";
-
     try {
       setSaving(true);
 
-      const res = await fetch(url, {
-        method,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ name: n }),
-      });
-
-      const data = await res.json();
-      if (!res.ok || data?.error) throw new Error(data?.error || "Error al guardar");
+      if (modalMode === "add") {
+        await GradesService.create({ name: n });
+      } else {
+        await GradesService.update(editId, { name: n });
+      }
 
       showToast("ok", modalMode === "add" ? "Grado agregado" : "Grado actualizado");
       closeModal();
       fetchGrades();
     } catch (err) {
-      console.error("Error al guardar grado:", err);
-      showToast("error", "No se pudo guardar el grado");
+      if (err?.status !== 401) {
+        console.error("Error al guardar grado:", err);
+        showToast("error", err?.message || "No se pudo guardar el grado");
+      }
     } finally {
       setSaving(false);
     }
@@ -210,7 +202,7 @@ export default function ManageGrade() {
           </div>
         </div>
 
-        {/* “Chips” de preview (particular del manage grades) */}
+        {/* “Chips” de preview */}
         <div className="mt-4 flex flex-wrap gap-2">
           {(filtered.slice(0, 8) || []).map((g) => (
             <span

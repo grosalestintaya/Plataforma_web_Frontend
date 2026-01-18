@@ -1,15 +1,36 @@
+// src/main.jsx
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
 import App from "./App.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
-<script src="http://192.168.100.201:8097"></script>
-//estilos
-import "./index.css"; // <-- importante para que Tailwind funcione
 
+// estilos (Tailwind)
+import "./index.css";
+
+// ========================
+// React Query Client
+// ========================
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 60_000,
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
+
+// ========================
+// Render
+// ========================
 createRoot(document.getElementById("root")).render(
-  <AuthProvider>
-    <StrictMode>
-      <App />
-    </StrictMode>
-  </AuthProvider>
+  <StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </QueryClientProvider>
+  </StrictMode>
 );

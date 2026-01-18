@@ -1,25 +1,27 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import { TeacherStudentsService } from "../../../services/teacherStudents.service"; // ajusta ruta según tu estructura
 
 /**
  * Vista docente: lista de estudiantes asignados.
  * Endpoint:
- *  GET http://localhost:5000/api/teacher/students?q=&page=1&limit=9
+ *  GET /api/teacher/students?q=&page=1&limit=9
  *
  * Nota: La API devuelve { items, pagination } y cada item incluye grade (string).
  * En UI NO mostramos IDs.
  */
 export default function Students() {
-  const token = localStorage.getItem("token");
-
   // Query params (persistencia en URL)
   const [searchParams, setSearchParams] = useSearchParams();
-
   const q = searchParams.get("q") ?? "";
   const page = Number(searchParams.get("page") ?? 1);
   const limit = Number(searchParams.get("limit") ?? 9);
 
-  const [data, setData] = useState({ items: [], pagination: { page: 1, limit: 9, total: 0 } });
+  const [data, setData] = useState({
+    items: [],
+    pagination: { page: 1, limit: 9, total: 0 },
+  });
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -28,44 +30,6 @@ export default function Students() {
     const lim = Number(data?.pagination?.limit ?? limit);
     return Math.max(1, Math.ceil(total / lim));
   }, [data, limit]);
-
-  const fetchStudents = async ({ q, page, limit }) => {
-    setLoading(true);
-    setError("");
-
-    try {
-      const url = new URL("http://localhost:5000/api/teacher/students");
-      url.searchParams.set("q", q ?? "");
-      url.searchParams.set("page", String(page ?? 1));
-      url.searchParams.set("limit", String(limit ?? 9));
-
-      const res = await fetch(url.toString(), {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      if (!res.ok) {
-        const text = await res.text();
-        throw new Error(text || `HTTP ${res.status}`);
-      }
-
-      const json = await res.json();
-
-      setData({
-        items: Array.isArray(json?.items) ? json.items : [],
-        pagination: json?.pagination ?? { page: 1, limit, total: 0 },
-      });
-    } catch (e) {
-      setError(e?.message || "Error al cargar estudiantes");
-      setData({ items: [], pagination: { page: 1, limit, total: 0 } });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchStudents({ q, page, limit });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [q, page, limit]);
 
   const updateParams = (patch) => {
     const next = new URLSearchParams(searchParams);
@@ -83,6 +47,31 @@ export default function Students() {
     updateParams({ page: safe });
   };
 
+  const fetchStudents = async ({ q, page, limit }) => {
+    setLoading(true);
+    setError("");
+
+    try {
+      const json = await TeacherStudentsService.list({ q, page, limit });
+
+      setData({
+        items: Array.isArray(json?.items) ? json.items : [],
+        pagination: json?.pagination ?? { page: 1, limit, total: 0 },
+      });
+    } catch (e) {
+      // 401 lo maneja apiClient; aquí solo mostramos si NO es 401
+      if (e?.status !== 401) setError(e?.message || "Error al cargar estudiantes");
+      setData({ items: [], pagination: { page: 1, limit, total: 0 } });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchStudents({ q, page, limit });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [q, page, limit]);
+
   // Agrupar por grade (categorías)
   const grouped = useMemo(() => {
     const groups = new Map();
@@ -91,10 +80,7 @@ export default function Students() {
       if (!groups.has(grade)) groups.set(grade, []);
       groups.get(grade).push(s);
     }
-
-    // Orden consistente (alfabético)
-    const entries = Array.from(groups.entries()).sort(([a], [b]) => a.localeCompare(b, "es"));
-    return entries;
+    return Array.from(groups.entries()).sort(([a], [b]) => a.localeCompare(b, "es"));
   }, [data.items]);
 
   return (
@@ -113,10 +99,9 @@ export default function Students() {
         </div>
       </div>
 
-      {/* Filters (sin grado) */}
+      {/* Filters */}
       <div className="rounded-3xl bg-white p-4 ring-1 ring-slate-200">
         <div className="grid gap-3 md:grid-cols-12 md:items-end">
-          {/* Search */}
           <div className="md:col-span-8">
             <label className="text-xs font-extrabold text-slate-700">Buscar</label>
             <input
@@ -127,7 +112,6 @@ export default function Students() {
             />
           </div>
 
-          {/* Limit */}
           <div className="md:col-span-3">
             <label className="text-xs font-extrabold text-slate-700">Límite</label>
             <select
@@ -142,7 +126,6 @@ export default function Students() {
             </select>
           </div>
 
-          {/* Clear */}
           <div className="md:col-span-1">
             <button
               type="button"
@@ -157,7 +140,6 @@ export default function Students() {
 
       {/* Content */}
       <div className="rounded-3xl bg-white p-4 ring-1 ring-slate-200">
-        {/* Loading */}
         {loading && (
           <div className="grid gap-3 md:grid-cols-3">
             {Array.from({ length: Math.min(limit, 9) }).map((_, i) => (
@@ -170,7 +152,6 @@ export default function Students() {
           </div>
         )}
 
-        {/* Error */}
         {!loading && error && (
           <div className="rounded-3xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
             <div className="font-extrabold">No se pudo cargar</div>
@@ -178,7 +159,6 @@ export default function Students() {
           </div>
         )}
 
-        {/* Empty */}
         {!loading && !error && data.items.length === 0 && (
           <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6 text-sm text-slate-700">
             <div className="font-extrabold text-slate-900">Sin resultados</div>
@@ -186,7 +166,6 @@ export default function Students() {
           </div>
         )}
 
-        {/* Grouped list */}
         {!loading && !error && data.items.length > 0 && (
           <>
             <div className="space-y-6">
@@ -194,14 +173,16 @@ export default function Students() {
                 <GradeGroup key={grade} grade={grade} count={students.length}>
                   <div className="mt-3 grid gap-3 md:grid-cols-3">
                     {students.map((s) => (
-                      <StudentCard key={s.id_user} student={s} />
+                      <StudentCard
+                        key={s.username ?? `${s.full_name}-${Math.random()}`}
+                        student={s}
+                      />
                     ))}
                   </div>
                 </GradeGroup>
               ))}
             </div>
 
-            {/* Pagination */}
             <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-slate-200 pt-4">
               <div className="text-sm font-semibold text-slate-700">
                 Página <span className="font-extrabold text-slate-900">{page}</span> de{" "}
@@ -264,9 +245,7 @@ function StudentCard({ student }) {
     <div className="rounded-3xl border border-slate-200 bg-white p-4 hover:bg-slate-50">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <div className="truncate text-sm font-extrabold text-slate-900">
-            {student.full_name}
-          </div>
+          <div className="truncate text-sm font-extrabold text-slate-900">{student.full_name}</div>
           <div className="mt-2 flex flex-wrap gap-2">
             <Pill text={`@${student.username}`} tone="blue" />
           </div>
@@ -285,6 +264,7 @@ function StudentCard({ student }) {
       </div>
 
       <div className="mt-4 flex items-center justify-end">
+        {/* Mantengo tu ruta actual por ID (no se muestra en UI, pero sí en URL) */}
         <Link
           to={`/app/teacher/students/${student.id_user}`}
           className="rounded-2xl bg-[#2962FF] px-4 py-2 text-xs font-extrabold text-white hover:opacity-95"
@@ -304,9 +284,5 @@ function Pill({ text, tone = "slate" }) {
     yellow: "bg-[#FFC400]/30 text-slate-900 ring-[#FFC400]/40",
   };
 
-  return (
-    <span className={`rounded-full px-3 py-1 text-xs font-extrabold ring-1 ${map[tone]}`}>
-      {text}
-    </span>
-  );
+  return <span className={`rounded-full px-3 py-1 text-xs font-extrabold ring-1 ${map[tone]}`}>{text}</span>;
 }

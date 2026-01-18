@@ -3,7 +3,8 @@ import ShowDashboardTitle from "../../../../components/ui/ShowDashboardTitle";
 import { useNavigate } from "react-router-dom";
 import { School, Plus, ArrowLeft, Pencil, MapPin, Search } from "lucide-react";
 
-const API_BASE = "http://localhost:5000/api";
+import { DataService } from "../../../../services/data.service";
+import { SchoolsService } from "../../../../services/schools.service";
 
 export default function ManageCollege() {
   const [schools, setSchools] = useState([]);
@@ -21,7 +22,6 @@ export default function ManageCollege() {
   const [toast, setToast] = useState({ type: "", msg: "" });
 
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
 
   // ========================
   // Helpers UI
@@ -50,15 +50,15 @@ export default function ManageCollege() {
   const fetchSchools = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/data/schools`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await res.json();
+      const data = await DataService.schools();
       setSchools(Array.isArray(data) ? data : []);
     } catch (err) {
-      console.error("Error al listar colegios:", err);
-      setSchools([]);
-      showToast("error", "No se pudieron cargar los colegios");
+      // 401 lo maneja apiClient (logout + redirect)
+      if (err?.status !== 401) {
+        console.error("Error al listar colegios:", err);
+        setSchools([]);
+        showToast("error", err?.message || "No se pudieron cargar los colegios");
+      }
     } finally {
       setLoading(false);
     }
@@ -81,10 +81,7 @@ export default function ManageCollege() {
     );
   }, [schools, query]);
 
-  const stats = useMemo(() => {
-    const total = schools.length;
-    return { total };
-  }, [schools]);
+  const stats = useMemo(() => ({ total: schools.length }), [schools]);
 
   // ========================
   // 📌 ABRIR MODAL
@@ -124,34 +121,23 @@ export default function ManageCollege() {
       return;
     }
 
-    const url =
-      modalMode === "add" ? `${API_BASE}/schools` : `${API_BASE}/schools/${editId}`;
-    const method = modalMode === "add" ? "POST" : "PUT";
-
     try {
       setSaving(true);
 
-      const res = await fetch(url, {
-        method,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ name: n, address: a }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok || data?.error) {
-        throw new Error(data?.error || "Error al guardar");
+      if (modalMode === "add") {
+        await SchoolsService.create({ name: n, address: a });
+      } else {
+        await SchoolsService.update(editId, { name: n, address: a });
       }
 
       showToast("ok", modalMode === "add" ? "Colegio agregado" : "Colegio actualizado");
       closeModal();
       fetchSchools();
     } catch (err) {
-      console.error("Error al guardar colegio:", err);
-      showToast("error", "No se pudo guardar el colegio");
+      if (err?.status !== 401) {
+        console.error("Error al guardar colegio:", err);
+        showToast("error", err?.message || "No se pudo guardar el colegio");
+      }
     } finally {
       setSaving(false);
     }
@@ -161,7 +147,6 @@ export default function ManageCollege() {
     <div className="p-6 relative">
       <ShowDashboardTitle>Administrar colegios</ShowDashboardTitle>
 
-      {/* Toolbar particular (badge + búsqueda + acciones) */}
       <div
         className="mt-6 rounded-3xl border p-5 shadow-sm"
         style={{ backgroundColor: "var(--chip-bg)", borderColor: "var(--card-border)" }}
@@ -190,7 +175,6 @@ export default function ManageCollege() {
           </div>
 
           <div className="flex gap-3 flex-col sm:flex-row sm:items-center">
-            {/* Search */}
             <div className="relative w-full sm:w-[360px]">
               <Search
                 size={18}
@@ -208,7 +192,6 @@ export default function ManageCollege() {
               />
             </div>
 
-            {/* Buttons */}
             <button
               onClick={openAddModal}
               className="h-11 px-4 rounded-xl font-semibold shadow transition flex items-center justify-center gap-2"
@@ -229,7 +212,6 @@ export default function ManageCollege() {
           </div>
         </div>
 
-        {/* Toast */}
         {toast.msg ? (
           <div
             className="mt-4 rounded-2xl border p-3 text-sm"
@@ -245,17 +227,13 @@ export default function ManageCollege() {
         ) : null}
       </div>
 
-      {/* List */}
       <div className="mt-6">
         {loading ? (
           <p className="text-sm" style={{ color: "var(--card-muted)" }}>
             Cargando colegios...
           </p>
         ) : filtered.length === 0 ? (
-          <div
-            className="rounded-3xl border p-6"
-            style={{ ...surfaceStyle, backgroundColor: "var(--ui-surface, #fff)" }}
-          >
+          <div className="rounded-3xl border p-6" style={surfaceStyle}>
             <p className="text-sm font-semibold" style={{ color: "var(--card-text)" }}>
               No hay colegios registrados.
             </p>
@@ -300,7 +278,6 @@ export default function ManageCollege() {
                   </button>
                 </div>
 
-                {/* Mini footer particular: ID tag */}
                 <div className="mt-4 flex items-center justify-between">
                   <span
                     className="text-[11px] font-semibold px-3 py-1 rounded-xl border"
@@ -323,7 +300,6 @@ export default function ManageCollege() {
         )}
       </div>
 
-      {/* MODAL */}
       {showModal && (
         <div className="fixed inset-0 bg-black/30 flex justify-center items-center z-50">
           <div
@@ -425,4 +401,3 @@ export default function ManageCollege() {
     </div>
   );
 }
- 

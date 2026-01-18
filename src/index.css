@@ -12,6 +12,7 @@
    UserCard tokens (defaults)
    ========================= */
 
+
 :root {
   --card-bg: rgba(255, 255, 255, 0.75);
   --card-border: rgba(15, 23, 42, 0.10);
@@ -35,6 +36,10 @@
 
 /* LILA: sidebar base = #FF4081 */
 .theme-lila {
+    --heat-low: var(--dash-title-bg);
+  --heat-mid: var(--primary);
+  --heat-high: var(--accent);
+  
   /* Sidebar */
   --sidebar: #ff4081;
   --sidebar-foreground: #ffffff;
@@ -76,6 +81,12 @@
 
 /* BLUE: sidebar base = #2962FF */
 .theme-blue {
+
+    --heat-low: var(--dash-title-bg);
+  --heat-mid: var(--primary);
+  --heat-high: var(--accent);
+
+
   --sidebar: #2962ff;
   --sidebar-foreground: #ffffff;
 
@@ -109,6 +120,11 @@
 
 /* GREEN: sidebar base = #00C853 */
 .theme-green {
+
+    --heat-low: var(--dash-title-bg);
+  --heat-mid: var(--primary);
+  --heat-high: var(--accent);
+
   --sidebar: #00c853;
   --sidebar-foreground: #ffffff;
 

@@ -2,9 +2,10 @@
 import React, { useEffect, useMemo, useState } from "react";
 import ShowDashboardTitle from "../../components/ui/ShowDashboardTitle";
 import { useAuth } from "../../context/AuthContext";
+import { UserService } from "../../services/user.service";
 
 const Ajustes = () => {
-  const { user: authUser, updateStyle } = useAuth(); // updateStyle: función que debes exponer en AuthContext
+  const { user: authUser, updateStyle } = useAuth();
   const [user, setUser] = useState(null);
 
   const [selectedAvatar, setSelectedAvatar] = useState("default");
@@ -12,8 +13,6 @@ const Ajustes = () => {
 
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
-
-  const token = localStorage.getItem("token");
 
   // Lista de avatares válidos dentro de /public/profile/
   const avatarCodes = ["default", "img-1", "img-2", "img-3", "img-4"];
@@ -32,28 +31,32 @@ const Ajustes = () => {
   );
 
   // =============================
-  // 1️⃣ Cargar datos con /me
+  // 1️⃣ Cargar datos con /me (apiClient maneja Authorization y 401)
   // =============================
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/user/me", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const data = await UserService.me();
 
-        const data = await res.json();
+        if (data?.user) {
+          const u = data.user;
 
-        if (data.user) {
           setUser({
-            ...data.user,
-            pinned_img: data.user.pinned_img || "default",
-            style: data.user.style || authUser?.style || "green",
+            ...u,
+            pinned_img: u.pinned_img || "default",
+            style: u.style || authUser?.style || "green",
+            // IMPORTANTE: no renderizamos dni, pero lo mantenemos si ya viene
+            // dni: u.dni,
           });
 
-          setSelectedAvatar(data.user.pinned_img || "default");
+          setSelectedAvatar(u.pinned_img || "default");
+          updateStyle?.(u.style || authUser?.style || "green");
         }
       } catch (error) {
-        console.error("Error cargando perfil:", error);
+        // 401 se maneja globalmente en apiClient
+        if (error?.status !== 401) {
+          console.error("Error cargando perfil:", error);
+        }
       }
     };
 
@@ -75,24 +78,25 @@ const Ajustes = () => {
   const handleStyleChange = (e) => {
     const value = e.target.value;
     setUser((prev) => ({ ...prev, style: value }));
-    updateStyle?.(value); // aplica theme class en el layout inmediatamente
+    updateStyle?.(value);
   };
 
   // =============================
-  // 3️⃣ Guardar cambios
+  // 3️⃣ Guardar cambios (sin mostrar DNI; opcional enviar DNI)
   // =============================
   const handleSave = async (e) => {
     e.preventDefault();
     setSaving(true);
     setMessage("");
 
+    // ⚠️ Aquí NO mostramos DNI y por seguridad tampoco lo incluimos en el payload.
+    // Si TU backend exige dni para update, dime y lo enviamos, pero igual lo ocultamos en UI.
     const payload = {
       name: user.name,
       lastname: user.lastname,
       username: user.username,
-      dni: user.dni,
       pinned_img: selectedAvatar,
-      style: user.style, // ✅ NUEVO
+      style: user.style,
     };
 
     if (user.password && user.password.length > 0) {
@@ -100,23 +104,17 @@ const Ajustes = () => {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/api/user/editmydata", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await res.json();
-      setMessage(data.msg || "Cambios guardados con éxito");
+      const data = await UserService.editMyData(payload);
+      setMessage(data?.msg || "Cambios guardados con éxito");
+      setUser((prev) => ({ ...prev, password: "" }));
     } catch (error) {
-      console.error("Error al guardar:", error);
-      setMessage("Error al guardar");
+      if (error?.status !== 401) {
+        console.error("Error al guardar:", error);
+        setMessage(error?.message || "Error al guardar");
+      }
+    } finally {
+      setSaving(false);
     }
-
-    setSaving(false);
   };
 
   // =============================
@@ -133,9 +131,7 @@ const Ajustes = () => {
       <ShowDashboardTitle>Ajustes</ShowDashboardTitle>
 
       <div className="flex flex-row justify-between w-full h-full mt-6">
-        {/* ========================= */}
-        {/* IZQUIERDA - FORMULARIO   */}
-        {/* ========================= */}
+        {/* IZQUIERDA - FORMULARIO */}
         <div
           className="w-[68%] p-6 rounded-2xl shadow-md border"
           style={{
@@ -145,11 +141,13 @@ const Ajustes = () => {
         >
           <form className="space-y-5" onSubmit={handleSave}>
             {/* Theme selector */}
-            <div className="rounded-2xl p-4 border flex items-center justify-between gap-4"
-                 style={{
-                   backgroundColor: "var(--chip-bg, rgba(255,255,255,0.90))",
-                   borderColor: "var(--card-border, rgba(15,23,42,0.10))",
-                 }}>
+            <div
+              className="rounded-2xl p-4 border flex items-center justify-between gap-4"
+              style={{
+                backgroundColor: "var(--chip-bg, rgba(255,255,255,0.90))",
+                borderColor: "var(--card-border, rgba(15,23,42,0.10))",
+              }}
+            >
               <div>
                 <p className="text-sm font-semibold" style={{ color: "var(--card-text, #0f172a)" }}>
                   Estilo de la interfaz
@@ -160,7 +158,6 @@ const Ajustes = () => {
               </div>
 
               <div className="flex items-center gap-3">
-                {/* Preview dot */}
                 <div
                   className="h-10 w-10 rounded-xl border shadow-sm"
                   title="Vista previa del color"
@@ -198,7 +195,7 @@ const Ajustes = () => {
                 <input
                   name="name"
                   type="text"
-                  value={user.name}
+                  value={user.name || ""}
                   onChange={handleChange}
                   className="w-full border rounded-xl p-2 outline-none"
                   style={{
@@ -215,7 +212,7 @@ const Ajustes = () => {
                 <input
                   name="lastname"
                   type="text"
-                  value={user.lastname}
+                  value={user.lastname || ""}
                   onChange={handleChange}
                   className="w-full border rounded-xl p-2 outline-none"
                   style={{
@@ -233,7 +230,7 @@ const Ajustes = () => {
               <input
                 name="username"
                 type="text"
-                value={user.username}
+                value={user.username || ""}
                 onChange={handleChange}
                 className="w-full border rounded-xl p-2 outline-none"
                 style={{
@@ -243,22 +240,9 @@ const Ajustes = () => {
               />
             </div>
 
-            <div>
-              <label className="block text-sm mb-1" style={{ color: "var(--card-muted, rgba(15,23,42,0.65))" }}>
-                DNI
-              </label>
-              <input
-                name="dni"
-                type="text"
-                value={user.dni}
-                onChange={handleChange}
-                className="w-full border rounded-xl p-2 outline-none"
-                style={{
-                  borderColor: "var(--card-border, rgba(15,23,42,0.10))",
-                  backgroundColor: "white",
-                }}
-              />
-            </div>
+            {/* DNI OCULTO (dato sensible) */}
+            {/* Si necesitas que el usuario lo edite, se puede reemplazar por “••••••••” y un botón “Editar” con verificación */}
+            {/* <div> ... </div> */}
 
             <div>
               <label className="block text-sm mb-1" style={{ color: "var(--card-muted, rgba(15,23,42,0.65))" }}>
@@ -298,9 +282,7 @@ const Ajustes = () => {
           </form>
         </div>
 
-        {/* ========================= */}
-        {/* DERECHA - AVATAR CARD     */}
-        {/* ========================= */}
+        {/* DERECHA - AVATAR CARD */}
         <div
           className="w-[28%] p-6 rounded-2xl shadow-md flex flex-col items-center text-center relative border"
           style={{
@@ -333,7 +315,6 @@ const Ajustes = () => {
             </button>
           </div>
 
-          {/* Selector de avatares con blur */}
           {showAvatars && (
             <div className="absolute inset-0 flex items-center justify-center backdrop-blur-sm bg-black/20 rounded-2xl">
               <div
@@ -345,6 +326,7 @@ const Ajustes = () => {
                     key={code}
                     src={getAvatarPath(code)}
                     onClick={() => handleAvatarSelect(code)}
+                    alt={code}
                     className="w-14 h-14 rounded-full cursor-pointer transition"
                     style={{
                       outline: selectedAvatar === code ? `4px solid var(--sidebar)` : "none",
@@ -356,20 +338,27 @@ const Ajustes = () => {
             </div>
           )}
 
+          {/* NO mostramos rol (si lo consideras sensible). Mostramos solo username */}
           <p className="mt-3 text-lg font-semibold" style={{ color: "var(--card-text, #0f172a)" }}>
             {user.username}
           </p>
-          <p style={{ color: "var(--card-muted, rgba(15,23,42,0.65))" }}>{user.rol?.name}</p>
 
           {/* Mini preview del theme actual */}
-          <div className="mt-5 w-full rounded-2xl p-4 border text-left"
-               style={{ borderColor: "var(--card-border, rgba(15,23,42,0.10))" }}>
+          <div
+            className="mt-5 w-full rounded-2xl p-4 border text-left"
+            style={{ borderColor: "var(--card-border, rgba(15,23,42,0.10))" }}
+          >
             <p className="text-xs font-semibold" style={{ color: "var(--card-muted, rgba(15,23,42,0.65))" }}>
               Estilo actual
             </p>
             <div className="mt-2 flex items-center gap-3">
-              <div className="h-10 w-10 rounded-xl border shadow-sm"
-                   style={{ backgroundColor: "var(--sidebar)", borderColor: "var(--card-border, rgba(15,23,42,0.10))" }} />
+              <div
+                className="h-10 w-10 rounded-xl border shadow-sm"
+                style={{
+                  backgroundColor: "var(--sidebar)",
+                  borderColor: "var(--card-border, rgba(15,23,42,0.10))",
+                }}
+              />
               <div className="flex flex-col">
                 <span className="text-sm font-semibold" style={{ color: "var(--card-text, #0f172a)" }}>
                   {styleOptions.find((s) => s.value === (user.style || "green"))?.label ?? "Verde"}

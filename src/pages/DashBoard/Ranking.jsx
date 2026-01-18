@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Card } from "../../components/ui/card";
 import UserProfileCard from "../../components/ranking/UserProfileCard";
-import { API_BASE } from "../../components/ranking/helpers";
 import BoardCard from "../../components/ranking/ListCard";
-export default function Ranking() {
-  const token = localStorage.getItem("token");
+import { RankingService } from "../../services/ranking.service";
 
+export default function Ranking() {
   const [rankingState, setRankingState] = useState({
     loading: false,
     top10: [],
@@ -26,16 +25,7 @@ export default function Ranking() {
     setError("");
 
     try {
-      const res = await fetch(`${API_BASE}/api/data/ranking`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      if (!res.ok) {
-        const text = await res.text();
-        throw new Error(text || `HTTP ${res.status}`);
-      }
-
-      const json = await res.json();
+      const json = await RankingService.getRanking();
 
       setRankingState({
         loading: false,
@@ -44,7 +34,10 @@ export default function Ranking() {
         me: json?.me ?? null,
       });
     } catch (e) {
-      setError(e?.message || "Error al cargar ranking");
+      // 401 lo maneja apiClient (logout + redirect)
+      if (e?.status !== 401) {
+        setError(e?.message || "Error al cargar ranking");
+      }
       setRankingState({ loading: false, top10: [], myRank: null, me: null });
     }
   };
@@ -53,16 +46,7 @@ export default function Ranking() {
     setInsigniasState((s) => ({ ...s, loading: true }));
 
     try {
-      const res = await fetch(`${API_BASE}/api/me/insignias`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      if (!res.ok) {
-        const text = await res.text();
-        throw new Error(text || `HTTP ${res.status}`);
-      }
-
-      const json = await res.json();
+      const json = await RankingService.getMyInsignias();
 
       setInsigniasState({
         loading: false,
@@ -70,7 +54,7 @@ export default function Ranking() {
         items: Array.isArray(json?.insignias) ? json.insignias : [],
       });
     } catch (e) {
-      // No bloquea la vista si falla insignias
+      // 401 lo maneja apiClient; insignias no bloquea vista
       setInsigniasState({ loading: false, count: 0, items: [] });
     }
   };
@@ -88,8 +72,6 @@ export default function Ranking() {
 
   return (
     <div className="mx-auto max-w-7xl">
-   
-
       {error && (
         <div className="mb-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
           <div className="font-bold">No se pudo cargar</div>

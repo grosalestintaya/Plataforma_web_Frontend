@@ -1,8 +1,9 @@
-import { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
+// src/context/AuthContext.jsx (o donde lo tengas)
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { jwtDecode } from "jwt-decode";
+import { http } from "@/services/analitics/http"; // ajusta alias o ruta relativa
 
-const AuthContext = createContext();
-const API_BASE = "http://localhost:5000/api";
+const AuthContext = createContext(null);
 
 const normalizeUserFromJwt = (decoded) => ({
   id: decoded.id,
@@ -44,17 +45,17 @@ export const AuthProvider = ({ children }) => {
     setToken(null);
     setUser(null);
     persistAuth(null, null);
-    console.log("AuthProvider: logout ejecutado");
   };
 
   const checkSession = async (tk = token) => {
     if (!tk || tk === "undefined") return false;
+
     try {
-      const res = await fetch(`${API_BASE}/user/check-session`, {
+      // Opción A: usar http y dejar que el interceptor ponga el token
+      // Pero aquí queremos validar un token específico (tk), así que lo mandamos explícito
+      const { data } = await http.get("/api/user/check-session", {
         headers: { Authorization: `Bearer ${tk}` },
       });
-      if (!res.ok) return false;
-      const data = await res.json();
       return Boolean(data?.valid);
     } catch {
       return false;
@@ -64,19 +65,16 @@ export const AuthProvider = ({ children }) => {
   const fetchMe = async (tk = token) => {
     if (!tk || tk === "undefined") throw new Error("No token");
 
-    const res = await fetch(`${API_BASE}/user/me`, {
+    const { data } = await http.get("/api/user/me", {
       headers: { Authorization: `Bearer ${tk}` },
     });
-    if (!res.ok) throw new Error("No se pudo obtener /me");
 
-    const data = await res.json();
-    const me = data.user ?? data;
+    const me = data?.user ?? data;
     return normalizeUserFromMe(me);
   };
 
-  // Opcional: exponer una forma de re-sincronizar /me cuando guardas ajustes
   const syncMe = async () => {
-    if (!token) return null;
+    if (!token || token === "undefined") return null;
     const meUser = await fetchMe(token);
     setUser(meUser);
     persistAuth(token, meUser);
@@ -85,8 +83,6 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const init = async () => {
-      console.log("AuthProvider: iniciando carga de sesión...");
-
       const savedToken = localStorage.getItem("token");
       if (!savedToken || savedToken === "undefined") {
         setLoadingAuth(false);
@@ -97,7 +93,6 @@ export const AuthProvider = ({ children }) => {
 
       const valid = await checkSession(savedToken);
       if (!valid) {
-        console.warn("AuthProvider: sesión inválida");
         logout();
         setLoadingAuth(false);
         return;
@@ -114,17 +109,16 @@ export const AuthProvider = ({ children }) => {
           return merged;
         });
       } catch {
-        // ok
+        // ignore
       }
 
-      // Fuente de verdad: /me (incluye style)
+      // Fuente de verdad: /me
       try {
         const meUser = await fetchMe(savedToken);
         setUser(meUser);
         persistAuth(savedToken, meUser);
-        console.log("AuthProvider: /me sincronizado:", meUser);
-      } catch (err) {
-        console.warn("AuthProvider: no se pudo sincronizar /me", err);
+      } catch {
+        // si falla /me, mantén base user (no necesariamente logout)
       }
 
       setLoadingAuth(false);
@@ -143,7 +137,7 @@ export const AuthProvider = ({ children }) => {
       setUser(base);
       persistAuth(receivedToken, base);
 
-      // sincroniza /me (style real)
+      // sincroniza /me
       try {
         const meUser = await fetchMe(receivedToken);
         setUser(meUser);
@@ -151,10 +145,7 @@ export const AuthProvider = ({ children }) => {
       } catch {
         // ok
       }
-
-      console.log("AuthProvider: login completado");
-    } catch (error) {
-      console.error("AuthProvider: Error decodificando JWT:", error);
+    } catch {
       logout();
     }
   };
@@ -168,14 +159,8 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
-  /**
-   * UPDATE STYLE (UI-only)
-   * - Actualiza tema al instante (estado + localStorage)
-   * - Persistencia real se hace en Ajustes con editmydata
-   */
   const updateStyle = (newStyle) => {
     if (!newStyle) return;
-
     setUser((prev) => {
       if (!prev) return prev;
       const updated = { ...prev, style: newStyle };
@@ -197,7 +182,7 @@ export const AuthProvider = ({ children }) => {
       activateUser,
       updateStyle,
       checkSession,
-      syncMe, // opcional
+      syncMe,
       loadingAuth,
     }),
     [token, user, isAuthenticated, loadingAuth]

@@ -2,75 +2,77 @@ import React, { useEffect, useState } from "react";
 import ShowDashboardTitle from "../../components/ui/ShowDashboardTitle";
 import PerfilCard from "../../components/Perfil/PerfilCard";
 import { useAuth } from "../../context/AuthContext";
+import { UserService } from "../../services/user.service";
 
 const Perfil = () => {
-  const { user: authUser } = useAuth(); // para leer style si lo necesitas en UI
+  const { user: authUser } = useAuth();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const token = localStorage.getItem("token");
-
   useEffect(() => {
+    let alive = true;
+
     const fetchUser = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/user/me", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const data = await UserService.me();
+        const u = data?.user;
 
-        if (!res.ok) throw new Error("Error obteniendo perfil");
+        if (!u || !alive) return;
 
-        const data = await res.json();
-        const u = data.user;
-
+        // Nota: NO incluimos dni ni fechaRegistro en el objeto que renderiza la UI
         setUser({
-          fechaRegistro: u.created_at,
+           fechaRegistro: u.created_at,  // sensible → oculto
           nombre: u.name,
           apellidos: u.lastname,
           nombreUsuario: u.username,
           colegio: u.school?.name || "Sin asignar",
           rol: u.rol?.name || "Sin rol",
           grado: u.grade?.name || "Sin grado",
-          dni: u.dni,
-          isActive: u.is_active,
-          avatar: u.pinned_img,
+           dni: u.dni,                  // sensible → oculto
+          isActive: Boolean(u.is_active),
+          avatar: u.pinned_img || "default",
         });
       } catch (error) {
-        console.error("❌ Error cargando perfil:", error);
+        // 401 lo maneja el apiClient (logout + redirect)
+        if (error?.status !== 401) {
+          console.error("❌ Error cargando perfil:", error);
+        }
       } finally {
-        setLoading(false);
+        if (alive) setLoading(false);
       }
     };
 
     fetchUser();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    return () => {
+      alive = false;
+    };
   }, []);
 
   // ---------------------------
-  // Loading / Empty states (con estilo theme-aware)
+  // Loading / Empty states (theme-aware)
   // ---------------------------
   if (loading) {
     return (
       <div className="w-full min-h-screen p-6">
         <ShowDashboardTitle>Perfil</ShowDashboardTitle>
 
-        <div className="mt-6 rounded-2xl border p-6 shadow-sm"
-             style={{
-               backgroundColor: "var(--chip-bg)",
-               borderColor: "var(--card-border)",
-             }}>
+        <div
+          className="mt-6 rounded-2xl border p-6 shadow-sm"
+          style={{
+            backgroundColor: "var(--chip-bg)",
+            borderColor: "var(--card-border)",
+          }}
+        >
           <div className="flex items-center gap-4">
-            <div className="h-14 w-14 rounded-2xl animate-pulse"
-                 style={{ backgroundColor: "var(--progress-track)" }} />
+            <div className="h-14 w-14 rounded-2xl animate-pulse" style={{ backgroundColor: "var(--progress-track)" }} />
             <div className="flex-1">
-              <div className="h-4 w-56 rounded animate-pulse"
-                   style={{ backgroundColor: "var(--progress-track)" }} />
-              <div className="mt-3 h-3 w-80 rounded animate-pulse"
-                   style={{ backgroundColor: "var(--progress-track)" }} />
+              <div className="h-4 w-56 rounded animate-pulse" style={{ backgroundColor: "var(--progress-track)" }} />
+              <div className="mt-3 h-3 w-80 rounded animate-pulse" style={{ backgroundColor: "var(--progress-track)" }} />
             </div>
           </div>
 
-          <p className="mt-5 text-sm"
-             style={{ color: "var(--card-muted)" }}>
+          <p className="mt-5 text-sm" style={{ color: "var(--card-muted)" }}>
             Cargando perfil...
           </p>
         </div>
@@ -83,26 +85,28 @@ const Perfil = () => {
       <div className="w-full min-h-screen p-6">
         <ShowDashboardTitle>Perfil</ShowDashboardTitle>
 
-        <div className="mt-6 rounded-2xl border p-6 shadow-sm"
-             style={{
-               backgroundColor: "var(--chip-bg)",
-               borderColor: "var(--card-border)",
-             }}>
-          <p className="text-sm font-semibold"
-             style={{ color: "var(--card-text)" }}>
+        <div
+          className="mt-6 rounded-2xl border p-6 shadow-sm"
+          style={{
+            backgroundColor: "var(--chip-bg)",
+            borderColor: "var(--card-border)",
+          }}
+        >
+          <p className="text-sm font-semibold" style={{ color: "var(--card-text)" }}>
             No se pudo cargar el perfil.
           </p>
-          <p className="mt-2 text-sm"
-             style={{ color: "var(--card-muted)" }}>
+          <p className="mt-2 text-sm" style={{ color: "var(--card-muted)" }}>
             Verifica tu sesión o vuelve a intentar.
           </p>
 
-          <div className="mt-4 inline-flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold border"
-               style={{
-                 borderColor: "var(--usercard-border)",
-                 backgroundColor: "var(--usercard-bg)",
-                 color: "var(--sidebar)",
-               }}>
+          <div
+            className="mt-4 inline-flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold border"
+            style={{
+              borderColor: "var(--usercard-border)",
+              backgroundColor: "var(--usercard-bg)",
+              color: "var(--sidebar)",
+            }}
+          >
             Estado: error de carga
           </div>
         </div>
@@ -117,7 +121,6 @@ const Perfil = () => {
     <div className="w-full min-h-screen p-6">
       <ShowDashboardTitle>Perfil</ShowDashboardTitle>
 
-      {/* Contenedor de la tarjeta con mejor “layout” */}
       <div className="mt-6">
         <div
           className="rounded-2xl border p-5 shadow-sm"
@@ -133,7 +136,8 @@ const Perfil = () => {
                 @{user.nombreUsuario}
               </p>
               <p className="text-xs mt-0.5" style={{ color: "var(--card-muted)" }}>
-                Estilo activo: <span className="font-semibold" style={{ color: "var(--sidebar)" }}>
+                Estilo activo:{" "}
+                <span className="font-semibold" style={{ color: "var(--sidebar)" }}>
                   {authUser?.style ?? "green"}
                 </span>
               </p>

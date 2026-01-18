@@ -46,7 +46,7 @@ export default function BoardCard({ rankingState, onRefresh }) {
             ? Array.from({ length: 5 }).map((_, i) => (
                 <div key={i} className="h-16 rounded-full border border-border bg-secondary/50" />
               ))
-            : rest.map((p) => <RankingRow key={p.s} participant={p} />)}
+            : rest.map((p) => <RankingRow key={p.id_user ?? p.user_id ?? p.rank} participant={p} />)}
         </div>
 
         <div className="mt-6 border-t border-border pt-6">

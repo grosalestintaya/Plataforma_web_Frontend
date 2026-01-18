@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import ShowDashboardTitle from "../../../components/ui/ShowDashboardTitle";
-
-const API_BASE = "http://localhost:5000/api";
+import { UsersService } from "../../../services/users.service";
 
 const clampStr = (v) => (v ?? "").toString();
 
@@ -18,6 +17,7 @@ const Field = ({ label, children, hint }) => (
     ) : null}
   </div>
 );
+
 const getRolName = (u) => u?.rol?.name ?? u?.Rol?.name ?? u?.role ?? u?.rol ?? "—";
 
 export default function Users() {
@@ -44,28 +44,34 @@ export default function Users() {
   const [modalMsg, setModalMsg] = useState("");
   const [modalErr, setModalErr] = useState("");
 
-  const token = localStorage.getItem("token");
-
   // ======================== LISTAR USUARIOS ========================
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const res = await fetch(`${API_BASE}/user`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (!res.ok) throw new Error("Error al cargar usuarios");
-        const data = await res.json();
-        setUsers(data);
-        setFiltered(data);
-      } catch {
-        setError("No se pudieron cargar los usuarios");
-      } finally {
-        setLoading(false);
-      }
-    };
+    let alive = true;
 
-    fetchUsers();
-  }, [token]);
+    (async () => {
+      setLoading(true);
+      setError("");
+
+      try {
+        const data = await UsersService.list();
+        if (!alive) return;
+
+        setUsers(Array.isArray(data) ? data : []);
+        setFiltered(Array.isArray(data) ? data : []);
+      } catch (err) {
+        // 401 ya lo intercepta apiClient (logout + redirect)
+        if (err?.status !== 401) {
+          setError(err?.message || "No se pudieron cargar los usuarios");
+        }
+      } finally {
+        if (alive) setLoading(false);
+      }
+    })();
+
+    return () => {
+      alive = false;
+    };
+  }, []);
 
   // 🔎 FILTRO DE BÚSQUEDA
   useEffect(() => {
@@ -75,18 +81,21 @@ export default function Users() {
       return;
     }
 
-    const results = users.filter((u) =>
-      `${u.name} ${u.lastname} ${u.username} ${u.rol.name}`
-        .toLowerCase()
-        .includes(q)
-    );
+    const results = users.filter((u) => {
+      const haystack = `${clampStr(u.name)} ${clampStr(u.lastname)} ${clampStr(u.username)} ${clampStr(
+        getRolName(u)
+      )}`.toLowerCase();
+
+      return haystack.includes(q);
+    });
+
     setFiltered(results);
   }, [search, users]);
 
   // stats
   const stats = useMemo(() => {
     const total = users.length;
-    const active = users.filter((u) => u.is_active).length;
+    const active = users.filter((u) => Boolean(u.is_active)).length;
     const inactive = total - active;
     return { total, active, inactive };
   }, [users]);
@@ -96,14 +105,13 @@ export default function Users() {
     try {
       setModalMsg("");
       setModalErr("");
-      const res = await fetch(`${API_BASE}/user/get_user/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.msg || "Error al obtener usuario");
+      const data = await UsersService.getById(id);
 
-      const u = data.user;
+      // Tu endpoint devuelve { user: {...} } según tu código
+      const u = data?.user ?? data;
+      if (!u) throw new Error("No se pudo obtener usuario");
+
       setEditUser(u);
 
       setName(u.name || "");
@@ -116,8 +124,10 @@ export default function Users() {
 
       setShowModal(true);
     } catch (err) {
-      console.error(err);
-      alert("No se pudo cargar la información del usuario");
+      if (err?.status !== 401) {
+        console.error(err);
+        alert(err?.message || "No se pudo cargar la información del usuario");
+      }
     }
   };
 
@@ -140,26 +150,16 @@ export default function Users() {
     setModalErr("");
 
     try {
-      const res = await fetch(`${API_BASE}/user/editUserData`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          userId: editUser.id_user,
-          name,
-          lastname,
-          username,
-          dni,
-          pinned_img: pinnedImg,
-          password: password?.trim() ? password : "",
-          is_active: isActive,
-        }),
+      await UsersService.update({
+        userId: editUser.id_user,
+        name,
+        lastname,
+        username,
+        dni,
+        pinned_img: pinnedImg,
+        password: password?.trim() ? password : "",
+        is_active: isActive,
       });
-
-      const data = await res.json();
-      if (!res.ok || data?.error) throw new Error(data?.error || "Error al guardar");
 
       // actualizar tabla local
       const patch = {
@@ -172,14 +172,20 @@ export default function Users() {
         is_active: isActive,
       };
 
-      setUsers((prev) => prev.map((u) => (u.id_user === editUser.id_user ? { ...u, ...patch } : u)));
-      setFiltered((prev) => prev.map((u) => (u.id_user === editUser.id_user ? { ...u, ...patch } : u)));
+      setUsers((prev) =>
+        prev.map((u) => (u.id_user === editUser.id_user ? { ...u, ...patch } : u))
+      );
+      setFiltered((prev) =>
+        prev.map((u) => (u.id_user === editUser.id_user ? { ...u, ...patch } : u))
+      );
 
       setModalMsg("Cambios guardados correctamente");
       setTimeout(() => closeModal(), 650);
     } catch (err) {
-      console.error(err);
-      setModalErr("No se pudieron guardar los cambios");
+      if (err?.status !== 401) {
+        console.error(err);
+        setModalErr(err?.message || "No se pudieron guardar los cambios");
+      }
     } finally {
       setSaving(false);
     }
@@ -187,7 +193,6 @@ export default function Users() {
 
   // ======================== UI STYLES (theme-aware) ========================
   const inputBase = "w-full h-11 rounded-xl px-3 border outline-none transition";
-  const selectBase = "w-full h-11 rounded-xl px-3 border outline-none transition bg-white";
   const boxShadowFocus = "0 0 0 4px var(--sidebar-accent)";
   const inputStyle = {
     backgroundColor: "white",
@@ -323,8 +328,7 @@ export default function Users() {
 
                       <td className="p-4">
                         <span className="text-sm font-semibold" style={{ color: "var(--card-text)" }}>
-                          { getRolName(u)}
-                         
+                          {getRolName(u)}
                         </span>
                       </td>
 
@@ -370,7 +374,7 @@ export default function Users() {
                   Editar usuario — {editUser.name} {editUser.lastname}
                 </h2>
                 <p className="text-xs mt-1" style={{ color: "var(--card-muted)" }}>
-                  ID #{editUser.id_user} • Rol: {editUser.rol?.name || "—"}
+                  ID #{editUser.id_user} • Rol: {getRolName(editUser)}
                 </p>
               </div>
 
@@ -478,7 +482,7 @@ export default function Users() {
                 <Field label="Rol">
                   <input
                     type="text"
-                    value={editUser.rol?.name || ""}
+                    value={getRolName(editUser)}
                     readOnly
                     className={inputBase}
                     style={{

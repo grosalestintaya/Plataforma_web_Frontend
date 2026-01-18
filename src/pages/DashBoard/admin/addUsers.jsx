@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import ShowDashboardTitle from "../../../components/ui/ShowDashboardTitle";
-
-const API_BASE = "http://localhost:5000/api";
+import { DataService } from "../../../services/data.service";
+import { UsersService } from "../../../services/users.service";
 
 const Field = ({ label, children, hint }) => (
   <div className="flex flex-col gap-1">
@@ -17,49 +17,59 @@ const Field = ({ label, children, hint }) => (
   </div>
 );
 
+const INITIAL_FORM = {
+  id_rol: "",
+  id_grade: "",
+  id_school: "",
+  name: "",
+  lastname: "",
+  username: "",
+  dni: "",
+  password: "",
+};
+
 export default function AddUsers() {
   const [roles, setRoles] = useState([]);
   const [grades, setGrades] = useState([]);
   const [schools, setSchools] = useState([]);
 
   const [selectedRole, setSelectedRole] = useState("");
-
-  const [formData, setFormData] = useState({
-    id_rol: "",
-    id_grade: "",
-    id_school: "",
-    name: "",
-    lastname: "",
-    username: "",
-    dni: "",
-    password: "",
-  });
+  const [formData, setFormData] = useState(INITIAL_FORM);
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
 
-  const token = localStorage.getItem("token");
-
+  // Carga inicial (roles/grades/schools) centralizada
   useEffect(() => {
-    fetchData("roles", setRoles);
-    fetchData("grades", setGrades);
-    fetchData("schools", setSchools);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    let alive = true;
 
-  const fetchData = async (type, setter) => {
-    try {
-      const res = await fetch(`${API_BASE}/data/${type}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!res.ok) throw new Error(`Error al cargar ${type}`);
-      const data = await res.json();
-      setter(data);
-    } catch (err) {
-      console.error("Error cargando data:", err);
-    }
-  };
+    (async () => {
+      try {
+        const [rolesData, gradesData, schoolsData] = await Promise.all([
+          DataService.roles(),
+          DataService.grades(),
+          DataService.schools(),
+        ]);
+
+        if (!alive) return;
+
+        setRoles(Array.isArray(rolesData) ? rolesData : []);
+        setGrades(Array.isArray(gradesData) ? gradesData : []);
+        setSchools(Array.isArray(schoolsData) ? schoolsData : []);
+      } catch (err) {
+        // Si fue 401, apiClient ya hizo logout + redirect
+        if (err?.status !== 401) {
+          console.error("Error cargando data:", err);
+          setError(err?.message || "Error al cargar data inicial");
+        }
+      }
+    })();
+
+    return () => {
+      alive = false;
+    };
+  }, []);
 
   const roleLabel = useMemo(() => {
     const r = roles.find((x) => String(x.id_rol) === String(selectedRole));
@@ -86,17 +96,10 @@ export default function AddUsers() {
   };
 
   const resetForm = () => {
-    setFormData({
-      id_rol: "",
-      id_grade: "",
-      id_school: "",
-      name: "",
-      lastname: "",
-      username: "",
-      dni: "",
-      password: "",
-    });
+    setFormData(INITIAL_FORM);
     setSelectedRole("");
+    setMessage(null);
+    setError(null);
   };
 
   const handleSubmit = async (e) => {
@@ -114,34 +117,20 @@ export default function AddUsers() {
     };
 
     try {
-      const res = await fetch(`${API_BASE}/user`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.error || "Error al crear usuario");
-      } else {
-        setMessage("Usuario creado exitosamente");
-        resetForm();
-      }
+      await UsersService.create(payload);
+      setMessage("Usuario creado exitosamente");
+      resetForm();
     } catch (err) {
-      setError("Error del servidor");
+      if (err?.status !== 401) {
+        setError(err?.message || "Error al crear usuario");
+      }
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
-  const inputBase =
-    "w-full h-11 rounded-xl px-3 border outline-none transition";
-  const selectBase =
-    "w-full h-11 rounded-xl px-3 border outline-none transition bg-white";
+  const inputBase = "w-full h-11 rounded-xl px-3 border outline-none transition";
+  const selectBase = "w-full h-11 rounded-xl px-3 border outline-none transition bg-white";
 
   const inputStyle = {
     backgroundColor: "white",
