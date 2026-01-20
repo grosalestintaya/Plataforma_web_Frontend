@@ -38,7 +38,7 @@ import TeacherGrades from "./pages/DashBoard/teacher/TeacherGrades.jsx";
 import GradeStudents from "./pages/DashBoard/teacher/GradeStudents.jsx";
 import StudentDetails from "./pages/DashBoard/teacher/StudentDetails.jsx";
 import Store from "./pages/DashBoard/Store.jsx";
-
+import EducaplayDemo from "./pages/content/module_1/EducaplayDemo.jsx";
  import HeatMap from "./pages/DashBoard/heatMap.jsx";
 function App() {
   return (
@@ -118,11 +118,7 @@ function App() {
         {/* Recomiendo protegerlos también */}
         <Route
           path="/Module_1"
-          element={
-            <PrivateRoute>
-              <div>Contenido módulo 1</div>
-            </PrivateRoute>
-          }
+          element={<EducaplayDemo/>}
         />
         <Route
           path="/Module_2"
