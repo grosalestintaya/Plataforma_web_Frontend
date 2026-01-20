@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 import { useAuth } from "../../context/AuthContext";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default function Introduccion() {
   const navigate = useNavigate();
@@ -59,7 +60,7 @@ export default function Introduccion() {
         return;
       }
 
-      const response = await fetch("http://localhost:5000/api/user/activate", {
+      const response = await fetch(BASE_URL+"/api/user/activate", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
