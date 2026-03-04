@@ -12,22 +12,19 @@
    UserCard tokens (defaults)
    ========================= */
 
-
 :root {
   --card-bg: rgba(255, 255, 255, 0.75);
-  --card-border: rgba(15, 23, 42, 0.10);
+  --card-border: rgba(15, 23, 42, 0.1);
   --card-text: #0f172a;
   --card-muted: rgba(15, 23, 42, 0.65);
 
   --progress-track: rgba(15, 23, 42, 0.15);
 
-  --chip-bg: rgba(255, 255, 255, 0.90);
-  --chip-text: rgba(15, 23, 42, 0.80);
+  --chip-bg: rgba(255, 255, 255, 0.9);
+  --chip-text: rgba(15, 23, 42, 0.8);
 
   /* Área de monedas */
-
 }
-
 
 /* =========================================
    THEMES por usuario: theme-lila/blue/green
@@ -36,10 +33,10 @@
 
 /* LILA: sidebar base = #FF4081 */
 .theme-lila {
-    --heat-low: var(--dash-title-bg);
+  --heat-low: var(--dash-title-bg);
   --heat-mid: var(--primary);
   --heat-high: var(--accent);
-  
+
   /* Sidebar */
   --sidebar: #ff4081;
   --sidebar-foreground: #ffffff;
@@ -65,27 +62,26 @@
   /* Marca */
   --qy-pink: #ff4081;
   --qy-purple: #7c4dff;
-    --app-bg: #fff0f6;      /* rosado muy suave */
-    
-  --dash-title-bg: #FF40811A;
-  --dash-title-text: #C2185B;
+  --app-bg: #fff0f6; /* rosado muy suave */
 
-    --usercard-bg: rgba(255, 64, 129, 0.10);
+  --dash-title-bg: #ff40811a;
+  --dash-title-text: #c2185b;
+
+  --usercard-bg: rgba(255, 64, 129, 0.1);
   --usercard-border: rgba(255, 64, 129, 0.25);
   --usercard-accent: #ff4081;
   --usercard-accent-2: #7c4dff;
   --coin-panel-bg: #ffc400;
   --coin-panel-text: #ffffff;
-  
 }
 
 /* BLUE: sidebar base = #2962FF */
 .theme-blue {
+  --bg-primary-100: 219 234 254; /* tailwind blue-100 */
 
-    --heat-low: var(--dash-title-bg);
+  --heat-low: var(--dash-title-bg);
   --heat-mid: var(--primary);
   --heat-high: var(--accent);
-
 
   --sidebar: #2962ff;
   --sidebar-foreground: #ffffff;
@@ -106,11 +102,11 @@
   --accent-foreground: #0b1220;
 
   --qy-blue: #2962ff;
-  --app-bg: #eef3ff;      /* azul muy suave */
-    --dash-title-bg: #2962FF1A;
+  --app-bg: #eef3ff; /* azul muy suave */
+  --dash-title-bg: #2962ff1a;
   --dash-title-text: #2962ff;
 
-    --usercard-bg: rgba(41, 98, 255, 0.10);
+  --usercard-bg: rgba(41, 98, 255, 0.1);
   --usercard-border: rgba(41, 98, 255, 0.25);
   --usercard-accent: #2962ff;
   --usercard-accent-2: #00c853;
@@ -120,8 +116,7 @@
 
 /* GREEN: sidebar base = #00C853 */
 .theme-green {
-
-    --heat-low: var(--dash-title-bg);
+  --heat-low: var(--dash-title-bg);
   --heat-mid: var(--primary);
   --heat-high: var(--accent);
 
@@ -145,22 +140,17 @@
 
   --qy-green: #00c853;
   --qy-gold: #ffc400;
-    --app-bg: #f0fff6;      /* verde muy suave */
-  --dash-title-bg: #00C8531A;   /* 10% alpha (suave) */
-  --dash-title-text: #0A7136;   /* verde oscuro (alto contraste) */
-    --usercard-bg: rgba(0, 200, 83, 0.10);
+  --app-bg: #f0fff6; /* verde muy suave */
+  --dash-title-bg: #00c8531a; /* 10% alpha (suave) */
+  --dash-title-text: #0a7136; /* verde oscuro (alto contraste) */
+  --usercard-bg: rgba(0, 200, 83, 0.1);
   --usercard-border: rgba(0, 200, 83, 0.25);
-  --usercard-accent: #00c853;          /* barra progreso / acentos */
-  --usercard-accent-2: #2962ff;        /* institución */
+  --usercard-accent: #00c853; /* barra progreso / acentos */
+  --usercard-accent-2: #2962ff; /* institución */
 
-
-  
-    --coin-panel-bg: #ffc400;
+  --coin-panel-bg: #ffc400;
   --coin-panel-text: #ffffff;
-
 }
-
-
 
 /* -----------------------------
    Tokens de Marca (Quipu Yachay)
@@ -354,7 +344,9 @@
 .theme-lila,
 .theme-blue,
 .theme-green {
-  transition: background-color 300ms ease, color 300ms ease;
+  transition:
+    background-color 300ms ease,
+    color 300ms ease;
 }
 /* Dashboard title */
 /* =========================
@@ -368,4 +360,27 @@
 
   /* Texto fuerte */
   --dash-title-text: var(--sidebar);
+}
+@keyframes float-node {
+  0% {
+    transform: translateY(0) scale(1.08);
+  }
+  50% {
+    transform: translateY(-10px) scale(1.08);
+  }
+  100% {
+    transform: translateY(0) scale(1.08);
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 176, 255, 0.55);
+  }
+  70% {
+    box-shadow: 0 0 0 22px rgba(0, 176, 255, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 176, 255, 0);
+  }
 }

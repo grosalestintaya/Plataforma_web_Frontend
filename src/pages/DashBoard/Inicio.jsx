@@ -1,8 +1,7 @@
 import React from "react";
 import UserCard from "../../components/Usercards/UserCard";
-import UserBody from "../../components/Usercards/UserBody";
-import NivelActualCard from "../../components/Usercards/NivelActualCard";
-import InsigniasCard from "../../components/Usercards/InsigniasCard";
+import InsigniasCard from "../../components/Usercards/InsigniasCardRemote";
+import StudentModulesCenter from "../../components/center/StudentModulesCenter";
 
 const Inicio = () => {
   const user = {
@@ -23,16 +22,18 @@ const Inicio = () => {
   ];
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 w-full">
       <UserCard user={user} />
 
-      <div className="flex flex-col lg:flex-row w-full justify-between items-start">
-        <div className="flex-1">
-          <UserBody />
+      {/* SIEMPRE FILA */}
+      <div className="flex w-full items-start gap-4">
+        {/* CENTRO: se expande */}
+        <div className="flex-1 min-w-0">
+          <StudentModulesCenter />
         </div>
 
-        <div className="flex flex-row lg:flex-col gap-4 mt-4 lg:mt-0 lg:ml-4">
-          <NivelActualCard nivel={user.nivel} logo="/nivel-logo.png" />
+        {/* DERECHA: ancho fijo + pegado a la derecha */}
+        <div className="w-[160px] shrink-0 ml-auto">
           <InsigniasCard insignias={insignias} />
         </div>
       </div>

@@ -38,8 +38,9 @@ import TeacherGrades from "./pages/DashBoard/teacher/TeacherGrades.jsx";
 import GradeStudents from "./pages/DashBoard/teacher/GradeStudents.jsx";
 import StudentDetails from "./pages/DashBoard/teacher/StudentDetails.jsx";
 import Store from "./pages/DashBoard/Store.jsx";
-import EducaplayDemo from "./pages/content/module_1/EducaplayDemo.jsx";
- import HeatMap from "./pages/DashBoard/heatMap.jsx";
+import HeatMap from "./pages/DashBoard/heatMap.jsx";
+import ModuleMenuPage from "./pages/ModuleMenuPage.jsx";
+import ActivityPlayerPage from "./pages/ActivityPlayerPage.jsx";
 function App() {
   return (
     <BrowserRouter>
@@ -74,8 +75,7 @@ function App() {
             <PrivateRoute>
               <SideBar />
             </PrivateRoute>
-          }
-        >
+          }>
           {/* /app */}
           <Route index element={<Inicio />} />
 
@@ -87,7 +87,7 @@ function App() {
           <Route path="store" element={<Store />} />
 
           {/* admin */}
-          
+
           <Route path="users" element={<Users />} />
           <Route path="add_user" element={<AddUsers />} />
           <Route path="admin" element={<GestSystem />} />
@@ -103,28 +103,28 @@ function App() {
           <Route path="manage/insignia" element={<ManageInsignia />} />
           <Route path="manage/rol" element={<ManageRol />} />
 
-
-
           <Route path="teacher/students" element={<TeacherGrades />} />
-           <Route path="teacher/students/:id_grade" element={<GradeStudents />} />
-           <Route path="teacher/students/view/:id_user" element={<StudentDetails />} />
+          <Route
+            path="teacher/students/:id_grade"
+            element={<GradeStudents />}
+          />
+          <Route
+            path="teacher/students/view/:id_user"
+            element={<StudentDetails />}
+          />
         </Route>
-
-          
-
-
 
         {/* ============ MÓDULOS EXTERNOS ============ */}
         {/* Recomiendo protegerlos también */}
         <Route
-          path="/Module_1"
-          element={<EducaplayDemo/>}
+          path="/play/:moduleCode/:activityCode"
+          element={<ActivityPlayerPage />}
         />
         <Route
-          path="/Module_2"
+          path="student/modules/1"
           element={
             <PrivateRoute>
-              <div>Contenido módulo 2</div>
+              <div>Contenido módulo 1</div>
             </PrivateRoute>
           }
         />
@@ -161,8 +161,8 @@ function App() {
           }
         />
 
-        {/* ============ COMPAT: si alguien entra al viejo "/" privado ============ */}
-        {/* Si antes usabas "/" como dashboard, puedes redirigirlo a /app */}
+        <Route path="/modules/:moduleKey" element={<ModuleMenuPage />} />
+
         <Route path="/dashboard" element={<Navigate to="/app" replace />} />
 
         {/* Página no encontrada */}
