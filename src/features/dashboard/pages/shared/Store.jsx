@@ -1,0 +1,37 @@
+import React, { useState, useEffect } from "react";
+import ShowDashboardTitle from "@/features/dashboard/components/ShowDashboardTitle";
+function Store() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Cargar productos
+    setLoading(false);
+  }, []);
+
+  if (loading) {
+    return <div>Cargando...</div>;
+  }
+
+  return (
+    <div className="store-container">
+      <ShowDashboardTitle>tienda de pepipto</ShowDashboardTitle>
+      <br />
+      <ShowDashboardTitle>tienda delucho</ShowDashboardTitle>
+      <br />
+      <ShowDashboardTitle>tienda carlos</ShowDashboardTitle>
+
+      <h1>Próximooo</h1>
+      <div className="products-grid">
+        {products.map((product) => (
+          <div key={product.id} className="product-card">
+            <h3>{product.name}</h3>
+            <p>${product.price}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default Store;

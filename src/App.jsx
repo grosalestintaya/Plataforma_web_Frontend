@@ -1,46 +1,40 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
-// Layouts
-import SideBar from "./layouts/SideBar";
-
+// Layout principal del dashboard (barra lateral + outlet)
+import SideBar from "./features/dashboard/layouts/SideBar.jsx";
 // Páginas principales
-import NotFound from "./pages/NotFound/NotFoud";
-import Introduction from "./pages/Introduction/Introduction";
-import Login from "./pages/Login/Login";
-import LandingPage from "./pages/Landing/LandingPage";
-
+import NotFound from "./features/system/pages/NotFoud.jsx";
+import Introduction from "./features/marketing/pages/Introduction.jsx";
+import Login from "./features/auth/pages/Login.jsx";
+import LandingPage from "./features/marketing/pages/LandingPage.jsx";
 // Guards
-import PrivateRoute from "./components/auth/PrivateRoute.jsx";
-import PublicRoute from "./components/auth/PublicRoute.jsx";
-
+import PublicRoute from "./features/auth/components/PublicRoute.jsx";
+import PrivateRoute from "./features/auth/components/PrivateRoute.jsx";
 // Páginas del Dashboard
-import Inicio from "./pages/DashBoard/Inicio";
-import Perfil from "./pages/DashBoard/Perfil";
-import Ranking from "./pages/DashBoard/Ranking";
-import Ajustes from "./pages/DashBoard/Ajustes";
-import LogOut from "./pages/DashBoard/LogOut";
-
-import Users from "./pages/DashBoard/admin/Users.jsx";
-import AddUsers from "./pages/DashBoard/admin/addUsers.jsx";
-import GestSystem from "./pages/DashBoard/admin/gestSystem.jsx";
-
-import Estadisticas from "./pages/DashBoard/teacher/statistics.jsx";
-import Graficos from "./pages/DashBoard/teacher/graphs.jsx";
-import Estudiantes from "./pages/DashBoard/teacher/Students.jsx";
-
+import Inicio from "./features/dashboard/pages/shared/Inicio.jsx";
+import Perfil from "./features/dashboard/pages/shared/Perfil.jsx";
+import Ranking from "./features/dashboard/pages/shared/Ranking.jsx";
+import Ajustes from "./features/dashboard/pages/shared/Ajustes.jsx";
+import LogOut from "./features/auth/pages/LogOut.jsx";
+import Users from "./features/dashboard/pages/admin/Users.jsx";
+import AddUsers from "./features/dashboard/pages/admin/addUsers.jsx";
+import GestSystem from "./features/dashboard/pages/admin/gestSystem.jsx";
+import Estadisticas from "./features/dashboard/pages/teacher/statistics.jsx";
+import Graficos from "./features/dashboard/pages/teacher/graphs.jsx";
+import Estudiantes from "./features/dashboard/pages/teacher/GradeStudents.jsx";
 // --------------------- manages----------------------
-import ManageCollege from "./pages/DashBoard/admin/manage/manageCollege.jsx";
-import ManageGrade from "./pages/DashBoard/admin/manage/manageGrade.jsx";
-import ManageInsignia from "./pages/DashBoard/admin/manage/manageInsignia.jsx";
-import ManageRol from "./pages/DashBoard/admin/manage/manageRol.jsx";
-import TeacherGrades from "./pages/DashBoard/teacher/TeacherGrades.jsx";
-import GradeStudents from "./pages/DashBoard/teacher/GradeStudents.jsx";
-import StudentDetails from "./pages/DashBoard/teacher/StudentDetails.jsx";
-import Store from "./pages/DashBoard/Store.jsx";
-import HeatMap from "./pages/DashBoard/heatMap.jsx";
-import ModuleMenuPage from "./pages/ModuleMenuPage.jsx";
-import ActivityPlayerPage from "./pages/ActivityPlayerPage.jsx";
+import ManageCollege from "./features/dashboard/pages/admin/manage/manageCollege.jsx";
+import ManageGrade from "./features/dashboard/pages/admin/manage/manageGrade.jsx";
+import ManageInsignia from "./features/dashboard/pages/admin/manage/manageInsignia.jsx";
+import ManageRol from "./features/dashboard/pages/admin/manage/manageRol.jsx";
+import TeacherGrades from "./features/dashboard/pages/teacher/TeacherGrades.jsx";
+import GradeStudents from "./features/dashboard/pages/teacher/GradeStudents.jsx";
+import StudentDetails from "./features/dashboard/pages/teacher/StudentDetails.jsx";
+import Store from "./features/dashboard/pages/shared/Store.jsx";
+import HeatMap from "./features/dashboard/pages/shared/heatMap.jsx";
+import ModuleMenuPage from "./features/modules/pages/ModuleMenuPage.jsx";
+import ActivityPlayerPage from "./features/activities/pages/ActivityPlayerPage.jsx";
 function App() {
   return (
     <BrowserRouter>
