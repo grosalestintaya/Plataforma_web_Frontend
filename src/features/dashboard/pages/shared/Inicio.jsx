@@ -21,17 +21,23 @@ const Inicio = () => {
   ];
 
   return (
+    // Dashboard - sin Aside
     <div className="flex flex-col gap-4 w-full">
       <UserCard user={user} />
 
+
       {/* SIEMPRE FILA */}
       <div className="flex w-full items-start gap-4">
-        {/* CENTRO: se expande */}
+
+
+        {/* MAPA DE MODULOS
+            CENTRO: se expande */}
         <div className="flex-1 min-w-0">
           <StudentModulesCenter />
         </div>
 
-        {/* DERECHA: ancho fijo + pegado a la derecha */}
+        {/* COLUMNA DONDE SE MUESTRAN LAS INSIGNIAS
+            DERECHA: ancho fijo + pegado a la derecha */}
         <div className="w-[160px] shrink-0 ml-auto">
           <InsigniasCard insignias={insignias} />
         </div>
