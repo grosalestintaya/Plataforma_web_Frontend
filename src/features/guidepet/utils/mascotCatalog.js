@@ -1,20 +1,23 @@
-// src/game/mascot/mascotCatalog.js
-// Recomendación: usa /public/mascots/... para que sea simple en rutas
-// /public/mascots/puma.gif, condor.gif, etc.
+import llamaGif from "@/assets/mascots/llama.gif";
+import condorGif from "@/assets/mascots/condor.gif";
+import colobri from "@/assets/mascots/colibri.gif";
+import pumaGif from "@/assets/mascots/puma.gif";
+import snakeGif from "@/assets/mascots/snake.gif";
+import guideGif from "@/assets/mascots/guide.png";
 
 export const MASCOT_BY_MODULE = {
-  m01: { key: "llama", name: "llamita", gif: "/mascots/llama.gif" },
-  m02: { key: "condor", name: "Cóndor", gif: "/mascots/condor.gif" },
-  m03: { key: "zorro", name: "Zorro", gif: "/mascots/zorro.gif" },
-  m04: { key: "oso", name: "Oso Andino", gif: "/mascots/oso.gif" },
-  m05: { key: "llama", name: "Llama", gif: "/mascots/llama.gif" },
-  m06: { key: "jaguar", name: "Jaguar", gif: "/mascots/jaguar.gif" },
+  m01: { key: "llama", name: "Llamita", gif: llamaGif },
+  m02: { key: "condor", name: "Cóndor", gif: condorGif },
+  m03: { key: "colibri", name: "Colibrí", gif: colobri },
+  m04: { key: "puma", name: "Puma", gif: pumaGif },
+  m05: { key: "llama", name: "Llama", gif: llamaGif },
+  m06: { key: "snake", name: "Serpiente", gif: snakeGif },
 };
 
 export const DEFAULT_MASCOT = {
   key: "guide",
   name: "Guía",
-  gif: "/mascots/guide.gif",
+  gif: guideGif,
 };
 
 export function getMascotForModule(moduleKey) {

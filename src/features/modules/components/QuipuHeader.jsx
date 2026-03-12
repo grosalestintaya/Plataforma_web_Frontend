@@ -1,6 +1,9 @@
 import React from "react";
-import rope from "/assets/coin.png"; // tu cuerda
+import rope from "@/assets/activity/cord.png"; // tu cuerda
 import { useNavigate } from "react-router-dom";
+import xpicon from "@/assets/dashboard/xp.png";
+import coinicon from "@/assets/dashboard/coin.png";
+import gearicon from "@/assets/dashboard/gear.png";
 function hexToRgba(hex, a = 1) {
   const h = String(hex || "#000").replace("#", "");
   const full =
@@ -26,9 +29,9 @@ export default function QuipuHeader({
   onOpenSettings,
 
   // ✅ tú ajustas rutas
-  xpIconSrc = "/assets/xp.png",
-  coinIconSrc = "/assets/coin.png",
-  gearIconSrc = "/assets/gear.png",
+  xpIconSrc = xpicon,
+  coinIconSrc = coinicon,
+  gearIconSrc = gearicon,
 }) {
   const navigate = useNavigate(); // ✅ aquí adentro
 

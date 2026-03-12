@@ -1,5 +1,5 @@
 export const INSIGNIA_BASE = "/insignias"; // public/insignias/*.png
-export const AVATAR_BASE = "/profile";    // public/profile/*.png
+export const AVATAR_BASE = "/profile"; // public/profile/*.png
 
 export function getInitials(fullName = "") {
   const parts = fullName.trim().split(/\s+/).filter(Boolean);

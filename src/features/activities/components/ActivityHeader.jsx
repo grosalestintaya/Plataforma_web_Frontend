@@ -1,11 +1,11 @@
 import React from "react";
-import rope from "/assets/cord.png"; // tu cuerda
+import rope from "@/assets/activity/cord.png"; // tu cuerda
 
 export default function QuipuHeader({ title, subtitle, onSettings }) {
   return (
     <div className="relative w-full overflow-hidden">
       {/* PADRE: 0 padding horizontal */}
-      <div className="relative px-0 pt-1 pb-0">
+      <div className="relative px-0 pt-1 pb-0  absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/10 to-transparent backdrop-blur-md">
         {/* Row: logo + title | settings */}
         <div className="flex items-center justify-between gap-2">
           {/* Left */}
@@ -13,16 +13,15 @@ export default function QuipuHeader({ title, subtitle, onSettings }) {
             <img
               src="/iconcolor.png"
               alt="logo"
-              className="w-5 h-5 md:w-8 md:h-8 object-contain shrink-0"
+              className="w-5 h-5 md:w-8 md:h-8 object-contain shrink-0 "
               draggable={false}
             />
-
-            {title && (
-              <h1 className="text-white/90 text-sm md:text-base font-semibold tracking-tight truncate">
-                {title}
-              </h1>
-            )}
           </div>
+          {title && (
+            <h1 className="truncate text-white text-lg md:text-2xl font-bold tracking-tight drop-shadow-sm">
+              {title}
+            </h1>
+          )}
 
           {/* Right (gear) */}
           <div className="pr-2">

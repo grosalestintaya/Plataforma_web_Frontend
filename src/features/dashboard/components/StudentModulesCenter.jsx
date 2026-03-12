@@ -1,16 +1,22 @@
 import React, { useEffect, useId, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CheckCircle2, Lock, PlayCircle } from "lucide-react";
+import module1 from "@/assets/modulepics/module-1.png";
+import module2 from "@/assets/modulepics/module-2.png";
+import module3 from "@/assets/modulepics/module-3.png";
+import module4 from "@/assets/modulepics/module-4.png";
+import module5 from "@/assets/modulepics/module-5.png";
+import module6 from "@/assets/modulepics/module-6.png";
 
 const API = "http://localhost:5000/api/progress/overview";
 
 const MODULE_BG = {
-  1: "/media/modules/module-1.png",
-  2: "/media/modules/module-2.png",
-  3: "/media/modules/module-3.png",
-  4: "/media/modules/module-4.png",
-  5: "/media/modules/module-5.png",
-  6: "/media/modules/module-6.png",
+  1: module1,
+  2: module2,
+  3: module3,
+  4: module4,
+  5: module5,
+  6: module6,
 };
 
 function getVar(el, name, fallback = "") {

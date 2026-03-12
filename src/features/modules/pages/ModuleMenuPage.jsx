@@ -3,10 +3,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { getLearnFor } from "../utils/activityLearn";
-import {
-  getModuleTheme,
-  MODULE_COLORS_HEX,
-} from "../utils/moduleTheme";
+import { getModuleTheme, MODULE_COLORS_HEX } from "../utils/moduleTheme";
 import { getMascotForModule } from "../../guidepet/utils/mascotCatalog";
 import QuipuHeader from "../components/QuipuHeader";
 import ActivityDots from "../components/ActivityDots";
@@ -136,6 +133,7 @@ export default function ModuleMenuPageBeta() {
 
       const json = await res.json();
       setOverview(json || null);
+      console.log("Overview data:", json);
     } catch (e) {
       setError(e?.message || "Error al cargar overview");
       setOverview(null);

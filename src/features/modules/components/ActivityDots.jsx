@@ -1,10 +1,12 @@
 import React, { useMemo } from "react";
-
+import conceptual from "@/assets/modules/conceptual.png";
+import procedimental from "@/assets/modules/procedimental.png";
+import actitudinal from "@/assets/modules/actitudinal.png";
 function iconForType(type) {
-  if (type === "conceptual") return "/activity-icons/conceptual.png";
-  if (type === "procedimental") return "/activity-icons/procedimental.png";
-  if (type === "actitudinal") return "/activity-icons/actitudinal.png";
-  return "/activity-icons/default.png";
+  if (type === "conceptual") return conceptual;
+  if (type === "procedimental") return procedimental;
+  if (type === "actitudinal") return actitudinal;
+  return defaultIcon;
 }
 
 function stateGlyph(status) {

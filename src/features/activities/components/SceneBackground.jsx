@@ -8,7 +8,7 @@ export default function SceneBackground({
   pattern = true,
   patternOpacity = 0.06,
   patternSize = 52,
-  // opacidades del tint (tu misma lógica)
+  // opacidades del tintado
   t1 = 0.62,
   t2 = 0.45,
   t3 = 0.26,

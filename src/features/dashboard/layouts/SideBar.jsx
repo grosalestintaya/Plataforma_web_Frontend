@@ -100,7 +100,7 @@ const SideBar = () => {
         <div>
           <div className="flex flex-col items-center py-1">
             <img
-              src="/assets/logo.png"
+              src="/logo.png"
               alt="Logo"
               className="w-35 h-35 object-contain mb-2"
             />

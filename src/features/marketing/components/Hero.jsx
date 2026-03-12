@@ -1,5 +1,5 @@
-    import { Link } from "react-router-dom";
-
+import { Link } from "react-router-dom";
+import hero from "@/assets/marketing/hero.png"; // tu imagen hero
 export default function Hero() {
   return (
     <section className="relative overflow-hidden bg-slate-50">
@@ -8,7 +8,7 @@ export default function Hero() {
         aria-hidden="true"
         className="absolute right-0 top-0 h-full w-full md:w-[55%]"
         style={{
-          backgroundImage: "url('/hero/hero.png')",
+          backgroundImage: `url(${hero})`,
           backgroundRepeat: "no-repeat",
           backgroundPosition: "right center",
           backgroundSize: "contain",
@@ -40,22 +40,21 @@ export default function Hero() {
             </p>
 
             <p className="mt-4 max-w-xl text-base leading-relaxed text-slate-700">
-              Aprende finanzas personales paso a paso con misiones cortas, retos simples y
-              recompensas. Aquí no memorizas: practicas, decides y avanzas.
+              Aprende finanzas personales paso a paso con misiones cortas, retos
+              simples y recompensas. Aquí no memorizas: practicas, decides y
+              avanzas.
             </p>
 
             <div className="mt-6 flex flex-wrap gap-3">
               <Link
                 to="/login"
-                className="rounded-2xl bg-[#00C853] px-6 py-3 text-sm font-extrabold text-white shadow-sm hover:opacity-95"
-              >
+                className="rounded-2xl bg-[#00C853] px-6 py-3 text-sm font-extrabold text-white shadow-sm hover:opacity-95">
                 Inciar sesión
               </Link>
 
               <Link
                 to="/i"
-                className="rounded-2xl bg-white px-6 py-3 text-sm font-extrabold text-slate-900 ring-1 ring-slate-200 hover:bg-slate-100"
-              >
+                className="rounded-2xl bg-white px-6 py-3 text-sm font-extrabold text-slate-900 ring-1 ring-slate-200 hover:bg-slate-100">
                 Introducción
               </Link>
             </div>
@@ -78,7 +77,8 @@ export default function Hero() {
 
 function Chip({ className, children }) {
   return (
-    <span className={`rounded-full px-3 py-1 text-xs font-extrabold ring-1 ring-slate-200 ${className}`}>
+    <span
+      className={`rounded-full px-3 py-1 text-xs font-extrabold ring-1 ring-slate-200 ${className}`}>
       {children}
     </span>
   );
