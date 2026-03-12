@@ -1,19 +1,18 @@
-// components/ui/NextButton.jsx
+// components/ui/BackButton.jsx
 import React from "react";
-import nexticon from "@/assets/activity/next.png"; // tú pones la ruta final
-export default function NextButton({
+import backicon from "@/assets/activity/back.png"; // tú pones la ruta final
+
+export default function BackButton({
   onClick,
-  disabled,
-  src = "@/assets/activity/next.png", // tú pones la ruta final
-  ariaLabel = "Siguiente",
+  disabled = false,
+  src = backicon,
+  ariaLabel = "Volver",
   className = "",
-  // tamaño rectangular grande (puedes ajustar)
   w = 220,
   h = 64,
 }) {
   return (
     <>
-      {/* Animación “respiración” tipo game UI */}
       <style>{`
         @keyframes quipu-breathe {
           0%, 100% { transform: scale(1); filter: brightness(1); }
@@ -33,18 +32,16 @@ export default function NextButton({
           className,
         ].join(" ")}
         style={{
-          // hit area: ligeramente mayor que la imagen
           padding: 6,
         }}>
         <img
-          src={nexticon}
+          src={src}
           alt=""
           draggable={false}
           style={{
             width: w,
             height: h,
             objectFit: "contain",
-            // respiración solo si NO está disabled
             animation: disabled
               ? "none"
               : "quipu-breathe 1.6s ease-in-out infinite",

@@ -1,10 +1,9 @@
 // components/ui/NextButton.jsx
 import React from "react";
-
+import starticon from "@/assets/activity/start.png"; // tú pones la ruta final
 export default function StartButton({
   onClick,
   disabled,
-  src = "/start.png", // tú pones la ruta final
   ariaLabel = "Empezar",
   className = "",
   // tamaño rectangular grande (puedes ajustar)
@@ -37,7 +36,7 @@ export default function StartButton({
           padding: 6,
         }}>
         <img
-          src={src}
+          src={starticon}
           alt=""
           draggable={false}
           style={{
