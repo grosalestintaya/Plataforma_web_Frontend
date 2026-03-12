@@ -2,6 +2,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
+
+
 import { getLearnFor } from "../utils/activityLearn";
 import {
   getModuleTheme,
@@ -12,6 +14,14 @@ import QuipuHeader from "../components/QuipuHeader";
 import ActivityDots from "../components/ActivityDots";
 import MascotTutorDemo from "../../guidepet/MascotTutorDemo";
 const API_OVERVIEW = "http://localhost:5000/api/progress/overview";
+
+
+
+  // const [mostrar, setMostrar] = useState(false);
+
+
+
+
 
 // -------- helpers UI (alpha local) ----------
 function hexToRgb(hex) {
@@ -198,6 +208,8 @@ export default function ModuleMenuPageBeta() {
     if (selectedActivity.status === "locked") return;
     navigate(
       `/play/m0${moduleData.sortOrder}/a0${selectedActivity.activityId}`,
+      //  <ModuleFrame></ModuleFrame>
+
     );
   };
 
@@ -410,6 +422,7 @@ export default function ModuleMenuPageBeta() {
 
                         <button
                           disabled={!canPlay}
+                          // onClick={() => setMostrar(true)}
                           onClick={onPlay}
                           className="px-5 py-2.5 rounded-2xl border transition font-semibold"
                           style={{
@@ -439,6 +452,8 @@ export default function ModuleMenuPageBeta() {
                           }>
                           {ctaLabel}
                         </button>
+                        {/* {mostrar && <ModuleFrame/>} */}
+
                       </div>
                     </>
                   ) : (

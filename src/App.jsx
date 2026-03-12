@@ -34,7 +34,10 @@ import StudentDetails from "./features/dashboard/pages/teacher/StudentDetails.js
 import Store from "./features/dashboard/pages/shared/Store.jsx";
 import HeatMap from "./features/dashboard/pages/shared/heatMap.jsx";
 import ModuleMenuPage from "./features/modules/pages/ModuleMenuPage.jsx";
+
+import ModuleFrame from "./features/module/components/ModuleFrame.jsx";
 import ActivityPlayerPage from "./features/activities/pages/ActivityPlayerPage.jsx";
+
 function App() {
   return (
     <BrowserRouter>
@@ -69,7 +72,8 @@ function App() {
             <PrivateRoute>
               <SideBar />
             </PrivateRoute>
-          }>
+          }
+        >
           {/* /app */}
           <Route index element={<Inicio />} />
 
@@ -110,10 +114,7 @@ function App() {
 
         {/* ============ MÓDULOS EXTERNOS ============ */}
         {/* Recomiendo protegerlos también */}
-        <Route
-          path="/play/:moduleCode/:activityCode"
-          element={<ActivityPlayerPage />}
-        />
+
         <Route
           path="student/modules/1"
           element={
@@ -155,7 +156,16 @@ function App() {
           }
         />
 
+        {/* RUTA PARA LOS MODULOS */}
         <Route path="/modules/:moduleKey" element={<ModuleMenuPage />} />
+
+        <Route
+          path="/play/:moduleCode/:activityCode"
+          element={<ModuleFrame />}
+          // element={<ActivityPlayerPage />}
+          
+        />
+        {/* FIN RUTA PARA LOS MODULOS */}
 
         <Route path="/dashboard" element={<Navigate to="/app" replace />} />
 

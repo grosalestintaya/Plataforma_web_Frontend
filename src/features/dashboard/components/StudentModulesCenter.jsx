@@ -13,6 +13,9 @@ const MODULE_BG = {
   6: "/media/modules/module-6.png",
 };
 
+const statusRank = (status) =>
+  status === "completed" ? 3 : status === "unlocked" ? 2 : 1;
+
 function getVar(el, name, fallback = "") {
   try {
     const v = getComputedStyle(el).getPropertyValue(name).trim();
@@ -21,9 +24,6 @@ function getVar(el, name, fallback = "") {
     return fallback;
   }
 }
-
-const statusRank = (status) =>
-  status === "completed" ? 3 : status === "unlocked" ? 2 : 1;
 
 function pickBestModuleCandidate(a, b) {
   const ra = statusRank(a?.status);
@@ -362,7 +362,10 @@ function MapNode({ module, tokens, x, y, size, isActive }) {
               ? "float-node 3.5s ease-in-out infinite"
               : "none",
         }}>
+
+          
         <div className="relative">
+
           {/* halo pulsante (nodo activo) */}
           {isActive && !isLocked && !isComplete && (
             <div
@@ -789,6 +792,7 @@ export default function StudentModulesCenter() {
               borderColor: "bg-transparent",
               backgroundColor: tokens.primary,
             }}>
+
             {/* Fondo pergamino SVG */}
             <ParchmentBg radius={24} />
 
