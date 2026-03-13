@@ -2,8 +2,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-
-
 import { getLearnFor } from "../utils/activityLearn";
 import { getModuleTheme, MODULE_COLORS_HEX } from "../utils/moduleTheme";
 import { getMascotForModule } from "../../guidepet/utils/mascotCatalog";
@@ -12,13 +10,7 @@ import ActivityDots from "../components/ActivityDots";
 import MascotTutorDemo from "../../guidepet/MascotTutorDemo";
 const API_OVERVIEW = "http://localhost:5000/api/progress/overview";
 
-
-
-  // const [mostrar, setMostrar] = useState(false);
-
-
-
-
+// const [mostrar, setMostrar] = useState(false);
 
 // -------- helpers UI (alpha local) ----------
 function hexToRgb(hex) {
@@ -40,8 +32,8 @@ function withAlpha(hex, alpha) {
 }
 
 // -------- domain helpers ----------
-function moduleKeyToSortOrder(moduleKey) {
-  const n = String(moduleKey || "").replace(/\D/g, "");
+function moduleKeyToSortOrder(moduleCode) {
+  const n = String(moduleCode || "").replace(/\D/g, "");
   const num = Number(n);
   return Number.isFinite(num) ? num : null;
 }
@@ -52,8 +44,8 @@ function statusPriority(s) {
   if (s === "locked") return 1;
   return 0;
 }
-function pickModuleByKey(overviewModules, moduleKey) {
-  const so = moduleKeyToSortOrder(moduleKey);
+function pickModuleByKey(overviewModules, moduleCode) {
+  const so = moduleKeyToSortOrder(moduleCode);
   if (!so) return null;
 
   const candidates = (overviewModules || []).filter(
@@ -113,13 +105,15 @@ function prettyType(type) {
 }
 
 export default function ModuleMenuPageBeta() {
-  const { moduleKey } = useParams(); // m01
+  // const { moduleKey } = useParams(); // m01
+  const { moduleCode } = useParams();
+
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-  const mascot = useMemo(() => getMascotForModule(moduleKey), [moduleKey]);
+  const mascot = useMemo(() => getMascotForModule(moduleCode), [moduleCode]);
 
-  const theme = useMemo(() => getModuleTheme(moduleKey), [moduleKey]);
-  const modulePrimaryHex = MODULE_COLORS_HEX[moduleKey] || theme.primary;
+  const theme = useMemo(() => getModuleTheme(moduleCode), [moduleCode]);
+  const modulePrimaryHex = MODULE_COLORS_HEX[moduleCode] || theme.primary;
 
   const [overview, setOverview] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -155,11 +149,11 @@ export default function ModuleMenuPageBeta() {
   useEffect(() => {
     fetchOverview();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [moduleKey]);
+  }, [moduleCode]);
 
   const moduleData = useMemo(() => {
-    return pickModuleByKey(overview?.modules, moduleKey);
-  }, [overview?.modules, moduleKey]);
+    return pickModuleByKey(overview?.modules, moduleCode);
+  }, [overview?.modules, moduleCode]);
 
   const effectiveActivities = useMemo(() => {
     if (!moduleData) return [];
@@ -185,8 +179,8 @@ export default function ModuleMenuPageBeta() {
 
   const learnBlock = useMemo(() => {
     if (!selectedActivity) return null;
-    return getLearnFor(moduleKey, selectedActivity.type);
-  }, [moduleKey, selectedActivity]);
+    return getLearnFor(moduleCode, selectedActivity.type);
+  }, [moduleCode, selectedActivity]);
 
   const canPlay = selectedActivity && selectedActivity.status !== "locked";
 
@@ -204,11 +198,22 @@ export default function ModuleMenuPageBeta() {
   const onPlay = () => {
     if (!selectedActivity) return;
     if (selectedActivity.status === "locked") return;
-    navigate(
-      `/play/m0${moduleData.sortOrder}/a0${selectedActivity.activityId}`,
-      //  <ModuleFrame></ModuleFrame>
 
-    );
+    // En tu API, la misión viene en "type"
+    const missionKey = selectedActivity.type; // conceptual | procedimental | actitudinal  //
+    if (!missionKey) {
+      console.error(
+        "selectedActivity.missionKey es undefined:",
+        selectedActivity,
+      );
+      return;
+    }
+
+    navigate(`/modules/${moduleCode}/${missionKey}`);
+
+    // navigate(
+    //   `/modules/m0${moduleData.sortOrder}/${selectedActivity.missionKey}`,
+    // );
   };
 
   const mascotMood = useMemo(() => {
@@ -237,7 +242,7 @@ export default function ModuleMenuPageBeta() {
   if (error) return <div className="p-6 text-red-300">{error}</div>;
   if (!moduleData)
     return (
-      <div className="p-6 text-white">Módulo no encontrado: {moduleKey}</div>
+      <div className="p-6 text-white">Módulo no encontrado: {moduleCode}</div>
     );
 
   return (
@@ -245,7 +250,8 @@ export default function ModuleMenuPageBeta() {
       className="min-h-screen"
       style={{
         backgroundImage: `${theme.tintRadial}, ${theme.bgGradient}`,
-      }}>
+      }}
+    >
       {/* patrón muy sutil */}
       <div className="absolute inset-0 opacity-[0.05] pointer-events-none">
         <div
@@ -302,7 +308,8 @@ export default function ModuleMenuPageBeta() {
         0 0 0 6px ${withAlpha(modulePrimaryHex, 0.1)},
         0 30px 90px ${withAlpha(modulePrimaryHex, 0.18)}
       `,
-                }}>
+                }}
+              >
                 {/* Outline sticker */}
                 <div
                   className="pointer-events-none absolute inset-0"
@@ -381,7 +388,8 @@ export default function ModuleMenuPageBeta() {
                             0.22,
                           )})`,
                           boxShadow: `0 0 0 2px ${withAlpha("#ffffff", 0.1)}`,
-                        }}>
+                        }}
+                      >
                         <div className="text-sm font-semibold text-white/90 mb-2">
                           Aprenderás
                         </div>
@@ -447,11 +455,11 @@ export default function ModuleMenuPageBeta() {
                             canPlay
                               ? "Iniciar / Nuevo intento"
                               : "Actividad bloqueada"
-                          }>
+                          }
+                        >
                           {ctaLabel}
                         </button>
                         {/* {mostrar && <ModuleFrame/>} */}
-
                       </div>
                     </>
                   ) : (
