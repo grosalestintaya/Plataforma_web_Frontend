@@ -1,4 +1,5 @@
 import React from "react";
+import grassPng from "@/assets/mascots/grass/base2.png";
 
 function hexToRgba(hex, a = 1) {
   const h = String(hex || "#000").replace("#", "");
@@ -16,13 +17,6 @@ function hexToRgba(hex, a = 1) {
   return `rgba(${r},${g},${b},${a})`;
 }
 
-/**
- * Props:
- * - gifSrc: string
- * - name: string
- * - text: string
- * - themeHex: string (ej: "#7130F7") -> lo manda el componente que usa esto
- */
 export default function MascotTutorDemo({
   gifSrc = "/mascots/guide.gif",
   name = "Guía",
@@ -45,14 +39,14 @@ export default function MascotTutorDemo({
       <div
         className="relative max-w-[280px] rounded-3xl border px-5 py-4 backdrop-blur-sm shadow-xl"
         style={bubbleStyle}>
-        <div className="text-xs text-white/60 mb-1 text-center">{name}</div>
-        <div className="text-sm leading-relaxed opacity-95 text-center">
+        <div className="mb-1 text-center text-xs text-white/60">{name}</div>
+        <div className="text-center text-sm leading-relaxed opacity-95">
           {text}
         </div>
 
         {/* Pico */}
         <div
-          className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-5 h-5 rotate-45 border-l border-b"
+          className="absolute -bottom-3 left-1/2 h-5 w-5 -translate-x-1/2 rotate-45 border-b border-l"
           style={{
             background: hexToRgba(themeHex, 0.16),
             borderColor: hexToRgba(themeHex, 0.35),
@@ -60,21 +54,29 @@ export default function MascotTutorDemo({
         />
       </div>
 
-      {/* Contenedor fijo para evitar desproporción */}
-      <div className="mt-6 relative w-[260px] h-[260px] flex items-center justify-center">
+      {/* Mascota */}
+      <div className="relative mt-6 flex h-[270px] w-[360px] items-center justify-center">
+        {/* glow */}
         <div
           className="absolute inset-0 rounded-full blur-2xl"
           style={{ background: hexToRgba(themeHex, 0.12) }}
         />
-
+        {/* sombra base */}
+        <div className="absolute bottom-4 z-[1] h-[18px] w-[170px] rounded-full bg-black/35 blur-md" />
+        {/* pasto */}
+        {/* mascota */}
         <img
           src={gifSrc}
           alt={name}
           draggable={false}
-          className="max-w-full max-h-full object-contain drop-shadow-2xl contrast-110 saturate-110"
+          className="relative z-[3] max-h-full max-w-full object-contain drop-shadow-2xl contrast-110 saturate-110"
+        />{" "}
+        <img
+          src={grassPng}
+          alt="Base de pasto"
+          draggable={false}
+          className="absolute -bottom-4  z-[2] w-[260px] object-contain select-none pointer-events-none"
         />
-
-        <div className="absolute bottom-3 w-[160px] h-[18px] rounded-full bg-black/40 blur-md" />
       </div>
     </div>
   );
