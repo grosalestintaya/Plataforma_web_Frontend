@@ -30,7 +30,7 @@
       "Se utiliza para satisfacer necesidades y deseos en la vida diaria.",
       "El dinero puede presentarse como monedas, billetes o dinero digital."
     ],
-    "media": { "src": "/assets/image001.png", "alt": "Niño feliz con dinero" },
+    "media": { "src": "img1", "alt": "Niño feliz con dinero" },
     "mediaCaption": " el dinero puede existir en distintos formatos (efectivo y digital)"
     }
   },    { 

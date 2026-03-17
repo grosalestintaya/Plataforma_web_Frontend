@@ -27,9 +27,7 @@ export default function ActivityPlayerPage() {
 
   return (
     <div className="p-0">
-
       <FlowRunner activityDef={activityDef} onExit={() => nav(-1)} />
-        
     </div>
   );
 }
