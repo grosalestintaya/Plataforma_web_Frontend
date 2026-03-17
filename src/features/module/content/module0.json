@@ -1,7 +1,7 @@
 {
   "meta": {
     "id": "module-1",
-    "moduleName": "Módulo 1",
+    "moduleName": "Módulo 1 — Necesidades y Deseos",
     "theme": {
       "tone": "blue",
       "color": "#1e4cff"
@@ -13,34 +13,15 @@
     }
   },
 
+
+
   "missions": {
     "conceptual": {
-      "activityId": "01",
       "headerTitle": "Conceptual",
       "missionTitle": "Necesidades y Deseos",
       "onFinish": { "type": "goToModuleMenu", "moduleId": "module-1" },
 
       "views": [
-        {
-          "id": "m1_conceptual_intro",
-          "template": "teoria",
-          "variant": "split",
-          "data": {
-            "title": "Antes de empezar",
-            "leftText": [
-              "Lee con calma las indicaciones.",
-              "Tu intento se registrará cuando presioSnes “Empezar”.",
-              "Avanza por las vistas y completa la actividad final.",
-              "Al finalizar, tu progreso se guardará automáticamente."
-            ],
-            "rightImage": { "src": "", "alt": "Indicaciones" }
-          },
-          "nav": {
-            "mode": "cta",
-            "label": "Empezar",
-            "action": "startMissionAttempt"
-          }
-        },
         {
           "id": "m1_c_01_need",
           "template": "teoria",
@@ -51,8 +32,7 @@
             "examples": [
               { "src": "", "label": "Comida" },
               { "src": "", "label": "Agua" },
-              { "src": "", "label": "Útiles" }
-            ],
+              { "src": "", "label": "Útiles" }            ],
             "note": "Una necesidad no es “algo que me gusta”, sino algo que me permite estar bien o cumplir con algo importante (salud, estudio, seguridad). Si no lo tengo, me afecta."
           }
         },
@@ -70,28 +50,6 @@
               { "src": "", "label": "El último celular" }
             ],
             "note": "Un deseo es algo que quieres porque te gusta, te entretiene o te hace sentir bien un rato. Si no lo compras hoy, no pasa nada grave. No es “malo”, pero no es prioridad cuando el dinero es limitado."
-          }
-        },
-        {
-          "id": "m0_p_01_intro_practica",
-          "template": "teoria",
-          "variant": "split",
-          "data": {
-            "title": "Hora de practicar",
-            "leftText": [
-              "Usarás una cantidad limitada de dinero durante un día escolar.",
-              "Tendrás S/ 3.00 para usarlo en transporte, comida y otras situaciones.fghfdghfghfghfghfghf",
-              "sdfsfsfsdgfsgsdfgsdfgdfgdfgfd",
-              "dsfgdfgdfghdfgdfhdhfgfhdh"
-            ],
-            "rightImage": {
-              "src": "",
-              "alt": "Hora de practicar"
-            }
-          },
-          "nav": {
-            "mode": "cta",
-            "label": "fdfdf"
           }
         },
 

@@ -5,10 +5,9 @@ import { TEORIA_CONFIG } from "./teoria.config";
 import * as Blocks from "@/features/module/blocks";
 import { renderSlot } from "../_core/SlotRenderer";
 
+
 export default function TeoriaTemplate({ variant = "simple", data }) {
-  const vKey = TEORIA_CONFIG.variants[variant]
-    ? variant
-    : TEORIA_CONFIG.fallbackVariant;
+  const vKey = TEORIA_CONFIG.variants[variant] ? variant : TEORIA_CONFIG.fallbackVariant;
 
   const layout = normalizeLayout(TEORIA_CONFIG.layouts[vKey]);
   const slots = TEORIA_CONFIG.variants[vKey];
@@ -20,11 +19,7 @@ export default function TeoriaTemplate({ variant = "simple", data }) {
   return (
     <HeroGrid layout={layout}>
       {slots.map((slot, idx) => (
-        <HeroArea
-          key={`${slot.area}-${idx}`}
-          area={slot.area}
-          className={slot.className}
-        >
+        <HeroArea key={`${slot.area}-${idx}`} area={slot.area} className={slot.className}>
           {renderSlot(slot, data, Blocks)}
         </HeroArea>
       ))}

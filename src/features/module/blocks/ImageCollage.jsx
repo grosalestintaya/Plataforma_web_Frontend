@@ -6,7 +6,7 @@ export default function ImageCollage({ items = [], className, itemClassName, }) 
     <div className={cn("grid sm:grid-flow-col grid-cols-2 auto-cols-fr gap-3 ", className)}>
     {/* <div className={`grid grid-cols-2 sm:grid-cols-${items.length} gap-3 justify-center`}> */}
       {items.slice(0,items.length ).map((it, idx) => (
-        <div key={idx} className={cn("flex flex-col items-center min-w-5", itemClassName)}>
+        <div key={idx} className={cn("flex flex-col items-center min-w-35", itemClassName)}>
           <Image src={it.src} alt={it.alt ?? it.label ?? "Ejemplo"} />
           {it.label && <span className="mt-2 text-white/90 text-xs font-semibold">{it.label}</span>}
         </div>
