@@ -32,7 +32,7 @@ export default function SceneIntro({ scene, game, locked }) {
     d.mascotText || "Estoy aquí para guiarte. Respira, lee con calma y avanza.";
 
   return (
-    <SceneBackground themeHex={themeHex} backgroundHex={backgroundHex}>
+    <>
       <QuipuHeader title={d.title} onSettings={() => {}} />
 
       {/* Body */}
@@ -135,6 +135,6 @@ export default function SceneIntro({ scene, game, locked }) {
           ariaLabel="Empezar"
         />
       </div>
-    </SceneBackground>
+    </>
   );
 }
