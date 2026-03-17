@@ -1,19 +1,23 @@
 import React from "react";
-import { cn } from "@/shared/libs/utils";
+import { cn } from "@/shared/libs/utils"
 
 /**
- * renderSlot:
- * - Renderiza un slot desde config (block + props + children).
- * - Soporta `when` (condicional) y `items` (slot compuesto).
+ * slotDef soporta:
+ * - block: "Title" | "Text" | "Image" | ...
+ * - props: (data, ctx) => ({})
+ * - children: (data, ctx) => ReactNode
+ * - when: (data, ctx) => boolean
+ *
+ * ✅ NUEVO:
+ * - items: [slotDef, slotDef, ...]  -> permite renderizar 1..N componentes dentro del mismo area
+ * - stackClassName: estilos del contenedor cuando usas items
  */
 export function renderSlot(slotDef, data, Blocks, ctx = {}) {
-
   if (!slotDef) return null;
-  //Render condicional
   if (slotDef.when && !slotDef.when(data, ctx)) return null;
 
-  // Slot compuesto: varios bloques dentro del mismo area
-    if (Array.isArray(slotDef.items)) {
+  // ✅ Caso escalable: slot compuesto (lista de bloques)
+  if (Array.isArray(slotDef.items)) {
     return (
       <div className={cn("flex flex-col gap-3", slotDef.stackClassName)}>
         {slotDef.items.map((child, i) => (

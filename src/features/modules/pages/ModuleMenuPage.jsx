@@ -49,7 +49,7 @@ export default function ModuleMenuPageBeta() {
   if (error) return <div className="p-6 text-red-300">{error}</div>;
   if (!moduleData) {
     return (
-      <div className="p-6 text-white">Módulo no encontrado: {moduleCode}</div>
+      <div className="p-6 text-white">Módulo no encontrado: {moduleKey}</div>
     );
   }
 
