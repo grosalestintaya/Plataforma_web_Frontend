@@ -62,3 +62,39 @@ export default function QuipuHeader({ title, subtitle, onSettings }) {
     </div>
   );
 }
+
+
+
+// /**
+//  * Renderiza el encabezado principal de la actividad.
+//  */
+// export default function ActivityHeader({ activityDef, scene, status }) {
+//   const title =
+//     activityDef?.meta?.headerTitle ||
+//     activityDef?.title ||
+//     activityDef?.missionTitle ||
+//     "Actividad";
+
+//   const moduleName =
+//     activityDef?.meta?.moduleName ||
+//     activityDef?.moduleName ||
+//     activityDef?.moduleCode ||
+//     "";
+
+//   const sceneTitle = scene?.title || scene?.label || "";
+
+//   return (
+//     <header className="px-6 py-4 border-b border-white/10 bg-neutral-950 text-white">
+//       <div className="text-sm opacity-70">{moduleName}</div>
+//       <div className="text-2xl font-semibold">{title}</div>
+
+//       {sceneTitle ? (
+//         <div className="text-sm opacity-70 mt-1">{sceneTitle}</div>
+//       ) : null}
+
+//       {status === "submitting" ? (
+//         <div className="text-xs opacity-60 mt-2">Enviando resultados...</div>
+//       ) : null}
+//     </header>
+//   );
+// }

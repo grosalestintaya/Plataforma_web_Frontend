@@ -1,7 +1,7 @@
 export default function ModuleFooter({ model }) {
   if (model?.type === "cta") {
     return (
-      <footer className="h-10 bg-neutral-900 border-t border-white/10">
+      <footer className="h-40 border-t border-black">
         <div className="h-full px-4 flex items-center justify-center text-white/80 text-sm">
           <button
             disabled={!model.center.enabled}
@@ -17,7 +17,7 @@ export default function ModuleFooter({ model }) {
 
   if (model?.type === "locked") {
     return (
-      <footer className="h-10 bg-neutral-900 border-t border-white/10">
+      <footer className="h-40 border-t border-black">
         <div className="h-full px-4 flex items-center justify-between text-white/80 text-sm">
           <button disabled className="h-8 px-3 rounded bg-white/10 opacity-40">
             {model.left.label}
@@ -35,7 +35,7 @@ export default function ModuleFooter({ model }) {
 
   // normal
   return (
-    <footer className="h-10 bg-transparent-900 border-t border-white/10">
+    <footer className="h-40 border-t border-black">
       <div className="h-full px-4 flex items-center justify-between text-white/80 text-sm">
         <button
           disabled={!model.left.enabled}
@@ -58,9 +58,6 @@ export default function ModuleFooter({ model }) {
     </footer>
   );
 }
-
-
-
 
 // export default function ModuleFooter() {
 //   return (

@@ -157,13 +157,15 @@ function App() {
         />
 
         {/* RUTA PARA LOS MODULOS */}
-        <Route path="/modules/:moduleKey" element={<ModuleMenuPage />} />
+        {/* <Route path="/modules/:moduleKey" element={<ModuleMenuPage />} /> */}
+        <Route path="/modules/:moduleCode" element={<ModuleMenuPage/>} />
+
 
         <Route
-          path="/play/:moduleCode/:activityCode"
+          path="/modules/:moduleCode/:missionKey"
           element={<ModuleFrame />}
+          // path="/play/:moduleCode/:activityCode"
           // element={<ActivityPlayerPage />}
-          
         />
         {/* FIN RUTA PARA LOS MODULOS */}
 
