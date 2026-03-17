@@ -44,24 +44,8 @@ export default function ActivityPlayerPage() {
   });
 
   return (
-    <SceneBackground>
-      <ActivityHeader
-        activityDef={activityDef}
-        scene={player.scene}
-        status={player.netStatus}
-      />
-
-      <FlowRunner
-        activityDef={activityDef}
-        scene={player.scene}
-        game={player.game}
-        locked={player.locked}
-        netStatus={player.netStatus}
-        error={player.error}
-        onExit={player.onExit}
-      />
-
-      <Footer model={player.footerModel} />
-    </SceneBackground>
+    <div className="p-0">
+      <FlowRunner activityDef={activityDef} onExit={() => nav(-1)} />
+    </div>
   );
 }

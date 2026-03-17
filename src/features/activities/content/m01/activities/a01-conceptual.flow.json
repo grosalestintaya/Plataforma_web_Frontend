@@ -59,6 +59,37 @@
         "mediaCaption": " el dinero puede existir en distintos formatos (efectivo y digital)"
       }
     },
+    { 
+  "id": "concept",
+  "template": "scene.concept.v1",
+  "data": {
+    "themeHex": "#049140",
+    "title": "El Dinero y mis decisiones cotidianas",
+    "subtitle": "¿Qué es el dinero?",
+    "explanation": [
+      "El dinero es un medio que permite a las personas pagar bienes y servicios.",
+      "Se utiliza para satisfacer necesidades y deseos en la vida diaria.",
+      "El dinero puede presentarse como monedas, billetes o dinero digital."
+    ],
+    "media": { "src": "img1", "alt": "Niño feliz con dinero" },
+    "mediaCaption": " el dinero puede existir en distintos formatos (efectivo y digital)"
+    }
+  },    { 
+  "id": "concept",
+  "template": "scene.concept.v1",
+  "data": {
+    "themeHex": "#049140",
+    "title": "El Dinero y mis decisiones cotidianas",
+    "subtitle": "¿Qué es el dinero?",
+    "explanation": [
+      "El dinero es un medio que permite a las personas pagar bienes y servicios.",
+      "Se utiliza para satisfacer necesidades y deseos en la vida diaria.",
+      "El dinero puede presentarse como monedas, billetes o dinero digital."
+    ],
+    "media": { "src": "/assets/image001.png", "alt": "Niño feliz con dinero" },
+    "mediaCaption": " el dinero puede existir en distintos formatos (efectivo y digital)"
+    }
+  },      
     {
       "id": "quiz",
       "template": "scene.mcq.v1",
