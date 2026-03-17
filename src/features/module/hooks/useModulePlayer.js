@@ -5,24 +5,26 @@ function clamp(n, min, max) {
 }
 
 /**
- * nav.mode soportados (por ahora):
- * - "normal"   : Atrás/Siguiente (y en la última: Finalizar)
- * - "cta"      : solo un botón central (Ej: Empezar)
- * - "locked"   : botones deshabilitados (procedimental en juego)
- *
- * view.nav ejemplo:
- * { "mode":"cta", "label":"Empezar" }
- * { "mode":"locked", "label":"En progreso..." }
+ * Player de misión:
+ * - missionKey/viewIndex
+ * - footerModel según view.nav.mode
  */
-export function useModulePlayer(moduleData, { onFinishMission } = {}) {
-  const missionKeys = Object.keys(moduleData.missions || {});
-  const initialMission = moduleData.state?.missionKey ?? missionKeys[0];
+export function useModulePlayer(
+  moduleData,
+  { initialMissionKey, onFinishMission, actions } = {},
+) {
+  const missions = moduleData?.missions ?? {};
+  const missionKeys = Object.keys(missions);
 
-  const [missionKey, setMissionKey] = useState(initialMission);
-  const [viewIndex, setViewIndex] = useState(moduleData.state?.viewIndex ?? 0);
+  const startMissionKey = missions?.[initialMissionKey]
+    ? initialMissionKey
+    : missionKeys[0];
 
-  const mission = moduleData.missions?.[missionKey];
-  const views = mission?.views ?? [];
+  const [missionKey, setMissionKey] = useState(startMissionKey);
+  const [viewIndex, setViewIndex] = useState(0);
+  const [finishing, setFinishing] = useState(false);
+
+  const views = missions?.[missionKey]?.views ?? [];
   const safeIndex = views.length ? clamp(viewIndex, 0, views.length - 1) : 0;
   const view = views[safeIndex];
 
@@ -31,51 +33,69 @@ export function useModulePlayer(moduleData, { onFinishMission } = {}) {
 
   const goTo = useCallback(
     (idx) => setViewIndex(views.length ? clamp(idx, 0, views.length - 1) : 0),
-    [views.length]
+    [views.length],
   );
 
-  const goNext = useCallback(() => goTo(safeIndex + 1), [goTo, safeIndex]);
-  const goPrev = useCallback(() => goTo(safeIndex - 1), [goTo, safeIndex]);
+  const next = useCallback(() => goTo(safeIndex + 1), [goTo, safeIndex]);
+  const prev = useCallback(() => goTo(safeIndex - 1), [goTo, safeIndex]);
 
-  // API que el Hero/Minijuegos pueden usar (ej: avanzar cuando completes)
+  const setMission = useCallback(
+    (mk) => {
+      if (!missions?.[mk]) return;
+      setMissionKey(mk);
+      setViewIndex(0); // reset de vista al cambiar misión
+    },
+    [missions],
+  );
+
   const heroApi = useMemo(
-    () => ({
-      goNext,
-      goPrev,
-      goTo,
-      setMission: (mk) => {
-        setMissionKey(mk);
-        setViewIndex(0);
-      },
-    }),
-    [goNext, goPrev, goTo]
+    () => ({ next, prev, goTo, setMission }),
+    [next, prev, goTo, setMission],
   );
 
-  // Modelo para el footer (solo UI)
   const footerModel = useMemo(() => {
     if (!view) {
-      return { type: "normal", left: { enabled: false }, right: { enabled: false } };
+      return {
+        type: "normal",
+        left: { enabled: false },
+        right: { enabled: false },
+        centerText: "Quipu Yachay",
+      };
     }
 
-    const navMode = view.nav?.mode ?? "normal";
+    const mode = view.nav?.mode ?? "normal";
 
-    // CTA ONLY (Empezar)
-    if (navMode === "cta") {
+    // CTA (Ej: Empezar)
+    if (mode === "cta") {
       return {
         type: "cta",
         center: {
           label: view.nav?.label ?? "Empezar",
-          enabled: true,
-          onClick: () => {
-            // por defecto: avanzar a la siguiente vista
-            goNext();
+          enabled: !finishing,
+          onClick: async () => {
+            const actionKey = view.nav?.action;
+
+            // Acción custom (opcional)
+            if (actionKey && actions?.[actionKey]) {
+              const result = await actions[actionKey]({
+                missionKey,
+                viewIndex: safeIndex,
+                view,
+              });
+
+              // Si la acción dice “no avanzar”, se respeta
+              if (result?.next === false) return;
+            }
+
+            // Por defecto: avanzar a la siguiente vista
+            return next();
           },
         },
       };
     }
 
-    // LOCKED (procedimental durante juego)
-    if (navMode === "locked") {
+    // Locked (deshabilita botones)
+    if (mode === "locked") {
       return {
         type: "locked",
         left: { label: "◀ Atrás", enabled: false },
@@ -84,32 +104,48 @@ export function useModulePlayer(moduleData, { onFinishMission } = {}) {
       };
     }
 
-    // NORMAL
-    const rightLabel = isLast ? "Finalizar" : "Siguiente ▶";
-    const rightEnabled = true; // incluso en last
-    const rightClick = () => {
-      if (isLast) {
-        onFinishMission?.({ missionKey });
-      } else {
-        goNext();
-      }
-    };
-
+    // Normal (última -> Finalizar)
     return {
       type: "normal",
-      left: { label: "◀ Atrás", enabled: !isFirst, onClick: goPrev },
+      left: {
+        label: "◀ Atrás",
+        enabled: !isFirst && !finishing,
+        onClick: prev,
+      },
       centerText: "Quipu Yachay",
-      right: { label: rightLabel, enabled: rightEnabled, onClick: rightClick },
+      right: {
+        label: isLast ? "Finalizar" : "Siguiente ▶",
+        enabled: !finishing,
+        onClick: async () => {
+          if (!isLast) return next();
+          try {
+            setFinishing(true);
+            await onFinishMission?.({ missionKey });
+          } finally {
+            setFinishing(false);
+          }
+        },
+      },
     };
-  }, [view, isFirst, isLast, goNext, goPrev, onFinishMission, missionKey]);
+  }, [
+    view,
+    isFirst,
+    isLast,
+    prev,
+    next,
+    onFinishMission,
+    missionKey,
+    finishing,
+    actions, // ✅ clave: evita usar actions “viejo”
+  ]);
 
   return {
     missionKey,
-    setMissionKey,
     viewIndex: safeIndex,
     view,
-    viewsCount: views.length,
-    footerModel,
     heroApi,
+    footerModel,
+    setMission,
+    goTo,
   };
 }
