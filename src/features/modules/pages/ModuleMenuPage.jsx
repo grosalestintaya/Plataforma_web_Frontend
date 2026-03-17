@@ -14,12 +14,12 @@ import ModuleMenuActivityPanel from "@/features/modules/components/ModuleMenuAct
 import ModuleMenuMascotPanel from "@/features/modules/components/ModuleMenuMascotPanel";
 
 export default function ModuleMenuPageBeta() {
-  const { moduleKey } = useParams();
+  const { moduleCode } = useParams();
   const navigate = useNavigate();
 
-  const theme = useMemo(() => getModuleTheme(moduleKey), [moduleKey]);
-  const mascot = useMemo(() => getMascotForModule(moduleKey), [moduleKey]);
-  const modulePrimaryHex = MODULE_COLORS_HEX[moduleKey] || theme.primary;
+  const theme = useMemo(() => getModuleTheme(moduleCode), [moduleCode]);
+  const mascot = useMemo(() => getMascotForModule(moduleCode), [moduleCode]);
+  const modulePrimaryHex = MODULE_COLORS_HEX[moduleCode] || theme.primary;
 
   const {
     wallet,
@@ -34,7 +34,7 @@ export default function ModuleMenuPageBeta() {
     canPlay,
     ctaLabel,
     mascotText,
-  } = useModuleMenuData(moduleKey);
+  } = useModuleMenuData(moduleCode);
 
   const handlePlay = () => {
     if (!selectedActivity || !moduleData) return;
