@@ -1,8 +1,8 @@
-import Header from "./structure/Header";
+//import Header from "./structure/Header";
 import Hero from "./structure/Hero";
 import Footer from "./structure/Footer";
 import SceneBackground from "@/features/activities/components/SceneBackground";
-
+import Header from "./structure/quipuheader";
 import { useMemo, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { MODULE_CONTENT_MAP } from "../content/content.registry";
@@ -86,9 +86,7 @@ export default function ModuleFrame() {
   // track para enviar eventos durante misión
   const heroApi = { ...player.heroApi, track: missionAttempt.track };
   return (
-    <SceneBackground
-      className="overflow-hidden"
-    >
+    <SceneBackground className="overflow-hidden">
       <div className="min-h-screen w-full grid grid-rows-[auto_minmax(0,1fr)_auto]">
         <Header moduleData={moduleData} missionKey={player.missionKey} />
 

@@ -41,7 +41,7 @@ export default function ModuleMenuPageBeta() {
     if (selectedActivity.status === "locked") return;
 
     navigate(
-      `/play/m0${moduleData.sortOrder}/a0${selectedActivity.activityId}`,
+      `/modules/m0${moduleData.sortOrder}/a0${selectedActivity.activityId}`,
     );
   };
 

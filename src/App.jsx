@@ -72,8 +72,7 @@ function App() {
             <PrivateRoute>
               <SideBar />
             </PrivateRoute>
-          }
-        >
+          }>
           {/* /app */}
           <Route index element={<Inicio />} />
 
@@ -158,8 +157,7 @@ function App() {
 
         {/* RUTA PARA LOS MODULOS */}
         {/* <Route path="/modules/:moduleKey" element={<ModuleMenuPage />} /> */}
-        <Route path="/modules/:moduleCode" element={<ModuleMenuPage/>} />
-
+        <Route path="/modules/:moduleCode" element={<ModuleMenuPage />} />
 
         <Route
           path="/modules/:moduleCode/:missionKey"
