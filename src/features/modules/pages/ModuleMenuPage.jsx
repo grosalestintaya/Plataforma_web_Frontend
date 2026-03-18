@@ -39,10 +39,15 @@ export default function ModuleMenuPageBeta() {
   const handlePlay = () => {
     if (!selectedActivity || !moduleData) return;
     if (selectedActivity.status === "locked") return;
-
-    navigate(
-      `/modules/m0${moduleData.sortOrder}/a0${selectedActivity.activityId}`,
-    );
+    const activityType =
+      selectedActivity.activityId === 1
+        ? "conceptual"
+        : selectedActivity.activityId === 2
+          ? "procedimental"
+          : selectedActivity.activityId === 3
+            ? "actitudinal"
+            : null;
+    navigate(`/modules/m0${moduleData.sortOrder}/${activityType}`);
   };
 
   if (loading) return <div className="p-6 text-white">Cargando módulo...</div>;
