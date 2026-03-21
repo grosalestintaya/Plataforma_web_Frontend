@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { TeacherStudentsService } from "../../../modules/dashboard/services/teacherStudents.service"; // ajusta ruta según tu estructura
+import { TeacherStudentsService } from "../../../modulesuujhki/dashboard/services/teacherStudents.service"; // ajusta ruta según tu estructura
 
 /**
  * Vista docente: lista de estudiantes asignados.

@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
-import { cn } from "@/shared/lib/utils";
-import Image from "./Image";
+import { cn } from "@/shared/libs/utils";
+import Image from "../Image";
 
 function shuffle(arr) {
   const a = [...arr];
@@ -12,7 +12,7 @@ function shuffle(arr) {
 }
 
 export default function MemoryPairsGame({
-  cards = [],
+  cards = ["d","fdf"],
   grid = { cols: 4, rows: 3 },
   finishLabel = "Fin",
   onFinish,
@@ -75,7 +75,7 @@ export default function MemoryPairsGame({
               )}
             >
               {faceUp ? (
-                <Image src={c.img} alt="carta" className="h-[70%]" />
+                <Image src={c.img} alt={{pairId}} className="h-[70%]" />
               ) : (
                 <div className="text-white/40 text-xs">?</div>
               )}

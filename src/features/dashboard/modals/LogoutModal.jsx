@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../modules/auth/components/AuthContext";
+import { useAuth } from "../../modulesuujhki/auth/components/AuthContext";
 
 export default function LogoutModal({ open, onClose }) {
   const { logout } = useAuth();

@@ -1,7 +1,19 @@
 import TeoriaTemplate from "./teoria/TeoriaTemplate";
-import MemoryPairsTemplate from "./memoryPairs/MemoryPairsTemplate";
+import StepGuideTemplate from "./stepGuide/StepGuideTemplate";
+import ScenarioExplorerTemplate from "./scenarioExplorer/ScenarioExplorerTemplate";
+import ChoiceRevealTemplate from "./choiceReveal/ChoiceRevealTemplate";
+
+// Games
+import MemoryPairsGame  from "../blocks/Games/MemoryPairsGame";
+
+
 
 export const templates = {
+  // Template expositivo base del sistema.
   teoria: TeoriaTemplate,
-  memoryPairs: MemoryPairsTemplate
+  choiceReveal: ChoiceRevealTemplate,
+  stepGuide: StepGuideTemplate,
+  scenarioExplorer: ScenarioExplorerTemplate,
+  // Legacy: se mantiene mientras migramos contenido viejo.
+  memoryPairs: MemoryPairsGame,
 };

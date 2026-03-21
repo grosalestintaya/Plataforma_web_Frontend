@@ -1,3 +1,3 @@
-export { default as ModuleFrame } from "./components/ModuleFrame";
-export { default as Hero } from "./components/structure/Hero";
+export { default as ModuleFrame } from "./pages/ModuleActivtyPage";
+export { default as Hero } from "./components/activity/ActivityHero";
 // export * as moduleContent from "./content";

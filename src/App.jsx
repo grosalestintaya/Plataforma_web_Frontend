@@ -33,10 +33,9 @@ import GradeStudents from "./features/dashboard/pages/teacher/GradeStudents.jsx"
 import StudentDetails from "./features/dashboard/pages/teacher/StudentDetails.jsx";
 import Store from "./features/dashboard/pages/shared/Store.jsx";
 import HeatMap from "./features/dashboard/pages/shared/heatMap.jsx";
-import ModuleMenuPage from "./features/modules/pages/ModuleMenuPage.jsx";
+import ModuleMenuPage from "./features/module/pages/ModuleMenuPage.jsx";
 
-import ModuleFrame from "./features/module/components/ModuleFrame.jsx";
-import ActivityPlayerPage from "./features/activities/pages/ActivityPlayerPage.jsx";
+import ModuleActivtyPage from "./features/module/pages/ModuleActivtyPage.jsx";
 
 function App() {
   return (
@@ -159,12 +158,7 @@ function App() {
         {/* <Route path="/modules/:moduleKey" element={<ModuleMenuPage />} /> */}
         <Route path="/modules/:moduleCode" element={<ModuleMenuPage />} />
 
-        <Route
-          path="/modules/:moduleCode/:missionKey"
-          element={<ModuleFrame />}
-          // path="/play/:moduleCode/:activityCode"
-          // element={<ActivityPlayerPage />}
-        />
+        <Route path="/modules/:moduleCode/:missionKey" element={<ModuleActivtyPage />} />
         {/* FIN RUTA PARA LOS MODULOS */}
 
         <Route path="/dashboard" element={<Navigate to="/app" replace />} />

@@ -1,0 +1,36 @@
+{
+  "id": "procedimental",
+  "activityId": "02",
+  "activityKey": "m01-procedimental",
+  "headerTitle": "Procedimental",
+  "missionTitle": "Clasificacion y priorizacion de gastos",
+  "views": [
+    {
+      "id": "m1_p_01_intro_practica",
+      "template": "teoria",
+      "variant": "split",
+      "data": {
+        "title": {
+          "text": "Hora de practicar",
+          "variant": "hero"
+        },
+        "leftText": {
+          "paragraphs": [
+            "Usaras una cantidad limitada de dinero durante un dia escolar.",
+            "Tendras S/ 3.00 para usarlo en transporte, comida y otras situaciones.",
+            "Observa con atencion cada escenario antes de decidir."
+          ],
+          "variant": "body"
+        },
+        "rightImage": {
+          "src": "",
+          "alt": "Hora de practicar"
+        }
+      },
+      "nav": {
+        "mode": "cta",
+        "label": "Empezar"
+      }
+    }
+  ]
+}
