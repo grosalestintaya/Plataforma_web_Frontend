@@ -1,45 +1,51 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import UserCard from "../../components/UserCard";
 import InsigniasCard from "../../components/InsigniasCardRemote";
 import StudentModulesCenter from "../../components/StudentModulesCenter";
-const Inicio = () => {
-  const user = {
-    nombre: "George Rosales Tintaya",
-    puntos: 300,
-    nivel: "Chasque",
-    progreso: 98,
-    institucion: "IE San Francisco",
-    seccion: "3ro Grado",
-    monedas: 100,
-    foto: "https://unavatar.io/kikobeats",
-  };
+import { getHomeUser } from "@/features/dashboard/services/home.service";
 
-  const insignias = [
-    "https://cdn-icons-png.flaticon.com/512/616/616408.png",
-    "https://cdn-icons-png.flaticon.com/512/616/616554.png",
-    "https://cdn-icons-png.flaticon.com/512/616/616490.png",
-  ];
+const Inicio = () => {
+  const [user, setUser] = useState({
+    nombre: "",
+    puntos: 0,
+    nivel: "Yachaq",
+    progreso: 0,
+    institucion: "",
+    seccion: "",
+    monedas: 0,
+    foto: "default",
+  });
+
+  useEffect(() => {
+    let mounted = true;
+
+    const loadHomeUser = async () => {
+      try {
+        const data = await getHomeUser();
+        if (!mounted) return;
+        setUser(data);
+      } catch (error) {
+        console.error("Error cargando home user:", error);
+      }
+    };
+
+    loadHomeUser();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   return (
-    // Dashboard - sin Aside
     <div className="flex flex-col gap-4 w-full">
       <UserCard user={user} />
 
-
-      {/* SIEMPRE FILA */}
       <div className="flex w-full items-start gap-4">
-
-
-        {/* MAPA DE MODULOS
-            CENTRO: se expande */}
         <div className="flex-1 min-w-0">
           <StudentModulesCenter />
         </div>
-
-        {/* COLUMNA DONDE SE MUESTRAN LAS INSIGNIAS
-            DERECHA: ancho fijo + pegado a la derecha */}
         <div className="w-[160px] shrink-0 ml-auto">
-          <InsigniasCard insignias={insignias} />
+          <InsigniasCard />
         </div>
       </div>
     </div>

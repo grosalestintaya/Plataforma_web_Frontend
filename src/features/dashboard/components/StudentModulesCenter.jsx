@@ -1,4 +1,11 @@
-import React, { useEffect, useId, useMemo, useRef, useState } from "react";
+import React, {
+  useEffect,
+  useLayoutEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import { CheckCircle2, Lock, PlayCircle } from "lucide-react";
 import module1 from "@/assets/modulepics/module-1.png";
@@ -149,7 +156,7 @@ function makePath(points) {
 }
 
 function PathWithGlow({ width, height, nodesPx, activeOrder, tokens }) {
-  const d = makePath(nodesPx);
+  const d = useMemo(() => makePath(nodesPx), [nodesPx]);
 
   const uid = useId().replace(/:/g, "");
   const pathId = `path-${uid}`;
@@ -157,18 +164,37 @@ function PathWithGlow({ width, height, nodesPx, activeOrder, tokens }) {
   const gradId = `pathGrad-${uid}`;
   const litMaskId = `litMask-${uid}`;
 
-  const litUpTo = clamp(activeOrder - 1, 0, 6);
-  const total = 1200;
-  const litLen = total * (litUpTo / 6);
+  const motionPathRef = useRef(null);
+  const [pathLen, setPathLen] = useState(0);
 
+  const litUpTo = clamp(activeOrder - 1, 0, Math.max(nodesPx.length - 1, 0));
   const showParticles = litUpTo >= 1;
+
+  useLayoutEffect(() => {
+    const el = motionPathRef.current;
+    if (!el || !d) return;
+
+    try {
+      const len = el.getTotalLength();
+      if (Number.isFinite(len) && len > 0) {
+        setPathLen(len);
+      }
+    } catch {
+      setPathLen(0);
+    }
+  }, [d, width, height]);
+
+  const litLen =
+    pathLen > 0 ? pathLen * (litUpTo / Math.max(nodesPx.length - 1, 1)) : 0;
+
+  if (!d) return null;
 
   return (
     <svg
-      className="absolute inset-0"
-      width={width}
-      height={height}
-      viewBox={`0 0 ${width} ${height}`}>
+      key={`${width}-${height}-${d}`}
+      className="absolute inset-0 h-full w-full pointer-events-none"
+      viewBox={`0 0 ${width} ${height}`}
+      preserveAspectRatio="none">
       <defs>
         <filter id={glowId} x="-40%" y="-40%" width="180%" height="180%">
           <feGaussianBlur stdDeviation="6" result="blur" />
@@ -183,26 +209,32 @@ function PathWithGlow({ width, height, nodesPx, activeOrder, tokens }) {
           <stop offset="1" stopColor={tokens.accent} />
         </linearGradient>
 
-        {/* Ruta base para animateMotion */}
-        <path id={pathId} d={d} />
-
-        {/* Mask: revela solo tramo encendido */}
         <mask id={litMaskId} maskUnits="userSpaceOnUse">
           <rect x="0" y="0" width={width} height={height} fill="black" />
-          <path
-            d={d}
-            fill="none"
-            stroke="white"
-            strokeWidth="18"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            style={{
-              strokeDasharray: `${litLen} ${total}`,
-              strokeDashoffset: 0,
-            }}
-          />
+          {pathLen > 0 && (
+            <path
+              d={d}
+              fill="none"
+              stroke="white"
+              strokeWidth="18"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeDasharray={`${litLen} ${pathLen}`}
+              strokeDashoffset="0"
+            />
+          )}
         </mask>
       </defs>
+
+      {/* path real para medir y para motion */}
+      <path
+        ref={motionPathRef}
+        id={pathId}
+        d={d}
+        fill="none"
+        stroke="transparent"
+        strokeWidth="1"
+      />
 
       {/* camino base */}
       <path
@@ -215,20 +247,20 @@ function PathWithGlow({ width, height, nodesPx, activeOrder, tokens }) {
       />
 
       {/* camino iluminado */}
-      <path
-        d={d}
-        fill="none"
-        stroke={`url(#${gradId})`}
-        strokeWidth="10"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        filter={`url(#${glowId})`}
-        style={{
-          strokeDasharray: `${litLen} ${total}`,
-          strokeDashoffset: 0,
-          opacity: 0.92,
-        }}
-      />
+      {pathLen > 0 && (
+        <path
+          d={d}
+          fill="none"
+          stroke={`url(#${gradId})`}
+          strokeWidth="10"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          filter={`url(#${glowId})`}
+          strokeDasharray={`${litLen} ${pathLen}`}
+          strokeDashoffset="0"
+          opacity="0.92"
+        />
+      )}
 
       {/* puntos guía */}
       {nodesPx.map((p, idx) => (
@@ -246,9 +278,9 @@ function PathWithGlow({ width, height, nodesPx, activeOrder, tokens }) {
         />
       ))}
 
-      {/* partículas viajando solo por tramo encendido */}
-      {showParticles && (
-        <g mask={`url(#${litMaskId})`} opacity="0.95">
+      {/* partículas */}
+      {showParticles && pathLen > 0 && (
+        <g key={`particles-${d}`} mask={`url(#${litMaskId})`} opacity="0.95">
           <circle r="4.2" fill="rgba(255,255,255,0.95)">
             <animateMotion
               dur="2.6s"
@@ -368,10 +400,7 @@ function MapNode({ module, tokens, x, y, size, isActive }) {
               ? "float-node 3.5s ease-in-out infinite"
               : "none",
         }}>
-
-          
         <div className="relative">
-
           {/* halo pulsante (nodo activo) */}
           {isActive && !isLocked && !isComplete && (
             <div
@@ -743,15 +772,27 @@ export default function StudentModulesCenter() {
   const activeOrder = useMemo(() => pickActiveSortOrder(modules), [modules]);
 
   const [stage, setStage] = useState({ w: 1200, h: 520 });
-
   const recalcStage = () => {
     const el = stageRef.current;
     if (!el) return;
 
-    const w = Math.max(360, Math.floor(el.getBoundingClientRect().width));
-    const h = clamp(Math.floor(w * 0.36), 380, 520);
+    const w = Math.max(320, Math.floor(el.getBoundingClientRect().width));
 
-    setStage({ w, h });
+    let ratio = 0.56;
+    if (w >= 640) ratio = 0.48;
+    if (w >= 768) ratio = 0.43;
+    if (w >= 1024) ratio = 0.38;
+    if (w >= 1280) ratio = 0.34;
+
+    const minH = w < 640 ? 260 : w < 768 ? 300 : w < 1024 ? 340 : 380;
+    const maxH = w < 640 ? 360 : w < 768 ? 420 : w < 1024 ? 480 : 560;
+
+    const h = clamp(Math.round(w * ratio), minH, maxH);
+
+    setStage((prev) => {
+      if (prev.w === w && prev.h === h) return prev;
+      return { w, h };
+    });
   };
 
   useResizeObserver(stageRef, recalcStage);
@@ -772,8 +813,11 @@ export default function StudentModulesCenter() {
     [nodes, stage],
   );
 
-  const nodeSize = clamp(Math.round(stage.w * 0.07), 68, 116);
-
+  const nodeSize = clamp(
+    Math.round(Math.min(stage.w * 0.07, stage.h * 0.22)),
+    60,
+    116,
+  );
   return (
     <section
       ref={containerRef}
@@ -798,7 +842,6 @@ export default function StudentModulesCenter() {
               borderColor: "bg-transparent",
               backgroundColor: tokens.primary,
             }}>
-
             {/* Fondo pergamino SVG */}
             <ParchmentBg radius={24} />
 

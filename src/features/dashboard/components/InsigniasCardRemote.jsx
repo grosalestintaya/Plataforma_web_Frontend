@@ -6,17 +6,36 @@ const INSIGNIA_BASE_URL = "/insignias";
 
 const MODULE_SLOTS = [
   { baseName: "Suyu", img: "suyu.png", imgPerfect: "suyu_perfecto.png" },
-  { baseName: "Antisuyo", img: "antisuyo.png", imgPerfect: "antisuyo_perfecto.png" },
-  { baseName: "Collasuyo", img: "collasuyo.png", imgPerfect: "collasuyo_perfecto.png" },
-  { baseName: "Contisuyo", img: "contisuyo.png", imgPerfect: "contisuyo_perfecto.png" },
-  { baseName: "Chinchaysuyo", img: "chinchaysuyo.png", imgPerfect: "chinchaysuyo_perfecto.png" },
+  {
+    baseName: "Antisuyo",
+    img: "antisuyo.png",
+    imgPerfect: "antisuyo_perfecto.png",
+  },
+  {
+    baseName: "Collasuyo",
+    img: "collasuyo.png",
+    imgPerfect: "collasuyo_perfecto.png",
+  },
+  {
+    baseName: "Contisuyo",
+    img: "contisuyo.png",
+    imgPerfect: "contisuyo_perfecto.png",
+  },
+  {
+    baseName: "Chinchaysuyo",
+    img: "chinchaysuyo.png",
+    imgPerfect: "chinchaysuyo_perfecto.png",
+  },
   { baseName: "Centro", img: "centro.png", imgPerfect: "centro_perfecto.png" },
 ];
 
 const resolveImg = (f) => `${INSIGNIA_BASE_URL}/${f}`;
 const normalize = (n) => String(n || "").trim();
 const isPerfect = (n) => /\s+Perfecto$/i.test(normalize(n));
-const baseName = (n) => normalize(n).replace(/\s+Perfecto$/i, "").trim();
+const baseName = (n) =>
+  normalize(n)
+    .replace(/\s+Perfecto$/i, "")
+    .trim();
 
 export default function InsigniasCard() {
   const token = localStorage.getItem("token");
@@ -71,7 +90,11 @@ export default function InsigniasCard() {
     });
 
     // opcional: ordenar por fecha desc si el backend no lo hace
-    items.sort((a, b) => new Date(b.awardedAt || 0).getTime() - new Date(a.awardedAt || 0).getTime());
+    items.sort(
+      (a, b) =>
+        new Date(b.awardedAt || 0).getTime() -
+        new Date(a.awardedAt || 0).getTime(),
+    );
     return items;
   }, [raw]);
 
@@ -93,12 +116,10 @@ export default function InsigniasCard() {
         style={{
           background: "color-mix(in srgb, var(--accent) 80%, transparent)",
           borderColor: "var(--usercard-border)",
-        }}
-      >
+        }}>
         <h3
           className="text-[16px] font-extrabold text-center mb-2"
-          style={{ color: "var(--background)" }}
-        >
+          style={{ color: "var(--background)" }}>
           Insignias
         </h3>
 
@@ -117,7 +138,9 @@ export default function InsigniasCard() {
               : `${slot.baseName} (bloqueado)`;
 
             return (
-              <div key={slot.baseName} className="group relative flex flex-col items-center">
+              <div
+                key={slot.baseName}
+                className="group relative flex flex-col items-center">
                 {idx !== 0 && <div className="h-3 w-px bg-white" />}
 
                 <div
@@ -127,10 +150,9 @@ export default function InsigniasCard() {
                     boxShadow: perfect
                       ? `0 0 14px var(--accent)`
                       : unlocked
-                      ? "0 6px 12px rgba(0,0,0,0.12)"
-                      : "none",
-                  }}
-                >
+                        ? "0 6px 12px rgba(0,0,0,0.12)"
+                        : "none",
+                  }}>
                   <img
                     src={resolveImg(img)}
                     alt={slot.baseName}
@@ -145,7 +167,9 @@ export default function InsigniasCard() {
                   )}
                 </div>
 
-                {idx !== MODULE_SLOTS.length - 1 && <div className="h-3 w-px bg-white/80" />}
+                {idx !== MODULE_SLOTS.length - 1 && (
+                  <div className="h-3 w-px bg-white/80" />
+                )}
 
                 {/* Tooltip a la izquierda */}
                 <div className="pointer-events-none absolute right-full top-1/2 hidden -translate-y-1/2 group-hover:block">
@@ -165,8 +189,7 @@ export default function InsigniasCard() {
             borderColor: "var(--usercard-border)",
             background: "var(--usercard-accent)",
             color: "var(--chip-bg)",
-          }}
-        >
+          }}>
           Ver todas
         </button>
       </div>
@@ -175,27 +198,33 @@ export default function InsigniasCard() {
       {open ? (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 p-6"
-          onClick={() => setOpen(false)}
-        >
+          onClick={() => setOpen(false)}>
           <div
             className="w-full max-w-3xl rounded-3xl border shadow-2xl overflow-hidden"
             style={{
               background: "color-mix(in srgb, var(--app-bg) 85%, white)",
               borderColor: "var(--usercard-border)",
             }}
-            onClick={(e) => e.stopPropagation()}
-          >
+            onClick={(e) => e.stopPropagation()}>
             {/* Header modal */}
             <div
               className="flex items-center justify-between px-5 py-4 border-b"
-              style={{ borderColor: "color-mix(in srgb, var(--usercard-border) 70%, transparent)" }}
-            >
+              style={{
+                borderColor:
+                  "color-mix(in srgb, var(--usercard-border) 70%, transparent)",
+              }}>
               <div>
-                <div className="text-lg font-extrabold" style={{ color: "var(--dash-title-text)" }}>
+                <div
+                  className="text-lg font-extrabold"
+                  style={{ color: "var(--dash-title-text)" }}>
                   Tus insignias
                 </div>
-                <div className="text-xs" style={{ color: "rgba(100,116,139,0.95)" }}>
-                  {loading ? "Cargando..." : `${modalItems.length} / 12 desbloqueadas`}
+                <div
+                  className="text-xs"
+                  style={{ color: "rgba(100,116,139,0.95)" }}>
+                  {loading
+                    ? "Cargando..."
+                    : `${modalItems.length} / 12 desbloqueadas`}
                 </div>
               </div>
 
@@ -205,10 +234,10 @@ export default function InsigniasCard() {
                 style={{
                   borderColor: "var(--usercard-border)",
                   color: "var(--dash-title-text)",
-                  background: "color-mix(in srgb, var(--accent) 10%, transparent)",
+                  background:
+                    "color-mix(in srgb, var(--accent) 10%, transparent)",
                 }}
-                title="Cerrar"
-              >
+                title="Cerrar">
                 <X className="h-4 w-4" />
               </button>
             </div>
@@ -216,12 +245,14 @@ export default function InsigniasCard() {
             {/* Body */}
             <div className="p-5">
               {modalItems.length === 0 ? (
-                <div className="rounded-2xl border p-4 text-sm"
-                     style={{
-                       borderColor: "var(--usercard-border)",
-                       background: "color-mix(in srgb, var(--accent) 8%, transparent)",
-                       color: "var(--dash-title-text)",
-                     }}>
+                <div
+                  className="rounded-2xl border p-4 text-sm"
+                  style={{
+                    borderColor: "var(--usercard-border)",
+                    background:
+                      "color-mix(in srgb, var(--accent) 8%, transparent)",
+                    color: "var(--dash-title-text)",
+                  }}>
                   Aún no tienes insignias desbloqueadas.
                 </div>
               ) : (
@@ -232,17 +263,17 @@ export default function InsigniasCard() {
                       className="group rounded-2xl border p-3 flex flex-col items-center gap-2 transition hover:-translate-y-0.5 hover:shadow-lg"
                       style={{
                         borderColor: "var(--usercard-border)",
-                        background: "color-mix(in srgb, var(--accent) 6%, white)",
+                        background:
+                          "color-mix(in srgb, var(--accent) 6%, white)",
                       }}
-                      title={it.description || it.name}
-                    >
+                      title={it.description || it.name}>
                       <div
                         className="h-16 w-16 rounded-2xl border flex items-center justify-center"
                         style={{
-                          borderColor: "color-mix(in srgb, var(--usercard-border) 70%, transparent)",
+                          borderColor:
+                            "color-mix(in srgb, var(--usercard-border) 70%, transparent)",
                           background: "#fff",
-                        }}
-                      >
+                        }}>
                         <img
                           src={it.img}
                           alt={it.name}
@@ -251,13 +282,16 @@ export default function InsigniasCard() {
                         />
                       </div>
 
-                      <div className="text-xs font-extrabold text-center line-clamp-2" style={{ color: "var(--dash-title-text)" }}>
+                      <div
+                        className="text-xs font-extrabold text-center line-clamp-2"
+                        style={{ color: "var(--dash-title-text)" }}>
                         {it.name}
                       </div>
 
                       {/* mini detalle (solo hover) */}
-                      <div className="hidden group-hover:block text-[11px] text-center leading-snug"
-                           style={{ color: "rgba(100,116,139,0.95)" }}>
+                      <div
+                        className="hidden group-hover:block text-[11px] text-center leading-snug"
+                        style={{ color: "rgba(100,116,139,0.95)" }}>
                         {it.description ? it.description : "—"}
                       </div>
                     </div>
@@ -269,16 +303,17 @@ export default function InsigniasCard() {
             {/* Footer */}
             <div
               className="flex justify-end px-5 py-4 border-t"
-              style={{ borderColor: "color-mix(in srgb, var(--usercard-border) 70%, transparent)" }}
-            >
+              style={{
+                borderColor:
+                  "color-mix(in srgb, var(--usercard-border) 70%, transparent)",
+              }}>
               <button
                 onClick={() => setOpen(false)}
                 className="rounded-xl px-4 py-2 text-sm font-extrabold transition"
                 style={{
                   background: "var(--primary)",
                   color: "var(--primary-foreground)",
-                }}
-              >
+                }}>
                 Listo
               </button>
             </div>

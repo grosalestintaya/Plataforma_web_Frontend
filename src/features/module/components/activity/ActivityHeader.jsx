@@ -80,7 +80,7 @@ export default function Header({
 
           <div className="flex items-center justify-end">
             <HeaderSettingsButton
-              onClick={onOpenSettings}
+              onClick={ConfiguracionModal}
               themeHex={themeHex}
               iconSrc={gearIconSrc}
             />

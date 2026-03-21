@@ -1,10 +1,12 @@
 import React from "react";
 import MascotTutorDemo from "@/features/guidepet/MascotTutorDemo";
 import xpicon from "@/assets/dashboard/xp.png";
-import coinicon from "@/assets/dashboard/coin.png";
-
+import CoinsPanel from "./coins";
+import XpPanel from "./xp";
 function hexToRgb(hex) {
-  const h = String(hex || "#000").replace("#", "").trim();
+  const h = String(hex || "#000")
+    .replace("#", "")
+    .trim();
   const full =
     h.length === 3
       ? h
@@ -38,22 +40,23 @@ function StatBadge({
     <div
       className="flex min-w-[138px] items-center gap-3 rounded-2xl px-3 py-2.5"
       style={{
-        background: `linear-gradient(180deg, ${withAlpha("#ffffff", 0.08)}, ${withAlpha("#000000", 0.18)})`,
+        background: `linear-gradient(180deg, ${withAlpha(
+          "#ffffff",
+          0.08,
+        )}, ${withAlpha("#000000", 0.18)})`,
         boxShadow: `
           0 12px 28px ${withAlpha("#000000", 0.24)},
           0 0 0 1px ${withAlpha("#ffffff", 0.12)},
           0 0 0 4px ${withAlpha(themeHex, 0.08)}
         `,
         backdropFilter: "blur(8px)",
-      }}
-    >
+      }}>
       <div
         className="grid h-11 w-11 shrink-0 place-items-center rounded-xl"
         style={{
           background: iconBg,
           boxShadow: `inset 0 1px 0 ${withAlpha("#ffffff", 0.1)}`,
-        }}
-      >
+        }}>
         <img
           src={iconSrc}
           alt={label}
@@ -80,34 +83,23 @@ export default function ModuleMenuMascotPanel({
   text,
   wallet = { xp: 0, coins: 0 },
 }) {
-  return (
-    <aside className="mt-2 flex justify-center xl:absolute xl:right-0 xl:top-[39%] xl:mt-0 xl:w-[290px] xl:-translate-y-1/2">
-      <div className="flex w-full max-w-[360px] flex-col gap-2.5">
-        <div className="flex items-center justify-center gap-3 xl:justify-start">
-          <StatBadge
-            iconSrc={xpicon}
-            label="XP"
-            value={wallet?.xp ?? 0}
-            themeHex={themeHex}
-            iconBg={withAlpha(themeHex, 0.2)}
-          />
+  return (className =
+    "mt-2 flex justify-center xl:absolute xl:right-0 xl:top-[39%] xl:mt-0 xl:w-[290px] xl:-translate-y-1/2" >
+    (
+      <aside className="mt-2 flex justify-center xl:absolute xl:right-0 xl:top-[44%] xl:mt-0 xl:w-[267px] xl:-translate-y-1/2">
+        <div className="flex w-full max-w-[360px] flex-col gap-2.5">
+          <div className="flex flex-wrap items-center justify-center gap-3 xl:justify-start">
+            <XpPanel monedas={wallet?.xp ?? 0} themeHex={themeHex} />
+            <CoinsPanel monedas={wallet?.coins ?? 0} themeHex={themeHex} />
+          </div>
 
-          <StatBadge
-            iconSrc={coinicon}
-            label="Intis"
-            value={wallet?.coins ?? 0}
+          <MascotTutorDemo
+            gifSrc={mascot?.gif}
+            name={mascot?.name}
             themeHex={themeHex}
-            iconBg="rgba(255,196,0,0.18)"
+            text={text}
           />
         </div>
-
-        <MascotTutorDemo
-          gifSrc={mascot.gif}
-          name={mascot.name}
-          themeHex={themeHex}
-          text={text}
-        />
-      </div>
-    </aside>
-  );
+      </aside>
+    ));
 }

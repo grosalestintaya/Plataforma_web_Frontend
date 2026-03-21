@@ -9,6 +9,7 @@ import ModuleMenuLayout from "../components/menu/ModuleMenuLayout";
 import ModuleMenuSelectorPanel from "../components/menu/ModuleMenuSelectorPanel";
 import ModuleMenuActivityPanel from "../components/menu/ModuleMenuActivityPanel";
 import ModuleMenuMascotPanel from "../components/menu/ModuleMenuMascotPanel";
+import { getActivity, getModuleTitle } from "../utils/activityCatalog";
 
 export default function ModuleMenuPage() {
   const { moduleCode } = useParams();
@@ -26,12 +27,21 @@ export default function ModuleMenuPage() {
     effectiveActivities,
     selectedActivity,
     selectedActivityId,
-    setSelectedActivityId,
-    learnBlock,
+      setSelectedActivityId,
     canPlay,
     ctaLabel,
     mascotText,
   } = useModuleMenuData(moduleCode);
+
+  const moduleTitle = useMemo(() => {
+    if (!moduleCode) return "";
+    return getModuleTitle(moduleCode);
+  }, [moduleCode]);
+
+  const activityContent = useMemo(() => {
+    if (!moduleCode || !selectedActivity?.type) return null;
+    return getActivity(moduleCode, selectedActivity.type);
+    }, [moduleCode, selectedActivity?.type]);
 
   const handlePlay = () => {
     if (!selectedActivity || !moduleData) return;
@@ -42,6 +52,7 @@ export default function ModuleMenuPage() {
 
   if (loading) return <div className="p-6 text-white">Cargando modulo...</div>;
   if (error) return <div className="p-6 text-red-300">{error}</div>;
+
   if (!moduleData) {
     return (
       <div className="p-6 text-white">Modulo no encontrado: {moduleCode}</div>
@@ -52,7 +63,7 @@ export default function ModuleMenuPage() {
     <SceneBackground moduleCode={moduleCode}>
       <div className="relative">
         <QuipuHeader
-          title={moduleData.title}
+          title={moduleTitle || moduleData.title}
           themeHex={modulePrimaryHex}
           onBack={() => navigate("/")}
           onOpenSettings={() => console.log("open settings")}
@@ -70,7 +81,7 @@ export default function ModuleMenuPage() {
           center={
             <ModuleMenuActivityPanel
               activity={selectedActivity}
-              learnBlock={learnBlock}
+              activityContent={activityContent}
               themeHex={modulePrimaryHex}
               canPlay={canPlay}
               ctaLabel={ctaLabel}
