@@ -1,6 +1,6 @@
 // src/features/module/templates/teoria.config.js
 export const TEORIA_CONFIG = {
-  // layouts por variante
+  // Cada variante expositiva puede cambiar la composicion visual.
   layouts: {
     simple: {
       base: {
@@ -44,27 +44,71 @@ export const TEORIA_CONFIG = {
   // slots por variante (declara qué bloque va en qué area)
   variants: {
     simple: [
-      { area: "title", block: "Title", children: (d) => d.title },
+      {
+        area: "title",
+        block: "Typografia",
+        props: (d) => ({
+          variant: d.title?.variant ?? "title",
+          tone: d.title?.tone,
+          align: d.title?.align,
+          as: d.title?.as ?? "h2",
+          className: d.title?.className,
+          containerClassName: d.title?.containerClassName,
+        }),
+        children: (d) => d.title,
+      },
       {
         area: "text",
-        block: "Text",
+        block: "Typografia",
         className: "flex items-center justify-center",
+        props: (d) => ({
+          variant: d.text?.variant ?? "body",
+          tone: d.text?.tone,
+          align: d.text?.align,
+          as: d.text?.as,
+          className: d.text?.className,
+          containerClassName: d.text?.containerClassName,
+        }),
         children: (d) => d.text,
       },
       {
         area: "image",
         block: "Image",
         className: "flex items-center justify-center",
-        props: (d) => ({ src: d.image?.src, alt: d.image?.alt }),
+        props: (d) => ({
+          src: d.image?.src,
+          alt: d.image?.alt,
+          placeholderLabel: d.image?.placeholderLabel,
+        }),
       },
     ],
 
     examples: [
-      { area: "title", block: "Title", children: (d) => d.title },
+      {
+        area: "title",
+        block: "Typografia",
+        props: (d) => ({
+          variant: d.title?.variant ?? "title",
+          tone: d.title?.tone,
+          align: d.title?.align,
+          as: d.title?.as ?? "h2",
+          className: d.title?.className,
+          containerClassName: d.title?.containerClassName,
+        }),
+        children: (d) => d.title,
+      },
       {
         area: "text",
-        block: "Text",
+        block: "Typografia",
         className: "flex items-center justify-center",
+        props: (d) => ({
+          variant: d.text?.variant ?? "body",
+          tone: d.text?.tone,
+          align: d.text?.align,
+          as: d.text?.as,
+          className: d.text?.className,
+          containerClassName: d.text?.containerClassName,
+        }),
         children: (d) => d.text,
       },
       {
@@ -75,9 +119,17 @@ export const TEORIA_CONFIG = {
           { block: "ImageCollage", props: (d) => ({ items: d.examples }) },
           // ✅ Texto extra opcional (solo si existe)
           {
-            block: "Text",
+            block: "Typografia",
             when: (d) => Boolean(d.note),
             className: "max-w-[760px] text-xs md:text-sm",
+            props: (d) => ({
+              variant: d.note?.variant ?? "caption",
+              tone: d.note?.tone,
+              align: d.note?.align,
+              as: d.note?.as,
+              className: d.note?.className,
+              containerClassName: d.note?.containerClassName,
+            }),
             children: (d) => d.note,
           },
         ],
@@ -85,29 +137,72 @@ export const TEORIA_CONFIG = {
     ],
 
     split: [
-      { area: "title", block: "Title", children: (d) => d.title },
+      {
+        area: "title",
+        block: "Typografia",
+        props: (d) => ({
+          variant: d.title?.variant ?? "title",
+          tone: d.title?.tone,
+          align: d.title?.align,
+          as: d.title?.as ?? "h2",
+          className: d.title?.className,
+          containerClassName: d.title?.containerClassName,
+        }),
+        children: (d) => d.title,
+      },
       {
         area: "text",
-        block: "Text",
+        block: "Typografia",
         className: "flex items-center justify-center",
-        children: (d) =>
-          Array.isArray(d.leftText) ? d.leftText.join("\n\n") : d.leftText,
+        props: (d) => ({
+          variant: d.leftText?.variant ?? "body",
+          tone: d.leftText?.tone,
+          align: d.leftText?.align ?? "left",
+          as: d.leftText?.as,
+          className: d.leftText?.className,
+          containerClassName: d.leftText?.containerClassName,
+        }),
+        children: (d) => d.leftText,
       },
       {
         area: "image",
         block: "Image",
         className: "flex items-center justify-center",
-        props: (d) => ({ src: d.rightImage?.src, alt: d.rightImage?.alt }),
+        props: (d) => ({
+          src: d.rightImage?.src,
+          alt: d.rightImage?.alt,
+          placeholderLabel: d.rightImage?.placeholderLabel,
+        }),
       },
     ],
 
     compare: [
-      { area: "title", block: "Title", children: (d) => d.title },
+      {
+        area: "title",
+        block: "Typografia",
+        props: (d) => ({
+          variant: d.title?.variant ?? "title",
+          tone: d.title?.tone,
+          align: d.title?.align,
+          as: d.title?.as ?? "h2",
+          className: d.title?.className,
+          containerClassName: d.title?.containerClassName,
+        }),
+        children: (d) => d.title,
+      },
 
       {
         area: "text",
-        block: "Text",
+        block: "Typografia",
         className: "flex items-center justify-center",
+        props: (d) => ({
+          variant: d.text?.variant ?? "body",
+          tone: d.text?.tone,
+          align: d.text?.align,
+          as: d.text?.as,
+          className: d.text?.className,
+          containerClassName: d.text?.containerClassName,
+        }),
         children: (d) => d.text,
       },
 

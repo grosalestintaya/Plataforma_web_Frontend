@@ -1,0 +1,202 @@
+{
+  "modules": [
+    {
+      "id": "module-1",
+      "code": "m01",
+      "legacyCodes": ["m0", "m1"],
+      "sortOrder": 1,
+      "title": "Modulo 1",
+      "name": "Necesidades y deseos",
+      "theme": {
+        "tone": "blue",
+        "color": "#049140",
+        "accent": "#f5b400"
+      },
+      "missions": {
+        "conceptual": {
+          "title": "Necesidades y deseos",
+          "activityId": "01",
+          "activityKey": "m01-conceptual",
+          "learn": [
+            "Que son las finanzas personales y por que importan",
+            "Ingresos, gastos, ahorro y metas en una sola idea"
+          ],
+          "outcome": "Tendras claridad para ordenar tu dinero."
+        },
+        "procedimental": {
+          "title": "Clasificacion y priorizacion de gastos",
+          "activityId": "02",
+          "activityKey": "m01-procedimental",
+          "learn": [
+            "Diferenciar ingresos vs. gastos",
+            "Clasificar gastos fijos, variables y hormiga"
+          ],
+          "outcome": "Podras registrar y entender tus gastos reales."
+        },
+        "actitudinal": {
+          "title": "Autocontrol y presion social",
+          "activityId": "03",
+          "activityKey": "m01-actitudinal",
+          "learn": [
+            "Distinguir necesidad vs. deseo",
+            "Tomar decisiones de compra con intencion"
+          ],
+          "outcome": "Tomaras mejores decisiones al gastar."
+        }
+      }
+    },
+    {
+      "id": "module-2",
+      "code": "m02",
+      "sortOrder": 2,
+      "title": "Modulo 2",
+      "name": "Presupuesto personal",
+      "theme": {
+        "tone": "green",
+        "color": "#1B46F5",
+        "accent": "#facc15"
+      },
+      "missions": {
+        "conceptual": {
+          "title": "Conceptual",
+          "backendActivityId": null,
+          "activityKey": "m02-conceptual",
+          "learn": [
+            "Que es un presupuesto",
+            "Categorias basicas para presupuestar"
+          ],
+          "outcome": "Entenderas como se arma un presupuesto."
+        },
+        "procedimental": {
+          "title": "Procedimental",
+          "backendActivityId": null,
+          "activityKey": "m02-procedimental",
+          "learn": [
+            "Armar un presupuesto mensual",
+            "Asignar limites por categoria"
+          ],
+          "outcome": "Podras crear tu presupuesto y hacerlo realista."
+        },
+        "actitudinal": {
+          "title": "Actitudinal",
+          "backendActivityId": null,
+          "activityKey": "m02-actitudinal",
+          "learn": [
+            "Habitos para gastar con intencion",
+            "Control sin frustracion"
+          ],
+          "outcome": "Crearas habitos sostenibles."
+        }
+      }
+    },
+    {
+      "id": "module-3",
+      "code": "m03",
+      "sortOrder": 3,
+      "title": "Modulo 3",
+      "name": "Ahorro y metas",
+      "theme": {
+        "tone": "orange",
+        "color": "#E29800",
+        "accent": "#fb7185"
+      },
+      "missions": {
+        "conceptual": {
+          "title": "Conceptual",
+          "backendActivityId": null,
+          "activityKey": "m03-conceptual",
+          "learn": [
+            "fhfhgfhgfh",
+            "gggggggggggggggggggggggggggggg"
+          ],
+          "outcome": "Tendras money."
+        },
+
+        "procedimental": {
+          "title": "Procedimental",
+          "backendActivityId": null,
+          "activityKey": "m03-procedimental",
+          "learn": [],
+          "outcome": ""
+        },
+        "actitudinal": {
+          "title": "Actitudinal",
+          "backendActivityId": null,
+          "activityKey": "m03-actitudinal",
+          "learn": [],
+          "outcome": ""
+        }
+      }
+    },
+    {
+      "id": "module-4",
+      "code": "m04",
+      "sortOrder": 4,
+      "title": "Modulo 4",
+      "name": "Consumo informado",
+      "theme": {
+        "tone": "violet",
+        "color": "#F01253",
+        "accent": "#22d3ee"
+      },
+      "missions": {
+        "conceptual": {
+          "title": "Conceptual",
+          "backendActivityId": null,
+          "activityKey": "m04-conceptual",
+          "learn": [],
+          "outcome": ""
+        },
+        "procedimental": {
+          "title": "Procedimental",
+          "backendActivityId": null,
+          "activityKey": "m04-procedimental",
+          "learn": [],
+          "outcome": ""
+        },
+        "actitudinal": {
+          "title": "Actitudinal",
+          "backendActivityId": null,
+          "activityKey": "m04-actitudinal",
+          "learn": [],
+          "outcome": ""
+        }
+      }
+    },
+    {
+      "id": "module-5",
+      "code": "m05",
+      "sortOrder": 5,
+      "title": "Modulo 5",
+      "name": "Toma de decisiones financieras",
+      "theme": {
+        "tone": "rose",
+        "color": "#7130F7",
+        "accent": "#38bdf8"
+      },
+      "missions": {
+        "conceptual": {
+          "title": "Conceptual",
+          "backendActivityId": null,
+          "activityKey": "m05-conceptual",
+          "learn": [],
+          "outcome": ""
+        },
+        "procedimental": {
+          "title": "Procedimental",
+          "backendActivityId": null,
+          "activityKey": "m05-procedimental",
+          "learn": [],
+          "outcome": ""
+        },
+        "actitudinal": {
+          "title": "Actitudinal",
+          "backendActivityId": null,
+          "activityKey": "m05-actitudinal",
+          "learn": [],
+          "outcome": ""
+        }
+      }
+    }
+  ]
+}

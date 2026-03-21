@@ -1,11 +1,14 @@
-import HeroGrid from "@/features/module/engine/HeroGrid";
-import HeroArea from "@/features/module/engine/HeroArea";
+// Template base para pantallas teoricas o expositivas.
+import HeroGrid from "../_core/HeroGrid";
+import HeroArea from "../_core/HeroArea";
+import { renderSlot } from "../_core/SlotRenderer";
 import { normalizeLayout } from "../_core/layouts.helpers";
+
 import { TEORIA_CONFIG } from "./teoria.config";
 import * as Blocks from "@/features/module/blocks";
-import { renderSlot } from "../_core/SlotRenderer";
 
 export default function TeoriaTemplate({ variant = "simple", data }) {
+  // Si la variante no existe, usa la expositiva mas simple.
   const vKey = TEORIA_CONFIG.variants[variant]
     ? variant
     : TEORIA_CONFIG.fallbackVariant;

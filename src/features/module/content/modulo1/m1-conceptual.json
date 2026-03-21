@@ -1,0 +1,244 @@
+{
+  "id": "conceptual",
+  "activityId": "01",
+  "activityKey": "m01-conceptual",
+  "headerTitle": "Conceptual",
+  "missionTitle": "Necesidades y deseos",
+  "views": [
+    {
+      "id": "m1_conceptual_intro",
+      "template": "teoria",
+      "variant": "split",
+      "data": {
+        "title": "Antes de empezar",
+        "leftText": [
+          "Lee con calma las indicaciones.",
+          "Tu intento se registrará cuando presioSnes “Empezar”.",
+          "Avanza por las vistas y completa la actividad final.",
+          "Al finalizar, tu progreso se guardará automáticamente."
+        ],
+        "rightImage": { "src": "", "alt": "Indicaciones" }
+      },
+      "nav": {
+        "mode": "cta",
+        "label": "Empezar",
+        "action": "startMissionAttempt"
+      }
+    },
+    {
+      "id": "m1_c_01_need",
+      "template": "teoria",
+      "variant": "examples",
+      "data": {
+        "title": {
+          "text": "Que es una necesidad?",
+          "variant": "hero"
+        },
+        "text": {
+          "text": "Las necesidades son bienes o servicios indispensables para vivir, desarrollarse y realizar actividades basicas como estudiar, movilizarse y cuidar la salud.",
+          "variant": "body"
+        },
+        "examples": [
+          {
+            "src": "",
+            "label": {
+              "text": "Comida",
+              "variant": "label",
+              "tone": "secondary"
+            }
+          },
+          {
+            "src": "",
+            "label": { "text": "Agua", "variant": "label", "tone": "secondary" }
+          },
+          {
+            "src": "",
+            "label": {
+              "text": "Utiles",
+              "variant": "label",
+              "tone": "secondary"
+            }
+          }
+        ],
+        "note": {
+          "text": "Si no lo tienes, tu bienestar o tu capacidad para cumplir una tarea importante se afecta.",
+          "variant": "supporting"
+        }
+      }
+    },
+    {
+      "id": "m1_c_02_want",
+      "template": "teoria",
+      "variant": "examples",
+      "data": {
+        "title": {
+          "text": "Que es un deseo?",
+          "variant": "hero"
+        },
+        "text": {
+          "text": "Los deseos son cosas que seria bueno tener, pero no son indispensables para vivir, estudiar o proteger lo importante.",
+          "variant": "body"
+        },
+        "examples": [
+          {
+            "src": "",
+            "label": {
+              "text": "Comida chatarra",
+              "variant": "label",
+              "tone": "secondary"
+            }
+          },
+          {
+            "src": "",
+            "label": {
+              "text": "Un videojuego",
+              "variant": "label",
+              "tone": "secondary"
+            }
+          },
+          {
+            "src": "",
+            "label": {
+              "text": "El ultimo celular",
+              "variant": "label",
+              "tone": "secondary"
+            }
+          }
+        ],
+        "note": {
+          "text": "Un deseo no es algo malo, pero puede esperar cuando el dinero es limitado.",
+          "variant": "supporting"
+        }
+      }
+    },
+    {
+      "id": "m1_c_03_compare",
+      "template": "teoria",
+      "variant": "compare",
+      "data": {
+        "title": {
+          "text": "Necesidad versus deseo",
+          "variant": "hero"
+        },
+        "text": {
+          "text": "La diferencia principal esta en la prioridad. Una necesidad sostiene tu bienestar; un deseo puede esperar.",
+          "variant": "body"
+        },
+        "items": [
+          {
+            "img": { "src": "", "alt": "Comida" },
+            "label": {
+              "text": "Comida",
+              "variant": "label",
+              "tone": "secondary"
+            },
+            "note": {
+              "text": "Impacta salud, estudio o seguridad",
+              "variant": "supporting",
+              "tone": "muted"
+            },
+            "result": {
+              "text": "Necesidad",
+              "variant": "badge",
+              "tone": "primary"
+            }
+          },
+          {
+            "img": { "src": "", "alt": "Videojuego" },
+            "label": {
+              "text": "Videojuego",
+              "variant": "label",
+              "tone": "secondary"
+            },
+            "note": {
+              "text": "Da gusto o entretenimiento, pero no es urgente",
+              "variant": "supporting",
+              "tone": "muted"
+            },
+            "result": { "text": "Deseo", "variant": "badge", "tone": "primary" }
+          }
+        ]
+      }
+    },
+    {
+      "id": "m1_c_04_consumo_responsable",
+      "template": "teoria",
+      "variant": "examples",
+      "data": {
+        "title": {
+          "text": "Consumo responsable",
+          "variant": "hero"
+        },
+        "text": {
+          "text": "Consumir responsablemente es decidir con prioridad, presupuesto y calma para evitar compras impulsivas.",
+          "variant": "body"
+        },
+        "examples": [
+          {
+            "src": "",
+            "label": {
+              "text": "Comprar lo importante primero",
+              "variant": "label",
+              "tone": "secondary"
+            }
+          },
+          {
+            "src": "",
+            "label": {
+              "text": "No gastar por impulso",
+              "variant": "label",
+              "tone": "secondary"
+            }
+          },
+          {
+            "src": "",
+            "label": {
+              "text": "Mirar tu saldo antes de decidir",
+              "variant": "label",
+              "tone": "secondary"
+            }
+          }
+        ],
+        "note": {
+          "text": "Consumir mejor no significa dejar de comprar. Significa elegir con criterio.",
+          "variant": "supporting"
+        }
+      }
+    },
+    {
+      "id": "m1_c_05_pairs",
+      "template": "memoryPairs",
+      "variant": "board",
+      "data": {
+        "title": {
+          "text": "Encuentra los pares",
+          "variant": "hero"
+        },
+        "grid": { "cols": 4, "rows": 3 },
+        "finishLabel": "Fin",
+        "cards": [
+          { "id": "c1", "img": "/a", "pairId": "p1" },
+          { "id": "c2", "img": "/a", "pairId": "p1" },
+          { "id": "c3", "img": "/b", "pairId": "p2" },
+          { "id": "c4", "img": "/b", "pairId": "p2" },
+          { "id": "c5", "img": "/c", "pairId": "p3" },
+          { "id": "c6", "img": "/c", "pairId": "p3" },
+          { "id": "c7", "img": "/d", "pairId": "p4" },
+          { "id": "c8", "img": "/d", "pairId": "p4" },
+          { "id": "c9", "img": "/e", "pairId": "p5" },
+          { "id": "c10", "img": "/e", "pairId": "p5" },
+          { "id": "c11", "img": "/f", "pairId": "p6" },
+          { "id": "c12", "img": "/f", "pairId": "p6" }
+        ],
+        "rules": {
+          "unlockFinishWhenComplete": true
+        }
+      },
+      "nav": {
+        "mode": "lockedUntilComplete",
+        "finishLabel": "Fin",
+        "onFinish": { "type": "goToModuleMenu", "moduleId": "module-1" }
+      }
+    }
+  ]
+}

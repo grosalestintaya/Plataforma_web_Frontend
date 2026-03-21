@@ -1,18 +1,29 @@
+// Config base: el juego usa un solo canvas y la variante define el modo de tablero.
 export const MEMORY_PAIRS_CONFIG = {
-  layouts: {
-    board: {
-      base: {
-        cols: "1fr",
-        rows: "auto 1fr",
-        areas: ["title", "board"],
-        gap: "16px"
-      }
-    }
+  layout: {
+    base: {
+      cols: "1fr",
+      rows: "auto 1fr",
+      areas: ["title", "board"],
+      gap: "16px",
+    },
   },
 
   variants: {
     board: [
-      { area: "title", block: "Title", children: (d) => d.title },
+      {
+        area: "title",
+        block: "Typografia",
+        props: (d) => ({
+          variant: d.title?.variant ?? "title",
+          tone: d.title?.tone,
+          align: d.title?.align,
+          as: d.title?.as ?? "h2",
+          className: d.title?.className,
+          containerClassName: d.title?.containerClassName,
+        }),
+        children: (d) => d.title,
+      },
       {
         area: "board",
         block: "MemoryPairsGame",
@@ -21,15 +32,14 @@ export const MEMORY_PAIRS_CONFIG = {
           grid: d.grid ?? { cols: 4, rows: 3 },
           finishLabel: d.finishLabel ?? "Fin",
           onFinish: () => {
-            // Aquí defines la acción al terminar.
-            // Si luego tienes “menu del módulo”, lo conectas aquí.
+            // Delega la salida final al flujo que invoca el template.
             if (ctx?.heroApi?.goToModuleMenu) return ctx.heroApi.goToModuleMenu();
-            console.log("Fin → ir al menú del módulo");
-          }
-        })
-      }
-    ]
+            console.log("Fin -> ir al menu del modulo");
+          },
+        }),
+      },
+    ],
   },
 
-  fallbackVariant: "board"
+  fallbackVariant: "board",
 };

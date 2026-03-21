@@ -1,9 +1,14 @@
-export default function Image({ src = "", alt = "Imagen", className = "" }) {
+export default function Image({
+  src = "",
+  alt = "Imagen",
+  className = "",
+  placeholderLabel = "Imagen",
+}) {
   if (!src) {
     return (
       <div className={`w-full h-full flex items-center justify-center ${className}`}>
-        <div className="h-[170px] w-[300px] border border-white/20 bg-black/20 grid place-items-center text-white/70 text-sm">
-          Imagen
+        <div className="grid h-[170px] w-[300px] place-items-center border border-white/20 px-4 text-center text-white/70 text-sm font-semibold">
+          {placeholderLabel}
         </div>
       </div>
     );
