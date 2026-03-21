@@ -1,6 +1,8 @@
 // src/features/modules/hooks/useModuleMenuData.js
 import { useEffect, useMemo, useState } from "react";
 import { getLearnFor } from "../utils/activityLearn";
+import { api } from "@/services/apiClient";
+
 import {
   buildEffectiveActivities,
   getCtaLabel,
@@ -8,11 +10,7 @@ import {
   pickModuleByKey,
 } from "../utils/moduleMenu.helpers";
 
-const API_OVERVIEW = "http://localhost:5000/api/progress/overview";
-
 export default function useModuleMenuData(moduleKey) {
-  const token = localStorage.getItem("token");
-
   const [overview, setOverview] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -24,16 +22,7 @@ export default function useModuleMenuData(moduleKey) {
       setError("");
 
       try {
-        const res = await fetch(API_OVERVIEW, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        if (!res.ok) {
-          const text = await res.text();
-          throw new Error(text || `HTTP ${res.status}`);
-        }
-
-        const json = await res.json();
+        const json = await api.get("api/progress/overview");
         setOverview(json || null);
       } catch (e) {
         setError(e?.message || "Error al cargar overview");
@@ -44,7 +33,7 @@ export default function useModuleMenuData(moduleKey) {
     };
 
     fetchOverview();
-  }, [moduleKey, token]);
+  }, [moduleKey]);
 
   const moduleData = useMemo(() => {
     return pickModuleByKey(overview?.modules, moduleKey);
@@ -85,10 +74,12 @@ export default function useModuleMenuData(moduleKey) {
   }, [overview]);
 
   const canPlay = !!selectedActivity && selectedActivity.status !== "locked";
+
   const ctaLabel = useMemo(
     () => getCtaLabel(selectedActivity),
     [selectedActivity],
   );
+
   const mascotText = useMemo(
     () => getMascotText(selectedActivity),
     [selectedActivity],

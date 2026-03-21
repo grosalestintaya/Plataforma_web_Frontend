@@ -15,6 +15,7 @@ function hexToRgb(hex) {
       : h.padEnd(6, "0");
 
   const num = parseInt(full, 16);
+
   return {
     r: (num >> 16) & 255,
     g: (num >> 8) & 255,
@@ -35,21 +36,32 @@ function prettyType(type) {
   return type || "Actividad";
 }
 
+function prettyStatus(status) {
+  if (status === "completed") return "Completada";
+  if (status === "locked") return "Bloqueada";
+  if (status === "available") return "Disponible";
+  if (status === "in_progress") return "En progreso";
+  return status || "Sin estado";
+}
+
 function getHelperText(activity) {
   if (!activity) return "Selecciona una actividad.";
+
   if (activity.status === "completed") {
     return "Puedes repetir para practicar o mejorar tu score.";
   }
+
   if (activity.status === "locked") {
     return "Completa la actividad anterior para desbloquear.";
   }
+
   return "Cuando estés listo, inicia.";
 }
 
 export default function ModuleMenuActivityPanel({
   activity,
-  learnBlock,
-  themeHex,
+  activityContent,
+  themeHex = "#7130F7",
   canPlay,
   ctaLabel,
   onPlay,
@@ -73,9 +85,16 @@ export default function ModuleMenuActivityPanel({
     );
   }
 
+  const displayType = activity?.type || "";
+  const displayMission = activityContent?.missionNumber || null;
+  const displayTitle =
+    activityContent?.title || activity?.title || "Actividad sin título";
+  const displayLearn = activityContent?.learn || [];
+  const displayOutcome = activityContent?.outcome || "";
+
   return (
     <div
-      className="relative w-full max-w-[760px] p- md:p-7"
+      className="relative w-full max-w-[760px] p-6 md:p-7"
       style={{
         borderRadius: 28,
         background: `linear-gradient(180deg, ${withAlpha("#ffffff", 0.08)}, ${withAlpha("#000000", 0.18)})`,
@@ -113,22 +132,32 @@ export default function ModuleMenuActivityPanel({
       />
 
       <div className="relative">
-        <div className="text-xs text-white/60 uppercase tracking-wide">
-          {prettyType(activity.type)}
+        <div className="flex flex-wrap items-center gap-2 text-xs text-white/60 uppercase tracking-wide">
+          <span>{prettyType(displayType)}</span>
+
+          {displayMission && (
+            <>
+              <span className="text-white/35">•</span>
+              <span>Misión {displayMission}</span>
+            </>
+          )}
         </div>
 
         <h2 className="mt-1 text-2xl font-semibold text-white/95">
-          {activity.title}
+          {displayTitle}
         </h2>
 
         <div className="mt-3 flex flex-wrap gap-3 text-sm text-white/70">
           <span>
-            Estado: <b className="text-white/85">{activity.status}</b>
+            Estado:{" "}
+            <b className="text-white/85">{prettyStatus(activity.status)}</b>
           </span>
+
           <span>
             Intentos:{" "}
             <b className="text-white/85">{activity.attemptsCount ?? 0}</b>
           </span>
+
           <span>
             Mejor score:{" "}
             <b className="text-white/85">{activity.bestScore ?? "—"}</b>
@@ -146,9 +175,9 @@ export default function ModuleMenuActivityPanel({
             Aprenderás
           </div>
 
-          {learnBlock?.learn?.length ? (
+          {displayLearn.length ? (
             <ul className="ml-5 list-disc space-y-1 text-sm text-white/75">
-              {learnBlock.learn.map((item, idx) => (
+              {displayLearn.map((item, idx) => (
                 <li key={idx}>{item}</li>
               ))}
             </ul>
@@ -158,10 +187,10 @@ export default function ModuleMenuActivityPanel({
             </div>
           )}
 
-          {learnBlock?.outcome && (
+          {displayOutcome && (
             <div className="mt-3 text-sm text-white/75">
               Resultado esperado:{" "}
-              <b className="text-white/90">{learnBlock.outcome}</b>
+              <b className="text-white/90">{displayOutcome}</b>
             </div>
           )}
         </div>

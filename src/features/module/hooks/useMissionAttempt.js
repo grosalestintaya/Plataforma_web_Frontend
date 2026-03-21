@@ -71,7 +71,7 @@ export function useMissionAttempt(activityId, { mode = "manual" } = {}) {
       setError(null);
 
       const durationMs = startedAtRef.current ? Date.now() - startedAtRef.current : 0;
-      payloadRef.current.events.push({ t: Date.now(), type: "mission_finish" });
+      payloadRef.current.events.push({ t: Date.now(), type: "missi  _finish" });
 
       const body = {
         score,

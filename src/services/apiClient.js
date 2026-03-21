@@ -24,14 +24,15 @@ export async function request(path, options = {}) {
 
   // ✅ NUEVO: flags por request
   const extra = options.extra || {};
-  const useAuth = extra.auth !== false;          // default true
-  const on401 = extra.on401 || "logout";         // "logout" | "throw"
+  const useAuth = extra.auth !== false; // default true
+  const on401 = extra.on401 || "logout"; // "logout" | "throw"
 
   const token = getAuthToken();
   const headers = new Headers(options.headers || {});
 
   const hasBody = options.body != null;
-  const isFormData = typeof FormData !== "undefined" && options.body instanceof FormData;
+  const isFormData =
+    typeof FormData !== "undefined" && options.body instanceof FormData;
 
   if (hasBody && !isFormData && !headers.has("Content-Type")) {
     headers.set("Content-Type", "application/json");
@@ -46,7 +47,9 @@ export async function request(path, options = {}) {
   try {
     res = await fetch(url, { ...options, headers });
   } catch (networkErr) {
-    const err = new Error("No se pudo conectar con el servidor. Revisa tu conexión.");
+    const err = new Error(
+      "No se pudo conectar con el servidor. Revisa tu conexión.",
+    );
     err.cause = networkErr;
     throw err;
   }

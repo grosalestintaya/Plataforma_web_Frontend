@@ -28,8 +28,7 @@ const ModulePath = () => {
             backgroundColor: colors[index % 2],
             marginTop: index % 2 === 0 ? "0px" : "60px",
             marginBottom: index % 2 === 0 ? "60px" : "0px",
-          }}
-        >
+          }}>
           <span className="text-3xl">{mod.id}</span>
 
           {/* Tooltip al pasar el mouse */}
@@ -45,8 +44,7 @@ const ModulePath = () => {
               style={{
                 top: "50%",
                 transform: index % 2 === 0 ? "rotate(10deg)" : "rotate(-10deg)",
-              }}
-            ></div>
+              }}></div>
           )}
         </div>
       ))}

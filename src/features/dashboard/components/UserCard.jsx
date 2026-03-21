@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-
-const clamp = (n, min = 0, max = 100) => Math.min(max, Math.max(min, Number(n) || 0));
+import { resolveAvatar, getInitials } from "../helpers/helpers";
+import coin from "@/assets/dashboard/coin.png";
+const clamp = (n, min = 0, max = 100) =>
+  Math.min(max, Math.max(min, Number(n) || 0));
 
 function formatInt(n) {
   try {
@@ -34,7 +36,9 @@ function useCountUp(value, { duration = 650 } = {}) {
     const tick = (now) => {
       const t = Math.min(1, (now - startRef.current) / duration);
       const eased = 1 - Math.pow(1 - t, 3); // easeOutCubic
-      const next = Math.round(fromRef.current + (toRef.current - fromRef.current) * eased);
+      const next = Math.round(
+        fromRef.current + (toRef.current - fromRef.current) * eased,
+      );
       setDisplay(next);
 
       if (t < 1) rafRef.current = requestAnimationFrame(tick);
@@ -102,23 +106,25 @@ const UserCard = ({ user }) => {
       style={{
         backgroundColor: "var(--usercard-bg)",
         borderColor: "var(--usercard-border)",
-      }}
-    >
+      }}>
       {/* Izquierda: Perfil + Info */}
       <div className="flex items-center gap-4 min-w-0">
         <img
-          src={user.foto}
-          alt="Perfil"
+          src={resolveAvatar(user.foto)}
+          alt={`Perfil de ${user.nombre || "usuario"}`}
           className="w-24 h-24 object-cover rounded-2xl border"
           style={{ borderColor: "var(--usercard-border)" }}
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = resolveAvatar("default");
+          }}
         />
 
         <div className="flex flex-col justify-center min-w-0">
           <h2
             className="text-xl font-bold truncate"
             style={{ color: "var(--card-text)" }}
-            title={user.nombre}
-          >
+            title={user.nombre}>
             {user.nombre}
           </h2>
 
@@ -129,8 +135,7 @@ const UserCard = ({ user }) => {
           {/* Barra de progreso */}
           <div
             className="w-[420px] rounded-full h-3 mt-2 overflow-hidden"
-            style={{ backgroundColor: "var(--progress-track)" }}
-          >
+            style={{ backgroundColor: "var(--progress-track)" }}>
             <div
               className="h-3 rounded-full transition-all duration-500 ease-out"
               style={{
@@ -148,10 +153,14 @@ const UserCard = ({ user }) => {
                 backgroundColor: "var(--chip-bg)",
                 borderColor: "var(--card-border)",
                 color: "var(--chip-text)",
-              }}
-            >
-              <div className="w-4 h-4 rounded-sm" style={{ backgroundColor: "var(--usercard-accent-2)" }} />
-              <span className="text-sm truncate max-w-[220px]">{user.institucion}</span>
+              }}>
+              <div
+                className="w-4 h-4 rounded-sm"
+                style={{ backgroundColor: "var(--usercard-accent-2)" }}
+              />
+              <span className="text-sm truncate max-w-[220px]">
+                {user.institucion}
+              </span>
             </div>
 
             <div
@@ -160,10 +169,14 @@ const UserCard = ({ user }) => {
                 backgroundColor: "var(--chip-bg)",
                 borderColor: "var(--card-border)",
                 color: "var(--chip-text)",
-              }}
-            >
-              <div className="w-4 h-4 rounded-sm" style={{ backgroundColor: "var(--usercard-accent)" }} />
-              <span className="text-sm truncate max-w-[140px]">{user.seccion}</span>
+              }}>
+              <div
+                className="w-4 h-4 rounded-sm"
+                style={{ backgroundColor: "var(--usercard-accent)" }}
+              />
+              <span className="text-sm truncate max-w-[140px]">
+                {user.seccion}
+              </span>
             </div>
           </div>
         </div>
@@ -178,8 +191,7 @@ const UserCard = ({ user }) => {
           boxShadow: coinGlow
             ? "0 10px 30px rgba(0,0,0,0.18), 0 0 0 4px var(--sidebar-accent)"
             : "0 10px 30px rgba(0,0,0,0.10)",
-        }}
-      >
+        }}>
         {/* +X flotante */}
         {coinDelta !== null && (
           <span
@@ -189,13 +201,12 @@ const UserCard = ({ user }) => {
               opacity: 0.95,
               animation: "coinFloat 900ms ease-out forwards",
               textShadow: "0 2px 10px rgba(0,0,0,0.20)",
-            }}
-          >
+            }}>
             +{formatInt(coinDelta)}
           </span>
         )}
 
-        <img src="/assets/coin.png" alt="Intis" className="w-26 h-26 object-contain" />
+        <img src={coin} alt="Intis" className="w-26 h-26 object-contain" />
 
         {/* Valor (sin “Intis” grande; si quieres label pequeño, lo añadimos debajo) */}
         <span
@@ -203,12 +214,10 @@ const UserCard = ({ user }) => {
           style={{
             color: "var(--coin-panel-text)",
             textShadow: "0 2px 6px rgba(0,0,0,0.25)",
-          }}
-        >
+          }}>
           {formatInt(animatedCoins)}
         </span>
         <br />
-  
 
         {/* Keyframes inline */}
         <style>
