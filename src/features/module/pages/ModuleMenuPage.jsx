@@ -27,7 +27,7 @@ export default function ModuleMenuPage() {
     effectiveActivities,
     selectedActivity,
     selectedActivityId,
-      setSelectedActivityId,
+    setSelectedActivityId,
     canPlay,
     ctaLabel,
     mascotText,
@@ -41,7 +41,7 @@ export default function ModuleMenuPage() {
   const activityContent = useMemo(() => {
     if (!moduleCode || !selectedActivity?.type) return null;
     return getActivity(moduleCode, selectedActivity.type);
-    }, [moduleCode, selectedActivity?.type]);
+  }, [moduleCode, selectedActivity?.type]);
 
   const handlePlay = () => {
     if (!selectedActivity || !moduleData) return;

@@ -83,23 +83,21 @@ export default function ModuleMenuMascotPanel({
   text,
   wallet = { xp: 0, coins: 0 },
 }) {
-  return (className =
-    "mt-2 flex justify-center xl:absolute xl:right-0 xl:top-[39%] xl:mt-0 xl:w-[290px] xl:-translate-y-1/2" >
-    (
-      <aside className="mt-2 flex justify-center xl:absolute xl:right-0 xl:top-[44%] xl:mt-0 xl:w-[267px] xl:-translate-y-1/2">
-        <div className="flex w-full max-w-[360px] flex-col gap-2.5">
-          <div className="flex flex-wrap items-center justify-center gap-3 xl:justify-start">
-            <XpPanel monedas={wallet?.xp ?? 0} themeHex={themeHex} />
-            <CoinsPanel monedas={wallet?.coins ?? 0} themeHex={themeHex} />
-          </div>
-
-          <MascotTutorDemo
-            gifSrc={mascot?.gif}
-            name={mascot?.name}
-            themeHex={themeHex}
-            text={text}
-          />
+  return (
+    <aside className="mt-2 flex justify-center xl:absolute xl:right-0 xl:top-[44%] xl:mt-0 xl:w-[267px] xl:-translate-y-1/2">
+      <div className="flex w-full max-w-[360px] flex-col gap-2.5">
+        <div className="flex flex-wrap items-center justify-center gap-3 xl:justify-start">
+          <XpPanel monedas={wallet?.xp ?? 0} themeHex={themeHex} />
+          <CoinsPanel monedas={wallet?.coins ?? 0} themeHex={themeHex} />
         </div>
-      </aside>
-    ));
+
+        <MascotTutorDemo
+          gifSrc={mascot?.gif}
+          name={mascot?.name}
+          themeHex={themeHex}
+          text={text}
+        />
+      </div>
+    </aside>
+  );
 }
