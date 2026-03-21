@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 async function fetchStats({ token }) {
-  const res = await fetch(BASE_URL+"/api/analytics/stats", {
+  const res = await fetch(BASE_URL + "/api/analytics/stats", {
     headers: token ? { Authorization: `Bearer ${token}` } : undefined,
   });
 

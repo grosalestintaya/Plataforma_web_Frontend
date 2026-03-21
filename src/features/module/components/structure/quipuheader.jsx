@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import gearicon from "@/assets/dashboard/gear.png";
 import HeaderSettingsButton from "@/features/modules/components/HeaderSettingsButton";
 import HeaderBackButton from "@/features/modules/components/HeaderBackButton";
-
+import ConfiguracionModal from "../sections/Configuracion";
 function hexToRgba(hex, a = 1) {
   const h = String(hex || "#000").replace("#", "");
   const full =
@@ -80,7 +80,7 @@ export default function Header({
 
           <div className="flex items-center justify-end">
             <HeaderSettingsButton
-              onClick={onOpenSettings}
+              onClick={ConfiguracionModal}
               themeHex={themeHex}
               iconSrc={gearIconSrc}
             />

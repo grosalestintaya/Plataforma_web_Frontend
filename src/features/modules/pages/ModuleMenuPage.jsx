@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { getModuleTheme, MODULE_COLORS_HEX } from "../utils/moduleTheme";
 import { getMascotForModule } from "../../guidepet/utils/mascotCatalog";
+import { getActivity, getModuleTitle } from "../utils/activityCatalog";
 
 import QuipuHeader from "../components/QuipuHeader";
 
@@ -30,28 +31,31 @@ export default function ModuleMenuPageBeta() {
     selectedActivity,
     selectedActivityId,
     setSelectedActivityId,
-    learnBlock,
     canPlay,
     ctaLabel,
     mascotText,
   } = useModuleMenuData(moduleCode);
 
+  const moduleTitle = useMemo(() => {
+    if (!moduleCode) return "";
+    return getModuleTitle(moduleCode);
+  }, [moduleCode]);
+
+  const activityContent = useMemo(() => {
+    if (!moduleCode || !selectedActivity?.type) return null;
+    return getActivity(moduleCode, selectedActivity.type);
+  }, [moduleCode, selectedActivity?.type]);
+
   const handlePlay = () => {
     if (!selectedActivity || !moduleData) return;
     if (selectedActivity.status === "locked") return;
-    const activityType =
-      selectedActivity.activityId === 1
-        ? "conceptual"
-        : selectedActivity.activityId === 2
-          ? "procedimental"
-          : selectedActivity.activityId === 3
-            ? "actitudinal"
-            : null;
-    navigate(`/modules/m0${moduleData.sortOrder}/${activityType}`);
+
+    navigate(`/modules/${moduleCode}/${selectedActivity.type}`);
   };
 
   if (loading) return <div className="p-6 text-white">Cargando módulo...</div>;
   if (error) return <div className="p-6 text-red-300">{error}</div>;
+
   if (!moduleData) {
     return (
       <div className="p-6 text-white">Módulo no encontrado: {moduleCode}</div>
@@ -77,7 +81,7 @@ export default function ModuleMenuPageBeta() {
 
       <div className="relative">
         <QuipuHeader
-          title={moduleData.title}
+          title={moduleTitle || moduleData.title}
           themeHex={modulePrimaryHex}
           onBack={() => navigate(-1)}
           onOpenSettings={() => console.log("open settings")}
@@ -95,7 +99,7 @@ export default function ModuleMenuPageBeta() {
           center={
             <ModuleMenuActivityPanel
               activity={selectedActivity}
-              learnBlock={learnBlock}
+              activityContent={activityContent}
               themeHex={modulePrimaryHex}
               canPlay={canPlay}
               ctaLabel={ctaLabel}
