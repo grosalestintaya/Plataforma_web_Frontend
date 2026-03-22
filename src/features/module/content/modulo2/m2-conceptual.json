@@ -1,8 +1,139 @@
 {
   "id": "conceptual",
-  "backendActivityId": null,
+  "backendActivityId": "4",
   "activityKey": "m02-conceptual",
   "headerTitle": "Conceptual",
-  "missionTitle": "Conceptual",
-  "views": []
+  "missionTitle": "Presupuesto personal",
+  "views": [
+    {
+      "id": "m2_conceptual_intro",
+      "template": "teoria",
+      "variant": "split",
+      "data": {
+        "title": {
+          "text": "Antes de empezar",
+          "variant": "h4"
+        },
+        "leftText": [
+          "Recorre las ideas principales sobre presupuesto personal.",
+          "Luego completa el juego de memoria para cerrar la mision.",
+          "Cuando presiones Empezar avanzaras a la primera vista."
+        ],
+        "rightImage": {
+          "src": "",
+          "alt": "Intro presupuesto"
+        }
+      },
+      "nav": {
+        "mode": "cta",
+        "label": "Empezar",
+        "action": "startMissionAttempt"
+      }
+    },
+    {
+      "id": "m2_c_01_que_es",
+      "template": "teoria",
+      "variant": "split",
+      "data": {
+        "title": {
+          "text": "Que es un presupuesto?",
+          "variant": "h4",
+          "containerClassName": "mx-auto max-w-[560px] rounded-xl border border-white/20 px-6 py-3"
+        },
+        "leftText": {
+          "paragraphs": [
+            "Un presupuesto es un plan para organizar tu dinero antes de gastarlo.",
+            "Te ayuda a ver cuanto entra, cuanto sale y cuanto puedes reservar para algo importante.",
+            "Tambien evita que tomes decisiones solo por impulso."
+          ],
+          "variant": "body1",
+          "align": "left",
+          "containerClassName": "rounded-2xl border border-white/15 px-5 py-5"
+        },
+        "rightImage": {
+          "src": "",
+          "alt": "Presupuesto",
+          "placeholderLabel": "MAPA DE TU DINERO"
+        }
+      }
+    },
+    {
+      "id": "m2_c_02_para_que",
+      "template": "teoria",
+      "variant": "examples",
+      "data": {
+        "title": {
+          "text": "Para que sirve un presupuesto?",
+          "variant": "h4"
+        },
+        "text": {
+          "text": "Sirve para decidir mejor con tu dinero y no perder de vista tus prioridades.",
+          "variant": "body1"
+        },
+        "examples": [
+          {
+            "src": "",
+            "label": {
+              "text": "Controlar gastos",
+              "variant": "subtitle2",
+              "color": "secondary"
+            }
+          },
+          {
+            "src": "",
+            "label": {
+              "text": "Planificar una compra",
+              "variant": "subtitle2",
+              "color": "secondary"
+            }
+          },
+          {
+            "src": "",
+            "label": {
+              "text": "Ahorrar para una meta",
+              "variant": "subtitle2",
+              "color": "secondary"
+            }
+          }
+        ],
+        "note": {
+          "text": "Presupuestar no es prohibirte todo. Es elegir con claridad.",
+          "variant": "body2"
+        }
+      }
+    },
+    {
+      "id": "m2_c_03_category_pairs",
+      "template": "memoryGame",
+      "data": {
+        "title": {
+          "text": "Encuentra los pares del presupuesto",
+          "variant": "h2"
+        },
+        "instruction": {
+          "text": "Encuentra cada concepto y su pareja correspondiente. Cuando completes todas las parejas, podras finalizar la mision.",
+          "variant": "body2"
+        },
+        "grid": {
+          "cols": 4,
+          "rows": 3
+        },
+        "finishLabel": "Fin",
+        "cards": [
+          { "id": "m2-c1", "pairId": "p1", "label": "Ingreso" },
+          { "id": "m2-c2", "pairId": "p1", "label": "Dinero que entra" },
+          { "id": "m2-c3", "pairId": "p2", "label": "Gasto" },
+          { "id": "m2-c4", "pairId": "p2", "label": "Dinero que sale" },
+          { "id": "m2-c5", "pairId": "p3", "label": "Ahorro" },
+          { "id": "m2-c6", "pairId": "p3", "label": "Dinero que reservas" },
+          { "id": "m2-c9", "pairId": "p5", "label": "Saldo" },
+          { "id": "m2-c10", "pairId": "p5", "label": "Lo que queda disponible" }
+        ]
+      },
+      "nav": {
+        "mode": "lockedUntilComplete",
+        "finishLabel": "Finalizar"
+      }
+    }
+  ]
 }

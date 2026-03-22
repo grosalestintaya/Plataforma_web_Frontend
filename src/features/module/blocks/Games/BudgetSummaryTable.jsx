@@ -20,7 +20,7 @@ function BudgetColumn({ title, rows = [] }) {
   return (
     <section className="rounded-2xl border border-white/15 p-4">
       <Typografia
-        variant="label"
+        variant="subtitle2"
         align="center"
         className="pb-3 text-[13px] font-extrabold uppercase tracking-[0.14em]"
       >
@@ -78,7 +78,7 @@ export default function BudgetSummaryTable({
       {prompt && (
         <Typografia
           content={prompt}
-          variant={prompt?.variant ?? "body"}
+          variant={prompt?.variant ?? "body1"}
           align={prompt?.align ?? "left"}
           className="py-0"
           containerClassName={cn(
@@ -103,7 +103,7 @@ export default function BudgetSummaryTable({
       {note && (
         <Typografia
           content={note}
-          variant={note?.variant ?? "supporting"}
+          variant={note?.variant ?? "body2"}
           align={note?.align ?? "left"}
           className="py-0 text-xs md:text-sm"
           containerClassName={cn(

@@ -9,7 +9,10 @@ import ModuleMenuLayout from "../components/menu/ModuleMenuLayout";
 import ModuleMenuSelectorPanel from "../components/menu/ModuleMenuSelectorPanel";
 import ModuleMenuActivityPanel from "../components/menu/ModuleMenuActivityPanel";
 import ModuleMenuMascotPanel from "../components/menu/ModuleMenuMascotPanel";
-import { getActivity, getModuleTitle } from "../utils/activityCatalog";
+import {
+  getMissionDisplayContent,
+  getModuleDisplayTitle,
+} from "../utils/moduleCatalog";
 
 export default function ModuleMenuPage() {
   const { moduleCode } = useParams();
@@ -35,18 +38,21 @@ export default function ModuleMenuPage() {
 
   const moduleTitle = useMemo(() => {
     if (!moduleCode) return "";
-    return getModuleTitle(moduleCode);
+    // El titulo visible del menu sale de modulos.json.
+    return getModuleDisplayTitle(moduleCode);
   }, [moduleCode]);
 
   const activityContent = useMemo(() => {
     if (!moduleCode || !selectedActivity?.type) return null;
-    return getActivity(moduleCode, selectedActivity.type);
+    // La tarjeta central usa la misma metadata oficial del contenido.
+    return getMissionDisplayContent(moduleCode, selectedActivity.type);
   }, [moduleCode, selectedActivity?.type]);
 
   const handlePlay = () => {
     if (!selectedActivity || !moduleData) return;
     if (selectedActivity.status === "locked") return;
 
+    // El menu solo navega; el attempt se abre dentro de la mision.
     navigate(`/modules/m0${moduleData.sortOrder}/${selectedActivity.type}`);
   };
 
@@ -66,7 +72,8 @@ export default function ModuleMenuPage() {
           title={moduleTitle || moduleData.title}
           themeHex={modulePrimaryHex}
           onBack={() => navigate("/")}
-          onOpenSettings={() => console.log("open settings")}
+          // Placeholder mientras conectamos el modal real de configuracion.
+          onOpenSettings={() => {}}
         />
 
         <ModuleMenuLayout

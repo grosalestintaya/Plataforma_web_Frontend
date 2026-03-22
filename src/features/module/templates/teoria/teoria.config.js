@@ -1,6 +1,42 @@
-// src/features/module/templates/teoria.config.js
+// Crea un slot de tipografia y reutiliza el mismo contrato en todas las variantes.
+function createTypographySlot(area, contentKey, fallbackVariant, extra = {}) {
+  return {
+    area,
+    block: "Typografia",
+    props: (d) => {
+      const content = d[contentKey];
+
+      return {
+        variant: content?.variant ?? fallbackVariant,
+        color: content?.color,
+        align: content?.align,
+        component: content?.component,
+        className: content?.className,
+        containerClassName: content?.containerClassName,
+      };
+    },
+    children: (d) => d[contentKey],
+    ...extra,
+  };
+}
+
+// Mantiene el titulo con semantica de heading aunque cambie la variante visual.
+function createTitleSlot() {
+  return createTypographySlot("title", "title", "h4", {
+    props: (d) => ({
+      variant: d.title?.variant ?? "h4",
+      color: d.title?.color,
+      align: d.title?.align,
+      component: d.title?.component ?? "h2",
+      className: d.title?.className,
+      containerClassName: d.title?.containerClassName,
+    }),
+    children: (d) => d.title,
+  });
+}
+
 export const TEORIA_CONFIG = {
-  // Cada variante expositiva puede cambiar la composicion visual.
+  // Las variantes expositivas comparten template, pero pueden redistribuir sus areas.
   layouts: {
     simple: {
       base: {
@@ -41,36 +77,13 @@ export const TEORIA_CONFIG = {
     },
   },
 
-  // slots por variante (declara qué bloque va en qué area)
+  // Cada variante declara que bloque vive en cada area del layout.
   variants: {
     simple: [
-      {
-        area: "title",
-        block: "Typografia",
-        props: (d) => ({
-          variant: d.title?.variant ?? "title",
-          tone: d.title?.tone,
-          align: d.title?.align,
-          as: d.title?.as ?? "h2",
-          className: d.title?.className,
-          containerClassName: d.title?.containerClassName,
-        }),
-        children: (d) => d.title,
-      },
-      {
-        area: "text",
-        block: "Typografia",
+      createTitleSlot(),
+      createTypographySlot("text", "text", "body1", {
         className: "flex items-center justify-center",
-        props: (d) => ({
-          variant: d.text?.variant ?? "body",
-          tone: d.text?.tone,
-          align: d.text?.align,
-          as: d.text?.as,
-          className: d.text?.className,
-          containerClassName: d.text?.containerClassName,
-        }),
-        children: (d) => d.text,
-      },
+      }),
       {
         area: "image",
         block: "Image",
@@ -84,86 +97,39 @@ export const TEORIA_CONFIG = {
     ],
 
     examples: [
-      {
-        area: "title",
-        block: "Typografia",
-        props: (d) => ({
-          variant: d.title?.variant ?? "title",
-          tone: d.title?.tone,
-          align: d.title?.align,
-          as: d.title?.as ?? "h2",
-          className: d.title?.className,
-          containerClassName: d.title?.containerClassName,
-        }),
-        children: (d) => d.title,
-      },
-      {
-        area: "text",
-        block: "Typografia",
+      createTitleSlot(),
+      createTypographySlot("text", "text", "body1", {
         className: "flex items-center justify-center",
-        props: (d) => ({
-          variant: d.text?.variant ?? "body",
-          tone: d.text?.tone,
-          align: d.text?.align,
-          as: d.text?.as,
-          className: d.text?.className,
-          containerClassName: d.text?.containerClassName,
-        }),
-        children: (d) => d.text,
-      },
+      }),
       {
         area: "examples",
         className: "flex items-center justify-center",
         stackClassName: "items-center",
         items: [
           { block: "ImageCollage", props: (d) => ({ items: d.examples }) },
-          // ✅ Texto extra opcional (solo si existe)
-          {
-            block: "Typografia",
+          createTypographySlot("examples", "note", "caption", {
+            // La nota solo aparece cuando el contenido realmente la define.
             when: (d) => Boolean(d.note),
             className: "max-w-[760px] text-xs md:text-sm",
-            props: (d) => ({
-              variant: d.note?.variant ?? "caption",
-              tone: d.note?.tone,
-              align: d.note?.align,
-              as: d.note?.as,
-              className: d.note?.className,
-              containerClassName: d.note?.containerClassName,
-            }),
-            children: (d) => d.note,
-          },
+          }),
         ],
       },
     ],
 
     split: [
-      {
-        area: "title",
-        block: "Typografia",
-        props: (d) => ({
-          variant: d.title?.variant ?? "title",
-          tone: d.title?.tone,
-          align: d.title?.align,
-          as: d.title?.as ?? "h2",
-          className: d.title?.className,
-          containerClassName: d.title?.containerClassName,
-        }),
-        children: (d) => d.title,
-      },
-      {
-        area: "text",
-        block: "Typografia",
+      createTitleSlot(),
+      createTypographySlot("text", "leftText", "body1", {
         className: "flex items-center justify-center",
         props: (d) => ({
-          variant: d.leftText?.variant ?? "body",
-          tone: d.leftText?.tone,
+          variant: d.leftText?.variant ?? "body1",
+          color: d.leftText?.color,
           align: d.leftText?.align ?? "left",
-          as: d.leftText?.as,
+          component: d.leftText?.component,
           className: d.leftText?.className,
           containerClassName: d.leftText?.containerClassName,
         }),
         children: (d) => d.leftText,
-      },
+      }),
       {
         area: "image",
         block: "Image",
@@ -177,38 +143,14 @@ export const TEORIA_CONFIG = {
     ],
 
     compare: [
-      {
-        area: "title",
-        block: "Typografia",
-        props: (d) => ({
-          variant: d.title?.variant ?? "title",
-          tone: d.title?.tone,
-          align: d.title?.align,
-          as: d.title?.as ?? "h2",
-          className: d.title?.className,
-          containerClassName: d.title?.containerClassName,
-        }),
-        children: (d) => d.title,
-      },
-
-      {
-        area: "text",
-        block: "Typografia",
+      createTitleSlot(),
+      createTypographySlot("text", "text", "body1", {
         className: "flex items-center justify-center",
-        props: (d) => ({
-          variant: d.text?.variant ?? "body",
-          tone: d.text?.tone,
-          align: d.text?.align,
-          as: d.text?.as,
-          className: d.text?.className,
-          containerClassName: d.text?.containerClassName,
-        }),
-        children: (d) => d.text,
-      },
-
+      }),
       {
         area: "compare",
-        block: "Compare2Items",
+        // Usa el nombre real del bloque compartido.
+        block: "CompareItems",
         className: "flex items-center justify-center",
         props: (d) => ({ items: d.items }),
       },
@@ -216,7 +158,4 @@ export const TEORIA_CONFIG = {
   },
 
   fallbackVariant: "simple",
-};
-// Futuro:
-// quiz: { mcq: {...}, trueFalse: {...} }
-// procedural: { intro: {...}, board: {...} }
+}

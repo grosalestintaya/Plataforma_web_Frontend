@@ -43,7 +43,7 @@ Cada modulo describe identidad, orden, tema y mapeo de misiones.
       "missions": {
         "conceptual": {
           "title": "Necesidades y deseos",
-          "backendActivityId": 101,
+          "activityId": "01",
           "activityKey": "m01-conceptual",
           "learn": [
             "Que son las finanzas personales y por que importan",
@@ -53,7 +53,7 @@ Cada modulo describe identidad, orden, tema y mapeo de misiones.
         },
         "procedimental": {
           "title": "Clasificacion y priorizacion de gastos",
-          "backendActivityId": 102,
+          "activityId": "02",
           "activityKey": "m01-procedimental",
           "learn": [
             "Diferenciar ingresos vs. gastos",
@@ -63,7 +63,7 @@ Cada modulo describe identidad, orden, tema y mapeo de misiones.
         },
         "actitudinal": {
           "title": "Autocontrol y presion social",
-          "backendActivityId": 103,
+          "activityId": "03",
           "activityKey": "m01-actitudinal",
           "learn": [
             "Distinguir necesidad vs. deseo",
@@ -97,7 +97,7 @@ Cada archivo de mision representa una sola experiencia lineal.
 ```json
 {
   "id": "conceptual",
-  "backendActivityId": 101,
+  "activityId": "01",
   "activityKey": "m01-conceptual",
   "headerTitle": "Conceptual",
   "missionTitle": "Necesidades y deseos",
@@ -108,7 +108,8 @@ Cada archivo de mision representa una sola experiencia lineal.
 Campos:
 
 - `id`: clave de la mision.
-- `backendActivityId`: id entero real para attempts y tracking. Puede omitirse si se resolvera desde `/progress/overview`.
+- `activityId`: id real usado para attempts y tracking.
+- `backendActivityId`: alias temporal aceptado por compatibilidad.
 - `activityKey`: clave semantica estable del lado frontend.
 - `headerTitle`: etiqueta corta del header.
 - `missionTitle`: nombre largo de la mision.
@@ -156,8 +157,8 @@ La forma oficial recomendada es el objeto.
 ```json
 {
   "text": "Hola",
-  "variant": "body",
-  "tone": "secondary",
+  "variant": "body1",
+  "color": "textSecondary",
   "align": "center"
 }
 ```
@@ -170,8 +171,8 @@ La forma oficial recomendada es el objeto.
     "Primer parrafo.",
     "Segundo parrafo."
   ],
-  "variant": "body",
-  "tone": "secondary",
+  "variant": "body1",
+  "color": "textSecondary",
   "align": "left"
 }
 ```
@@ -181,33 +182,31 @@ Campos:
 - `text`: contenido simple.
 - `paragraphs`: lista de parrafos.
 - `variant`: jerarquia visual.
-- `tone`: tono de color.
+- `color`: tono de color.
 - `align`: alineacion.
-- `as`: tag HTML opcional.
+- `component`: tag HTML opcional.
 - `className`: ajuste fino.
 - `containerClassName`: ajuste del wrapper.
 
 ### Variantes oficiales
 
-- `display`: titulo gigante de portada.
-- `hero`: titulo principal de una vista.
-- `section`: subtitulo o titulo de bloque.
-- `cardTitle`: titulo corto dentro de tarjeta.
-- `lead`: bajada o subtitulo explicativo.
-- `body`: texto principal.
-- `supporting`: aclaracion o ayuda.
-- `label`: etiqueta breve.
+- `h1` a `h6`: jerarquia de titulos.
+- `subtitle1` y `subtitle2`: subtitulos y ayudas destacadas.
+- `body1` y `body2`: texto principal y secundario.
+- `button`: texto de botones o acciones.
 - `caption`: pie o microtexto contextual.
-- `eyebrow`: etiqueta superior en mayusculas.
-- `badge`: resultado o estado encapsulado.
+- `overline`: etiqueta superior en mayusculas.
 
 ### Tones oficiales
 
 - `primary`
 - `secondary`
+- `textPrimary`
+- `textSecondary`
 - `muted`
 - `accent`
 - `success`
+- `error`
 
 ## 6. Contrato de media
 

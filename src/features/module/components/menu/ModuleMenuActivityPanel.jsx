@@ -82,8 +82,7 @@ export default function ModuleMenuActivityPanel({
     );
   }
 
-  const displayType = activity?.type || "";
-  const displayMission = activityContent?.missionNumber || null;
+  // La tarjeta central usa la metadata normalizada del catalogo del modulo.
   const displayTitle =
     activityContent?.title || activity?.title || "Actividad sin título";
   const displayLearn = activityContent?.learn || [];
@@ -91,7 +90,7 @@ export default function ModuleMenuActivityPanel({
 
   return (
     <div
-      className="relative w-full max-w-[760px] p- md:p-7"
+      className="relative w-full max-w-[760px] p-6 md:p-7"
       style={{
         borderRadius: 28,
         background: `linear-gradient(180deg, ${withAlpha("#ffffff", 0.08)}, ${withAlpha("#000000", 0.18)})`,

@@ -31,7 +31,7 @@ function ColumnCard({ title, children }) {
   return (
     <section className="rounded-2xl border border-white/20 p-4">
       <Typografia
-        variant="label"
+        variant="subtitle2"
         align="center"
         className="pb-3 text-[13px] font-extrabold uppercase tracking-[0.14em]"
       >
@@ -108,7 +108,7 @@ export default function BudgetScenarioExplorer({
       {budget?.prompt && (
         <Typografia
           content={budget.prompt}
-          variant={budget.prompt?.variant ?? "supporting"}
+          variant={budget.prompt?.variant ?? "body2"}
           align={budget.prompt?.align ?? "left"}
           className="py-0 text-left"
           containerClassName={cn("rounded-xl border border-white/15 px-4 py-3")}
@@ -187,7 +187,7 @@ export default function BudgetScenarioExplorer({
       {activeNote && (
         <Typografia
           content={activeNote}
-          variant={activeNote?.variant ?? "supporting"}
+          variant={activeNote?.variant ?? "body2"}
           align={activeNote?.align ?? "left"}
           className="py-0 text-left text-sm"
           containerClassName="rounded-xl border border-white/15 px-4 py-3"

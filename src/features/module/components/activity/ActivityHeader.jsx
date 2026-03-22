@@ -78,7 +78,13 @@ export default function Header({
             </h1>
           </div>
 
-          <div className="flex items-center justify-end"></div>
+          <div className="flex items-center justify-end">
+            <HeaderSettingsButton
+              onClick={onOpenSettings}
+              themeHex={themeHex}
+              iconSrc={gearIconSrc}
+            />
+          </div>
         </div>
 
         <div className="mt-0 -mx-2 md:-mx-6 lg:-mx-8">

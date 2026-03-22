@@ -2,20 +2,21 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { startActivityAttempt, completeAttempt } from "@/services/activityApi";
 
 /**
- * useMissionAttempt:
- * - mode="manual": start() se llama con botón "Empezar"
- * - mode="auto": inicia automáticamente cuando cambia activityId
+ * Maneja el ciclo completo del attempt de una mision.
+ * `manual` espera el boton "Empezar"; `auto` inicia al entrar.
  */
 export function useMissionAttempt(activityId, { mode = "manual" } = {}) {
   const [attemptId, setAttemptId] = useState(null);
-  const [status, setStatus] = useState("idle"); // idle | starting | active | completing | completed | error
+  const [status, setStatus] = useState("idle");
   const [error, setError] = useState(null);
 
+  // Guarda el momento real en que el attempt arranco.
   const startedAtRef = useRef(null);
+  // Acumula eventos para enviarlos juntos al cerrar la mision.
   const payloadRef = useRef({ events: [] });
 
-  // reset cuando cambia misión (activityId)
   useEffect(() => {
+    // Cada cambio de mision reinicia el intento local.
     setAttemptId(null);
     setStatus("idle");
     setError(null);
@@ -23,22 +24,23 @@ export function useMissionAttempt(activityId, { mode = "manual" } = {}) {
     payloadRef.current = { events: [] };
   }, [activityId]);
 
-  // track de eventos para payload final
   const track = useCallback((event) => {
+    // Permite agregar eventos durante la mision sin tocar el backend todavia.
     payloadRef.current.events.push({ t: Date.now(), ...event });
   }, []);
 
-  // start POST
   const start = useCallback(async () => {
-    if (!activityId) throw new Error("activityId faltante en la misión");
+    if (!activityId) throw new Error("activityId faltante en la mision");
 
-    // evita doble start
+    // Evita pedir dos veces el mismo start para una sola vista.
     if (attemptId) return { attemptId };
 
     setStatus("starting");
     setError(null);
 
-    payloadRef.current = { events: [{ t: Date.now(), type: "mission_start", activityId }] };
+    payloadRef.current = {
+      events: [{ t: Date.now(), type: "mission_start", activityId }],
+    };
 
     try {
       const res = await startActivityAttempt(activityId);
@@ -53,16 +55,15 @@ export function useMissionAttempt(activityId, { mode = "manual" } = {}) {
     }
   }, [activityId, attemptId]);
 
-  // auto-start opcional (si lo usas algún día)
   useEffect(() => {
     if (mode !== "auto") return;
     if (!activityId) return;
-    // no await: no queremos promesas colgando en effect
+
+    // Auto-start solo se usa cuando la mision debe arrancar sin intro.
     start();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode, activityId]);
 
-  // complete POST
   const completeMission = useCallback(
     async ({ score = 0, extraPayload = {} } = {}) => {
       if (!attemptId) throw new Error("No attemptId: primero presiona Empezar");
@@ -70,13 +71,14 @@ export function useMissionAttempt(activityId, { mode = "manual" } = {}) {
       setStatus("completing");
       setError(null);
 
+      // El tiempo se mide desde el start real, no desde que se abrio la pagina.
       const durationMs = startedAtRef.current ? Date.now() - startedAtRef.current : 0;
-      payloadRef.current.events.push({ t: Date.now(), type: "missi  _finish" });
+      payloadRef.current.events.push({ t: Date.now(), type: "mission_finish" });
 
       const body = {
         score,
         durationMs,
-        payload: { ...payloadRef.current, ...extraPayload }
+        payload: { ...payloadRef.current, ...extraPayload },
       };
 
       try {
@@ -89,7 +91,7 @@ export function useMissionAttempt(activityId, { mode = "manual" } = {}) {
         throw e;
       }
     },
-    [attemptId]
+    [attemptId],
   );
 
   return { attemptId, status, error, start, track, completeMission };
