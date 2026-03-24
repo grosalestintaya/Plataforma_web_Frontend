@@ -15,7 +15,7 @@ export default function StepsStrip({ steps = [], className = "" }) {
           className="flex min-h-[180px] flex-col justify-center rounded-2xl border border-white/15 px-4 py-5"
         >
           <Typografia
-            variant="hero"
+            variant="h2"
             align="center"
             className="pb-2 text-3xl md:text-4xl"
           >
@@ -26,10 +26,10 @@ export default function StepsStrip({ steps = [], className = "" }) {
             content={
               step?.label ?? {
                 text: "",
-                variant: "body",
+                variant: "body1",
               }
             }
-            variant={step?.label?.variant ?? "body"}
+            variant={step?.label?.variant ?? "body1"}
             align={step?.label?.align ?? "center"}
             className="py-0 text-sm md:text-base"
           />

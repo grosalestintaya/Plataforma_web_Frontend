@@ -6,30 +6,271 @@
   "missionTitle": "Clasificacion y priorizacion de gastos",
   "views": [
     {
-      "id": "m1_p_01_intro_practica",
+      "id": "m1_p_01_intro",
       "template": "teoria",
       "variant": "split",
       "data": {
         "title": {
           "text": "Hora de practicar",
-          "variant": "hero"
+          "variant": "h3",
+          "align": "center"
         },
-        "leftText": {
-          "paragraphs": [
-            "Usaras una cantidad limitada de dinero durante un dia escolar.",
-            "Tendras S/ 3.00 para usarlo en transporte, comida y otras situaciones.",
-            "Observa con atencion cada escenario antes de decidir."
-          ],
-          "variant": "body"
-        },
+        "leftText": [
+          "Usaras una cantidad limitada de dinero durante un dia escolar.",
+          "Tendras S/ 5.00 para transporte, comida y otras situaciones.",
+          "Observa cada escena y decide como administrar mejor tu saldo."
+        ],
         "rightImage": {
           "src": "",
-          "alt": "Hora de practicar"
+          "alt": "Practica con dinero diario"
         }
       },
       "nav": {
         "mode": "cta",
-        "label": "Empezar"
+        "label": "Iniciar",
+        "action": "startMissionAttempt"
+      }
+    },
+    {
+      "id": "m1_p_02_commute",
+      "template": "schoolDayBudget",
+      "variant": "commuteDecision",
+      "data": {
+        "title": {
+          "text": "Situacion 1",
+          "variant": "h5"
+        },
+        "balance": 5,
+        "instruction": {
+          "text": "Sales de tu casa rumbo al colegio y se te hizo tarde. Escoge de que manera llegarias a tu colegio.",
+          "variant": "body1",
+          "align": "center"
+        },
+        "options": [
+          {
+            "id": "combi",
+            "title": "En combi",
+            "detail": "- S/ 0.50",
+            "cost": 0.5,
+            "nextBalance": 4.5,
+            "score": 100,
+            "feedback": {
+              "text": "Buena eleccion. Usar la combi te ayuda a llegar a tiempo, aunque gastas parte de tu saldo.",
+              "variant": "body1",
+              "align": "center"
+            },
+            "image": {
+              "src": "",
+              "alt": "Llegando a tiempo al colegio"
+            }
+          },
+          {
+            "id": "walking",
+            "title": "Caminando",
+            "detail": "Gratis",
+            "cost": 0,
+            "nextBalance": 5,
+            "score": 60,
+            "feedback": {
+              "text": "Ahorras dinero, pero en esta situacion podrias llegar tarde al colegio. A veces gastar un poco tambien resuelve una necesidad.",
+              "variant": "body1",
+              "align": "center"
+            },
+            "image": {
+              "src": "",
+              "alt": "Llegando tarde al colegio"
+            }
+          }
+        ]
+      },
+      "nav": {
+        "mode": "lockedUntilComplete"
+      }
+    },
+    {
+      "id": "m1_p_03_kiosk",
+      "template": "schoolDayBudget",
+      "variant": "kioskCheckout",
+      "data": {
+        "title": {
+          "text": "Situacion 2",
+          "variant": "h5"
+        },
+        "balance": 4.5,
+        "instruction": {
+          "text": "Sales al recreo y te diriges a tu kiosko por alimentos. Escoge tus alimentos teniendo en cuenta el saldo que tienes.",
+          "variant": "body1",
+          "align": "center"
+        },
+        "sceneImage": {
+          "src": "",
+          "alt": "Kiosko con alimentos"
+        },
+        "summaryTitle": {
+          "text": "Cuenta",
+          "variant": "subtitle1"
+        },
+        "products": [
+          {
+            "id": "gaseosa",
+            "name": "Gaseosa",
+            "price": 1
+          },
+          {
+            "id": "galleta",
+            "name": "Galleta",
+            "price": 1
+          },
+          {
+            "id": "caramelo",
+            "name": "Caramelo",
+            "price": 0.5
+          }
+        ]
+      },
+      "nav": {
+        "mode": "lockedUntilComplete"
+      }
+    },
+    {
+      "id": "m1_p_04_extra",
+      "template": "schoolDayBudget",
+      "variant": "recycleDecision",
+      "when": {
+        "viewId": "m1_p_03_kiosk",
+        "stateKey": "selectedProductIds",
+        "includes": "gaseosa"
+      },
+      "data": {
+        "title": {
+          "text": "Situacion EXTRA",
+          "variant": "h5"
+        },
+        "balance": 2,
+        "balanceFrom": "m1_p_03_kiosk",
+        "instruction": {
+          "text": "Tienes un envase de plastico. Puedes canjearlo y decidir si reciclarlo o desecharlo.",
+          "variant": "body1",
+          "align": "center"
+        },
+        "options": [
+          {
+            "id": "recycle",
+            "title": "Reciclar",
+            "detail": "+ S/ 0.50",
+            "reward": 0.5,
+            "score": 100,
+            "feedback": {
+              "text": "Felicidades. Acabas de ganar S/ 0.50 por reciclar tu botella descartable.",
+              "variant": "body1",
+              "align": "center"
+            },
+            "image": {
+              "src": "",
+              "alt": "Afiche de reciclaje"
+            }
+          },
+          {
+            "id": "discard",
+            "title": "Desechar",
+            "detail": "Sin premio",
+            "reward": 0,
+            "score": 60,
+            "feedback": {
+              "text": "Seguiste adelante sin reciclar. Aun puedes pensar en como tus decisiones impactan tu dinero y el ambiente.",
+              "variant": "body1",
+              "align": "center"
+            },
+            "image": {
+              "src": "",
+              "alt": "Botella descartable"
+            }
+          }
+        ]
+      },
+      "nav": {
+        "mode": "lockedUntilComplete"
+      }
+    },
+    {
+      "id": "m1_p_05_return",
+      "template": "schoolDayBudget",
+      "variant": "commuteDecision",
+      "data": {
+        "title": {
+          "text": "Situacion 3",
+          "variant": "h5"
+        },
+        "balance": 2.5,
+        "balanceFrom": ["m1_p_04_extra", "m1_p_03_kiosk"],
+        "instruction": {
+          "text": "Se terminaron las clases por hoy. Es momento de volver a casa y decidir si regresas en combi o caminando.",
+          "variant": "body1",
+          "align": "center"
+        },
+        "options": [
+          {
+            "id": "return_combi",
+            "title": "En combi",
+            "detail": "- S/ 0.50",
+            "cost": 0.5,
+            "score": 80,
+            "feedback": {
+              "text": "Llegas mas rapido a casa, pero gastas parte del dinero que te quedaba.",
+              "variant": "body1",
+              "align": "center"
+            },
+            "image": {
+              "src": "",
+              "alt": "Regresando en combi"
+            }
+          },
+          {
+            "id": "return_walk",
+            "title": "Caminando",
+            "detail": "Gratis",
+            "cost": 0,
+            "score": 100,
+            "feedback": {
+              "text": "Buena eleccion. Como ya no tienes prisa para llegar a casa, puedes ahorrarte el pasaje de vuelta.",
+              "variant": "body1",
+              "align": "center"
+            },
+            "image": {
+              "src": "",
+              "alt": "Regresando a casa caminando"
+            }
+          }
+        ]
+      },
+      "nav": {
+        "mode": "lockedUntilComplete"
+      }
+    },
+    {
+      "id": "m1_p_06_summary",
+      "template": "schoolDayBudget",
+      "variant": "summary",
+      "data": {
+        "title": {
+          "text": "Lo lograste!",
+          "variant": "h3",
+          "align": "center"
+        },
+        "balance": 2.5,
+        "balanceFrom": "m1_p_05_return",
+        "image": {
+          "src": "",
+          "alt": "Resumen final"
+        },
+        "summaryText": {
+          "variant": "body1",
+          "align": "center"
+        }
+      },
+      "nav": {
+        "mode": "normal",
+        "finishLabel": "Finalizar"
       }
     }
   ]

@@ -20,6 +20,7 @@ import m05Conceptual from "./modulo5/m5-conceptual.json";
 import m05Procedimental from "./modulo5/m5-procedimental.json";
 import m05Actitudinal from "./modulo5/m5-actitudinal.json";
 
+// Une el contenido por modulo para que el player lo lea desde una sola fuente.
 const MISSION_CONTENT_BY_MODULE = {
   m01: {
     conceptual: m01Conceptual,
@@ -140,6 +141,7 @@ function normalizeCards(cards = []) {
 function normalizeViewData(data = {}) {
   if (!isObject(data)) return data ?? {};
 
+  // Normaliza el JSON para que templates y bloques reciban siempre la misma forma.
   return {
     ...data,
     title: normalizeTypographyNode(data.title),
@@ -255,6 +257,7 @@ function buildModuleData(moduleMeta) {
 }
 
 export const MODULE_CONTENT_MAP = modulesCatalog.modules.reduce((acc, moduleMeta) => {
+  // Expone cada modulo por su codigo principal y por aliases legacy.
   const moduleData = buildModuleData(moduleMeta);
 
   acc[moduleMeta.code] = moduleData;

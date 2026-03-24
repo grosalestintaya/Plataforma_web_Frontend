@@ -20,7 +20,7 @@ function StepModal({ step, onClose }) {
         <div className="grid gap-5 md:grid-cols-[1.1fr_0.9fr]">
           <div className="space-y-4">
             <Typografia
-              variant="eyebrow"
+              variant="overline"
               align="left"
               className="text-white/70"
             >
@@ -29,14 +29,14 @@ function StepModal({ step, onClose }) {
 
             <Typografia
               content={step.detail?.title ?? step.label}
-              variant={step.detail?.title?.variant ?? "hero"}
+              variant={step.detail?.title?.variant ?? "h2"}
               align="left"
               className="text-left"
             />
 
             <Typografia
               content={step.detail?.text}
-              variant={step.detail?.text?.variant ?? "body"}
+              variant={step.detail?.text?.variant ?? "body1"}
               align="left"
               className="py-0 text-left"
             />
@@ -44,7 +44,7 @@ function StepModal({ step, onClose }) {
             {step.detail?.note && (
               <Typografia
                 content={step.detail.note}
-                variant={step.detail.note?.variant ?? "supporting"}
+                variant={step.detail.note?.variant ?? "body2"}
                 align="left"
                 className="py-0 text-left"
               />
@@ -93,7 +93,7 @@ export default function InteractiveStepsGuide({
             className="flex min-h-[180px] flex-col justify-center rounded-2xl border border-white/20 px-4 py-5 text-left transition hover:border-white/40 hover:bg-white/5"
           >
             <Typografia
-              variant="hero"
+              variant="h2"
               align="center"
               className="pb-2 text-3xl md:text-4xl"
             >
@@ -104,10 +104,10 @@ export default function InteractiveStepsGuide({
               content={
                 step?.label ?? {
                   text: "",
-                  variant: "body",
+                  variant: "body1",
                 }
               }
-              variant={step?.label?.variant ?? "body"}
+              variant={step?.label?.variant ?? "body1"}
               align={step?.label?.align ?? "center"}
               className="py-0 text-sm md:text-base"
             />

@@ -5,13 +5,12 @@ function clamp(n, min, max) {
 }
 
 /**
- * Player de misión:
- * - missionKey/viewIndex
- * - footerModel según view.nav.mode
+ * Controla la vista actual de la mision y el footer de navegacion.
+ * Tambien soporta saltos entre vistas cuando una rama lo necesita.
  */
 export function useModulePlayer(
   moduleData,
-  { initialMissionKey, onFinishMission, actions } = {},
+  { initialMissionKey, onFinishMission, actions, isViewAvailable } = {},
 ) {
   const missions = moduleData?.missions ?? {};
   const missionKeys = Object.keys(missions);
@@ -28,29 +27,88 @@ export function useModulePlayer(
   const safeIndex = views.length ? clamp(viewIndex, 0, views.length - 1) : 0;
   const view = views[safeIndex];
 
-  const isFirst = safeIndex === 0;
-  const isLast = views.length ? safeIndex === views.length - 1 : true;
+  // Solo las vistas visibles participan en siguiente / atras.
+  const visibleIndices = useMemo(
+    () =>
+      views
+        .map((item, index) => ({ item, index }))
+        .filter(({ item }) => (isViewAvailable ? isViewAvailable(item) : true))
+        .map(({ index }) => index),
+    [isViewAvailable, views],
+  );
+
+  const currentVisiblePosition = visibleIndices.findIndex((index) => index === safeIndex);
+  const safeVisiblePosition = currentVisiblePosition >= 0 ? currentVisiblePosition : 0;
+  const isFirst =
+    visibleIndices.length === 0 ||
+    visibleIndices[safeVisiblePosition] === visibleIndices[0];
+  const isLast =
+    visibleIndices.length === 0 ||
+    visibleIndices[safeVisiblePosition] === visibleIndices[visibleIndices.length - 1];
 
   const goTo = useCallback(
     (idx) => setViewIndex(views.length ? clamp(idx, 0, views.length - 1) : 0),
     [views.length],
   );
 
-  const next = useCallback(() => goTo(safeIndex + 1), [goTo, safeIndex]);
-  const prev = useCallback(() => goTo(safeIndex - 1), [goTo, safeIndex]);
+  const goToViewId = useCallback(
+    (viewId) => {
+      const nextIndex = views.findIndex((item) => item?.id === viewId);
+      if (nextIndex < 0) return;
+      goTo(nextIndex);
+    },
+    [goTo, views],
+  );
+
+  const next = useCallback(() => {
+    const nextIndex =
+      currentVisiblePosition >= 0
+        ? visibleIndices[currentVisiblePosition + 1]
+        : safeIndex + 1;
+
+    if (typeof nextIndex === "number") goTo(nextIndex);
+  }, [currentVisiblePosition, goTo, safeIndex, visibleIndices]);
+
+  const prev = useCallback(() => {
+    const previousIndex =
+      currentVisiblePosition >= 0
+        ? visibleIndices[currentVisiblePosition - 1]
+        : safeIndex - 1;
+
+    if (typeof previousIndex === "number") goTo(previousIndex);
+  }, [currentVisiblePosition, goTo, safeIndex, visibleIndices]);
 
   const setMission = useCallback(
     (mk) => {
       if (!missions?.[mk]) return;
       setMissionKey(mk);
-      setViewIndex(0); // reset de vista al cambiar misión
+      // Reinicia la vista al entrar a otra mision.
+      setViewIndex(0);
     },
     [missions],
   );
 
+  const runActionAndNavigate = useCallback(
+    async (actionKey, context, fallbackNavigate) => {
+      if (actionKey && actions?.[actionKey]) {
+        const result = await actions[actionKey](context);
+
+        // La accion puede frenar la navegacion si necesita esperar algo.
+        if (result?.next === false) return;
+        // La accion puede saltar directo a una vista concreta.
+        if (result?.goToViewId) return goToViewId(result.goToViewId);
+        // La accion tambien puede resolver el indice por su cuenta.
+        if (typeof result?.goToIndex === "number") return goTo(result.goToIndex);
+      }
+
+      return fallbackNavigate();
+    },
+    [actions, goTo, goToViewId],
+  );
+
   const heroApi = useMemo(
-    () => ({ next, prev, goTo, setMission }),
-    [next, prev, goTo, setMission],
+    () => ({ next, prev, goTo, goToViewId, setMission }),
+    [next, prev, goTo, goToViewId, setMission],
   );
 
   const footerModel = useMemo(() => {
@@ -65,59 +123,51 @@ export function useModulePlayer(
 
     const mode = view.nav?.mode ?? "normal";
 
-    // CTA (Ej: Empezar)
     if (mode === "cta") {
       return {
         type: "cta",
         center: {
           label: view.nav?.label ?? "Empezar",
           enabled: !finishing,
-          onClick: async () => {
-            const actionKey = view.nav?.action;
-
-            // Acción custom (opcional)
-            if (actionKey && actions?.[actionKey]) {
-              const result = await actions[actionKey]({
-                missionKey,
-                viewIndex: safeIndex,
-                view,
-              });
-
-              // Si la acción dice “no avanzar”, se respeta
-              if (result?.next === false) return;
-            }
-
-            // Por defecto: avanzar a la siguiente vista
-            return next();
-          },
+          onClick: async () =>
+            runActionAndNavigate(
+              view.nav?.action,
+              { missionKey, viewIndex: safeIndex, view },
+              next,
+            ),
         },
       };
     }
 
-    // Locked (deshabilita botones)
     if (mode === "locked") {
       return {
         type: "locked",
-        left: { label: "◀ Atrás", enabled: false },
-        centerText: view.nav?.label ?? "En progreso…",
-        right: { label: "Siguiente ▶", enabled: false },
+        left: { label: "< Atrás", enabled: false },
+        centerText: view.nav?.label ?? "En progreso...",
+        right: { label: "Siguiente >", enabled: false },
       };
     }
 
-    // Normal (última -> Finalizar)
     return {
       type: "normal",
       left: {
-        label: "◀ Atrás",
+        label: "< Atrás",
         enabled: !isFirst && !finishing,
         onClick: prev,
       },
       centerText: "Quipu Yachay",
       right: {
-        label: isLast ? "Finalizar" : "Siguiente ▶",
+        label: isLast ? "Finalizar" : "Siguiente >",
         enabled: !finishing,
         onClick: async () => {
-          if (!isLast) return next();
+          if (!isLast) {
+            return runActionAndNavigate(
+              view.nav?.action,
+              { missionKey, viewIndex: safeIndex, view },
+              next,
+            );
+          }
+
           try {
             setFinishing(true);
             await onFinishMission?.({ missionKey });
@@ -128,15 +178,16 @@ export function useModulePlayer(
       },
     };
   }, [
-    view,
+    finishing,
     isFirst,
     isLast,
-    prev,
+    missionKey,
     next,
     onFinishMission,
-    missionKey,
-    finishing,
-    actions, // ✅ clave: evita usar actions “viejo”
+    prev,
+    runActionAndNavigate,
+    safeIndex,
+    view,
   ]);
 
   return {

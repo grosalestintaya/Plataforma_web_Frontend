@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import { getLearnFor } from "../utils/activityLearn";
 import { api } from "@/services/apiClient";
 
 import {
@@ -17,6 +16,7 @@ export default function useModuleMenuData(moduleKey) {
 
   useEffect(() => {
     const fetchOverview = async () => {
+      // El menu siempre lee progreso fresco antes de pintar el modulo.
       setLoading(true);
       setError("");
 
@@ -35,6 +35,7 @@ export default function useModuleMenuData(moduleKey) {
   }, [moduleKey]);
 
   const moduleData = useMemo(() => {
+    // El overview puede traer varias filas; elegimos la mejor candidata del modulo.
     return pickModuleByKey(overview?.modules, moduleKey);
   }, [overview?.modules, moduleKey]);
 
@@ -46,6 +47,7 @@ export default function useModuleMenuData(moduleKey) {
   useEffect(() => {
     if (!effectiveActivities.length) return;
 
+    // Selecciona la primera actividad visible al abrir el modulo.
     const firstActivity =
       effectiveActivities.find(
         (activity) => Number(activity.sortOrder) === 1,
@@ -62,11 +64,6 @@ export default function useModuleMenuData(moduleKey) {
       ) || null
     );
   }, [effectiveActivities, selectedActivityId]);
-
-  const learnBlock = useMemo(() => {
-    if (!selectedActivity) return null;
-    return getLearnFor(moduleKey, selectedActivity.type);
-  }, [moduleKey, selectedActivity]);
 
   const wallet = useMemo(() => {
     return overview?.wallet || { xp: 0, coins: 0 };
@@ -94,7 +91,6 @@ export default function useModuleMenuData(moduleKey) {
     selectedActivity,
     selectedActivityId,
     setSelectedActivityId,
-    learnBlock,
     canPlay,
     ctaLabel,
     mascotText,

@@ -44,7 +44,8 @@ export default function InsigniasGrid({ loading, insignias, count }) {
             <div
               key={ui.userInsigniaId}
               title={title}
-              className="group relative flex flex-col items-center justify-center rounded-xl border border-border bg-gradient-to-br from-secondary to-secondary/50 p-3 shadow-sm transition-transform hover:scale-[1.02]">
+              className="group relative flex flex-col items-center justify-center rounded-xl border border-border bg-gradient-to-br from-secondary to-secondary/50 p-3 shadow-sm transition-transform hover:scale-[1.02]"
+            >
               <div className="relative flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl bg-white/60 ring-1 ring-border">
                 <img
                   src={imgSrc}
@@ -52,6 +53,8 @@ export default function InsigniasGrid({ loading, insignias, count }) {
                   className="h-full w-full object-contain"
                   onError={(e) => {
                     e.currentTarget.src = resolveInsignia("default.png");
+                    // ERROR bucle
+                    console.log("insgnia ");
                   }}
                 />
               </div>

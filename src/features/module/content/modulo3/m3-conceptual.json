@@ -1,26 +1,28 @@
 {
   "id": "conceptual",
-  "backendActivityId": "01",
+  "backendActivityId": "7",
   "activityKey": "m03-conceptual",
   "headerTitle": "Conceptual",
   "missionTitle": "Presupuesto personal y control del dinero",
   "views": [
-     {
+    {
       "id": "m3_conceptual_intro",
       "template": "teoria",
       "variant": "split",
       "data": {
         "title": {
           "text": "Antes de empezar",
-          "variant": "section"
+          "variant": "h4"
         },
         "leftText": [
-          "modulo 3 con calma las indicaciones.",
-          "Tu intento se registrará cuando presioSnes “Empezar”.",
-          "Avanza por las vistas y completa la actividad final.",
-          "Al finalizar, tu progreso se guardará automáticamente."
+          "En esta mision veras por que sirve un presupuesto y como puedes armarlo.",
+          "Avanza por las vistas, explora los pasos y completa el ejemplo final.",
+          "Cuando presiones Empezar entraras al recorrido de la mision."
         ],
-        "rightImage": { "src": "", "alt": "Indicaciones" }
+        "rightImage": {
+          "src": "",
+          "alt": "Intro presupuesto personal"
+        }
       },
       "nav": {
         "mode": "cta",
@@ -35,17 +37,16 @@
       "data": {
         "title": {
           "text": "Que es un presupuesto?",
-          "variant": "section",
+          "variant": "h5",
           "containerClassName": "mx-auto max-w-[560px] rounded-xl border border-white/20 px-6 py-3"
         },
-
-        "text": {
+        "leftText": {
           "paragraphs": [
             "Un presupuesto es un plan para organizar el dinero disponible, estimando ingresos y gastos en un periodo para evitar gastar mas de lo que se tiene.",
             "Es como un mapa del dinero: te muestra cuanto entra, cuanto puedes usar y en que debes tener cuidado.",
             "No es para prohibirte cosas. Es para darte control y ayudarte a decidir mejor."
           ],
-          "variant": "span",
+          "variant": "body1",
           "align": "left",
           "containerClassName": "rounded-2xl border border-white/15 px-5 py-5"
         },
@@ -59,11 +60,11 @@
     {
       "id": "m3_c_02_por_que",
       "template": "teoria",
-      "variant": "definitionWithMedia",
+      "variant": "split",
       "data": {
         "title": {
           "text": "Por que deberia crear un presupuesto?",
-          "variant": "section",
+          "variant": "h5",
           "containerClassName": "mx-auto max-w-[760px] rounded-xl border border-white/20 px-6 py-3"
         },
         "leftText": {
@@ -71,7 +72,7 @@
             "Porque un presupuesto te ayuda a vivir dentro de tus posibilidades y tomar mejores decisiones con tu dinero.",
             "Cuando anotas ingresos y gastos, ves tu situacion mas clara y detectas gastos innecesarios para decidir si recortas o cambias por algo que te importa mas."
           ],
-          "variant": "body",
+          "variant": "body1",
           "align": "left",
           "containerClassName": "rounded-2xl border border-white/15 px-5 py-5"
         },
@@ -85,11 +86,11 @@
     {
       "id": "m3_c_03_quien",
       "template": "teoria",
-      "variant": "definitionWithMedia",
+      "variant": "split",
       "data": {
         "title": {
           "text": "Quien necesita un presupuesto?",
-          "variant": "section",
+          "variant": "h5",
           "containerClassName": "mx-auto max-w-[720px] rounded-xl border border-white/20 px-6 py-3"
         },
         "leftText": {
@@ -98,7 +99,7 @@
             "Todos necesitan presupuesto, porque ayuda a evitar errores y a planificar mejor lo que quieres lograr con tu dinero.",
             "Con un presupuesto puedes evitar gastos de mas, planificar una compra y usar mejor el dinero en lo que si te importa."
           ],
-          "variant": "body",
+          "variant": "body1",
           "align": "left",
           "containerClassName": "rounded-2xl border border-white/15 px-5 py-5"
         },
@@ -116,7 +117,7 @@
       "data": {
         "title": {
           "text": "Pasos para armar un presupuesto",
-          "variant": "section",
+          "variant": "h5",
           "containerClassName": "mx-auto max-w-[720px] rounded-xl border border-white/20 px-6 py-3"
         },
         "steps": [
@@ -125,19 +126,19 @@
             "number": "1",
             "label": {
               "text": "Ve tus ingresos",
-              "variant": "body"
+              "variant": "body1"
             },
             "detail": {
               "title": {
                 "text": "1. Ve tus ingresos",
-                "variant": "section"
+                "variant": "h5"
               },
               "text": {
                 "paragraphs": [
                   "En una lista registra todo el dinero que tengas.",
                   "Algunos ejemplos pueden ser el dinero para tu semana, la propina que te dan o un ingreso extra pequeno."
                 ],
-                "variant": "body",
+                "variant": "body1",
                 "align": "left"
               },
               "image": {
@@ -152,19 +153,19 @@
             "number": "2",
             "label": {
               "text": "Ve tus gastos",
-              "variant": "body"
+              "variant": "body1"
             },
             "detail": {
               "title": {
                 "text": "2. Ve tus gastos",
-                "variant": "section"
+                "variant": "h5"
               },
               "text": {
                 "paragraphs": [
                   "Anota en que se va tu dinero durante la semana.",
                   "Incluye gastos pequenos y repetidos, porque muchas veces ahi se escapa lo mas dificil de notar."
                 ],
-                "variant": "body",
+                "variant": "body1",
                 "align": "left"
               },
               "image": {
@@ -179,19 +180,19 @@
             "number": "3",
             "label": {
               "text": "Clasifica los gastos",
-              "variant": "body"
+              "variant": "body1"
             },
             "detail": {
               "title": {
                 "text": "3. Clasifica los gastos",
-                "variant": "section"
+                "variant": "h5"
               },
               "text": {
                 "paragraphs": [
                   "Separa tus gastos en categorias para entender mejor tus decisiones.",
                   "Por ejemplo: transporte, recreo, materiales o ahorro."
                 ],
-                "variant": "body",
+                "variant": "body1",
                 "align": "left"
               },
               "image": {
@@ -206,19 +207,19 @@
             "number": "4",
             "label": {
               "text": "Calcula tu saldo",
-              "variant": "body"
+              "variant": "body1"
             },
             "detail": {
               "title": {
                 "text": "4. Calcula tu saldo",
-                "variant": "section"
+                "variant": "h5"
               },
               "text": {
                 "paragraphs": [
                   "Resta tus gastos a tus ingresos.",
                   "Ese resultado te dice si te falta dinero, si estas justo o si aun te queda una parte disponible."
                 ],
-                "variant": "body",
+                "variant": "body1",
                 "align": "left"
               },
               "image": {
@@ -233,19 +234,19 @@
             "number": "5",
             "label": {
               "text": "Compara y ajusta",
-              "variant": "body"
+              "variant": "body1"
             },
             "detail": {
               "title": {
                 "text": "5. Compara y ajusta",
-                "variant": "section"
+                "variant": "h5"
               },
               "text": {
                 "paragraphs": [
                   "Si tus gastos superan tus ingresos, toca ajustar antes de gastar.",
                   "Si te sobra dinero, puedes decidir cuanto guardar o reservar para algo importante."
                 ],
-                "variant": "body",
+                "variant": "body1",
                 "align": "left"
               },
               "image": {
@@ -265,18 +266,18 @@
       "data": {
         "title": {
           "text": "Ejemplo: Presupuesto para una semana",
-          "variant": "section",
+          "variant": "h5",
           "containerClassName": "mx-auto max-w-[760px] rounded-xl border border-white/20 px-6 py-3"
         },
         "text": {
           "text": "Completa los recuadros en blanco",
-          "variant": "label",
+          "variant": "subtitle2",
           "containerClassName": "mx-auto max-w-[760px] rounded-xl border border-white/15 px-6 py-2"
         },
         "budget": {
           "prompt": {
             "text": "Escribe cuanto gastarias por dia en recreo. La vista se actualiza sola y te muestra si tu saldo queda positivo, exacto o negativo.",
-            "variant": "supporting",
+            "variant": "body2",
             "align": "left"
           },
           "incomeItems": [
@@ -299,22 +300,22 @@
           "notes": {
             "blank": {
               "text": "Todavia faltan datos. Completa el valor del recreo para ver el resultado.",
-              "variant": "supporting",
+              "variant": "body2",
               "align": "left"
             },
             "negative": {
               "text": "Saldo en negativo: tus gastos son mayores a tus ingresos. Debes ajustar tus gastos para no superar lo que tienes.",
-              "variant": "supporting",
+              "variant": "body2",
               "align": "left"
             },
             "neutral": {
               "text": "Saldo exacto: todo lo que ingresa ya esta comprometido. No hay margen para un gasto extra.",
-              "variant": "supporting",
+              "variant": "body2",
               "align": "left"
             },
             "positive": {
               "text": "Saldo en positivo: tus gastos son menores a tus ingresos. Tienes dinero extra que puedes ahorrar o guardar para una emergencia.",
-              "variant": "supporting",
+              "variant": "body2",
               "align": "left"
             }
           }

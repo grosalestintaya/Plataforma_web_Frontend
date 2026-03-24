@@ -1,14 +1,44 @@
-
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import Header from "../components/activity/ActivityHeader";
 import Hero from "../components/activity/ActivityHero";
 import Footer from "../components/activity/ActivityFooter";
 import SceneBackground from "../components/ui/SceneBackground";
-import { useMemo, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
 import { MODULE_CONTENT_MAP } from "../content/content.registry";
 import { useModulePlayer } from "../hooks/useModulePlayer";
-
 import { useMissionAttempt } from "../hooks/useMissionAttempt";
+
+function getComparableInteractiveState(result = {}) {
+  // Compara solo los campos que afectan navegacion, score o ramas.
+  return {
+    completed: Boolean(result?.completed),
+    score: Number(result?.score ?? 0),
+    type: result?.type ?? "interactive",
+    countsTowardScore: result?.countsTowardScore,
+    selectedOptionId: result?.selectedOptionId ?? null,
+    balance: result?.balance ?? null,
+    total: result?.total ?? null,
+    selectedProductIds: Array.isArray(result?.selectedProductIds)
+      ? [...result.selectedProductIds].sort()
+      : null,
+  };
+}
+
+function hasInteractiveStateChanged(previousResult, nextResult) {
+  return (
+    JSON.stringify(getComparableInteractiveState(previousResult)) !==
+    JSON.stringify(getComparableInteractiveState(nextResult))
+  );
+}
+
+function canUseBackendAttempt(activityId, missionAttempt) {
+  // Solo hay attempt real cuando la mision tiene activityId y ya se presiono Empezar.
+  return (
+    Boolean(activityId) &&
+    missionAttempt.status === "active" &&
+    Boolean(missionAttempt.attemptId)
+  );
+}
 
 export default function ModuleActivtyPage() {
   const navigate = useNavigate();
@@ -17,63 +47,178 @@ export default function ModuleActivtyPage() {
   const moduleData = MODULE_CONTENT_MAP[moduleCode];
   if (!moduleData) return <div>No existe contenido para {moduleCode}</div>;
 
-  // Misión válida (fallback a la primera)
   const missionKeys = Object.keys(moduleData.missions ?? {});
   const safeMissionKey = moduleData.missions?.[missionKeyParam]
     ? missionKeyParam
     : missionKeys[0];
-
-  // activityId por misión (para attempt)
   const activityId = moduleData.missions?.[safeMissionKey]?.activityId;
 
-  // Attempt manual (se inicia con botón Empezar)
+  // Guarda el resultado del minijuego actual para el score final.
+  const [interactiveState, setInteractiveState] = useState({});
+  // El attempt sigue siendo manual: se abre desde la vista intro con "Empezar".
   const missionAttempt = useMissionAttempt(activityId, { mode: "manual" });
 
-  // Acciones para CTA (objeto estable)
-  const actions = useMemo(
-    () => ({
-      startMissionAttempt: async () => {
-        await missionAttempt.start(); // POST start
-        return { next: true }; // que el player avance a vista 1
-      },
-    }),
-    [missionAttempt],
+  useEffect(() => {
+    // Cambiar de mision limpia el estado local del score.
+    setInteractiveState({});
+  }, [safeMissionKey]);
+
+  const setInteractiveViewState = useCallback(
+    (viewId, result) => {
+      if (!viewId) return;
+
+      let didChange = false;
+
+      setInteractiveState((prev) => {
+        const nextResult = {
+          ...prev[viewId],
+          ...result,
+        };
+
+        // Evita re-render y tracking cuando el estado util no cambio.
+        if (!hasInteractiveStateChanged(prev[viewId], nextResult)) {
+          return prev;
+        }
+
+        didChange = true;
+
+        return {
+          ...prev,
+          [viewId]: nextResult,
+        };
+      });
+
+      if (!didChange) return;
+
+      // Cada minijuego reporta su progreso para enviarlo al cerrar.
+      missionAttempt.track({
+        type: "interactive_result",
+        viewId,
+        gameType: result?.type ?? "interactive",
+        completed: Boolean(result?.completed),
+        score: Number(result?.score ?? 0),
+      });
+    },
+    [missionAttempt.track],
   );
 
-  // Player (vistas/footermodel)
+  const isViewAvailable = useCallback(
+    (view) => {
+      const rule = view?.when;
+      if (!rule) return true;
+
+      const sourceState = interactiveState[rule.viewId];
+      const sourceValue = sourceState?.[rule.stateKey];
+
+      // Permite mostrar una vista solo si el array incluye un valor concreto.
+      if (rule.includes !== undefined) {
+        return Array.isArray(sourceValue) && sourceValue.includes(rule.includes);
+      }
+
+      // Permite mostrar una vista solo si el valor coincide exactamente.
+      if (rule.equals !== undefined) {
+        return sourceValue === rule.equals;
+      }
+
+      // Permite ocultar una vista cuando un valor ya fue elegido antes.
+      if (rule.notIncludes !== undefined) {
+        return !Array.isArray(sourceValue) || !sourceValue.includes(rule.notIncludes);
+      }
+
+      return true;
+    },
+    [interactiveState],
+  );
+
+  const missionScore = useMemo(() => {
+    // Solo usa las vistas que realmente cuentan para el score final.
+    const scores = Object.values(interactiveState)
+      .filter((entry) => entry?.countsTowardScore !== false)
+      .map((entry) => Number(entry?.score))
+      .filter((value) => Number.isFinite(value));
+
+    if (!scores.length) return 0;
+
+    return Math.round(scores.reduce((sum, value) => sum + value, 0) / scores.length);
+  }, [interactiveState]);
+
+  const actions = useMemo(
+    () => ({
+      // Esta accion la invoca la vista inicial de la mision.
+      startMissionAttempt: async () => {
+        // Si no existe backend todavia, la intro solo desbloquea la mision local.
+        if (!activityId) return { next: true };
+
+        await missionAttempt.start();
+        return { next: true };
+      },
+    }),
+    [activityId, missionAttempt],
+  );
+
   const player = useModulePlayer(moduleData, {
     initialMissionKey: safeMissionKey,
     actions,
+    // Las ramas usan el estado interactivo para decidir si una vista existe o se salta.
+    isViewAvailable,
     onFinishMission: async ({ missionKey }) => {
-      await missionAttempt.completeMission({
-        score: 0,
-        extraPayload: { moduleCode, missionKey },
-      });
+      // Si existe backend y el attempt esta activo, cierra el intento real.
+      if (activityId && missionAttempt.attemptId) {
+        await missionAttempt.completeMission({
+          score: missionScore,
+          extraPayload: { moduleCode, missionKey },
+        });
+      }
+
       navigate(`/modules/${moduleCode}`);
     },
   });
 
-  // Sync: si cambias /learning/:moduleCode/:missionKey, actualiza el player
   useEffect(() => {
+    // Si cambia la URL, el player se mueve a esa mision.
     if (player.missionKey !== safeMissionKey) player.setMission(safeMissionKey);
-  }, [safeMissionKey, player]);
+  }, [player.missionKey, player.setMission, safeMissionKey]);
 
-  // Finalizar: solo habilitado si attempt está activo (ya se presionó Empezar)
   const footerModel = useMemo(() => {
-    const m = player.footerModel;
-    if (m?.type !== "normal") return m;
+    const model = player.footerModel;
+    if (model?.type !== "normal") return model;
 
-    const isFinal = m.right?.label === "Finalizar";
-    if (!isFinal) return m;
+    const currentView = player.view;
+    const currentInteractiveState = currentView ? interactiveState[currentView.id] : null;
+    const requiresCompletion = currentView?.nav?.mode === "lockedUntilComplete";
+    const hasBackendAttempt = canUseBackendAttempt(activityId, missionAttempt);
 
-    const canFinish =
-      missionAttempt.status === "active" && Boolean(missionAttempt.attemptId);
+    if (requiresCompletion) {
+      // El minijuego debe marcarse como completo antes de avanzar o finalizar.
+      const canAdvance =
+        Boolean(currentInteractiveState?.completed) &&
+        (!activityId || hasBackendAttempt);
+
+      return {
+        ...model,
+        right: {
+          ...model.right,
+          enabled: model.right.enabled && canAdvance,
+          label: canAdvance
+            ? model.right.label
+            : missionAttempt.status === "starting"
+              ? "Conectando..."
+              : "Completa el minijuego",
+        },
+      };
+    }
+
+    const isFinal = model.right?.label === "Finalizar";
+    if (!isFinal) return model;
+
+    // El cierre final solo exige attempt si la mision realmente usa backend.
+    const canFinish = !activityId || hasBackendAttempt;
 
     return {
-      ...m,
+      ...model,
       right: {
-        ...m.right,
-        enabled: m.right.enabled && canFinish,
+        ...model.right,
+        enabled: model.right.enabled && canFinish,
         label: canFinish
           ? "Finalizar"
           : missionAttempt.status === "starting"
@@ -81,27 +226,47 @@ export default function ModuleActivtyPage() {
             : "Presiona Empezar",
       },
     };
-  }, [player.footerModel, missionAttempt.status, missionAttempt.attemptId]);
+  }, [
+    activityId,
+    interactiveState,
+    missionAttempt,
+    player.footerModel,
+    player.view,
+  ]);
 
-  // track para enviar eventos durante misión
-  const heroApi = { ...player.heroApi, track: missionAttempt.track };
+  const getInteractiveState = useCallback(
+    (viewId) => interactiveState[viewId] ?? null,
+    [interactiveState],
+  );
+
+  const heroApi = useMemo(
+    () => ({
+      ...player.heroApi,
+      // Los bloques interactivos usan esto para registrar eventos finos.
+      track: missionAttempt.track,
+      // Los minijuegos usan esto para subir score y estado de completado.
+      setInteractiveState: setInteractiveViewState,
+      // Permite que una vista consulte resultados previos del mismo recorrido.
+      getInteractiveState,
+    }),
+    [getInteractiveState, missionAttempt.track, player.heroApi, setInteractiveViewState],
+  );
+
   return (
     <SceneBackground moduleCode={moduleCode} className="overflow-hidden">
-      <div className="min-h-screen w-full grid grid-rows-[auto_minmax(0,1fr)_auto]">
+      <div className="grid min-h-screen w-full grid-rows-[auto_minmax(0,1fr)_auto]">
         <Header
           moduleData={moduleData}
           missionKey={player.missionKey}
           themeHex={moduleData?.theme?.color}
         />
 
-        {/* <main className="min-h-0 overflow-hidden"> */}
-          <Hero
-            moduleData={moduleData}
-            missionKey={player.missionKey}
-            viewIndex={player.viewIndex}
-            heroApi={heroApi}
-          />
-        {/* </main> */}
+        <Hero
+          moduleData={moduleData}
+          missionKey={player.missionKey}
+          viewIndex={player.viewIndex}
+          heroApi={heroApi}
+        />
 
         <Footer model={footerModel} />
       </div>

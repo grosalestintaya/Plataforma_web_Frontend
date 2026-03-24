@@ -4,5 +4,107 @@
   "activityKey": "m01-actitudinal",
   "headerTitle": "Actitudinal",
   "missionTitle": "Autocontrol y presion social",
-  "views": []
+  "views": [
+    {
+      "id": "m1_a_01_intro",
+      "template": "teoria",
+      "variant": "simple",
+      "data": {
+        "title": {
+          "text": "Analizamos lo aprendido",
+          "variant": "h3",
+          "align": "center"
+        },
+        "text": {
+          "text": "Ahora tendras que completar algunas preguntas reflexivas sobre el tema abordado.",
+          "variant": "body1",
+          "align": "center"
+        },
+        "image": {
+          "src": "",
+          "alt": "Inicio de reflexion"
+        }
+      },
+      "nav": {
+        "mode": "cta",
+        "label": "Iniciar",
+        "action": "startMissionAttempt"
+      }
+    },
+    {
+      "id": "m1_a_02_question_1",
+      "template": "reflectionQuestion",
+      "data": {
+        "title": {
+          "text": "Pregunta 1",
+          "variant": "h4",
+          "align": "center"
+        },
+        "question": {
+          "text": "Tienes 10 soles, lo gastas en dulces o lo guardas para el libro que quieres?",
+          "variant": "body1",
+          "align": "center"
+        },
+        "options": [
+          {
+            "id": "spend",
+            "label": "a) Lo gasto",
+            "score": 80
+          },
+          {
+            "id": "save",
+            "label": "b) Lo guardo",
+            "score": 100
+          }
+        ],
+        "prompt": {
+          "text": "Explica por que?",
+          "variant": "subtitle2"
+        },
+        "placeholder": "Escribe aqui tu respuesta...",
+        "minReasonLength": 8
+      },
+      "nav": {
+        "mode": "lockedUntilComplete"
+      }
+    },
+    {
+      "id": "m1_a_03_question_2",
+      "template": "reflectionQuestion",
+      "data": {
+        "title": {
+          "text": "Pregunta 2",
+          "variant": "h4",
+          "align": "center"
+        },
+        "question": {
+          "text": "Tus amigos quieren comprar algo por impulso, pero tu estabas ahorrando para una meta. Que harias?",
+          "variant": "body1",
+          "align": "center"
+        },
+        "options": [
+          {
+            "id": "follow_group",
+            "label": "a) Lo compro para no quedarme fuera",
+            "score": 80
+          },
+          {
+            "id": "stay_goal",
+            "label": "b) Mantengo mi meta y no gasto",
+            "score": 100
+          }
+        ],
+        "prompt": {
+          "text": "Explica por que?",
+          "variant": "subtitle2"
+        },
+        "placeholder": "Cuenta que pensarias en esa situacion...",
+        "minReasonLength": 8
+      },
+      "nav": {
+        "mode": "lockedUntilComplete",
+        "finishLabel": "Finalizar"
+      }
+    }
+  ]
 }
