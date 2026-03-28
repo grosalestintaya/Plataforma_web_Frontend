@@ -30,7 +30,6 @@ export default function QuipuHeader({
   onOpenSettings,
   gearIconSrc = gearicon,
 }) {
-  
   return (
     <header className="relative w-full overflow-hidden">
       <div

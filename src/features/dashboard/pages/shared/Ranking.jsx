@@ -34,7 +34,6 @@ export default function Ranking() {
         me: json?.me ?? null,
       });
     } catch (e) {
-      // 401 lo maneja apiClient (logout + redirect)
       if (e?.status !== 401) {
         setError(e?.message || "Error al cargar ranking");
       }
@@ -54,7 +53,6 @@ export default function Ranking() {
         items: Array.isArray(json?.insignias) ? json.insignias : [],
       });
     } catch (e) {
-      // 401 lo maneja apiClient; insignias no bloquea vista
       setInsigniasState({ loading: false, count: 0, items: [] });
     }
   };
@@ -71,30 +69,38 @@ export default function Ranking() {
   const myRank = rankingState.myRank ?? rankingState.me?.rank ?? null;
 
   return (
-    <div className="mx-auto max-w-7xl">
-      {error && (
-        <div className="mb-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
-          <div className="font-bold">No se pudo cargar</div>
-          <div className="mt-1 opacity-90">{error}</div>
-        </div>
-      )}
+    <div className="w-full h-[calc(100dvh-60px)] overflow-hidden px-0">
+      <div className="flex h-full min-h-0 flex-col overflow-hidden">
+        {error && (
+          <div className="mb-4 shrink-0 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+            <div className="font-bold">No se pudo cargar</div>
+            <div className="mt-1 opacity-90">{error}</div>
+          </div>
+        )}
 
-      <div className="grid gap-6 lg:grid-cols-[1fr_380px]">
-        <BoardCard
-          rankingState={{ ...rankingState, myRank }}
-          onRefresh={refreshAll}
-        />
-
-        <Card className="relative overflow-hidden border border-border bg-gradient-to-br from-card via-card to-primary/5 shadow-2xl">
-          <div className="absolute inset-0 bg-grid-white/[0.02]" />
-          <div className="relative">
-            <UserProfileCard
-              me={rankingState.me}
-              myRank={myRank}
-              insigniasState={insigniasState}
+        <div className="grid flex-1 min-h-0 w-full gap-6 overflow-hidden lg:grid-cols-[minmax(0,1fr)_450px]">
+          {/* Panel izquierdo */}
+          <div className="min-h-0 w-full overflow-hidden">
+            <BoardCard
+              rankingState={{ ...rankingState, myRank }}
+              onRefresh={refreshAll}
             />
           </div>
-        </Card>
+
+          {/* Panel derecho */}
+          <div className="min-h-0 w-full overflow-hidden">
+            <Card className="relative flex h-full min-h-0 w-full flex-col overflow-hidden border border-border bg-gradient-to-br from-card via-card to-primary/5 shadow-2xl">
+              <div className="absolute inset-0 bg-grid-white/[0.02]" />
+              <div className="relative flex-1 min-h-0 overflow-y-auto">
+                <UserProfileCard
+                  me={rankingState.me}
+                  myRank={myRank}
+                  insigniasState={insigniasState}
+                />
+              </div>
+            </Card>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -1,5 +1,4 @@
 import React from "react";
-import ShowDashboardTitle from "@/features/dashboard/components/ShowDashboardTitle";
 import StoreTopBar from "@/features/dashboard/components/store/StoreTopBar";
 import StoreFilters from "@/features/dashboard/components/store/StoreFilters";
 import StoreFeedback from "@/features/dashboard/components/store/StoreFeedback";
@@ -20,30 +19,42 @@ function Store() {
     equipAvatar,
     equippedAvatarName,
   } = useAvatarStore();
-  // <ShowDashboardTitle>Tienda de Avatares</ShowDashboardTitle>
 
   return (
-    <div className="w-full min-h-screen pt-0">
+    <div className="w-full h-full min-h-0 overflow-hidden">
       <div
-        className="mt-6 rounded-2xl border  pt-0 shadow-sm md:p-6"
+        className="flex h-full min-h-0 flex-col overflow-hidden rounded-2xl border p-4 shadow-sm md:p-5 xl:p-6"
         style={{
           backgroundColor: "var(--chip-bg)",
           borderColor: "var(--card-border)",
         }}>
-        <StoreTopBar wallet={wallet} equippedAvatarName={equippedAvatarName} />
+        <div className="shrink-0">
+          <StoreTopBar
+            wallet={wallet}
+            equippedAvatarName={equippedAvatarName}
+          />
+        </div>
 
-        <StoreFilters filter={filter} onChange={setFilter} />
+        <div className="mt-4 shrink-0">
+          <StoreFilters filter={filter} onChange={setFilter} />
+        </div>
 
-        <StoreFeedback error={error} feedback={feedback} />
+        {(error || feedback) && (
+          <div className="mt-4 shrink-0">
+            <StoreFeedback error={error} feedback={feedback} />
+          </div>
+        )}
 
-        <StoreGrid
-          avatars={avatars}
-          loading={loading}
-          currentCoins={wallet?.coins_total ?? 0}
-          busyAvatarId={busyAvatarId}
-          onPurchase={purchaseAvatar}
-          onEquip={equipAvatar}
-        />
+        <div className="mt-4 flex-1 min-h-0 overflow-hidden">
+          <StoreGrid
+            avatars={avatars}
+            loading={loading}
+            currentCoins={wallet?.coins_total ?? 0}
+            busyAvatarId={busyAvatarId}
+            onPurchase={purchaseAvatar}
+            onEquip={equipAvatar}
+          />
+        </div>
       </div>
     </div>
   );

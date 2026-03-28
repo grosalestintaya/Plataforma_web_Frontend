@@ -471,7 +471,7 @@ export default function Users() {
                     style={{ backgroundColor: "var(--sidebar)" }}
                   />
                   <img
-                    src={`/profile/${pinnedImg || "default"}.png`}
+                    src={`/avatars/${pinnedImg || "default"}.png`}
                     alt="preview"
                     className="relative w-32 h-32 rounded-full border-4 object-cover"
                     style={{
@@ -525,21 +525,6 @@ export default function Users() {
 
               {/* COLUMNA 2: Solo lectura */}
               <div className="space-y-4">
-                <Field label="ID Usuario">
-                  <input
-                    type="text"
-                    value={editUser.id_user}
-                    readOnly
-                    className={inputBase}
-                    style={{
-                      ...inputStyle,
-                      backgroundColor: "rgba(2,6,23,0.04)",
-                      color: "rgba(2,6,23,0.65)",
-                      cursor: "not-allowed",
-                    }}
-                  />
-                </Field>
-
                 <Field label="Rol">
                   <input
                     type="text"
@@ -630,7 +615,7 @@ export default function Users() {
                   />
                 </Field>
 
-                <Field label="DNI" hint="8 dígitos recomendado.">
+                <Field label="DNI" hint="el campo solo acepta 8 dígitos.">
                   <input
                     type="text"
                     value={dni}

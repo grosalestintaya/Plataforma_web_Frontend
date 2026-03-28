@@ -6,7 +6,9 @@ function getFooterButtonClass(disabled) {
   return [
     "inline-flex h-9 min-w-[96px] items-center justify-center rounded-xl px-3 text-sm font-medium",
     "border border-white/15 bg-white/10 text-white transition",
-    disabled ? "cursor-not-allowed opacity-40" : "hover:bg-white/15 active:scale-[0.98]",
+    disabled
+      ? "cursor-not-allowed opacity-40"
+      : "hover:bg-white/15 active:scale-[0.98]",
   ].join(" ");
 }
 
@@ -21,8 +23,7 @@ function FooterShell({ children }) {
       className="border-t border-white/10 bg-black/20 backdrop-blur-sm"
       style={{
         minHeight: "var(--activity-footer-height, 64px)",
-      }}
-    >
+      }}>
       <div className="flex h-full min-h-[var(--activity-footer-height,64px)] items-center px-[var(--activity-shell-gutter)] text-white/80">
         {children}
       </div>
@@ -30,7 +31,6 @@ function FooterShell({ children }) {
   );
 }
 
-export default function ModuleFooter({ model }) {
 export default function ModuleFooter({ model, onUiClick }) {
   const wrapClick =
     (handler, enabled = true) =>
@@ -45,13 +45,10 @@ export default function ModuleFooter({ model, onUiClick }) {
       <FooterShell>
         <div className="flex w-full items-center justify-center">
           <button
-            disabled={!model.center.enabled}
-            onClick={model.center.onClick}
-            className={getFooterButtonClass(!model.center.enabled)}
-          >
-            onClick={wrapClick(model.center.onClick, model.center.enabled)}
-            className="h-8 px-4 rounded bg-white/10 disabled:opacity-40">
-            {model.center.label}
+            disabled={!model?.center?.enabled}
+            onClick={wrapClick(model?.center?.onClick, model?.center?.enabled)}
+            className={getFooterButtonClass(!model?.center?.enabled)}>
+            {model?.center?.label}
           </button>
         </div>
       </FooterShell>
@@ -63,7 +60,7 @@ export default function ModuleFooter({ model, onUiClick }) {
       <FooterShell>
         <div className="flex w-full items-center justify-center">
           <span className="truncate text-center text-xs sm:text-sm">
-            {model.centerText ?? "Quipu Yachay"}
+            {model?.centerText ?? "Quipu Yachay"}
           </span>
         </div>
       </FooterShell>
@@ -75,13 +72,15 @@ export default function ModuleFooter({ model, onUiClick }) {
       <FooterShell>
         <div className="grid w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 text-sm">
           <button disabled className={getFooterButtonClass(true)}>
-            {model.left.label}
+            {model?.left?.label}
           </button>
 
-          <span className="truncate text-center text-xs sm:text-sm">{model.centerText}</span>
+          <span className="truncate text-center text-xs sm:text-sm">
+            {model?.centerText}
+          </span>
 
           <button disabled className={getFooterButtonClass(true)}>
-            {model.right.label}
+            {model?.right?.label}
           </button>
         </div>
       </FooterShell>
@@ -92,27 +91,21 @@ export default function ModuleFooter({ model, onUiClick }) {
     <FooterShell>
       <div className="grid w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 text-sm">
         <button
-          disabled={!model.left.enabled}
-          onClick={model.left.onClick}
-          className={getFooterButtonClass(!model.left.enabled)}
-        >
-          onClick={wrapClick(model.left.onClick, model.left.enabled)}
-          className="h-8 px-3 rounded bg-white/10 disabled:opacity-40">
-          {model.left.label}
+          disabled={!model?.left?.enabled}
+          onClick={wrapClick(model?.left?.onClick, model?.left?.enabled)}
+          className={getFooterButtonClass(!model?.left?.enabled)}>
+          {model?.left?.label}
         </button>
 
         <span className="truncate text-center text-xs sm:text-sm">
-          {model.centerText ?? "Quipu Yachay"}
+          {model?.centerText ?? "Quipu Yachay"}
         </span>
 
         <button
-          disabled={!model.right.enabled}
-          onClick={model.right.onClick}
-          className={getFooterButtonClass(!model.right.enabled)}
-        >
-          onClick={wrapClick(model.right.onClick, model.right.enabled)}
-          className="h-8 px-3 rounded bg-white/10 disabled:opacity-40">
-          {model.right.label}
+          disabled={!model?.right?.enabled}
+          onClick={wrapClick(model?.right?.onClick, model?.right?.enabled)}
+          className={getFooterButtonClass(!model?.right?.enabled)}>
+          {model?.right?.label}
         </button>
       </div>
     </FooterShell>

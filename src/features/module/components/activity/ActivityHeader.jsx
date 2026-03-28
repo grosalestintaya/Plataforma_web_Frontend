@@ -1,4 +1,3 @@
-
 import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -27,7 +26,6 @@ function hexToRgba(hex, a = 1) {
   return `rgba(${r},${g},${b},${a})`;
 }
 
-
 export default function ActivityHeader({
   moduleData,
   missionKey,
@@ -51,7 +49,6 @@ export default function ActivityHeader({
     );
   }, [mission, moduleData, missionKey]);
 
-  function handleBack() {
   const music = audioState?.music ?? 50;
   const sfx = audioState?.sfx ?? 80;
   const setMusic = audioState?.setMusic;
@@ -62,9 +59,13 @@ export default function ActivityHeader({
   const handleBack = () => {
     playSfx?.("click");
 
-    if (onBack) return onBack();
+    if (onBack) {
+      onBack();
+      return;
+    }
+
     navigate(-1);
-  }
+  };
 
   const handleOpenSettings = () => {
     setIsSettingsOpen(true);
@@ -81,45 +82,21 @@ export default function ActivityHeader({
     stopMusic?.();
     setIsSettingsOpen(false);
 
-    if (onAbandonActivity) return onAbandonActivity();
+    if (onAbandonActivity) {
+      onAbandonActivity();
+      return;
+    }
+
     navigate("/");
   };
 
   return (
-    <header
-      className="relative w-full overflow-hidden leading-none"
-      style={{
-        minHeight: "var(--activity-header-height, 112px)",
-      }}
-    >
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background: `linear-gradient(
-            180deg,
-            ${hexToRgba(themeHex, 0.22)} 0%,
-            ${hexToRgba("#000000", 0.12)} 58%,
-            ${hexToRgba("#000000", 0)} 100%
-          )`,
-        }}
-      />
-
-      <div className="relative px-[var(--activity-shell-gutter)] pt-3 pb-0 md:pt-3.5">
-        <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 md:gap-3">
-          <div className="flex items-center">
-            <HeaderBackButton
-              onClick={handleBack}
-              themeHex={themeHex}
-              label="Volver"
-            />
-          </div>
-
-          <div className="flex min-w-0 justify-center px-1">
-            <h1 className="truncate text-center text-base font-semibold tracking-tight text-white sm:text-lg md:text-xl lg:text-2xl">
-              {missionTitle || "Mision"}
-            </h1>
     <>
-      <header className="relative w-full overflow-hidden leading-none">
+      <header
+        className="relative w-full overflow-hidden leading-none"
+        style={{
+          minHeight: "var(--activity-header-height, 112px)",
+        }}>
         <div
           className="pointer-events-none absolute inset-0"
           style={{
@@ -132,10 +109,22 @@ export default function ActivityHeader({
           }}
         />
 
-        <div className="relative px-2 pt-2 pb-0 md:px-6 md:pt-2 lg:px-8">
-          <div className="grid grid-cols-[auto_1fr_auto] items-center gap-1.5 md:gap-2">
-            <div className="min-w-0 flex items-center justify-center px-1">
-              <h1 className="truncate text-center text-lg font-semibold tracking-tight text-white md:text-2xl">
+        <div className="relative px-[var(--activity-shell-gutter)] pt-3 pb-0 md:pt-3.5">
+          <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 md:gap-3">
+            <div className="flex items-center">
+              {showBackButton ? (
+                <HeaderBackButton
+                  onClick={handleBack}
+                  themeHex={themeHex}
+                  label="Volver"
+                />
+              ) : (
+                <div className="h-[48px] w-[48px] sm:h-[54px] sm:w-[54px] md:h-[60px] md:w-[60px]" />
+              )}
+            </div>
+
+            <div className="flex min-w-0 justify-center px-1">
+              <h1 className="truncate text-center text-base font-semibold tracking-tight text-white sm:text-lg md:text-xl lg:text-2xl">
                 {missionTitle || "Misión"}
               </h1>
             </div>
@@ -145,33 +134,22 @@ export default function ActivityHeader({
                 onClick={handleOpenSettings}
                 themeHex={themeHex}
                 iconSrc={gearIconSrc}
+                title="Configuración"
               />
             </div>
           </div>
 
-          <div className="mt-0 -mx-2 md:-mx-6 lg:-mx-8">
+          <div className="mt-1 -mx-[var(--activity-shell-gutter)]">
             <img
               src={rope}
               alt="Cuerda del Quipu"
-              className="block h-[44px] w-full"
+              className="block h-[34px] w-full select-none object-fill sm:h-[38px] lg:h-[44px]"
               draggable={false}
             />
           </div>
         </div>
       </header>
 
-        <div className="mt-1 -mx-[var(--activity-shell-gutter)]">
-          <img
-            src={rope}
-            alt="Cuerda del Quipu"
-            // La cuerda debe cruzar visualmente toda la pantalla.
-            // `object-fill` evita recorte vertical y asegura que empiece y termine en el ancho visible.
-            className="block h-[34px] w-full select-none object-fill sm:h-[38px] lg:h-[44px]"
-            draggable={false}
-          />
-        </div>
-      </div>
-    </header>
       <ConfiguracionModal
         open={isSettingsOpen}
         onRequestClose={handleCloseSettings}

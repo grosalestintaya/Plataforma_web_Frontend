@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { resolveAvatar, getInitials } from "../helpers/helpers";
-import coin from "@/assets/dashboard/coin3.png";
+import coin from "@/assets/dashboard/coin.png";
 const clamp = (n, min = 0, max = 100) =>
   Math.min(max, Math.max(min, Number(n) || 0));
 
@@ -129,7 +129,7 @@ const UserCard = ({ user }) => {
           </h2>
 
           <p className="text-sm mt-1" style={{ color: "var(--card-muted)" }}>
-            Nivel: {user.nivel} — {user.puntos} pts para siguiente nivel
+            Nivel: {user.nivel} — {user.puntos} pts acumulados
           </p>
 
           {/* Barra de progreso */}

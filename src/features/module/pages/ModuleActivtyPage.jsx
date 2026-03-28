@@ -194,7 +194,7 @@ export default function ModuleActivtyPage() {
     const currentView = player.view;
     const currentViewId = currentView?.id ?? currentView?.viewId;
     // La estructura nueva usa `viewId`, asi que el footer debe leer ambos.
-    const currentInteractiveState = currentViewId ? interactiveState[currentViewId] : null;
+    //const currentInteractiveState = currentViewId ? interactiveState[currentViewId] : null;
     const currentInteractiveState = currentView
       ? interactiveState[currentView.id]
       : null;
@@ -273,8 +273,7 @@ export default function ModuleActivtyPage() {
           // La pagina reparte header, hero y footer con alturas controladas.
           gridTemplateRows:
             "var(--activity-header-height, auto) minmax(0, 1fr) var(--activity-footer-height, auto)",
-        }}
-      >
+        }}>
         <Header
           moduleData={moduleData}
           missionKey={player.missionKey}

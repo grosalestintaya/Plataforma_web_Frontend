@@ -67,7 +67,6 @@ export default function ModuleMenuPage() {
 
   return (
     <SceneBackground moduleCode={moduleCode}>
-      {console.log(moduleCode)}
       <div className="relative">
         <QuipuHeader
           title={moduleTitle || moduleData.title}
