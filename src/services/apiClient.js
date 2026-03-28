@@ -1,8 +1,10 @@
-// src/services/apiClient.js
-const BASE_URL = "https://api.quipuyachay.pe";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "");
 
-if (!BASE_URL) console.warn("VITE_API_BASE_URL no está definido.");
-
+if (!BASE_URL) {
+  throw new Error(
+    "VITE_API_BASE_URL no está definido en el build de frontend.",
+  );
+}
 function buildUrl(path) {
   const cleanPath = path.startsWith("/") ? path : `/${path}`;
   return `${BASE_URL}${cleanPath}`;
