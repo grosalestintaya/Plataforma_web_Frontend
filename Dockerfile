@@ -1,20 +1,21 @@
-# Build
 FROM node:22-alpine AS builder
 
 WORKDIR /app
+
+ARG VITE_API_BASE_URL
+ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
 
 COPY package*.json ./
 RUN npm install
 
 COPY . .
+
 RUN npm run build
 
-# Runtime
 FROM nginx:alpine
 
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# SPA fallback para React Router
 RUN printf 'server {\n\
     listen 3000;\n\
     server_name _;\n\
