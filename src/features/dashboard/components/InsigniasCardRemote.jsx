@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Lock, X } from "lucide-react";
 
-const API = "http://localhost:5000/api/me/insignias";
+const API = `${import.meta.env.VITE_API_BASE_URL}/api/me/insignias`;
 const INSIGNIA_BASE_URL = "/insignias";
 
 const MODULE_SLOTS = [

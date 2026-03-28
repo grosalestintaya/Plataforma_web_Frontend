@@ -15,8 +15,7 @@ import module4 from "@/assets/modulepics/module-4.png";
 import module5 from "@/assets/modulepics/module-5.png";
 import module6 from "@/assets/modulepics/module-6.png";
 
-const API = "http://localhost:5000/api/progress/overview";
-
+const API = `${import.meta.env.VITE_API_BASE_URL}/api/progress/overview`;
 const MODULE_BG = {
   1: module1,
   2: module2,
