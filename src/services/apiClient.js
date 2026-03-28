@@ -1,5 +1,5 @@
 // src/services/apiClient.js
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const BASE_URL = "https://api.quipuyachay.pe";
 
 if (!BASE_URL) console.warn("VITE_API_BASE_URL no está definido.");
 
