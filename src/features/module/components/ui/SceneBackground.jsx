@@ -49,7 +49,7 @@ export default function SceneBackground({
 
   return (
     <div
-      className={`relative w-full min-h-screen ${className}`}
+      className={`relative h-[100dvh] min-h-[100dvh] w-full overflow-hidden ${className}`}
       style={{ backgroundImage: theme.bgImage }}>
       {pattern && (
         <div
@@ -65,7 +65,18 @@ export default function SceneBackground({
         </div>
       )}
 
-      <div className="relative">{children}</div>
+      <div
+        className="relative h-full"
+        style={{
+          // Variables base del frame de actividad.
+          // Se reutilizan para mantener proporciones consistentes en toda la pantalla.
+          "--activity-header-height": "clamp(96px, 13vh, 132px)",
+          "--activity-footer-height": "clamp(56px, 8vh, 72px)",
+          "--activity-shell-gutter": "clamp(12px, 2vw, 28px)",
+        }}
+      >
+        {children}
+      </div>
     </div>
   );
 }

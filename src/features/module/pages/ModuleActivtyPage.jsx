@@ -192,6 +192,9 @@ export default function ModuleActivtyPage() {
     if (model?.type !== "normal") return model;
 
     const currentView = player.view;
+    const currentViewId = currentView?.id ?? currentView?.viewId;
+    // La estructura nueva usa `viewId`, asi que el footer debe leer ambos.
+    const currentInteractiveState = currentViewId ? interactiveState[currentViewId] : null;
     const currentInteractiveState = currentView
       ? interactiveState[currentView.id]
       : null;
@@ -264,14 +267,20 @@ export default function ModuleActivtyPage() {
 
   return (
     <SceneBackground moduleCode={moduleCode} className="overflow-hidden">
-      <div className="grid min-h-screen w-full grid-rows-[auto_minmax(0,1fr)_auto]">
+      <div
+        className="grid h-full min-h-0 w-full overflow-hidden"
+        style={{
+          // La pagina reparte header, hero y footer con alturas controladas.
+          gridTemplateRows:
+            "var(--activity-header-height, auto) minmax(0, 1fr) var(--activity-footer-height, auto)",
+        }}
+      >
         <Header
           moduleData={moduleData}
           missionKey={player.missionKey}
           themeHex={moduleData?.theme?.color}
           audioState={audio}
         />
-
         <Hero
           moduleData={moduleData}
           missionKey={player.missionKey}

@@ -1,11 +1,23 @@
-export { default as Typografia } from "./Typografia";
-export { default as Image } from "./Image";
-export { default as ImageCollage } from "./ImageCollage";
-export { default as CompareItems } from "./CompareItems";
-export { default as StepsStrip } from "./StepsStrip";
-export { default as BudgetSummaryTable } from "./Games/BudgetSummaryTable";
-export { default as InteractiveStepsGuide } from "./InteractiveStepsGuide";
-export { default as BudgetScenarioExplorer } from "./Games/BudgetScenarioExplorer";
+// Elementos base
+export { default as Typography } from "./base/Typography";
+export { default as Image } from "./base/Media/Image";
+export { default as Audio } from "./base/Media/Audio";
+export { default as Video } from "./base/Media/Video";
+export { default as Button } from "./base/Action/Button";
+export { default as Input } from "./base/Action/Input";
 
-// Expone el juego para que los templates puedan resolver el slot `MemoryPairsGame`.
-export { default as MemoryPairsGame } from "./Games/MemoryPairsGame";
+// Elementos compuestos: contenedor
+export { default as Card } from "./compounds/container/Card";
+export { default as Modal } from "./compounds/container/Modal";
+export { default as Form } from "./compounds/container/Form";
+
+// Elementos compuestos: agrupador
+export { default as RowCard } from "./compounds/grouper/RowCard";
+export { default as CompareCard } from "./compounds/grouper/CompareCard";
+export { default as CollageCard } from "./compounds/grouper/CollageCard";
+
+// Elementos compuestos: interactivo
+export { default as FlipCard } from "./compounds/Iterative/FlipCard";
+export { default as MemoryPairs } from "./compounds/Iterative/MemoryPairs";
+export { default as ChooseOne } from "./compounds/Iterative/ChooseOne";
+export { default as Calculator } from "./compounds/Iterative/Calculator";

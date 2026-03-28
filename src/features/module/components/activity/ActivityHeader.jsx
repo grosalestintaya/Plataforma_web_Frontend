@@ -1,3 +1,4 @@
+
 import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -26,6 +27,7 @@ function hexToRgba(hex, a = 1) {
   return `rgba(${r},${g},${b},${a})`;
 }
 
+
 export default function ActivityHeader({
   moduleData,
   missionKey,
@@ -49,6 +51,7 @@ export default function ActivityHeader({
     );
   }, [mission, moduleData, missionKey]);
 
+  function handleBack() {
   const music = audioState?.music ?? 50;
   const sfx = audioState?.sfx ?? 80;
   const setMusic = audioState?.setMusic;
@@ -61,7 +64,7 @@ export default function ActivityHeader({
 
     if (onBack) return onBack();
     navigate(-1);
-  };
+  }
 
   const handleOpenSettings = () => {
     setIsSettingsOpen(true);
@@ -83,6 +86,38 @@ export default function ActivityHeader({
   };
 
   return (
+    <header
+      className="relative w-full overflow-hidden leading-none"
+      style={{
+        minHeight: "var(--activity-header-height, 112px)",
+      }}
+    >
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background: `linear-gradient(
+            180deg,
+            ${hexToRgba(themeHex, 0.22)} 0%,
+            ${hexToRgba("#000000", 0.12)} 58%,
+            ${hexToRgba("#000000", 0)} 100%
+          )`,
+        }}
+      />
+
+      <div className="relative px-[var(--activity-shell-gutter)] pt-3 pb-0 md:pt-3.5">
+        <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 md:gap-3">
+          <div className="flex items-center">
+            <HeaderBackButton
+              onClick={handleBack}
+              themeHex={themeHex}
+              label="Volver"
+            />
+          </div>
+
+          <div className="flex min-w-0 justify-center px-1">
+            <h1 className="truncate text-center text-base font-semibold tracking-tight text-white sm:text-lg md:text-xl lg:text-2xl">
+              {missionTitle || "Mision"}
+            </h1>
     <>
       <header className="relative w-full overflow-hidden leading-none">
         <div
@@ -125,6 +160,18 @@ export default function ActivityHeader({
         </div>
       </header>
 
+        <div className="mt-1 -mx-[var(--activity-shell-gutter)]">
+          <img
+            src={rope}
+            alt="Cuerda del Quipu"
+            // La cuerda debe cruzar visualmente toda la pantalla.
+            // `object-fill` evita recorte vertical y asegura que empiece y termine en el ancho visible.
+            className="block h-[34px] w-full select-none object-fill sm:h-[38px] lg:h-[44px]"
+            draggable={false}
+          />
+        </div>
+      </div>
+    </header>
       <ConfiguracionModal
         open={isSettingsOpen}
         onRequestClose={handleCloseSettings}

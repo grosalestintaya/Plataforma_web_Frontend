@@ -1,5 +1,3 @@
-import React from "react";
-
 function hexToRgba(hex, a = 1) {
   const h = String(hex || "#000").replace("#", "");
   const full =
@@ -18,6 +16,11 @@ function hexToRgba(hex, a = 1) {
   return `rgba(${r},${g},${b},${a})`;
 }
 
+/**
+ * Boton de configuracion:
+ * - Usa un tamaño mas contenido para que el header no gane altura extra.
+ * - Mantiene la misma jerarquia visual del dashboard.
+ */
 export default function HeaderSettingsButton({
   onClick,
   themeHex = "#7130F7",
@@ -29,6 +32,18 @@ export default function HeaderSettingsButton({
     <button
       onClick={onClick}
       type="button"
+      className={`group relative grid h-[48px] w-[48px] place-items-center rounded-2xl transition duration-300 hover:scale-[1.05] active:scale-[0.97] sm:h-[54px] sm:w-[54px] md:h-[60px] md:w-[60px] ${className}`}
+      title={title}
+      style={{
+        background: `linear-gradient(180deg, ${hexToRgba(themeHex, 0.3)}, ${hexToRgba(themeHex, 0.14)})`,
+        border: `1px solid ${hexToRgba("#ffffff", 0.18)}`,
+        boxShadow: `
+          0 8px 24px ${hexToRgba("#000000", 0.28)},
+          0 0 18px ${hexToRgba(themeHex, 0.22)}
+        `,
+        backdropFilter: "blur(8px)",
+      }}
+    >
       className={`group relative grid h-[64px] w-[64px] place-items-center rounded-2xl transition duration-300 hover:scale-[1.05] active:scale-[0.97] ${className}`}
       title={title}>
       <span
@@ -40,6 +55,7 @@ export default function HeaderSettingsButton({
         src={iconSrc}
         alt={title}
         draggable={false}
+        className="relative z-10 h-[28px] w-[28px] object-contain transition-transform duration-300 group-hover:rotate-90 group-hover:scale-110 sm:h-[32px] sm:w-[32px] md:h-[38px] md:w-[38px]"
         className="relative z-10 h-[62px] w-[62px] object-contain transition-transform duration-300 group-hover:rotate-90 group-hover:scale-110"
       />
 

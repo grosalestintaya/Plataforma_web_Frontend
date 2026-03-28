@@ -53,7 +53,7 @@ export function useModulePlayer(
 
   const goToViewId = useCallback(
     (viewId) => {
-      const nextIndex = views.findIndex((item) => item?.id === viewId);
+      const nextIndex = views.findIndex((item) => (item?.id ?? item?.viewId) === viewId);
       if (nextIndex < 0) return;
       goTo(nextIndex);
     },
@@ -139,10 +139,18 @@ export function useModulePlayer(
       };
     }
 
+    if (mode === "embedded") {
+      return {
+        // El template controla el avance con su propio boton.
+        type: "status",
+        centerText: view.nav?.label ?? "Resuelve la situacion para continuar",
+      };
+    }
+
     if (mode === "locked") {
       return {
         type: "locked",
-        left: { label: "< Atrás", enabled: false },
+        left: { label: "< Atras", enabled: false },
         centerText: view.nav?.label ?? "En progreso...",
         right: { label: "Siguiente >", enabled: false },
       };
@@ -151,7 +159,7 @@ export function useModulePlayer(
     return {
       type: "normal",
       left: {
-        label: "< Atrás",
+        label: "< Atras",
         enabled: !isFirst && !finishing,
         onClick: prev,
       },

@@ -1,5 +1,3 @@
-import React from "react";
-
 function hexToRgba(hex, a = 1) {
   const h = String(hex || "#000").replace("#", "");
   const full =
@@ -18,6 +16,11 @@ function hexToRgba(hex, a = 1) {
   return `rgba(${r},${g},${b},${a})`;
 }
 
+/**
+ * Boton de regreso:
+ * - Reduce altura y densidad visual para no inflar el header.
+ * - Mantiene el look del proyecto con brillo y blur.
+ */
 export default function HeaderBackButton({
   onClick,
   themeHex = "#7130F7",
@@ -28,7 +31,7 @@ export default function HeaderBackButton({
     <button
       onClick={onClick}
       type="button"
-      className={`group relative h-[58px] overflow-hidden rounded-2xl px-3 font-semibold text-white transition-all duration-300 hover:-translate-y-[1px] hover:scale-[1.02] active:scale-[0.98] md:px-4 ${className}`}
+      className={`group relative h-[48px] overflow-hidden rounded-2xl px-3 font-semibold text-white transition-all duration-300 hover:-translate-y-[1px] hover:scale-[1.02] active:scale-[0.98] sm:h-[52px] md:h-[56px] md:px-4 ${className}`}
       style={{
         background: `linear-gradient(180deg, ${hexToRgba(themeHex, 0.34)} 0%, ${hexToRgba(themeHex, 0.16)} 100%)`,
         border: `1px solid ${hexToRgba("#ffffff", 0.18)}`,
@@ -51,7 +54,7 @@ export default function HeaderBackButton({
 
       <span className="relative z-10 flex items-center gap-3">
         <span
-          className="grid h-9 w-9 shrink-0 place-items-center rounded-xl transition-all duration-300 group-hover:-translate-x-0.5"
+          className="grid h-8 w-8 shrink-0 place-items-center rounded-xl transition-all duration-300 group-hover:-translate-x-0.5 sm:h-9 sm:w-9"
           style={{
             background: `linear-gradient(180deg, ${hexToRgba("#ffffff", 0.18)}, ${hexToRgba("#ffffff", 0.06)})`,
             border: `1px solid ${hexToRgba("#ffffff", 0.14)}`,
@@ -64,7 +67,7 @@ export default function HeaderBackButton({
           </span>
         </span>
 
-        <span className="text-[15px] tracking-tight md:text-base">{label}</span>
+        <span className="text-sm tracking-tight sm:text-[15px] md:text-base">{label}</span>
       </span>
 
       <span

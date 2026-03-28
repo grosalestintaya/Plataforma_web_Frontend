@@ -52,8 +52,6 @@ export default function InsigniasGrid({ loading, insignias, count }) {
                   className="h-full w-full object-contain"
                   onError={(e) => {
                     e.currentTarget.src = resolveInsignia("default.png");
-                    // ERROR bucle
-                    console.log("insgnia ");
                   }}
                 />
               </div>
