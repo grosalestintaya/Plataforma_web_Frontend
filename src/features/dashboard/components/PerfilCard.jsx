@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 
 const PerfilCard = ({ user }) => {
-  const profileImage = `/profile/${user?.avatar || "default"}.png`;
+  const profileImage = `/avatars/${user?.avatar || "default"}.png`;
 
   return (
     <motion.div
@@ -15,8 +15,7 @@ const PerfilCard = ({ user }) => {
         background:
           "linear-gradient(135deg, var(--chip-bg), var(--ui-surface, #fff))",
         borderColor: "var(--card-border)",
-      }}
-    >
+      }}>
       {/* ========================= */}
       {/* DATOS DEL USUARIO         */}
       {/* ========================= */}
@@ -33,10 +32,9 @@ const PerfilCard = ({ user }) => {
         <div className="col-span-2 mt-6">
           <p
             className="text-sm italic leading-relaxed"
-            style={{ color: "var(--card-muted)" }}
-          >
-            La información del estudiante está protegida.  
-            Solo usuarios autorizados pueden visualizar estos datos.
+            style={{ color: "var(--card-muted)" }}>
+            La información del estudiante está protegida. Solo usuarios
+            autorizados pueden visualizar estos datos.
           </p>
         </div>
       </div>
@@ -48,13 +46,11 @@ const PerfilCard = ({ user }) => {
         className="w-1/3 flex justify-center"
         initial={{ opacity: 0, scale: 0.85 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.15, duration: 0.45, ease: "easeOut" }}
-      >
+        transition={{ delay: 0.15, duration: 0.45, ease: "easeOut" }}>
         <motion.div
           whileHover={{ scale: 1.06 }}
           transition={{ type: "spring", stiffness: 220, damping: 14 }}
-          className="relative"
-        >
+          className="relative">
           {/* Glow */}
           <div
             className="absolute inset-0 rounded-full blur-xl opacity-40"
@@ -83,14 +79,12 @@ const Field = ({ label, value }) => (
   <div>
     <p
       className="text-sm font-semibold mb-0.5"
-      style={{ color: "var(--card-muted)" }}
-    >
+      style={{ color: "var(--card-muted)" }}>
       {label}
     </p>
     <p
       className="text-lg font-medium leading-snug"
-      style={{ color: "var(--card-text)" }}
-    >
+      style={{ color: "var(--card-text)" }}>
       {value}
     </p>
   </div>

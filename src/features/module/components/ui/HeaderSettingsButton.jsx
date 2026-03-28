@@ -44,32 +44,22 @@ export default function HeaderSettingsButton({
         backdropFilter: "blur(8px)",
       }}
     >
+      className={`group relative grid h-[64px] w-[64px] place-items-center rounded-2xl transition duration-300 hover:scale-[1.05] active:scale-[0.97] ${className}`}
+      title={title}>
       <span
         className="pointer-events-none absolute inset-1 rounded-2xl"
-        style={{
-          background: `radial-gradient(circle, ${hexToRgba(themeHex, 0.3)} 0%, ${hexToRgba(themeHex, 0)} 75%)`,
-        }}
+        style={{}}
       />
-
-      <span className="pointer-events-none absolute inset-0 rounded-2xl bg-white/10 opacity-60" />
 
       <img
         src={iconSrc}
         alt={title}
         draggable={false}
         className="relative z-10 h-[28px] w-[28px] object-contain transition-transform duration-300 group-hover:rotate-90 group-hover:scale-110 sm:h-[32px] sm:w-[32px] md:h-[38px] md:w-[38px]"
+        className="relative z-10 h-[62px] w-[62px] object-contain transition-transform duration-300 group-hover:rotate-90 group-hover:scale-110"
       />
 
-      <span
-        className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition duration-300 group-hover:opacity-100"
-        style={{
-          boxShadow: `
-            0 0 0 1px ${hexToRgba("#ffffff", 0.12)},
-            0 0 24px ${hexToRgba(themeHex, 0.45)},
-            0 0 40px ${hexToRgba(themeHex, 0.2)}
-          `,
-        }}
-      />
+      <span className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition duration-300 group-hover:opacity-100" />
     </button>
   );
 }

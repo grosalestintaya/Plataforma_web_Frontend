@@ -31,6 +31,15 @@ function FooterShell({ children }) {
 }
 
 export default function ModuleFooter({ model }) {
+export default function ModuleFooter({ model, onUiClick }) {
+  const wrapClick =
+    (handler, enabled = true) =>
+    () => {
+      if (!enabled) return;
+      onUiClick?.();
+      handler?.();
+    };
+
   if (model?.type === "cta") {
     return (
       <FooterShell>
@@ -40,6 +49,8 @@ export default function ModuleFooter({ model }) {
             onClick={model.center.onClick}
             className={getFooterButtonClass(!model.center.enabled)}
           >
+            onClick={wrapClick(model.center.onClick, model.center.enabled)}
+            className="h-8 px-4 rounded bg-white/10 disabled:opacity-40">
             {model.center.label}
           </button>
         </div>
@@ -85,6 +96,8 @@ export default function ModuleFooter({ model }) {
           onClick={model.left.onClick}
           className={getFooterButtonClass(!model.left.enabled)}
         >
+          onClick={wrapClick(model.left.onClick, model.left.enabled)}
+          className="h-8 px-3 rounded bg-white/10 disabled:opacity-40">
           {model.left.label}
         </button>
 
@@ -97,6 +110,8 @@ export default function ModuleFooter({ model }) {
           onClick={model.right.onClick}
           className={getFooterButtonClass(!model.right.enabled)}
         >
+          onClick={wrapClick(model.right.onClick, model.right.enabled)}
+          className="h-8 px-3 rounded bg-white/10 disabled:opacity-40">
           {model.right.label}
         </button>
       </div>
