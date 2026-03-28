@@ -7,9 +7,12 @@ import SceneBackground from "../components/ui/SceneBackground";
 import { MODULE_CONTENT_MAP } from "../content/content.registry";
 import { useModulePlayer } from "../hooks/useModulePlayer";
 import { useMissionAttempt } from "../hooks/useMissionAttempt";
+import useGameAudio from "@/features/audio/useGameAudio";
+
+// Reemplaza esta ruta por tu archivo real
+import missionTheme from "@/assets/audios/mission-theme.mp3";
 
 function getComparableInteractiveState(result = {}) {
-  // Compara solo los campos que afectan navegacion, score o ramas.
   return {
     completed: Boolean(result?.completed),
     score: Number(result?.score ?? 0),
@@ -32,7 +35,6 @@ function hasInteractiveStateChanged(previousResult, nextResult) {
 }
 
 function canUseBackendAttempt(activityId, missionAttempt) {
-  // Solo hay attempt real cuando la mision tiene activityId y ya se presiono Empezar.
   return (
     Boolean(activityId) &&
     missionAttempt.status === "active" &&
@@ -53,13 +55,23 @@ export default function ModuleActivtyPage() {
     : missionKeys[0];
   const activityId = moduleData.missions?.[safeMissionKey]?.activityId;
 
-  // Guarda el resultado del minijuego actual para el score final.
   const [interactiveState, setInteractiveState] = useState({});
-  // El attempt sigue siendo manual: se abre desde la vista intro con "Empezar".
   const missionAttempt = useMissionAttempt(activityId, { mode: "manual" });
 
+  // Hook de audio: aquí sí va
+  const audio = useGameAudio({
+    musicSrc: missionTheme,
+  });
+
   useEffect(() => {
-    // Cambiar de mision limpia el estado local del score.
+    audio.playMusic();
+
+    return () => {
+      audio.stopMusic();
+    };
+  }, [audio.playMusic, audio.stopMusic]);
+
+  useEffect(() => {
     setInteractiveState({});
   }, [safeMissionKey]);
 
@@ -75,7 +87,6 @@ export default function ModuleActivtyPage() {
           ...result,
         };
 
-        // Evita re-render y tracking cuando el estado util no cambio.
         if (!hasInteractiveStateChanged(prev[viewId], nextResult)) {
           return prev;
         }
@@ -90,7 +101,6 @@ export default function ModuleActivtyPage() {
 
       if (!didChange) return;
 
-      // Cada minijuego reporta su progreso para enviarlo al cerrar.
       missionAttempt.track({
         type: "interactive_result",
         viewId,
@@ -110,19 +120,20 @@ export default function ModuleActivtyPage() {
       const sourceState = interactiveState[rule.viewId];
       const sourceValue = sourceState?.[rule.stateKey];
 
-      // Permite mostrar una vista solo si el array incluye un valor concreto.
       if (rule.includes !== undefined) {
-        return Array.isArray(sourceValue) && sourceValue.includes(rule.includes);
+        return (
+          Array.isArray(sourceValue) && sourceValue.includes(rule.includes)
+        );
       }
 
-      // Permite mostrar una vista solo si el valor coincide exactamente.
       if (rule.equals !== undefined) {
         return sourceValue === rule.equals;
       }
 
-      // Permite ocultar una vista cuando un valor ya fue elegido antes.
       if (rule.notIncludes !== undefined) {
-        return !Array.isArray(sourceValue) || !sourceValue.includes(rule.notIncludes);
+        return (
+          !Array.isArray(sourceValue) || !sourceValue.includes(rule.notIncludes)
+        );
       }
 
       return true;
@@ -131,7 +142,6 @@ export default function ModuleActivtyPage() {
   );
 
   const missionScore = useMemo(() => {
-    // Solo usa las vistas que realmente cuentan para el score final.
     const scores = Object.values(interactiveState)
       .filter((entry) => entry?.countsTowardScore !== false)
       .map((entry) => Number(entry?.score))
@@ -139,14 +149,14 @@ export default function ModuleActivtyPage() {
 
     if (!scores.length) return 0;
 
-    return Math.round(scores.reduce((sum, value) => sum + value, 0) / scores.length);
+    return Math.round(
+      scores.reduce((sum, value) => sum + value, 0) / scores.length,
+    );
   }, [interactiveState]);
 
   const actions = useMemo(
     () => ({
-      // Esta accion la invoca la vista inicial de la mision.
       startMissionAttempt: async () => {
-        // Si no existe backend todavia, la intro solo desbloquea la mision local.
         if (!activityId) return { next: true };
 
         await missionAttempt.start();
@@ -159,10 +169,8 @@ export default function ModuleActivtyPage() {
   const player = useModulePlayer(moduleData, {
     initialMissionKey: safeMissionKey,
     actions,
-    // Las ramas usan el estado interactivo para decidir si una vista existe o se salta.
     isViewAvailable,
     onFinishMission: async ({ missionKey }) => {
-      // Si existe backend y el attempt esta activo, cierra el intento real.
       if (activityId && missionAttempt.attemptId) {
         await missionAttempt.completeMission({
           score: missionScore,
@@ -170,12 +178,12 @@ export default function ModuleActivtyPage() {
         });
       }
 
+      audio.stopMusic();
       navigate(`/modules/${moduleCode}`);
     },
   });
 
   useEffect(() => {
-    // Si cambia la URL, el player se mueve a esa mision.
     if (player.missionKey !== safeMissionKey) player.setMission(safeMissionKey);
   }, [player.missionKey, player.setMission, safeMissionKey]);
 
@@ -184,12 +192,13 @@ export default function ModuleActivtyPage() {
     if (model?.type !== "normal") return model;
 
     const currentView = player.view;
-    const currentInteractiveState = currentView ? interactiveState[currentView.id] : null;
+    const currentInteractiveState = currentView
+      ? interactiveState[currentView.id]
+      : null;
     const requiresCompletion = currentView?.nav?.mode === "lockedUntilComplete";
     const hasBackendAttempt = canUseBackendAttempt(activityId, missionAttempt);
 
     if (requiresCompletion) {
-      // El minijuego debe marcarse como completo antes de avanzar o finalizar.
       const canAdvance =
         Boolean(currentInteractiveState?.completed) &&
         (!activityId || hasBackendAttempt);
@@ -211,7 +220,6 @@ export default function ModuleActivtyPage() {
     const isFinal = model.right?.label === "Finalizar";
     if (!isFinal) return model;
 
-    // El cierre final solo exige attempt si la mision realmente usa backend.
     const canFinish = !activityId || hasBackendAttempt;
 
     return {
@@ -242,14 +250,16 @@ export default function ModuleActivtyPage() {
   const heroApi = useMemo(
     () => ({
       ...player.heroApi,
-      // Los bloques interactivos usan esto para registrar eventos finos.
       track: missionAttempt.track,
-      // Los minijuegos usan esto para subir score y estado de completado.
       setInteractiveState: setInteractiveViewState,
-      // Permite que una vista consulte resultados previos del mismo recorrido.
       getInteractiveState,
     }),
-    [getInteractiveState, missionAttempt.track, player.heroApi, setInteractiveViewState],
+    [
+      getInteractiveState,
+      missionAttempt.track,
+      player.heroApi,
+      setInteractiveViewState,
+    ],
   );
 
   return (
@@ -259,6 +269,7 @@ export default function ModuleActivtyPage() {
           moduleData={moduleData}
           missionKey={player.missionKey}
           themeHex={moduleData?.theme?.color}
+          audioState={audio}
         />
 
         <Hero
@@ -268,7 +279,10 @@ export default function ModuleActivtyPage() {
           heroApi={heroApi}
         />
 
-        <Footer model={footerModel} />
+        <Footer
+          model={footerModel}
+          onUiClick={() => audio.playSfx?.("click")}
+        />
       </div>
     </SceneBackground>
   );

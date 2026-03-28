@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { resolveAvatar, getInitials } from "../helpers/helpers";
-import coin from "@/assets/dashboard/coin.png";
+import coin from "@/assets/dashboard/coin3.png";
 const clamp = (n, min = 0, max = 100) =>
   Math.min(max, Math.max(min, Number(n) || 0));
 

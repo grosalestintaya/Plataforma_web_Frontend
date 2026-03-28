@@ -2,28 +2,28 @@ import { useEffect, useRef } from "react";
 
 export default function ConfiguracionModal({
   open,
-  onClose,
+  onRequestClose,
+  onRequestAbandon,
   sfx = 80,
   music = 50,
   onChangeSfx,
   onChangeMusic,
   title = "Opciones",
+  abandonLabel = "Abandonar actividad",
 }) {
   const panelRef = useRef(null);
 
-  // Cerrar con ESC
   useEffect(() => {
     if (!open) return;
 
     const handleKeyDown = (e) => {
-      if (e.key === "Escape") onClose?.();
+      if (e.key === "Escape") onRequestClose?.();
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [open, onClose]);
+  }, [open, onRequestClose]);
 
-  // Bloquear scroll del body al abrir
   useEffect(() => {
     if (!open) return;
 
@@ -35,7 +35,6 @@ export default function ConfiguracionModal({
     };
   }, [open]);
 
-  // Enfocar el panel al abrir
   useEffect(() => {
     if (!open) return;
 
@@ -50,7 +49,6 @@ export default function ConfiguracionModal({
 
   return (
     <>
-      {/* estilos del range una sola vez */}
       <style>{`
         .game-slider {
           -webkit-appearance: none;
@@ -101,36 +99,34 @@ export default function ConfiguracionModal({
         aria-modal="true"
         aria-labelledby="config-modal-title"
         onMouseDown={(e) => {
-          if (e.target === e.currentTarget) onClose?.();
+          if (e.target === e.currentTarget) onRequestClose?.();
         }}>
         <div
           ref={panelRef}
           tabIndex={-1}
           className="w-full max-w-xl rounded-[40px] bg-[#FFC400] shadow-2xl outline-none">
-          {/* Header */}
-          <div className="relative px-6 sm:px-10 pt-8 sm:pt-10 pb-5 sm:pb-6">
+          <div className="relative px-6 pt-8 pb-5 sm:px-10 sm:pt-10 sm:pb-6">
             <h2
               id="config-modal-title"
-              className="text-3xl sm:text-5xl font-extrabold text-slate-800">
+              className="text-3xl font-extrabold text-slate-800 sm:text-5xl">
               {title}
             </h2>
 
             <button
               type="button"
-              onClick={onClose}
+              onClick={onRequestClose}
               aria-label="Cerrar"
-              className="absolute right-5 top-5 sm:right-8 sm:top-8 grid h-12 w-12 sm:h-14 sm:w-14 place-items-center rounded-2xl transition active:scale-95">
+              className="absolute right-5 top-5 grid h-12 w-12 place-items-center rounded-2xl transition active:scale-95 sm:right-8 sm:top-8 sm:h-14 sm:w-14">
               <span className="relative block h-10 w-10 sm:h-11 sm:w-11">
-                <span className="absolute left-1/2 top-1/2 h-2 w-10 sm:w-12 -translate-x-1/2 -translate-y-1/2 rotate-45 rounded-full bg-pink-500 shadow-[0_2px_0_rgba(0,0,0,0.25)]" />
-                <span className="absolute left-1/2 top-1/2 h-2 w-10 sm:w-12 -translate-x-1/2 -translate-y-1/2 -rotate-45 rounded-full bg-pink-500 shadow-[0_2px_0_rgba(0,0,0,0.25)]" />
-                <span className="absolute left-1/2 top-1/2 h-[10px] w-10 sm:w-12 -translate-x-1/2 -translate-y-1/2 rotate-45 rounded-full border-2 border-slate-900/70" />
-                <span className="absolute left-1/2 top-1/2 h-[10px] w-10 sm:w-12 -translate-x-1/2 -translate-y-1/2 -rotate-45 rounded-full border-2 border-slate-900/70" />
+                <span className="absolute left-1/2 top-1/2 h-2 w-10 -translate-x-1/2 -translate-y-1/2 rotate-45 rounded-full bg-pink-500 shadow-[0_2px_0_rgba(0,0,0,0.25)] sm:w-12" />
+                <span className="absolute left-1/2 top-1/2 h-2 w-10 -translate-x-1/2 -translate-y-1/2 -rotate-45 rounded-full bg-pink-500 shadow-[0_2px_0_rgba(0,0,0,0.25)] sm:w-12" />
+                <span className="absolute left-1/2 top-1/2 h-[10px] w-10 -translate-x-1/2 -translate-y-1/2 rotate-45 rounded-full border-2 border-slate-900/70 sm:w-12" />
+                <span className="absolute left-1/2 top-1/2 h-[10px] w-10 -translate-x-1/2 -translate-y-1/2 -rotate-45 rounded-full border-2 border-slate-900/70 sm:w-12" />
               </span>
             </button>
           </div>
 
-          {/* Body */}
-          <div className="px-6 sm:px-10 pb-8 sm:pb-12 space-y-8 sm:space-y-10">
+          <div className="space-y-8 px-6 pb-8 sm:space-y-10 sm:px-10 sm:pb-12">
             <SettingRow
               icon={<SpeakerIcon />}
               label="Efectos"
@@ -146,6 +142,19 @@ export default function ConfiguracionModal({
               onChange={onChangeMusic}
               ariaLabel="Volumen de música"
             />
+
+            <div className="pt-2">
+              <div className="mb-3 text-sm font-semibold text-slate-800/80">
+                Saldrás de la actividad actual y volverás al inicio.
+              </div>
+
+              <button
+                type="button"
+                onClick={onRequestAbandon}
+                className="w-full rounded-2xl border-2 border-red-950/20 bg-red-500 px-5 py-4 text-lg font-black text-white shadow-[0_5px_0_rgba(0,0,0,0.18)] transition hover:brightness-105 active:translate-y-[1px]">
+                {abandonLabel}
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -156,16 +165,16 @@ export default function ConfiguracionModal({
 function SettingRow({ icon, label, value, onChange, ariaLabel }) {
   return (
     <div className="flex items-center gap-4 sm:gap-8">
-      <div className="grid w-12 h-12 sm:w-14 sm:h-14 place-items-center text-black shrink-0">
+      <div className="grid h-12 w-12 shrink-0 place-items-center text-black sm:h-14 sm:w-14">
         {icon}
       </div>
 
       <div className="flex-1">
         <div className="mb-2 flex items-center justify-between gap-4">
-          <span className="text-lg sm:text-xl font-extrabold text-slate-900">
+          <span className="text-lg font-extrabold text-slate-900 sm:text-xl">
             {label}
           </span>
-          <span className="min-w-[48px] text-right text-base sm:text-lg font-black text-slate-900">
+          <span className="min-w-[48px] text-right text-base font-black text-slate-900 sm:text-lg">
             {value}
           </span>
         </div>
@@ -186,20 +195,20 @@ function SettingRow({ icon, label, value, onChange, ariaLabel }) {
 
 function SpeakerIcon() {
   return (
-    <div className="relative w-10 h-10 sm:w-12 sm:h-12">
-      <div className="absolute left-1 top-4 w-3 h-4 bg-black rounded-sm" />
-      <div className="absolute left-3 top-2 w-7 h-8 bg-black [clip-path:polygon(0_20%,55%_0,55%_100%,0_80%)]" />
-      <div className="absolute right-1 top-4 w-2 h-4 border-4 border-l-0 border-black rounded-r-full" />
+    <div className="relative h-10 w-10 sm:h-12 sm:w-12">
+      <div className="absolute left-1 top-4 h-4 w-3 rounded-sm bg-black" />
+      <div className="absolute left-3 top-2 h-8 w-7 bg-black [clip-path:polygon(0_20%,55%_0,55%_100%,0_80%)]" />
+      <div className="absolute right-1 top-4 h-4 w-2 rounded-r-full border-4 border-l-0 border-black" />
     </div>
   );
 }
 
 function MusicIcon() {
   return (
-    <div className="relative w-10 h-10 sm:w-12 sm:h-12">
-      <div className="absolute left-7 top-2 w-2 h-8 bg-black rounded" />
-      <div className="absolute left-7 top-2 w-8 h-2 bg-black rounded" />
-      <div className="absolute left-2 top-8 w-6 h-6 bg-black rounded-full" />
+    <div className="relative h-10 w-10 sm:h-12 sm:w-12">
+      <div className="absolute left-7 top-2 h-8 w-2 rounded bg-black" />
+      <div className="absolute left-7 top-2 h-2 w-8 rounded bg-black" />
+      <div className="absolute left-2 top-8 h-6 w-6 rounded-full bg-black" />
     </div>
   );
 }
