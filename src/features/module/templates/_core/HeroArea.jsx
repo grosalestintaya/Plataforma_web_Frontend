@@ -1,18 +1,18 @@
-/**
- * HeroArea: posiciona el contenido en un área del grid (grid-area).
- *
- * ✅ Responsabilidad:
- * - Recibir un nombre de área (ej. "title", "text", "image", "examples")
- * - Aplicar `grid-area` para que el browser lo coloque en esa zona.
- */
 import { cn } from "@/shared/libs/utils";
 
+/**
+ * HeroArea:
+ * - Posiciona cada slot dentro del grid principal del template.
+ * - Mantiene una superficie minima para que el contenido no colapse.
+ */
 export default function HeroArea({ area, className, children }) {
   return (
     <div
-      style={{ gridArea: area }} //posicionamiento de los slots dentro del grid
+      style={{ gridArea: area }}
       className={cn(
-        "min-w-0 p-2", className
+        // Cada area debe poder encogerse dentro del grid sin empujar el canvas.
+        "min-h-0 min-w-0 p-2",
+        className,
       )}
     >
       {children}

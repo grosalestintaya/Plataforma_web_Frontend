@@ -138,6 +138,136 @@ function normalizeCards(cards = []) {
   }));
 }
 
+function normalizeFlexibleNode(value) {
+  if (typeof value === "string" || typeof value === "number") {
+    return String(value);
+  }
+
+  if (Array.isArray(value)) {
+    return value.map((item) => normalizeFlexibleNode(item)).filter(Boolean);
+  }
+
+  if (!isObject(value)) return value ?? "";
+
+  if (
+    "src" in value ||
+    "alt" in value ||
+    "caption" in value ||
+    "placeholderLabel" in value
+  ) {
+    return {
+      ...value,
+      src: value.src ?? "",
+      alt: value.alt ?? "",
+      caption: value.caption ? normalizeFlexibleNode(value.caption) : value.caption,
+    };
+  }
+
+  if (
+    "text" in value ||
+    "paragraphs" in value ||
+    "variant" in value ||
+    "color" in value ||
+    "align" in value ||
+    "tone" in value
+  ) {
+    return {
+      ...value,
+      text:
+        typeof value.text === "string" || typeof value.text === "number"
+          ? String(value.text)
+          : undefined,
+      paragraphs: Array.isArray(value.paragraphs)
+        ? value.paragraphs
+            .map((item) => normalizeFlexibleNode(item))
+            .filter(Boolean)
+        : undefined,
+    };
+  }
+
+  return Object.fromEntries(
+    Object.entries(value).map(([key, nestedValue]) => [
+      key,
+      normalizeFlexibleNode(nestedValue),
+    ]),
+  );
+}
+
+function inferDocCompoundCategory(component) {
+  // Clasificacion alineada a la guia:
+  // - interactive: componentes con criterio de completitud
+  // - grouper: agrupadores de tarjetas/listas
+  // - container: superficies de contenido
+  if (["flipCard", "chooseOne", "formQuestion", "dailySpending", "calculator", "memoryPairs"].includes(component)) {
+    return "interactive";
+  }
+
+  if (["compareCard", "rowCard", "collageCard"].includes(component)) {
+    return "grouper";
+  }
+
+  if (["card", "modal", "form"].includes(component)) {
+    return "container";
+  }
+
+  return undefined;
+}
+
+function normalizeDocElements(elements = {}) {
+  const base = Array.isArray(elements?.base)
+    ? elements.base.map((element) =>
+        typeof element === "string" ? element : normalizeFlexibleNode(element),
+      )
+    : [];
+
+  const compound = Array.isArray(elements?.compound)
+    ? elements.compound.map((element) => {
+        if (!isObject(element)) return element;
+
+        const component = element.component ?? element.type;
+
+        return {
+          ...normalizeFlexibleNode(element),
+          component,
+          type: element.type ?? component,
+          category: element.category ?? inferDocCompoundCategory(component),
+        };
+      })
+    : [];
+
+  return {
+    ...elements,
+    base,
+    compound,
+  };
+}
+
+function normalizeDocView(view = {}) {
+  const internalId = view.id ?? view.viewId ?? "";
+  const availability = view.availability;
+  const normalizedAvailability = availability?.dependsOn
+    ? {
+        viewId: availability.dependsOn.viewId,
+        stateKey: availability.dependsOn.stateKey,
+        includes: availability.dependsOn.includes,
+        equals: availability.dependsOn.equals,
+        notIncludes: availability.dependsOn.notIncludes,
+      }
+    : availability ?? view.when;
+
+  return {
+    ...view,
+    id: internalId,
+    viewId: view.viewId ?? internalId,
+    data: normalizeViewData(view.data),
+    slots: normalizeFlexibleNode(view.slots ?? {}),
+    elements: normalizeDocElements(view.elements ?? {}),
+    navigation: view.navigation ?? view.nav,
+    nav: view.nav ?? view.navigation,
+    when: normalizedAvailability,
+  };
+}
+
 function normalizeViewData(data = {}) {
   if (!isObject(data)) return data ?? {};
 
@@ -162,6 +292,10 @@ function normalizeViewData(data = {}) {
 }
 
 function normalizeView(view = {}) {
+  if (view?.viewId || view?.navigation || view?.slots || view?.elements) {
+    return normalizeDocView(view);
+  }
+
   return {
     ...view,
     data: normalizeViewData(view.data),
@@ -179,7 +313,7 @@ function getMissionKeys(moduleMeta, missionContentMap) {
 
 function buildMission(missionKey, missionMeta = {}, missionContent = {}) {
   return {
-    id: missionContent.id ?? missionKey,
+    id: missionContent.id ?? missionContent.missionId ?? missionKey,
     activityId:
       missionContent.activityId ??
       missionContent.backendActivityId ??
@@ -198,12 +332,17 @@ function buildMission(missionKey, missionMeta = {}, missionContent = {}) {
       `${missionKey}`,
     headerTitle:
       missionContent.headerTitle ??
+      missionContent.missionLabel ??
       missionMeta.headerTitle ??
       missionMeta.label ??
       missionMeta.title ??
       "",
     missionTitle:
-      missionContent.missionTitle ?? missionMeta.title ?? missionMeta.label ?? "",
+      missionContent.missionTitle ??
+      missionContent.missionName ??
+      missionMeta.title ??
+      missionMeta.label ??
+      "",
     views: Array.isArray(missionContent.views)
       ? missionContent.views.map(normalizeView)
       : [],

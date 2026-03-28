@@ -1,276 +1,419 @@
 {
-  "id": "procedimental",
+  "missionId": "m1.2",
+  "missionName": "Mision 1.2. - Procedimental",
+  "missionLabel": "Mision 1.2. - Procedimental",
+  "headerTitle": "Mision 1.2. - Procedimental",
+  "missionTitle": "Mision 1.2. - Procedimental",
   "activityId": "02",
   "activityKey": "m01-procedimental",
-  "headerTitle": "Procedimental",
-  "missionTitle": "Clasificacion y priorizacion de gastos",
   "views": [
     {
-      "id": "m1_p_01_intro",
-      "template": "teoria",
-      "variant": "split",
-      "data": {
+      "viewId": "m1_2_v1",
+      "order": 1,
+      "name": "VISTA 1 - Inicio: Hora de practicar",
+      "viewType": "Inicio",
+      "objective": "Presentar la practica con dinero limitado en un dia escolar.",
+      "template": "preGameLobby",
+      "variant": "preGame",
+      "slots": {
         "title": {
           "text": "Hora de practicar",
-          "variant": "h3",
+          "variant": "h1",
           "align": "center"
         },
-        "leftText": [
-          "Usaras una cantidad limitada de dinero durante un dia escolar.",
-          "Tendras S/ 5.00 para transporte, comida y otras situaciones.",
-          "Observa cada escena y decide como administrar mejor tu saldo."
-        ],
-        "rightImage": {
+        "body": {
+          "paragraphs": [
+            "Usaras una cantidad limitada de dinero durante un dia escolar.",
+            "Tendras S/ 5.00 para usarlo en transporte, comida y otras situaciones.",
+            "Lee bien y decide de la mejor manera."
+          ],
+          "variant": "body1",
+          "align": "left"
+        },
+        "media": {
           "src": "",
-          "alt": "Practica con dinero diario"
+          "alt": "Inicio de la practica procedimental"
         }
       },
-      "nav": {
+      "elements": {
+        "base": [
+          { "component": "heading", "slot": "title", "area": "title", "order": 10 },
+          { "component": "text", "slot": "body", "area": "body", "order": 20 },
+          { "component": "image", "slot": "media", "area": "media", "order": 30 }
+        ],
+        "compound": []
+      },
+      "navigation": {
         "mode": "cta",
         "label": "Iniciar",
         "action": "startMissionAttempt"
+      },
+      "completionCriteria": {
+        "type": "manualStart"
       }
     },
     {
-      "id": "m1_p_02_commute",
-      "template": "schoolDayBudget",
-      "variant": "commuteDecision",
-      "data": {
-        "title": {
-          "text": "Situacion 1",
-          "variant": "h5"
-        },
-        "balance": 5,
-        "instruction": {
-          "text": "Sales de tu casa rumbo al colegio y se te hizo tarde. Escoge de que manera llegarias a tu colegio.",
-          "variant": "body1",
-          "align": "center"
-        },
-        "options": [
-          {
-            "id": "combi",
-            "title": "En combi",
-            "detail": "- S/ 0.50",
-            "cost": 0.5,
-            "nextBalance": 4.5,
-            "score": 100,
-            "feedback": {
-              "text": "Buena eleccion. Usar la combi te ayuda a llegar a tiempo, aunque gastas parte de tu saldo.",
-              "variant": "body1",
-              "align": "center"
-            },
-            "image": {
-              "src": "",
-              "alt": "Llegando a tiempo al colegio"
-            }
-          },
-          {
-            "id": "walking",
-            "title": "Caminando",
-            "detail": "Gratis",
-            "cost": 0,
-            "nextBalance": 5,
-            "score": 60,
-            "feedback": {
-              "text": "Ahorras dinero, pero en esta situacion podrias llegar tarde al colegio. A veces gastar un poco tambien resuelve una necesidad.",
-              "variant": "body1",
-              "align": "center"
-            },
-            "image": {
-              "src": "",
-              "alt": "Llegando tarde al colegio"
-            }
-          }
-        ]
-      },
-      "nav": {
-        "mode": "lockedUntilComplete"
-      }
-    },
-    {
-      "id": "m1_p_03_kiosk",
-      "template": "schoolDayBudget",
-      "variant": "kioskCheckout",
-      "data": {
-        "title": {
-          "text": "Situacion 2",
-          "variant": "h5"
-        },
-        "balance": 4.5,
-        "instruction": {
-          "text": "Sales al recreo y te diriges a tu kiosko por alimentos. Escoge tus alimentos teniendo en cuenta el saldo que tienes.",
-          "variant": "body1",
-          "align": "center"
-        },
-        "sceneImage": {
-          "src": "",
-          "alt": "Kiosko con alimentos"
-        },
-        "summaryTitle": {
-          "text": "Cuenta",
-          "variant": "subtitle1"
-        },
-        "products": [
-          {
-            "id": "gaseosa",
-            "name": "Gaseosa",
-            "price": 1
-          },
-          {
-            "id": "galleta",
-            "name": "Galleta",
-            "price": 1
-          },
-          {
-            "id": "caramelo",
-            "name": "Caramelo",
-            "price": 0.5
-          }
-        ]
-      },
-      "nav": {
-        "mode": "lockedUntilComplete"
-      }
-    },
-    {
-      "id": "m1_p_04_extra",
-      "template": "schoolDayBudget",
-      "variant": "recycleDecision",
-      "when": {
-        "viewId": "m1_p_03_kiosk",
-        "stateKey": "selectedProductIds",
-        "includes": "gaseosa"
-      },
-      "data": {
-        "title": {
-          "text": "Situacion EXTRA",
-          "variant": "h5"
-        },
-        "balance": 2,
-        "balanceFrom": "m1_p_03_kiosk",
-        "instruction": {
-          "text": "Tienes un envase de plastico. Puedes canjearlo y decidir si reciclarlo o desecharlo.",
-          "variant": "body1",
-          "align": "center"
-        },
-        "options": [
-          {
-            "id": "recycle",
-            "title": "Reciclar",
-            "detail": "+ S/ 0.50",
-            "reward": 0.5,
-            "score": 100,
-            "feedback": {
-              "text": "Felicidades. Acabas de ganar S/ 0.50 por reciclar tu botella descartable.",
-              "variant": "body1",
-              "align": "center"
-            },
-            "image": {
-              "src": "",
-              "alt": "Afiche de reciclaje"
-            }
-          },
-          {
-            "id": "discard",
-            "title": "Desechar",
-            "detail": "Sin premio",
-            "reward": 0,
-            "score": 60,
-            "feedback": {
-              "text": "Seguiste adelante sin reciclar. Aun puedes pensar en como tus decisiones impactan tu dinero y el ambiente.",
-              "variant": "body1",
-              "align": "center"
-            },
-            "image": {
-              "src": "",
-              "alt": "Botella descartable"
-            }
-          }
-        ]
-      },
-      "nav": {
-        "mode": "lockedUntilComplete"
-      }
-    },
-    {
-      "id": "m1_p_05_return",
-      "template": "schoolDayBudget",
-      "variant": "commuteDecision",
-      "data": {
-        "title": {
-          "text": "Situacion 3",
-          "variant": "h5"
-        },
-        "balance": 2.5,
-        "balanceFrom": ["m1_p_04_extra", "m1_p_03_kiosk"],
-        "instruction": {
-          "text": "Se terminaron las clases por hoy. Es momento de volver a casa y decidir si regresas en combi o caminando.",
-          "variant": "body1",
-          "align": "center"
-        },
-        "options": [
-          {
-            "id": "return_combi",
-            "title": "En combi",
-            "detail": "- S/ 0.50",
-            "cost": 0.5,
-            "score": 80,
-            "feedback": {
-              "text": "Llegas mas rapido a casa, pero gastas parte del dinero que te quedaba.",
-              "variant": "body1",
-              "align": "center"
-            },
-            "image": {
-              "src": "",
-              "alt": "Regresando en combi"
-            }
-          },
-          {
-            "id": "return_walk",
-            "title": "Caminando",
-            "detail": "Gratis",
-            "cost": 0,
-            "score": 100,
-            "feedback": {
-              "text": "Buena eleccion. Como ya no tienes prisa para llegar a casa, puedes ahorrarte el pasaje de vuelta.",
-              "variant": "body1",
-              "align": "center"
-            },
-            "image": {
-              "src": "",
-              "alt": "Regresando a casa caminando"
-            }
-          }
-        ]
-      },
-      "nav": {
-        "mode": "lockedUntilComplete"
-      }
-    },
-    {
-      "id": "m1_p_06_summary",
-      "template": "schoolDayBudget",
-      "variant": "summary",
-      "data": {
-        "title": {
-          "text": "Lo lograste!",
-          "variant": "h3",
-          "align": "center"
-        },
-        "balance": 2.5,
-        "balanceFrom": "m1_p_05_return",
-        "image": {
-          "src": "",
-          "alt": "Resumen final"
-        },
-        "summaryText": {
+      "viewId": "m1_2_v2",
+      "order": 2,
+      "name": "VISTA 2 - Practica: Situacion 1",
+      "viewType": "Practica",
+      "objective": "Decidir si conviene gastar en transporte para llegar a tiempo.",
+      "template": "decisionDailySpending",
+      "variant": "decision",
+      "slots": {
+        "title": { "text": "Situacion 1", "variant": "h1" },
+        "amount": { "label": "Saldo", "value": 5 },
+        "assessment": {
+          "text": "Debes ir al colegio y necesitas decidir como llegar.",
           "variant": "body1",
           "align": "center"
         }
       },
-      "nav": {
-        "mode": "normal",
-        "finishLabel": "Finalizar"
+      "elements": {
+        "base": [
+          { "component": "heading", "slot": "title", "area": "header", "order": 10 },
+          { "component": "amount", "slot": "amount", "area": "header", "order": 20 },
+          { "component": "text", "slot": "assessment", "area": "interactive", "order": 30 }
+        ],
+        "compound": [
+          {
+            "type": "chooseOne",
+            "component": "chooseOne",
+            "category": "interactive",
+            "area": "interactive",
+            "items": [
+              {
+                "id": "go-by-combi",
+                "title": { "text": "Ir en combi", "variant": "label", "align": "center" },
+                "detail": { "text": "S/ 0.50", "variant": "label", "align": "center" },
+                "media": { "src": "", "alt": "Ir en combi" },
+                "score": 100,
+                "cost": 0.5,
+                "nextBalance": 4.5,
+                "feedback": {
+                  "text": "Llegaste mas rapido, pero ahora te queda menos dinero para el resto del dia.",
+                  "variant": "helper",
+                  "align": "center"
+                }
+              },
+              {
+                "id": "go-walking",
+                "title": { "text": "Ir caminando", "variant": "label", "align": "center" },
+                "detail": { "text": "S/ 0.00", "variant": "label", "align": "center" },
+                "media": { "src": "", "alt": "Ir caminando" },
+                "score": 60,
+                "cost": 0,
+                "nextBalance": 5,
+                "feedback": {
+                  "text": "Ahorraste dinero, aunque el camino puede tomar mas tiempo.",
+                  "variant": "helper",
+                  "align": "center"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "embedded",
+        "label": "Selecciona una opcion para continuar"
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "selectOneOption"
+      }
+    },
+    {
+      "viewId": "m1_2_v3",
+      "order": 3,
+      "name": "VISTA 3 - Practica: Situacion 2",
+      "viewType": "Practica",
+      "objective": "Elegir productos del kiosko segun el saldo disponible.",
+      "template": "shopDailySpending",
+      "variant": "shop",
+      "slots": {
+        "title": { "text": "Situacion 2", "variant": "h1" },
+        "amount": { "label": "Saldo", "value": 4.5 },
+        "situation": {
+          "text": "Ya estas en el recreo. Tienes hambre y debes decidir que hacer con tu dinero.",
+          "variant": "body1",
+          "align": "left"
+        },
+        "feedback": {
+          "text": "Selecciona uno o varios productos y paga para continuar.",
+          "variant": "helper",
+          "align": "left"
+        }
+      },
+      "elements": {
+        "base": [
+          { "component": "heading", "slot": "title", "area": "header", "order": 10 },
+          { "component": "amount", "slot": "amount", "area": "header", "order": 20 },
+          { "component": "text", "slot": "situation", "area": "body", "order": 30 },
+          { "component": "text", "slot": "feedback", "area": "feedback", "order": 40 }
+        ],
+        "compound": [
+          {
+            "type": "collageCard",
+            "component": "collageCard",
+            "category": "grouper",
+            "area": "interactive",
+            "items": [
+              {
+                "id": "gaseosa",
+                "title": { "text": "Gaseosa", "variant": "label", "align": "center" },
+                "text": { "text": "S/ 1.50", "variant": "label", "align": "center" },
+                "media": { "src": "", "alt": "Gaseosa" },
+                "price": 1.5
+              },
+              {
+                "id": "galleta",
+                "title": { "text": "Galleta", "variant": "label", "align": "center" },
+                "text": { "text": "S/ 1.00", "variant": "label", "align": "center" },
+                "media": { "src": "", "alt": "Galleta" },
+                "price": 1
+              },
+              {
+                "id": "agua",
+                "title": { "text": "Agua", "variant": "label", "align": "center" },
+                "text": { "text": "S/ 1.00", "variant": "label", "align": "center" },
+                "media": { "src": "", "alt": "Agua" },
+                "price": 1
+              },
+              {
+                "id": "caramelo",
+                "title": { "text": "Caramelo", "variant": "label", "align": "center" },
+                "text": { "text": "S/ 0.50", "variant": "label", "align": "center" },
+                "media": { "src": "", "alt": "Caramelo" },
+                "price": 0.5
+              }
+            ]
+          },
+          {
+            "type": "calculator",
+            "component": "calculator",
+            "category": "interactive",
+            "area": "summary",
+            "title": {
+              "text": "Seleccionado",
+              "variant": "label",
+              "align": "center"
+            },
+            "submitLabel": "Pagar",
+            "emptyLabel": "Elige productos para ver el total."
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "embedded",
+        "label": "Usa el boton verde para continuar"
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "selectProductsAndPay"
+      }
+    },
+    {
+      "viewId": "m1_2_v4",
+      "order": 4,
+      "name": "VISTA 4 - Practica: Situacion extra",
+      "viewType": "Practica",
+      "objective": "Aprovechar una botella para recuperar parte del dinero.",
+      "template": "decisionDailySpending",
+      "variant": "decision",
+      "slots": {
+        "title": { "text": "Situacion extra", "variant": "h1" },
+        "amount": { "label": "Saldo", "value": 0 },
+        "assessment": {
+          "text": "Puedes canjear la botella de la gaseosa o dejarla pasar.",
+          "variant": "body1",
+          "align": "center"
+        },
+        "media": { "src": "", "alt": "Botella para canje" }
+      },
+      "elements": {
+        "base": [
+          { "component": "heading", "slot": "title", "area": "header", "order": 10 },
+          { "component": "amount", "slot": "amount", "area": "header", "order": 20 },
+          { "component": "text", "slot": "assessment", "area": "interactive", "order": 30 },
+          { "component": "image", "slot": "media", "area": "media", "order": 40 }
+        ],
+        "compound": [
+          {
+            "type": "chooseOne",
+            "component": "chooseOne",
+            "category": "interactive",
+            "area": "interactive",
+            "items": [
+              {
+                "id": "recycle-bottle",
+                "title": { "text": "Canjear botella", "variant": "label", "align": "center" },
+                "detail": { "text": "+ S/ 0.50", "variant": "label", "align": "center" },
+                "media": { "src": "", "alt": "Canjear botella" },
+                "score": 100,
+                "reward": 0.5,
+                "feedback": {
+                  "text": "Recuperaste dinero y ademas aprovechaste mejor el residuo.",
+                  "variant": "helper",
+                  "align": "center"
+                }
+              },
+              {
+                "id": "skip-bottle",
+                "title": { "text": "No canjear botella", "variant": "label", "align": "center" },
+                "detail": { "text": "S/ 0.00", "variant": "label", "align": "center" },
+                "media": { "src": "", "alt": "No canjear botella" },
+                "score": 60,
+                "reward": 0,
+                "feedback": {
+                  "text": "No recuperaste nada. Una decision pequena tambien cambia tu saldo.",
+                  "variant": "helper",
+                  "align": "center"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "availability": {
+        "dependsOn": {
+          "viewId": "m1_2_v3",
+          "stateKey": "selectedProductIds",
+          "includes": "gaseosa"
+        }
+      },
+      "navigation": {
+        "mode": "embedded",
+        "label": "Selecciona una opcion para continuar"
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "selectOneOption"
+      }
+    },
+    {
+      "viewId": "m1_2_v5",
+      "order": 5,
+      "name": "VISTA 5 - Practica: Situacion 3",
+      "viewType": "Practica",
+      "objective": "Decidir como volver a casa segun el dinero restante.",
+      "template": "decisionDailySpending",
+      "variant": "decision",
+      "slots": {
+        "title": { "text": "Situacion 3", "variant": "h1" },
+        "amount": { "label": "Saldo", "value": 0 },
+        "assessment": {
+          "text": "Termino el dia escolar y debes decidir como volver a casa.",
+          "variant": "body1",
+          "align": "center"
+        }
+      },
+      "elements": {
+        "base": [
+          { "component": "heading", "slot": "title", "area": "header", "order": 10 },
+          { "component": "amount", "slot": "amount", "area": "header", "order": 20 },
+          { "component": "text", "slot": "assessment", "area": "interactive", "order": 30 }
+        ],
+        "compound": [
+          {
+            "type": "chooseOne",
+            "component": "chooseOne",
+            "category": "interactive",
+            "area": "interactive",
+            "items": [
+              {
+                "id": "return-combi",
+                "title": { "text": "Regresar en combi", "variant": "label", "align": "center" },
+                "detail": { "text": "S/ 0.50", "variant": "label", "align": "center" },
+                "media": { "src": "", "alt": "Regresar en combi" },
+                "score": 80,
+                "cost": 0.5,
+                "feedback": {
+                  "text": "Llegaste mas rapido, pero tu dinero final sera menor.",
+                  "variant": "helper",
+                  "align": "center"
+                }
+              },
+              {
+                "id": "return-walking",
+                "title": { "text": "Regresar caminando", "variant": "label", "align": "center" },
+                "detail": { "text": "S/ 0.00", "variant": "label", "align": "center" },
+                "media": { "src": "", "alt": "Regresar caminando" },
+                "score": 100,
+                "cost": 0,
+                "feedback": {
+                  "text": "Ahorraste el pasaje y cerraste el dia con mas dinero disponible.",
+                  "variant": "helper",
+                  "align": "center"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "embedded",
+        "label": "Selecciona una opcion para continuar"
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "selectOneOption"
+      }
+    },
+    {
+      "viewId": "m1_2_v6",
+      "order": 6,
+      "name": "VISTA 6 - Final: Lo lograste",
+      "viewType": "Final",
+      "objective": "Cerrar la practica y mostrar la recompensa final.",
+      "template": "postGameLobby",
+      "variant": "postGame",
+      "slots": {
+        "title": {
+          "text": "Mision Cumplida",
+          "variant": "h1",
+          "align": "center"
+        },
+        "feedback": {
+          "text": "Lograste ahorrar S/ 2.00 + 5 INTIS",
+          "variant": "label",
+          "align": "center",
+          "color": "accent"
+        }
+      },
+      "elements": {
+        "base": [
+          { "component": "heading", "slot": "title", "area": "title", "order": 10 },
+          { "component": "text", "slot": "feedback", "area": "feedback", "order": 20 }
+        ],
+        "compound": [
+          {
+            "type": "rowCard",
+            "component": "rowCard",
+            "category": "grouper",
+            "area": "rewards",
+            "items": [
+              {
+                "id": "reward-xp",
+                "title": { "text": "XP", "variant": "label" },
+                "text": { "text": "+ 10", "variant": "bodySm" },
+                "media": { "src": "", "alt": "Recompensa de XP" }
+              },
+              {
+                "id": "reward-intis",
+                "title": { "text": "INTIS", "variant": "label" },
+                "text": { "text": "+ 5", "variant": "bodySm" },
+                "media": { "src": "", "alt": "Recompensa de INTIS" }
+              }
+            ]
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "normal"
+      },
+      "completionCriteria": {
+        "type": "endOfMission"
       }
     }
   ]

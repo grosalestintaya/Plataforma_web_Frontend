@@ -1,27 +1,45 @@
-import TeoriaTemplate from "./teoria/TeoriaTemplate";
-import StepGuideTemplate from "./stepGuide/StepGuideTemplate";
-import ScenarioExplorerTemplate from "./scenarioExplorer/ScenarioExplorerTemplate";
-import ChoiceRevealTemplate from "./choiceReveal/ChoiceRevealTemplate";
+import TheoryTemplate from "./views/theory/TheoryTemplate";
+import QuizTemplate from "./views/quiz/QuizTemplate";
+import LobbyTemplate from "./views/lobby/LobbyTemplate";
 
-//Games
-import FlipCard from "../blocks/Games/FlipCard";
-import MemoryPairsGame from "../blocks/Games/MemoryPairsGame";
-import ReflectionQuestion from "../blocks/Games/ReflectionQuestion";
-import SchoolDayBudget from "../blocks/Games/SchoolDayBudget";
+import DailySpendingTemplate from "./game/dailySpending/DailySpendingTemplate";
+import ObjectClassificationTemplate from "./game/objectClassification/ObjectClassificationTemplate";
+import BudgetAdjustmentTemplate from "./game/budgetAdjustment/BudgetAdjustmentTemplate";
+import CollectObjectsTemplate from "./game/collectObjects/CollectObjectsTemplate";
+import WhatWouldYouDoTemplate from "./game/whatWouldYouDo/WhatWouldYouDoTemplate";
+
+import MemoryPairs from "@/features/module/blocks/compounds/Iterative/MemoryPairs";
 
 export const templates = {
-  // Templates expositivos o compuestos.
-  teoria: TeoriaTemplate,
-  choiceReveal: ChoiceRevealTemplate,
-  stepGuide: StepGuideTemplate,
-  scenarioExplorer: ScenarioExplorerTemplate,
-  // Componentes interactivos directos para las misiones conceptuales.
-  memoryGame: MemoryPairsGame,
-  flipCard: FlipCard,
-  // Vista reflexiva directa para preguntas actitudinales.
-  reflectionQuestion: ReflectionQuestion,
-  // Vista interactiva directa para misiones procedimentales con saldo diario.
-  schoolDayBudget: SchoolDayBudget,
-  // Alias temporal mientras migramos nombres viejos.
-  memoryPairs: MemoryPairsGame,
+  // Views (guia nueva)
+  preGameLobby: LobbyTemplate,
+  postGameLobby: LobbyTemplate,
+  waitLobby: LobbyTemplate,
+  simpleTheory: TheoryTemplate,
+  explanationTheory: TheoryTemplate,
+  splitTheory: TheoryTemplate,
+  assessmentTheory: TheoryTemplate,
+  simpleQuiz: QuizTemplate,
+  extendedQuiz: QuizTemplate,
+
+  // Game templates (guia nueva)
+  decisionDailySpending: DailySpendingTemplate,
+  shopDailySpending: DailySpendingTemplate,
+  eventDailySpending: DailySpendingTemplate,
+  assessmentDailySpending: DailySpendingTemplate,
+  DailySpending: DailySpendingTemplate,
+  objectClassification: ObjectClassificationTemplate,
+  ObjectClassification: ObjectClassificationTemplate,
+  budgetAdjustment: BudgetAdjustmentTemplate,
+  BudgetAdjustment: BudgetAdjustmentTemplate,
+  collectObjects: CollectObjectsTemplate,
+  CollectObjects: CollectObjectsTemplate,
+  whatWouldYouDo: WhatWouldYouDoTemplate,
+  WhatWouldYouDo: WhatWouldYouDoTemplate,
+
+  // Compatibilidad legacy
+  teoria: TheoryTemplate,
+  choiceReveal: QuizTemplate,
+  memoryGame: MemoryPairs,
+  memoryPairs: MemoryPairs,
 };

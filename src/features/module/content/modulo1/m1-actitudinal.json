@@ -1,109 +1,325 @@
 {
-  "id": "actitudinal",
+  "missionId": "m1.3",
+  "missionName": "Mision 1.3. - Actitudinal",
+  "missionLabel": "Mision 1.3. - Actitudinal",
+  "headerTitle": "Mision 1.3. - Actitudinal",
+  "missionTitle": "Mision 1.3. - Actitudinal",
   "activityId": "03",
   "activityKey": "m01-actitudinal",
-  "headerTitle": "Actitudinal",
-  "missionTitle": "Autocontrol y presion social",
   "views": [
     {
-      "id": "m1_a_01_intro",
-      "template": "teoria",
-      "variant": "simple",
-      "data": {
+      "viewId": "m1_3_v1",
+      "order": 1,
+      "name": "VISTA 1 - Inicio: Hora de practicar",
+      "viewType": "Inicio",
+      "objective": "Presentar la etapa de reflexion sobre decisiones cotidianas con dinero.",
+      "template": "preGameLobby",
+      "variant": "preGame",
+      "slots": {
         "title": {
-          "text": "Analizamos lo aprendido",
+          "text": "Hora de practicar",
           "variant": "h3",
           "align": "center"
         },
-        "text": {
-          "text": "Ahora tendras que completar algunas preguntas reflexivas sobre el tema abordado.",
+        "body": {
+          "paragraphs": [
+            "En esta mision responderas preguntas sobre decisiones cotidianas relacionadas con el dinero.",
+            "La idea es reconocer cuando una eleccion cuida mejor tu bienestar, tu meta o tu saldo.",
+            "Lee cada situacion, elige una opcion y explica por que."
+          ],
           "variant": "body1",
-          "align": "center"
+          "align": "left"
         },
-        "image": {
+        "media": {
           "src": "",
-          "alt": "Inicio de reflexion"
+          "alt": "Inicio de la mision actitudinal"
         }
       },
-      "nav": {
+      "elements": {
+        "base": [
+          { "component": "heading", "slot": "title", "area": "title", "order": 10 },
+          { "component": "text", "slot": "body", "area": "body", "order": 20 },
+          { "component": "image", "slot": "media", "area": "media", "order": 30 }
+        ],
+        "compound": []
+      },
+      "navigation": {
         "mode": "cta",
         "label": "Iniciar",
         "action": "startMissionAttempt"
+      },
+      "completionCriteria": {
+        "type": "manualStart"
       }
     },
     {
-      "id": "m1_a_02_question_1",
-      "template": "reflectionQuestion",
-      "data": {
+      "viewId": "m1_3_v2",
+      "order": 2,
+      "name": "VISTA 2 - Practica: Situacion 1",
+      "viewType": "Practica",
+      "objective": "Reflexionar sobre guardar dinero en lugar de gastarlo todo por impulso.",
+      "template": "simpleQuiz",
+      "variant": "simple",
+      "slots": {
         "title": {
-          "text": "Pregunta 1",
+          "text": "Situacion 1",
           "variant": "h4",
           "align": "center"
-        },
-        "question": {
-          "text": "Tienes 10 soles, lo gastas en dulces o lo guardas para el libro que quieres?",
-          "variant": "body1",
-          "align": "center"
-        },
-        "options": [
-          {
-            "id": "spend",
-            "label": "a) Lo gasto",
-            "score": 80
-          },
-          {
-            "id": "save",
-            "label": "b) Lo guardo",
-            "score": 100
-          }
-        ],
-        "prompt": {
-          "text": "Explica por que?",
-          "variant": "subtitle2"
-        },
-        "placeholder": "Escribe aqui tu respuesta...",
-        "minReasonLength": 8
+        }
       },
-      "nav": {
+      "elements": {
+        "base": [
+          { "component": "heading", "slot": "title", "area": "title", "order": 10 }
+        ],
+        "compound": [
+          {
+            "type": "formQuestion",
+            "component": "formQuestion",
+            "category": "interactive",
+            "area": "action",
+            "question": {
+              "text": "Tienes S/ 10. Lo gastas todo en dulces o guardas una parte para algo que podrias necesitar despues?",
+              "variant": "body1",
+              "align": "center"
+            },
+            "options": [
+              { "id": "spend_all", "label": "a) Lo gasto todo en dulces", "score": 60 },
+              { "id": "save_part", "label": "b) Guardo una parte para algo importante", "score": 100 }
+            ],
+            "prompt": {
+              "text": "Explica por que tomarias esa decision.",
+              "variant": "subtitle2"
+            },
+            "placeholder": "Escribe aqui tu razon...",
+            "minReasonLength": 12
+          }
+        ]
+      },
+      "navigation": {
         "mode": "lockedUntilComplete"
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "selectOptionAndExplain"
       }
     },
     {
-      "id": "m1_a_03_question_2",
-      "template": "reflectionQuestion",
-      "data": {
+      "viewId": "m1_3_v3",
+      "order": 3,
+      "name": "VISTA 3 - Practica: Situacion 2",
+      "viewType": "Practica",
+      "objective": "Reflexionar sobre la presion del grupo frente al ahorro para el pasaje.",
+      "template": "extendedQuiz",
+      "variant": "extended",
+      "slots": {
         "title": {
-          "text": "Pregunta 2",
+          "text": "Situacion 2",
           "variant": "h4",
           "align": "center"
         },
-        "question": {
-          "text": "Tus amigos quieren comprar algo por impulso, pero tu estabas ahorrando para una meta. Que harias?",
-          "variant": "body1",
+        "media": {
+          "src": "",
+          "alt": "Situacion de ahorro frente al kiosko"
+        }
+      },
+      "elements": {
+        "base": [
+          { "component": "heading", "slot": "title", "area": "title", "order": 10 },
+          { "component": "image", "slot": "media", "area": "media", "order": 20 }
+        ],
+        "compound": [
+          {
+            "type": "formQuestion",
+            "component": "formQuestion",
+            "category": "interactive",
+            "area": "action",
+            "question": {
+              "text": "Has ahorrado para tu pasaje, pero tus amigos quieren comprar algo en el kiosko y te invitan a gastar con ellos. Que harias?",
+              "variant": "body1",
+              "align": "center"
+            },
+            "options": [
+              { "id": "use_savings", "label": "a) Uso mi ahorro para acompanar al grupo", "score": 60 },
+              { "id": "keep_savings", "label": "b) Cuido mi ahorro para el pasaje", "score": 100 }
+            ],
+            "prompt": {
+              "text": "Cuenta que pensarias en ese momento.",
+              "variant": "subtitle2"
+            },
+            "placeholder": "Escribe por que elegirias esa opcion...",
+            "minReasonLength": 12
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "lockedUntilComplete"
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "selectOptionAndExplain"
+      }
+    },
+    {
+      "viewId": "m1_3_v4",
+      "order": 4,
+      "name": "VISTA 4 - Practica: Situacion 3",
+      "viewType": "Practica",
+      "objective": "Reflexionar sobre que hacer con dinero sobrante despues del recreo.",
+      "template": "simpleQuiz",
+      "variant": "simple",
+      "slots": {
+        "title": {
+          "text": "Situacion 3",
+          "variant": "h4",
+          "align": "center"
+        }
+      },
+      "elements": {
+        "base": [
+          { "component": "heading", "slot": "title", "area": "title", "order": 10 }
+        ],
+        "compound": [
+          {
+            "type": "formQuestion",
+            "component": "formQuestion",
+            "category": "interactive",
+            "area": "action",
+            "question": {
+              "text": "Te sobraron S/ 5 del recreo. Que decision te ayuda a cuidar mejor tu dinero?",
+              "variant": "body1",
+              "align": "center"
+            },
+            "options": [
+              { "id": "quick_spend", "label": "a) Lo gasto rapido en golosinas", "score": 60 },
+              { "id": "save_or_plan", "label": "b) Guardo una parte o la uso en algo necesario", "score": 100 }
+            ],
+            "prompt": {
+              "text": "Explica como esa eleccion te ayudaria.",
+              "variant": "subtitle2"
+            },
+            "placeholder": "Describe tu razon...",
+            "minReasonLength": 12
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "lockedUntilComplete"
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "selectOptionAndExplain"
+      }
+    },
+    {
+      "viewId": "m1_3_v5",
+      "order": 5,
+      "name": "VISTA 5 - Practica: Situacion 4",
+      "viewType": "Practica",
+      "objective": "Reflexionar sobre esperar o ahorrar cuando no alcanza para comprar algo.",
+      "template": "extendedQuiz",
+      "variant": "extended",
+      "slots": {
+        "title": {
+          "text": "Situacion 4",
+          "variant": "h4",
           "align": "center"
         },
-        "options": [
-          {
-            "id": "follow_group",
-            "label": "a) Lo compro para no quedarme fuera",
-            "score": 80
-          },
-          {
-            "id": "stay_goal",
-            "label": "b) Mantengo mi meta y no gasto",
-            "score": 100
-          }
-        ],
-        "prompt": {
-          "text": "Explica por que?",
-          "variant": "subtitle2"
-        },
-        "placeholder": "Cuenta que pensarias en esa situacion...",
-        "minReasonLength": 8
+        "media": {
+          "src": "",
+          "alt": "Kiosko con compra no planificada"
+        }
       },
-      "nav": {
-        "mode": "lockedUntilComplete",
-        "finishLabel": "Finalizar"
+      "elements": {
+        "base": [
+          { "component": "heading", "slot": "title", "area": "title", "order": 10 },
+          { "component": "image", "slot": "media", "area": "media", "order": 20 }
+        ],
+        "compound": [
+          {
+            "type": "formQuestion",
+            "component": "formQuestion",
+            "category": "interactive",
+            "area": "action",
+            "question": {
+              "text": "Estas en el kiosko y ves algo que te gusta, pero no te alcanza. Que harias?",
+              "variant": "body1",
+              "align": "center"
+            },
+            "options": [
+              { "id": "borrow_impulse", "label": "a) Pido prestado para comprarlo por impulso", "score": 60 },
+              { "id": "wait_and_plan", "label": "b) No compro y espero otra ocasion o ahorro", "score": 100 }
+            ],
+            "prompt": {
+              "text": "Escribe por que esa respuesta te parece mejor.",
+              "variant": "subtitle2"
+            },
+            "placeholder": "Comparte tu razon aqui...",
+            "minReasonLength": 12
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "lockedUntilComplete"
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "selectOptionAndExplain"
+      }
+    },
+    {
+      "viewId": "m1_3_v6",
+      "order": 6,
+      "name": "VISTA 6 - Final: Lo lograste",
+      "viewType": "Final",
+      "objective": "Cerrar la mision actitudinal y mostrar la recompensa final.",
+      "template": "postGameLobby",
+      "variant": "postGame",
+      "slots": {
+        "title": {
+          "text": "Mision Cumplida",
+          "variant": "h1",
+          "align": "center"
+        },
+        "feedback": {
+          "text": "Lograste una mision perfecta: +10 intis",
+          "variant": "label",
+          "align": "center",
+          "color": "accent"
+        }
+      },
+      "elements": {
+        "base": [
+          { "component": "heading", "slot": "title", "area": "title", "order": 10 },
+          { "component": "text", "slot": "feedback", "area": "feedback", "order": 20 }
+        ],
+        "compound": [
+          {
+            "type": "rowCard",
+            "component": "rowCard",
+            "category": "grouper",
+            "area": "rewards",
+            "items": [
+              {
+                "id": "reward-xp",
+                "title": { "text": "XP", "variant": "label" },
+                "text": { "text": "+10", "variant": "body1", "color": "secondary" },
+                "media": { "src": "", "alt": "Recompensa de XP" }
+              },
+              {
+                "id": "reward-intis",
+                "title": { "text": "INTIS", "variant": "label" },
+                "text": { "text": "+10", "variant": "body1", "color": "secondary" },
+                "media": { "src": "", "alt": "Recompensa de Intis" }
+              }
+            ]
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "normal"
+      },
+      "completionCriteria": {
+        "type": "endOfMission"
       }
     }
   ]

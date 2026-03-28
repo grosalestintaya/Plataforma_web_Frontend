@@ -1,328 +1,557 @@
 {
-  "id": "conceptual",
+  "missionId": "m1.1",
+  "missionName": "Mision 1.1. - Conceptual",
+  "missionLabel": "Mision 1.1. - Conceptual",
+  "headerTitle": "Mision 1.1. - Conceptual",
+  "missionTitle": "Mision 1.1. - Conceptual",
   "activityId": "01",
   "activityKey": "m01-conceptual",
-  "headerTitle": "Conceptual",
-  "missionTitle": "Necesidades y deseos",
   "views": [
     {
-      "id": "m1_conceptual_intro",
-      "template": "teoria",
-      "variant": "split",
-      "data": {
+      "viewId": "m1_1_v1",
+      "order": 1,
+      "name": "VISTA 1 - Inicio: Antes de empezar",
+      "viewType": "Inicio",
+      "objective": "Presentar el tema de dinero, ingresos y gastos antes de iniciar la experiencia.",
+      "template": "preGameLobby",
+      "variant": "preGame",
+      "slots": {
         "title": {
           "text": "Antes de empezar",
-          "variant": "h4"
+          "variant": "h1",
+          "align": "center"
         },
-        "leftText": [
-          "Lee con calma las indicaciones.",
-          "Tu intento se registrara cuando presiones Empezar.",
-          "Avanza por las vistas y completa la actividad final.",
-          "Al finalizar, tu progreso se guardara automaticamente."
-        ],
-        "rightImage": {
+        "body": {
+          "paragraphs": [
+            "Esta mision se enfoca en el dinero, los ingresos y los gastos.",
+            "Encontraras informacion e imagenes relacionadas al tema.",
+            "Tambien habra recursos interactivos clickeables.",
+            "Finalmente habra una mini prueba sobre el tema."
+          ],
+          "variant": "body1",
+          "align": "left"
+        },
+        "media": {
           "src": "",
-          "alt": "Indicaciones"
+          "alt": "Inicio de la mision conceptual"
         }
       },
-      "nav": {
+      "elements": {
+        "base": [
+          { "component": "heading", "slot": "title", "area": "title", "order": 10 },
+          { "component": "text", "slot": "body", "area": "body", "order": 20 },
+          { "component": "image", "slot": "media", "area": "media", "order": 30 }
+        ],
+        "compound": []
+      },
+      "navigation": {
         "mode": "cta",
         "label": "Empezar",
         "action": "startMissionAttempt"
+      },
+      "completionCriteria": {
+        "type": "manualStart"
       }
     },
     {
-      "id": "m1_c_01_need",
-      "template": "teoria",
-      "variant": "examples",
-      "data": {
+      "viewId": "m1_1_v2",
+      "order": 2,
+      "name": "VISTA 2 - Teoria: Que es el dinero?",
+      "viewType": "Teoria",
+      "objective": "Explicar que es el dinero y para que sirve en la vida diaria.",
+      "template": "simpleTheory",
+      "variant": "simple",
+      "slots": {
         "title": {
-          "text": "Que es una necesidad?",
-          "variant": "h2"
+          "text": "Que es el dinero?",
+          "variant": "h1",
+          "align": "center"
         },
-        "text": {
-          "text": "Las necesidades son bienes o servicios indispensables para vivir, desarrollarse y realizar actividades basicas como estudiar, movilizarse y cuidar la salud.",
-          "variant": "body1"
+        "body": {
+          "paragraphs": [
+            "El dinero es un medio que usamos para pagar bienes y servicios como pasaje, comida, utiles o recargas.",
+            "Sirve porque facilita el intercambio: en vez de cambiar cosas por cosas, usamos dinero para conseguir lo que necesitamos o queremos.",
+            "Recuerda: el dinero es limitado, por eso conviene usarlo con cuidado."
+          ],
+          "variant": "body1",
+          "align": "left"
         },
-        "examples": [
-          {
-            "src": "",
-            "label": {
-              "text": "Comida",
-              "variant": "subtitle2",
-              "color": "secondary"
-            }
-          },
-          {
-            "src": "",
-            "label": {
-              "text": "Agua",
-              "variant": "subtitle2",
-              "color": "secondary"
-            }
-          },
-          {
-            "src": "",
-            "label": {
-              "text": "Utiles",
-              "variant": "subtitle2",
-              "color": "secondary"
-            }
-          }
-        ],
-        "note": {
-          "text": "Si no lo tienes, tu bienestar o tu capacidad para cumplir una tarea importante se afecta.",
-          "variant": "body2"
+        "media": {
+          "src": "",
+          "alt": "Estudiante usando dinero"
         }
-      }
-    },
-    {
-      "id": "m1_c_02_want",
-      "template": "teoria",
-      "variant": "examples",
-      "data": {
-        "title": {
-          "text": "Que es un deseo?",
-          "variant": "h2"
-        },
-        "text": {
-          "text": "Los deseos son cosas que seria bueno tener, pero no son indispensables para vivir, estudiar o proteger lo importante.",
-          "variant": "body1"
-        },
-        "examples": [
-          {
-            "src": "",
-            "label": {
-              "text": "Comida chatarra",
-              "variant": "subtitle2",
-              "color": "secondary"
-            }
-          },
-          {
-            "src": "",
-            "label": {
-              "text": "Un videojuego",
-              "variant": "subtitle2",
-              "color": "secondary"
-            }
-          },
-          {
-            "src": "",
-            "label": {
-              "text": "El ultimo celular",
-              "variant": "subtitle2",
-              "color": "secondary"
-            }
-          }
+      },
+      "elements": {
+        "base": [
+          { "component": "heading", "slot": "title", "area": "title", "order": 10 },
+          { "component": "text", "slot": "body", "area": "content", "order": 20 },
+          { "component": "image", "slot": "media", "area": "media", "order": 30 }
         ],
-        "note": {
-          "text": "Un deseo no es algo malo, pero puede esperar cuando el dinero es limitado.",
-          "variant": "body2"
+        "compound": []
+      },
+      "navigation": {
+        "mode": "normal"
+      },
+      "completionCriteria": {
+        "type": "reading"
+      }
+    },
+    {
+      "viewId": "m1_1_v3",
+      "order": 3,
+      "name": "VISTA 3 - Teoria: Como se usa el dinero en nuestro dia a dia?",
+      "viewType": "Teoria",
+      "objective": "Relacionar el uso del dinero con situaciones cercanas del contexto escolar.",
+      "template": "splitTheory",
+      "variant": "split",
+      "slots": {
+        "title": {
+          "text": "Como se usa el dinero en nuestro dia a dia?",
+          "variant": "h1",
+          "align": "center"
+        },
+        "body": {
+          "paragraphs": [
+            "El dinero es un medio que usamos para pagar bienes y servicios como pasaje, comida, utiles o recargas.",
+            "Sirve porque facilita el intercambio: en vez de cambiar cosas por cosas, usamos dinero para conseguir lo que necesitamos o queremos.",
+            "Recuerda: el dinero es limitado, por eso conviene usarlo con cuidado."
+          ],
+          "variant": "body1",
+          "align": "left"
+        },
+        "feedback": {
+          "title": {
+            "text": "Usos tipicos",
+            "variant": "label",
+            "align": "left"
+          },
+          "items": [
+            "Transporte: pasaje de ida y vuelta.",
+            "Recreo: comida o bebida.",
+            "Utiles: cuaderno, lapicero, fotocopias.",
+            "Recargas: saldo o datos."
+          ],
+          "variant": "bodySm",
+          "align": "left"
+        },
+        "media": {
+          "src": "",
+          "alt": "Uso diario del dinero"
         }
-      }
-    },
-    {
-      "id": "m1_c_03_compare",
-      "template": "teoria",
-      "variant": "compare",
-      "data": {
-        "title": {
-          "text": "Necesidad versus deseo",
-          "variant": "h2"
-        },
-        "text": {
-          "text": "La diferencia principal esta en la prioridad. Una necesidad sostiene tu bienestar; un deseo puede esperar.",
-          "variant": "body1"
-        },
-        "items": [
-          {
-            "img": {
-              "src": "",
-              "alt": "Comida"
-            },
-            "label": {
-              "text": "Comida",
-              "variant": "subtitle2",
-              "color": "secondary"
-            },
-            "note": {
-              "text": "Impacta salud, estudio o seguridad",
-              "variant": "body2",
-              "color": "muted"
-            },
-            "result": {
-              "text": "Necesidad",
-              "variant": "button",
-              "color": "primary"
-            }
-          },
-          {
-            "img": {
-              "src": "",
-              "alt": "Videojuego"
-            },
-            "label": {
-              "text": "Videojuego",
-              "variant": "subtitle2",
-              "color": "secondary"
-            },
-            "note": {
-              "text": "Da gusto o entretenimiento, pero no es urgente",
-              "variant": "body2",
-              "color": "muted"
-            },
-            "result": {
-              "text": "Deseo",
-              "variant": "button",
-              "color": "primary"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "id": "m1_c_04_consumo_responsable",
-      "template": "teoria",
-      "variant": "examples",
-      "data": {
-        "title": {
-          "text": "Consumo responsable",
-          "variant": "h2"
-        },
-        "text": {
-          "text": "Consumir responsablemente es decidir con prioridad, presupuesto y calma para evitar compras impulsivas.",
-          "variant": "body1"
-        },
-        "examples": [
-          {
-            "src": "",
-            "label": {
-              "text": "Comprar lo importante primero",
-              "variant": "subtitle2",
-              "color": "secondary"
-            }
-          },
-          {
-            "src": "",
-            "label": {
-              "text": "No gastar por impulso",
-              "variant": "subtitle2",
-              "color": "secondary"
-            }
-          },
-          {
-            "src": "",
-            "label": {
-              "text": "Mirar tu saldo antes de decidir",
-              "variant": "subtitle2",
-              "color": "secondary"
-            }
-          }
+      },
+      "elements": {
+        "base": [
+          { "component": "heading", "slot": "title", "area": "title", "order": 10 },
+          { "component": "text", "slot": "body", "area": "body", "order": 20 },
+          { "component": "text", "slot": "feedback", "area": "support", "order": 30 },
+          { "component": "image", "slot": "media", "area": "media", "order": 40 }
         ],
-        "note": {
-          "text": "Consumir mejor no significa dejar de comprar. Significa elegir con criterio.",
-          "variant": "body2"
-        }
+        "compound": []
+      },
+      "navigation": {
+        "mode": "normal"
+      },
+      "completionCriteria": {
+        "type": "reading"
       }
     },
     {
-      "id": "m1_c_05_examples_flip",
-      "template": "flipCard",
-      "data": {
-        "mode": "revealGrid",
-        "countsTowardScore": false,
+      "viewId": "m1_1_v4",
+      "order": 4,
+      "name": "VISTA 4 - Teoria: Que son ingresos y gastos?",
+      "viewType": "Teoria",
+      "objective": "Diferenciar el dinero que entra del dinero que sale.",
+      "template": "simpleTheory",
+      "variant": "simple",
+      "slots": {
         "title": {
-          "text": "Ejemplos",
-          "variant": "h2"
+          "text": "Que son ingresos y gastos?",
+          "variant": "h1",
+          "align": "center"
         },
-        "instruction": {
-          "text": "Toca cada imagen para descubrir si corresponde a ingreso o gasto.",
-          "variant": "h5"
-        },
-        "columns": 2,
-        "items": [
+        "body": {
+          "text": "El dinero puede entrar o salir. Eso se llama ingreso y gasto.",
+          "variant": "body1",
+          "align": "left"
+        }
+      },
+      "elements": {
+        "base": [
+          { "component": "heading", "slot": "title", "area": "title", "order": 10 },
+          { "component": "text", "slot": "body", "area": "content", "order": 20 }
+        ],
+        "compound": [
           {
-            "id": "grid-1",
-            "src": "",
-            "caption": "Recibir propina",
-            "reveal": {
-              "text": "Ingreso",
-              "tone": "success"
-            }
-          },
-          {
-            "id": "grid-2",
-            "src": "",
-            "caption": "Pagar pasaje",
-            "reveal": {
-              "text": "Gasto",
-              "tone": "error"
-            }
-          },
-          {
-            "id": "grid-3",
-            "src": "",
-            "caption": "Vendiendo algun producto",
-            "reveal": {
-              "text": "Ingreso",
-              "tone": "success"
-            }
-          },
-          {
-            "id": "grid-4",
-            "src": "",
-            "caption": "Comprando alimentos",
-            "reveal": {
-              "text": "Gasto",
-              "tone": "error"
-            }
+            "type": "rowCard",
+            "component": "rowCard",
+            "category": "grouper",
+            "area": "content",
+            "items": [
+              {
+                "id": "income-card",
+                "title": {
+                  "text": "Ingreso",
+                  "variant": "label",
+                  "align": "center"
+                },
+                "text": {
+                  "text": "Cuando el dinero entra a ti. Palabras clave: recibir, ganar, vender, propina, premio.",
+                  "variant": "bodySm",
+                  "align": "center"
+                }
+              },
+              {
+                "id": "expense-card",
+                "title": {
+                  "text": "Gasto",
+                  "variant": "label",
+                  "align": "center"
+                },
+                "text": {
+                  "text": "Cuando el dinero sale porque pagas algo. Palabras clave: pagar, comprar, recargar.",
+                  "variant": "bodySm",
+                  "align": "center"
+                }
+              }
+            ]
           }
         ]
       },
-      "nav": {
+      "navigation": {
+        "mode": "normal"
+      },
+      "completionCriteria": {
+        "type": "reading"
+      }
+    },
+    {
+      "viewId": "m1_1_v5",
+      "order": 5,
+      "name": "VISTA 5 - Interaccion: Ejemplos de ingresos y gastos",
+      "viewType": "Interaccion",
+      "objective": "Reconocer ejemplos cotidianos de ingreso y gasto mediante tarjetas.",
+      "template": "explanationTheory",
+      "variant": "explanation",
+      "slots": {
+        "title": {
+          "text": "Ejemplos de ingresos y gastos",
+          "variant": "h1",
+          "align": "center"
+        },
+        "subtitle": {
+          "text": "Toca cada tarjeta para ver si es ingreso o gasto.",
+          "variant": "h3",
+          "align": "center"
+        }
+      },
+      "elements": {
+        "base": [
+          { "component": "heading", "slot": "title", "area": "title", "order": 10 },
+          { "component": "heading", "slot": "subtitle", "area": "subtitle", "order": 20 }
+        ],
+        "compound": [
+          {
+            "type": "collageCard",
+            "component": "collageCard",
+            "category": "grouper",
+            "area": "interaction",
+            "columns": 2,
+            "items": [
+              {
+                "id": "card-1",
+                "renderAs": "flipCard",
+                "src": "",
+                "caption": "Me dieron dinero para mi recreo",
+                "reveal": {
+                  "text": "Ingreso: porque recibiste dinero.",
+                  "tone": "success"
+                }
+              },
+              {
+                "id": "card-2",
+                "renderAs": "flipCard",
+                "src": "",
+                "caption": "Pague mi pasaje",
+                "reveal": {
+                  "text": "Gasto: porque pagaste.",
+                  "tone": "error"
+                }
+              },
+              {
+                "id": "card-3",
+                "renderAs": "flipCard",
+                "src": "",
+                "caption": "Compre una galleta y una bebida",
+                "reveal": {
+                  "text": "Gasto: porque compraste.",
+                  "tone": "error"
+                }
+              },
+              {
+                "id": "card-4",
+                "renderAs": "flipCard",
+                "src": "",
+                "caption": "Vendi un juguete que no usaba",
+                "reveal": {
+                  "text": "Ingreso: porque te pagaron.",
+                  "tone": "success"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "navigation": {
         "mode": "lockedUntilComplete"
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "revealAllCards"
       }
     },
     {
-      "id": "m1_c_06_recognize_flip",
-      "template": "flipCard",
-      "data": {
-        "mode": "singleChoice",
+      "viewId": "m1_1_v6",
+      "order": 6,
+      "name": "VISTA 6 - Mini-Evaluacion: Reconociendo ingresos y gastos",
+      "viewType": "Mini-Evaluacion",
+      "objective": "Evaluar si el estudiante puede distinguir ejemplos de ingreso y gasto.",
+      "template": "assessmentTheory",
+      "variant": "assessment",
+      "slots": {
         "title": {
-          "text": "Reconociendo ingresos de gastos",
-          "variant": "h2"
-        },
-        "instruction": {
-          "text": "Cual de los dos seria ingreso?",
-          "variant": "h5"
-        },
-        "columns": 2,
-        "items": [
+          "text": "Reconociendo ingresos y gastos",
+          "variant": "h1",
+          "align": "center"
+        }
+      },
+      "elements": {
+        "base": [
+          { "component": "heading", "slot": "title", "area": "title", "order": 10 }
+        ],
+        "compound": [
           {
-            "id": "choice-1",
-            "src": "",
-            "caption": "Recibir propina",
-            "correct": true,
-            "reveal": {
-              "text": "Correcto",
-              "tone": "success"
-            }
-          },
-          {
-            "id": "choice-2",
-            "src": "",
-            "caption": "Pagar pasaje",
-            "correct": false,
-            "reveal": {
-              "text": "Gasto",
-              "tone": "error"
-            }
+            "type": "chooseOne",
+            "component": "chooseOne",
+            "category": "interactive",
+            "area": "assessment",
+            "instruction": {
+              "text": "Elige si cada caso es ingreso o gasto.",
+              "variant": "helper",
+              "align": "center"
+            },
+            "items": [
+              {
+                "id": "q1",
+                "prompt": {
+                  "text": "Tus papas te dieron S/ 5 para el recreo.",
+                  "variant": "body1",
+                  "align": "center"
+                },
+                "options": [
+                  {
+                    "id": "q1-income",
+                    "label": "Ingreso",
+                    "correct": true,
+                    "score": 100,
+                    "feedback": {
+                      "text": "Es ingreso porque recibiste dinero.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "q1-expense",
+                    "label": "Gasto",
+                    "correct": false,
+                    "score": 60,
+                    "feedback": {
+                      "text": "No es gasto, porque no pagaste nada.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "q2",
+                "prompt": {
+                  "text": "Pagas S/ 2 de pasaje en la combi.",
+                  "variant": "body1",
+                  "align": "center"
+                },
+                "options": [
+                  {
+                    "id": "q2-income",
+                    "label": "Ingreso",
+                    "correct": false,
+                    "score": 60,
+                    "feedback": {
+                      "text": "No es ingreso, porque el dinero salio.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "q2-expense",
+                    "label": "Gasto",
+                    "correct": true,
+                    "score": 100,
+                    "feedback": {
+                      "text": "Es gasto porque pagaste.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "q3",
+                "prompt": {
+                  "text": "Compras una galleta y una bebida en el kiosko.",
+                  "variant": "body1",
+                  "align": "center"
+                },
+                "options": [
+                  {
+                    "id": "q3-income",
+                    "label": "Ingreso",
+                    "correct": false,
+                    "score": 60,
+                    "feedback": {
+                      "text": "No es ingreso, porque compraste algo.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "q3-expense",
+                    "label": "Gasto",
+                    "correct": true,
+                    "score": 100,
+                    "feedback": {
+                      "text": "Es gasto porque pagaste una compra.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "q4",
+                "prompt": {
+                  "text": "Reciclas una botella y te dan S/ 0.50.",
+                  "variant": "body1",
+                  "align": "center"
+                },
+                "options": [
+                  {
+                    "id": "q4-income",
+                    "label": "Ingreso",
+                    "correct": true,
+                    "score": 100,
+                    "feedback": {
+                      "text": "Es ingreso porque recibiste dinero.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "q4-expense",
+                    "label": "Gasto",
+                    "correct": false,
+                    "score": 60,
+                    "feedback": {
+                      "text": "No es gasto, porque recuperaste dinero.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
-      "nav": {
-        "mode": "lockedUntilComplete",
-        "finishLabel": "Finalizar"
+      "navigation": {
+        "mode": "lockedUntilComplete"
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "selectCorrectOption"
+      }
+    },
+    {
+      "viewId": "m1_1_v7",
+      "order": 7,
+      "name": "VISTA 7 - Final: Mision Completada",
+      "viewType": "Final",
+      "objective": "Cerrar la mision y mostrar la recompensa final.",
+      "template": "postGameLobby",
+      "variant": "postGame",
+      "slots": {
+        "title": {
+          "text": "Mision Cumplida",
+          "variant": "h1",
+          "align": "center"
+        },
+        "feedback": {
+          "text": "Lograste una mision perfecta: +10 intis",
+          "variant": "label",
+          "align": "center",
+          "color": "accent"
+        }
+      },
+      "elements": {
+        "base": [
+          { "component": "heading", "slot": "title", "area": "title", "order": 10 },
+          { "component": "text", "slot": "feedback", "area": "feedback", "order": 20 }
+        ],
+        "compound": [
+          {
+            "type": "rowCard",
+            "component": "rowCard",
+            "category": "grouper",
+            "area": "rewards",
+            "items": [
+              {
+                "id": "reward-xp",
+                "title": {
+                  "text": "XP",
+                  "variant": "label"
+                },
+                "text": {
+                  "text": "+ 10",
+                  "variant": "bodySm"
+                },
+                "media": {
+                  "src": "",
+                  "alt": "Recompensa de XP"
+                }
+              },
+              {
+                "id": "reward-intis",
+                "title": {
+                  "text": "INTIS",
+                  "variant": "label"
+                },
+                "text": {
+                  "text": "+ 10",
+                  "variant": "bodySm"
+                },
+                "media": {
+                  "src": "",
+                  "alt": "Recompensa de INTIS"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "normal"
+      },
+      "completionCriteria": {
+        "type": "endOfMission"
       }
     }
   ]
