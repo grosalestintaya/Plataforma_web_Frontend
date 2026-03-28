@@ -1,34 +1,49 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import ShowDashboardTitle from "@/features/dashboard/components/ShowDashboardTitle";
+import StoreTopBar from "@/features/dashboard/components/store/StoreTopBar";
+import StoreFilters from "@/features/dashboard/components/store/StoreFilters";
+import StoreFeedback from "@/features/dashboard/components/store/StoreFeedback";
+import StoreGrid from "@/features/dashboard/components/store/StoreGrid";
+import { useAvatarStore } from "@/features/dashboard/hooks/useAvatarStore";
+
 function Store() {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // Cargar productos
-    setLoading(false);
-  }, []);
-
-  if (loading) {
-    return <div>Cargando...</div>;
-  }
+  const {
+    avatars,
+    wallet,
+    loading,
+    error,
+    feedback,
+    filter,
+    setFilter,
+    busyAvatarId,
+    purchaseAvatar,
+    equipAvatar,
+    equippedAvatarName,
+  } = useAvatarStore();
+  // <ShowDashboardTitle>Tienda de Avatares</ShowDashboardTitle>
 
   return (
-    <div className="store-container">
-      <ShowDashboardTitle>tienda de pepipto</ShowDashboardTitle>
-      <br />
-      <ShowDashboardTitle>tienda delucho</ShowDashboardTitle>
-      <br />
-      <ShowDashboardTitle>tienda carlos</ShowDashboardTitle>
+    <div className="w-full min-h-screen pt-0">
+      <div
+        className="mt-6 rounded-2xl border  pt-0 shadow-sm md:p-6"
+        style={{
+          backgroundColor: "var(--chip-bg)",
+          borderColor: "var(--card-border)",
+        }}>
+        <StoreTopBar wallet={wallet} equippedAvatarName={equippedAvatarName} />
 
-      <h1>Próximooo</h1>
-      <div className="products-grid">
-        {products.map((product) => (
-          <div key={product.id} className="product-card">
-            <h3>{product.name}</h3>
-            <p>${product.price}</p>
-          </div>
-        ))}
+        <StoreFilters filter={filter} onChange={setFilter} />
+
+        <StoreFeedback error={error} feedback={feedback} />
+
+        <StoreGrid
+          avatars={avatars}
+          loading={loading}
+          currentCoins={wallet?.coins_total ?? 0}
+          busyAvatarId={busyAvatarId}
+          onPurchase={purchaseAvatar}
+          onEquip={equipAvatar}
+        />
       </div>
     </div>
   );

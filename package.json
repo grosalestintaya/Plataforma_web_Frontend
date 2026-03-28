@@ -24,6 +24,7 @@
     "d3-format": "^3.1.0",
     "d3-scale": "^4.0.2",
     "framer-motion": "^12.23.24",
+    "howler": "^2.2.4",
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.545.0",
     "react": "^19.1.1",

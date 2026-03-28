@@ -91,17 +91,27 @@ export async function request(path, options = {}) {
 
 export const api = {
   get: (path, opts) => request(path, { ...opts, method: "GET" }),
+
   post: (path, body, opts) =>
     request(path, {
       ...opts,
       method: "POST",
       body: body instanceof FormData ? body : JSON.stringify(body),
     }),
+
   put: (path, body, opts) =>
     request(path, {
       ...opts,
       method: "PUT",
       body: body instanceof FormData ? body : JSON.stringify(body),
     }),
+
+  patch: (path, body, opts) =>
+    request(path, {
+      ...opts,
+      method: "PATCH",
+      body: body instanceof FormData ? body : JSON.stringify(body),
+    }),
+
   del: (path, opts) => request(path, { ...opts, method: "DELETE" }),
 };
