@@ -1,4 +1,5 @@
 {
+  
   "name": "pwt",
   "private": true,
   "version": "0.0.0",
@@ -26,6 +27,7 @@
     "framer-motion": "^12.23.24",
     "howler": "^2.2.4",
     "jwt-decode": "^4.0.0",
+    "lightningcss": "^1.32.0",
     "lucide-react": "^0.545.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
@@ -51,4 +53,5 @@
     "tailwindcss": "^4.1.14",
     "vite": "^7.1.10"
   }
+  
 }
