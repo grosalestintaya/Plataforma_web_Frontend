@@ -37,19 +37,19 @@ const Inicio = () => {
   }, []);
 
   return (
-    <div className="flex flex-col gap-4 w-full">
+    <div className="flex w-full min-w-0 flex-col gap-1">
       <UserCard user={user} />
 
-      <div className="flex w-full items-start gap-4">
-        <div className="flex-1 min-w-0">
-          <StudentModulesCenter />
-        </div>
-        <div className="w-[160px] shrink-0 ml-auto">
-          <InsigniasCard />
-        </div>
+      <div className="w-full min-w-0">
+        <StudentModulesCenter />
+      </div>
+
+      <div className="w-full min-w-0 overflow-hidden">
+        <InsigniasCard />
       </div>
     </div>
   );
 };
+
 
 export default Inicio;
