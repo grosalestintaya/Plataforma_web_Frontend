@@ -5,7 +5,7 @@
 function getFooterButtonClass(disabled) {
   return [
     "inline-flex h-9 min-w-[96px] items-center justify-center rounded-xl px-3 text-sm font-medium",
-    "border border-white/15 bg-white/10 text-white transition",
+    " text-white transition",
     disabled
       ? "cursor-not-allowed opacity-40"
       : "hover:bg-white/15 active:scale-[0.98]",

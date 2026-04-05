@@ -34,13 +34,13 @@ export default function MascotTutorDemo({
   };
 
   return (
-    <div className="w-full flex flex-col items-center">
+    <div className="flex h-full w-full min-h-0 flex-col items-center justify-start">
       {/* Burbuja */}
       <div
-        className="relative max-w-[280px] rounded-3xl border px-5 py-4 backdrop-blur-sm shadow-xl"
+        className="relative max-w-[210px] rounded-3xl border px-3 py-2.5 backdrop-blur-sm shadow-xl sm:max-w-[230px] sm:px-4 sm:py-3 md:max-w-[250px] lg:max-w-[270px] xl:max-w-[280px] xl:px-5 xl:py-4"
         style={bubbleStyle}>
-        <div className="mb-1 text-center text-xs text-white/60">{name}</div>
-        <div className="text-center text-sm leading-relaxed opacity-95">
+        <div className="mb-1 text-center text-[10px] text-white/60 sm:text-xs">{name}</div>
+        <div className="text-center text-[11px] leading-snug opacity-95 sm:text-xs md:text-sm md:leading-snug xl:leading-relaxed">
           {text}
         </div>
 
@@ -54,15 +54,17 @@ export default function MascotTutorDemo({
         />
       </div>
 
-      {/* Mascota */}
-      <div className="relative mt-6 flex h-[270px] w-[360px] items-center justify-center">
+      {/* Mascota:
+          Reducimos la altura visual en sm/md/lg para que el bloque inferior
+          entre completo dentro del viewport antes de llegar a xl. */}
+      <div className="relative mt-2 flex h-[110px] w-[180px] flex-1 items-start justify-center sm:mt-3 sm:h-[135px] sm:w-[210px] md:h-[160px] md:w-[240px] lg:h-[190px] lg:w-[285px] xl:mt-6 xl:h-[270px] xl:w-[360px]">
         {/* glow */}
         <div
           className="absolute inset-0 rounded-full blur-2xl"
           style={{ background: hexToRgba(themeHex, 0.12) }}
         />
         {/* sombra base */}
-        <div className="absolute bottom-4 z-[1] h-[18px] w-[170px] rounded-full bg-black/35 blur-md" />
+        <div className="absolute bottom-3 z-[1] h-[14px] w-[130px] rounded-full bg-black/35 blur-md sm:h-[16px] sm:w-[150px] md:w-[165px] lg:bottom-4 lg:h-[18px] lg:w-[185px] xl:w-[170px]" />
         {/* pasto */}
         {/* mascota */}
         <img
@@ -75,7 +77,7 @@ export default function MascotTutorDemo({
           src={grassPng}
           alt="Base de pasto"
           draggable={false}
-          className="absolute -bottom-4  z-[2] w-[260px] object-contain select-none pointer-events-none"
+          className="pointer-events-none absolute -bottom-1 z-[2] w-[125px] select-none object-contain sm:-bottom-2 sm:w-[150px] md:w-[175px] lg:-bottom-3 lg:w-[215px] xl:-bottom-4 xl:w-[260px]"
         />
       </div>
     </div>

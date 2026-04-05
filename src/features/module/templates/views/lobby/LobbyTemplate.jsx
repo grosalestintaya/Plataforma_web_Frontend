@@ -10,8 +10,9 @@ import * as Blocks from "@/features/module/blocks";
  * - Ejecuta el runtime generado por `lobby.config.js`.
  * - No tiene logica de slots; solo renderiza el resultado de config.
  */
-export default function LobbyTemplate({ variant, data, view }) {
-  const runtime = getLobbyRuntime({ variant, data, view });
+export default function LobbyTemplate({ variant, data, heroApi, view }) {
+  // `heroApi` lleva el resumen final del attempt para el postGame.
+  const runtime = getLobbyRuntime({ variant, data, heroApi, view });
   const layout = normalizeLayout(runtime?.layoutDef);
   const slots = runtime?.slots ?? [];
   const payload = runtime?.payload ?? {};

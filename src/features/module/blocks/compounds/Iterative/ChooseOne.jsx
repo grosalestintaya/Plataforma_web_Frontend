@@ -131,7 +131,7 @@ export default function ChooseOne({
     const isFinished = currentIndex >= items.length;
 
     return (
-      <section className="flex flex-col gap-4 rounded-2xl border border-white/15 bg-white/10 p-4">
+      <section className="flex flex-col gap-4 rounded-2xl  p-4">
         {data?.instruction ? (
           <Typography
             content={data.instruction}

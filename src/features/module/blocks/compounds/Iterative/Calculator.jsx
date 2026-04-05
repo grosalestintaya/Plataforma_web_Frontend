@@ -22,7 +22,7 @@ export default function Calculator({
   const emptyLabel = data?.emptyLabel ?? "Aun no has seleccionado productos.";
 
   return (
-    <section className="flex h-full min-h-0 flex-col gap-3 rounded-2xl border border-white/15 bg-white/10 p-3">
+    <section className="flex h-full min-h-0 flex-col gap-3 rounded-2xl  p-3">
       {data?.title ? (
         <Typography
           content={data.title}

@@ -35,7 +35,7 @@ export default function Card({
       disabled={Component === "button" ? disabled : undefined}
       className={cn(
         // La card ocupa su area, pero no fuerza alturas internas innecesarias.
-        "flex h-full min-h-0 w-full flex-col gap-2.5 rounded-2xl border border-white/15 bg-white/10 p-3 text-left",
+        "flex h-full min-h-0 w-full flex-col gap-2.5 rounded-2xl  p-3 text-left",
         "transition disabled:cursor-not-allowed disabled:opacity-60",
         onClick ? "hover:bg-white/15" : "",
         className,

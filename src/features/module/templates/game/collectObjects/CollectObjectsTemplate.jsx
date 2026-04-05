@@ -11,7 +11,7 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
 
   return (
     <section className="mx-auto flex h-full w-full max-w-5xl items-center px-6 py-6 text-white">
-      <div className="w-full rounded-2xl border border-white/15 bg-white/10 p-6">
+      <div className="w-full rounded-2xl  p-6">
         <Typography content={data?.title ?? { text: "CollectObjects", variant: "h3" }} />
         <Typography
           content={

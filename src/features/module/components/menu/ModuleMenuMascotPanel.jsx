@@ -33,21 +33,26 @@ export default function ModuleMenuMascotPanel({
   themeHex,
   text,
   wallet = { xp: 0, coins: 0 },
+  className = "",
 }) {
   return (
-    <aside className="mt-2 flex justify-center xl:absolute xl:right-0 xl:top-[44%] xl:mt-0 xl:w-[267px] xl:-translate-y-1/2">
-      <div className="flex w-full max-w-[360px] flex-col gap-2.5">
-        <div className="flex flex-wrap items-center justify-center gap-3 xl:justify-start">
+    <aside className={`flex h-full w-full justify-center ${className}`}>
+      <div className="flex h-full w-full max-w-[360px] min-h-0 flex-col gap-1.5 px-1 sm:gap-2 sm:px-0">
+        {/* El panel inferior se compacta en sm/md/lg para que entre completo
+            cuando la mascota todavia comparte una altura limitada. */}
+        <div className="flex origin-top flex-wrap items-center justify-center gap-1.5 scale-[0.74] sm:scale-[0.8] md:scale-[0.86] lg:scale-[0.92] xl:scale-100">
           <XpPanel monedas={wallet?.xp ?? 0} themeHex={themeHex} />
           <CoinsPanel monedas={wallet?.coins ?? 0} themeHex={themeHex} />
         </div>
 
-        <MascotTutorDemo
-          gifSrc={mascot?.gif}
-          name={mascot?.name}
-          themeHex={themeHex}
-          text={text}
-        />
+        <div className="min-h-0 flex-1">
+          <MascotTutorDemo
+            gifSrc={mascot?.gif}
+            name={mascot?.name}
+            themeHex={themeHex}
+            text={text}
+          />
+        </div>
       </div>
     </aside>
   );

@@ -63,7 +63,7 @@
       "variant": "simple",
       "slots": {
         "title": {
-          "text": "Que es el dinero?",
+          "text": "¿Que es el dinero?",
           "variant": "h1",
           "align": "center"
         },
@@ -106,7 +106,7 @@
       "variant": "split",
       "slots": {
         "title": {
-          "text": "Como se usa el dinero en nuestro dia a dia?",
+          "text": "¿Como se usa el dinero en nuestro dia?",
           "variant": "h1",
           "align": "center"
         },
@@ -548,7 +548,9 @@
         ]
       },
       "navigation": {
-        "mode": "normal"
+        "mode": "cta",
+        "label": "Continuar",
+        "action": "goToNextMissionMenu"
       },
       "completionCriteria": {
         "type": "endOfMission"

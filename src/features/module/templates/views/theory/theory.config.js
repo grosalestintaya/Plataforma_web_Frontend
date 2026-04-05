@@ -152,17 +152,18 @@ export const THEORY_CONFIG = {
   variants: {
     simple: [
       createTypographySlot("title", "title", "h1", {
-        className: "rounded-2xl border border-white/15 bg-white/10 p-5 text-center",
+        className: "rounded-2xl p-5 text-center",
         containerClassName: "mx-auto max-w-[760px]",
       }),
       {
+        // Corregir este area
         area: "content",
         when: (payload) =>
           Boolean(payload?.body) ||
           Boolean(payload?.supportListContent) ||
           (Array.isArray(payload?.rowItems) && payload.rowItems.length > 0),
-        className: "rounded-2xl border border-white/15 bg-white/10 p-5",
-        stackClassName: "gap-4",
+        className: "rounded-2xl p-5",
+        stackClassName: "gap-10",
         items: [
           createTypographySlot("content", "body", "body", {
             when: (payload) => Boolean(payload?.body),
@@ -185,7 +186,7 @@ export const THEORY_CONFIG = {
         area: "media",
         when: (payload) => Boolean(payload?.media),
         block: "Image",
-        className: "rounded-2xl border border-white/15 bg-white/10 p-5",
+        className: "rounded-2xl  p-5",
         props: (payload) => ({
           src: payload?.media?.src,
           alt: payload?.media?.alt ?? "Imagen de apoyo",
@@ -204,23 +205,23 @@ export const THEORY_CONFIG = {
           variant: payload?.feedbackText?.variant ?? "helper",
           align: payload?.feedbackText?.align ?? "center",
           containerClassName:
-            "mx-auto flex min-h-[72px] w-full max-w-[760px] items-center justify-center rounded-2xl border border-white/15 bg-white/10 p-4",
+            "mx-auto flex min-h-[72px] w-full max-w-[760px] items-center justify-center rounded-2xl  p-4",
         }),
       },
     ],
     explanation: [
       createTypographySlot("title", "title", "h1", {
-        className: "rounded-2xl border border-white/15 bg-white/10 p-5 text-center",
+        className: "rounded-2xl  p-5 text-center",
         containerClassName: "mx-auto max-w-[760px]",
       }),
       createTypographySlot("subtitle", "subtitle", "h3", {
         when: (payload) => Boolean(payload?.subtitle),
-        className: "rounded-2xl border border-white/15 bg-white/10 p-5 text-center",
+        className: "rounded-2xl  p-5 text-center",
         containerClassName: "mx-auto max-w-[760px]",
       }),
       {
         area: "interaction",
-        className: "rounded-2xl border border-white/15 bg-white/10 p-5",
+        className: "rounded-2xl  p-5",
         stackClassName: "gap-4",
         items: [
           {
@@ -271,23 +272,23 @@ export const THEORY_CONFIG = {
           variant: payload?.feedbackText?.variant ?? "helper",
           align: payload?.feedbackText?.align ?? "center",
           containerClassName:
-            "mx-auto flex min-h-[72px] w-full max-w-[760px] items-center justify-center rounded-2xl border border-white/15 bg-white/10 p-4",
+            "mx-auto flex min-h-[72px] w-full max-w-[760px] items-center justify-center rounded-2xl  p-4",
         }),
       },
     ],
     split: [
       createTypographySlot("title", "title", "h1", {
-        className: "rounded-2xl border border-white/15 bg-white/10 p-5 text-center",
+        className: "rounded-2xl p-5 text-center",
         containerClassName: "mx-auto max-w-[760px]",
       }),
-      createTypographySlot("body", "body", "body", {
+      createTypographySlot("body", "body", "h2", {
         when: (payload) => Boolean(payload?.body),
-        className: "rounded-2xl border border-white/15 bg-white/10 p-5",
+        className: "rounded-2xl font-black p-5",
       }),
       {
         area: "support",
         when: (payload) => Boolean(payload?.supportListContent),
-        className: "rounded-2xl border border-white/15 bg-white/10 p-5",
+        className: "rounded-2xl  p-5",
         stackClassName: "gap-4",
         items: [
           createTypographySlot("support", "supportListTitle", "label", {
@@ -302,7 +303,7 @@ export const THEORY_CONFIG = {
         area: "media",
         when: (payload) => Boolean(payload?.media),
         block: "Image",
-        className: "rounded-2xl border border-white/15 bg-white/10 p-5",
+        className: "rounded-2xl p-5",
         props: (payload) => ({
           src: payload?.media?.src,
           alt: payload?.media?.alt ?? "Imagen de apoyo",
@@ -321,14 +322,14 @@ export const THEORY_CONFIG = {
           variant: payload?.feedbackText?.variant ?? "helper",
           align: payload?.feedbackText?.align ?? "center",
           containerClassName:
-            "mx-auto flex min-h-[72px] w-full items-center justify-center rounded-2xl border border-white/15 bg-white/10 p-4",
+            "mx-auto flex min-h-[72px] w-full items-center justify-center rounded-2xl  p-4",
         }),
       },
     ],
     assessment: [
       {
         area: "title",
-        className: "rounded-2xl border border-white/15 bg-white/10 p-5 text-center",
+        className: "rounded-2xl  p-5 text-center",
         stackClassName: "gap-3",
         items: [
           createTypographySlot("title", "title", "h1"),
@@ -339,7 +340,7 @@ export const THEORY_CONFIG = {
       },
       {
         area: "assessment",
-        className: "rounded-2xl border border-white/15 bg-white/10 p-5",
+        className: "rounded-2xl  p-5",
         stackClassName: "gap-4",
         items: [
           {

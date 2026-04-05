@@ -410,7 +410,9 @@
         ]
       },
       "navigation": {
-        "mode": "normal"
+        "mode": "cta",
+        "label": "Continuar",
+        "action": "goToNextMissionMenu"
       },
       "completionCriteria": {
         "type": "endOfMission"

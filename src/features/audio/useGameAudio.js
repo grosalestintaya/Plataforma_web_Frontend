@@ -3,6 +3,7 @@ import { Howl } from "howler";
 import { createSfxCatalog } from "./audioCatalog";
 
 const STORAGE_KEY = "qy-game-audio-settings";
+const MUSIC_RELEASE_DELAY_MS = 450;
 
 function clampVolume(value, fallback) {
   const num = Number(value);
@@ -30,71 +31,171 @@ function readInitialSettings() {
   }
 }
 
-export default function useGameAudio({ musicSrc = null } = {}) {
-  const initial = readInitialSettings();
+// Estado compartido entre menu y actividad para que la musica no se reinicie
+// al navegar dentro del mismo modulo.
+const sharedAudioState = {
+  settings: readInitialSettings(),
+  listeners: new Set(),
+  sfxCatalog: null,
+  musicHowl: null,
+  musicSrc: null,
+  musicScopeKey: null,
+  musicClaims: 0,
+  releaseTimer: null,
+};
 
-  const [music, setMusic] = useState(initial.music);
-  const [sfx, setSfx] = useState(initial.sfx);
+function notifySettingsChanged() {
+  sharedAudioState.listeners.forEach((listener) => {
+    listener(sharedAudioState.settings);
+  });
+}
 
-  const musicRef = useRef(null);
-  const sfxRef = useRef(null);
+function persistSettings() {
+  if (typeof window === "undefined") return;
 
-  if (!sfxRef.current) {
-    sfxRef.current = createSfxCatalog();
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(sharedAudioState.settings));
+}
+
+function ensureSfxCatalog() {
+  if (!sharedAudioState.sfxCatalog) {
+    sharedAudioState.sfxCatalog = createSfxCatalog();
+    Object.values(sharedAudioState.sfxCatalog).forEach((sound) => {
+      sound.volume(sharedAudioState.settings.sfx / 100);
+    });
   }
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
+  return sharedAudioState.sfxCatalog;
+}
 
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify({
-        music,
-        sfx,
-      }),
-    );
-  }, [music, sfx]);
+function clearPendingMusicRelease() {
+  if (!sharedAudioState.releaseTimer) return;
 
-  useEffect(() => {
-    if (musicRef.current) {
-      musicRef.current.unload();
-      musicRef.current = null;
-    }
+  clearTimeout(sharedAudioState.releaseTimer);
+  sharedAudioState.releaseTimer = null;
+}
 
-    if (!musicSrc) return;
+function teardownMusic() {
+  if (sharedAudioState.musicHowl) {
+    sharedAudioState.musicHowl.stop();
+    sharedAudioState.musicHowl.unload();
+  }
 
-    musicRef.current = new Howl({
+  sharedAudioState.musicHowl = null;
+  sharedAudioState.musicSrc = null;
+  sharedAudioState.musicScopeKey = null;
+}
+
+function ensureMusicInstance(musicSrc, musicScopeKey) {
+  if (!musicSrc) return null;
+
+  const shouldReplaceTrack =
+    !sharedAudioState.musicHowl ||
+    sharedAudioState.musicSrc !== musicSrc ||
+    sharedAudioState.musicScopeKey !== musicScopeKey;
+
+  if (shouldReplaceTrack) {
+    teardownMusic();
+
+    sharedAudioState.musicHowl = new Howl({
       src: [musicSrc],
       loop: true,
       preload: true,
-      volume: music / 100,
+      volume: sharedAudioState.settings.music / 100,
     });
+    sharedAudioState.musicSrc = musicSrc;
+    sharedAudioState.musicScopeKey = musicScopeKey;
+  }
+
+  return sharedAudioState.musicHowl;
+}
+
+function acquireSharedMusic(musicSrc, musicScopeKey) {
+  if (!musicSrc) return () => {};
+
+  clearPendingMusicRelease();
+  ensureMusicInstance(musicSrc, musicScopeKey);
+  sharedAudioState.musicClaims += 1;
+
+  return () => {
+    sharedAudioState.musicClaims = Math.max(0, sharedAudioState.musicClaims - 1);
+
+    if (sharedAudioState.musicClaims > 0) return;
+
+    clearPendingMusicRelease();
+    // Damos un margen corto para navegar entre rutas del mismo modulo
+    // sin cortar ni reiniciar la musica.
+    sharedAudioState.releaseTimer = setTimeout(() => {
+      if (sharedAudioState.musicClaims === 0) {
+        teardownMusic();
+      }
+    }, MUSIC_RELEASE_DELAY_MS);
+  };
+}
+
+/**
+ * Hook de audio compartido:
+ * - la musica puede persistir entre paginas del mismo modulo;
+ * - los efectos y volumenes se comparten de forma global.
+ */
+export default function useGameAudio({
+  musicSrc = null,
+  musicScopeKey = "global",
+} = {}) {
+  const [settings, setSettings] = useState(sharedAudioState.settings);
+  const releaseMusicRef = useRef(() => {});
+
+  useEffect(() => {
+    ensureSfxCatalog();
+
+    const listener = (nextSettings) => {
+      setSettings(nextSettings);
+    };
+
+    sharedAudioState.listeners.add(listener);
+    return () => {
+      sharedAudioState.listeners.delete(listener);
+    };
+  }, []);
+
+  useEffect(() => {
+    releaseMusicRef.current?.();
+    releaseMusicRef.current = acquireSharedMusic(musicSrc, musicScopeKey);
 
     return () => {
-      if (musicRef.current) {
-        musicRef.current.stop();
-        musicRef.current.unload();
-        musicRef.current = null;
-      }
+      releaseMusicRef.current?.();
     };
-  }, [musicSrc]);
+  }, [musicScopeKey, musicSrc]);
 
-  useEffect(() => {
-    if (musicRef.current) {
-      musicRef.current.volume(music / 100);
+  const setMusic = useCallback((value) => {
+    sharedAudioState.settings = {
+      ...sharedAudioState.settings,
+      music: clampVolume(value, 50),
+    };
+
+    if (sharedAudioState.musicHowl) {
+      sharedAudioState.musicHowl.volume(sharedAudioState.settings.music / 100);
     }
-  }, [music]);
 
-  useEffect(() => {
-    if (!sfxRef.current) return;
+    persistSettings();
+    notifySettingsChanged();
+  }, []);
 
-    Object.values(sfxRef.current).forEach((sound) => {
-      sound.volume(sfx / 100);
+  const setSfx = useCallback((value) => {
+    sharedAudioState.settings = {
+      ...sharedAudioState.settings,
+      sfx: clampVolume(value, 80),
+    };
+
+    Object.values(ensureSfxCatalog()).forEach((sound) => {
+      sound.volume(sharedAudioState.settings.sfx / 100);
     });
-  }, [sfx]);
+
+    persistSettings();
+    notifySettingsChanged();
+  }, []);
 
   const playMusic = useCallback(() => {
-    const musicInstance = musicRef.current;
+    const musicInstance = sharedAudioState.musicHowl;
     if (!musicInstance) return;
 
     if (!musicInstance.playing()) {
@@ -103,11 +204,11 @@ export default function useGameAudio({ musicSrc = null } = {}) {
   }, []);
 
   const pauseMusic = useCallback(() => {
-    musicRef.current?.pause();
+    sharedAudioState.musicHowl?.pause();
   }, []);
 
   const resumeMusic = useCallback(() => {
-    const musicInstance = musicRef.current;
+    const musicInstance = sharedAudioState.musicHowl;
     if (!musicInstance) return;
 
     if (!musicInstance.playing()) {
@@ -116,21 +217,15 @@ export default function useGameAudio({ musicSrc = null } = {}) {
   }, []);
 
   const stopMusic = useCallback(() => {
-    musicRef.current?.stop();
+    sharedAudioState.musicHowl?.stop();
   }, []);
+
   const playSfx = useCallback((name, options = {}) => {
-    const sound = sfxRef.current?.[name];
-
-    console.log("playSfx llamado:", name);
-
-    if (!sound) {
-      console.warn("No existe SFX:", name);
-      return;
-    }
+    const sound = ensureSfxCatalog()?.[name];
+    if (!sound) return;
 
     const runPlayback = () => {
       const id = sound.play();
-      console.log(`[SFX:${name}] play id:`, id);
 
       if (typeof options.rate === "number") {
         sound.rate(options.rate, id);
@@ -143,19 +238,9 @@ export default function useGameAudio({ musicSrc = null } = {}) {
       return id;
     };
 
-    console.log("state:", sound.state());
-    console.log("duration:", sound.duration());
-
     if (sound.state() !== "loaded") {
-      console.warn(`[SFX:${name}] aún no está cargado. Esperando load...`);
-
       sound.once("load", () => {
-        console.log(`[SFX:${name}] cargado. Reproduciendo ahora.`);
         runPlayback();
-      });
-
-      sound.once("loaderror", (id, err) => {
-        console.error(`[SFX:${name}] error al cargar`, { id, err });
       });
 
       sound.load();
@@ -164,33 +249,17 @@ export default function useGameAudio({ musicSrc = null } = {}) {
 
     return runPlayback();
   }, []);
+
   const stopSfx = useCallback((name) => {
-    const sound = sfxRef.current?.[name];
+    const sound = ensureSfxCatalog()?.[name];
     if (!sound) return;
 
     sound.stop();
   }, []);
 
-  useEffect(() => {
-    return () => {
-      if (musicRef.current) {
-        musicRef.current.stop();
-        musicRef.current.unload();
-        musicRef.current = null;
-      }
-
-      if (sfxRef.current) {
-        Object.values(sfxRef.current).forEach((sound) => {
-          sound.stop();
-          sound.unload();
-        });
-      }
-    };
-  }, []);
-
   return {
-    music,
-    sfx,
+    music: settings.music,
+    sfx: settings.sfx,
     setMusic,
     setSfx,
     playMusic,

@@ -21,7 +21,6 @@ export default function QuizTemplate({ variant, data, heroApi, view }) {
   }
 
   return (
-    <section className="mx-auto flex h-full min-h-0 w-full max-w-5xl items-center px-6 py-6 text-white">
       <HeroGrid layout={layout} className="h-full min-h-0 w-full">
         {slots.map((slot, index) => {
           // Evita montar wrappers vacios dentro del canvas.
@@ -36,6 +35,5 @@ export default function QuizTemplate({ variant, data, heroApi, view }) {
           );
         })}
       </HeroGrid>
-    </section>
   );
 }

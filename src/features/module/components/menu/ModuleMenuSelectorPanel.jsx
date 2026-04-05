@@ -11,26 +11,17 @@ export default function ModuleMenuSelectorPanel({
   return (
     <aside
       className={`
-        mb-8 flex justify-center
-        lg:absolute
-        lg:left-[4%]
-        xl:left-[6%]
-        2xl:left-[9%]
-        lg:top-2/5
-        lg:mb-0
-        lg:-translate-y-1/2
-        lg:justify-start
+        flex w-full items-start justify-center
         ${className}
       `}
     >
       <div
         className="
-          origin-center
-          scale-[1.02]
-          md:scale-[1.05]
-          lg:origin-left
-          lg:scale-[1.08]
-          xl:scale-[1.12]
+          origin-top
+          scale-[0.68]
+          sm:scale-[0.78]
+          md:scale-[0.88]
+          xl:scale-[1.02]
           2xl:scale-[1.16]
         "
       >

@@ -1,9 +1,15 @@
 import { useEffect, useRef } from "react";
 
+/**
+ * Modal de configuracion compartido por menu y actividad.
+ * El contenido base es el mismo y cada pagina personaliza el mensaje/salida.
+ */
 export default function ConfiguracionModal({
   open,
   onRequestClose,
   onRequestAbandon,
+  description = "Saldras de la vista actual y volveras al inicio.",
+  showAbandonAction = true,
   sfx = 80,
   music = 50,
   onChangeSfx,
@@ -100,15 +106,18 @@ export default function ConfiguracionModal({
         aria-labelledby="config-modal-title"
         onMouseDown={(e) => {
           if (e.target === e.currentTarget) onRequestClose?.();
-        }}>
+        }}
+      >
         <div
           ref={panelRef}
           tabIndex={-1}
-          className="w-full max-w-xl rounded-[40px] bg-[#FFC400] shadow-2xl outline-none">
-          <div className="relative px-6 pt-8 pb-5 sm:px-10 sm:pt-10 sm:pb-6">
+          className="w-full max-w-xl rounded-[40px] bg-[#FFC400] shadow-2xl outline-none"
+        >
+          <div className="relative px-6 pb-5 pt-8 sm:px-10 sm:pb-6 sm:pt-10">
             <h2
               id="config-modal-title"
-              className="text-3xl font-extrabold text-slate-800 sm:text-5xl">
+              className="text-3xl font-extrabold text-slate-800 sm:text-5xl"
+            >
               {title}
             </h2>
 
@@ -116,7 +125,8 @@ export default function ConfiguracionModal({
               type="button"
               onClick={onRequestClose}
               aria-label="Cerrar"
-              className="absolute right-5 top-5 grid h-12 w-12 place-items-center rounded-2xl transition active:scale-95 sm:right-8 sm:top-8 sm:h-14 sm:w-14">
+              className="absolute right-5 top-5 grid h-12 w-12 place-items-center rounded-2xl transition active:scale-95 sm:right-8 sm:top-8 sm:h-14 sm:w-14"
+            >
               <span className="relative block h-10 w-10 sm:h-11 sm:w-11">
                 <span className="absolute left-1/2 top-1/2 h-2 w-10 -translate-x-1/2 -translate-y-1/2 rotate-45 rounded-full bg-pink-500 shadow-[0_2px_0_rgba(0,0,0,0.25)] sm:w-12" />
                 <span className="absolute left-1/2 top-1/2 h-2 w-10 -translate-x-1/2 -translate-y-1/2 -rotate-45 rounded-full bg-pink-500 shadow-[0_2px_0_rgba(0,0,0,0.25)] sm:w-12" />
@@ -137,24 +147,27 @@ export default function ConfiguracionModal({
 
             <SettingRow
               icon={<MusicIcon />}
-              label="Música"
+              label="Musica"
               value={music}
               onChange={onChangeMusic}
-              ariaLabel="Volumen de música"
+              ariaLabel="Volumen de musica"
             />
 
-            <div className="pt-2">
-              <div className="mb-3 text-sm font-semibold text-slate-800/80">
-                Saldrás de la actividad actual y volverás al inicio.
-              </div>
+            {showAbandonAction ? (
+              <div className="pt-2">
+                <div className="mb-3 text-sm font-semibold text-slate-800/80">
+                  {description}
+                </div>
 
-              <button
-                type="button"
-                onClick={onRequestAbandon}
-                className="w-full rounded-2xl border-2 border-red-950/20 bg-red-500 px-5 py-4 text-lg font-black text-white shadow-[0_5px_0_rgba(0,0,0,0.18)] transition hover:brightness-105 active:translate-y-[1px]">
-                {abandonLabel}
-              </button>
-            </div>
+                <button
+                  type="button"
+                  onClick={onRequestAbandon}
+                  className="w-full rounded-2xl border-2 border-red-950/20 bg-red-500 px-5 py-4 text-lg font-black text-white shadow-[0_5px_0_rgba(0,0,0,0.18)] transition hover:brightness-105 active:translate-y-[1px]"
+                >
+                  {abandonLabel}
+                </button>
+              </div>
+            ) : null}
           </div>
         </div>
       </div>
