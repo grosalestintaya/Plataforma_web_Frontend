@@ -25,7 +25,7 @@ export default function SidebarLayout() {
   const isCollapsed = isDesktop ? false : !mobileExpanded;
 
   const mainClass = isDesktop
-    ? "flex-1 ml-37 p-5 pt-1 pr-3"
+    ? "flex-1 ml-37 p-5 pt-1 pr-3 pb-3"
     : mobileExpanded
       ? "min-h-screen ml-48 p-4"
       : "min-h-screen ml-16 p-4";
@@ -33,8 +33,7 @@ export default function SidebarLayout() {
   return (
     <div
       className={`flex min-h-screen ${themeClass} transition-colors duration-300`}
-      style={{ backgroundColor: "var(--app-bg)" }}
-    >
+      style={{ backgroundColor: "var(--app-bg)" }}>
       <SidebarPanel
         menuItems={menuItems}
         mobileExpanded={mobileExpanded}
@@ -48,10 +47,7 @@ export default function SidebarLayout() {
         <Outlet />
       </main>
 
-      <LogoutModal
-        open={openLogout}
-        onClose={() => setOpenLogout(false)}
-      />
+      <LogoutModal open={openLogout} onClose={() => setOpenLogout(false)} />
     </div>
   );
 }

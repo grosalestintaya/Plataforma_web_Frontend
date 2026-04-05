@@ -35,7 +35,7 @@ function useCountUp(value, { duration = 650 } = {}) {
       const t = Math.min(1, (now - startRef.current) / duration);
       const eased = 1 - Math.pow(1 - t, 3);
       const next = Math.round(
-        fromRef.current + (toRef.current - fromRef.current) * eased
+        fromRef.current + (toRef.current - fromRef.current) * eased,
       );
       setDisplay(next);
 
@@ -64,8 +64,7 @@ const CompactChip = ({ color, children }) => (
       boxShadow:
         "inset 0 1px 0 rgba(255,255,255,0.10), 0 4px 10px rgba(0,0,0,0.08)",
       backdropFilter: "blur(6px)",
-    }}
-  >
+    }}>
     <span
       className="absolute inset-y-0 left-0 w-[3px]"
       style={{ backgroundColor: color }}
@@ -106,8 +105,7 @@ const MetricPanel = ({
         boxShadow: glow
           ? "0 8px 22px rgba(0,0,0,0.16), 0 0 0 3px var(--sidebar-accent), inset 0 1px 0 rgba(255,255,255,0.08)"
           : "0 8px 18px rgba(0,0,0,0.10), inset 0 1px 0 rgba(255,255,255,0.08)",
-      }}
-    >
+      }}>
       <div
         className="pointer-events-none absolute inset-0 opacity-20"
         style={{
@@ -118,18 +116,14 @@ const MetricPanel = ({
 
       <div className="relative flex h-full items-center gap-3 px-3 py-3.4">
         <div className="relative flex h-18 w-18 shrink-0 items-center justify-center rounded-xl">
-          <div
-            className="absolute inset-0 rounded-xl"
-         
-          />
-          {icon }
+          <div className="absolute inset-0 rounded-xl" />
+          {icon}
         </div>
 
         <div className="min-w-0">
           <p
             className="text-[11px] uppercase tracking-[0.18em] opacity-80"
-            style={{ color: textColor }}
-          >
+            style={{ color: textColor }}>
             {title}
           </p>
 
@@ -140,8 +134,7 @@ const MetricPanel = ({
                 color: textColor,
                 textShadow:
                   "0 2px 6px rgba(0,0,0,0.25), 0 0 16px rgba(255,255,255,0.08)",
-              }}
-            >
+              }}>
               {value}
             </p>
 
@@ -152,8 +145,7 @@ const MetricPanel = ({
                   color: textColor,
                   opacity: 0.95,
                   animation: "coinFloat 900ms ease-out forwards",
-                }}
-              >
+                }}>
                 +{formatInt(delta)}
               </span>
             )}
@@ -218,8 +210,7 @@ const UserCard = ({ user, isFirst = false }) => {
         maxHeight: "18vh",
         boxShadow:
           "inset 0 1px 0 rgba(255,255,255,0.08), 0 10px 24px rgba(0,0,0,0.12)",
-      }}
-    >
+      }}>
       <div
         className="pointer-events-none absolute inset-0 opacity-40"
         style={{
@@ -246,8 +237,7 @@ const UserCard = ({ user, isFirst = false }) => {
         className="
           relative grid h-full items-center gap-12
           xl:grid-cols-[minmax(320px,1fr)_340px]
-        "
-      >
+        ">
         {/* BLOQUE IZQUIERDO: AVATAR + INFO APILADA */}
         <section className="min-w-0">
           <div className="flex h-full min-w-0 items-center gap-3">
@@ -264,8 +254,7 @@ const UserCard = ({ user, isFirst = false }) => {
                     "linear-gradient(135deg, var(--usercard-accent), var(--usercard-accent-2))",
                   boxShadow:
                     "0 0 0 1px rgba(255,255,255,0.05), 0 8px 16px rgba(0,0,0,0.18)",
-                }}
-              >
+                }}>
                 <img
                   src={resolveAvatar(user?.foto)}
                   alt={`Perfil de ${user?.nombre || "usuario"}`}
@@ -293,8 +282,7 @@ const UserCard = ({ user, isFirst = false }) => {
               <div className="flex min-w-0 items-center gap-3">
                 <h2
                   className={`truncate font-bold ${isFirst ? "text-2xl" : "text-xl"} text-accent`}
-                  title={user?.nombre}
-                >
+                  title={user?.nombre}>
                   {user?.nombre || "Usuario"}
                 </h2>
 
@@ -306,10 +294,9 @@ const UserCard = ({ user, isFirst = false }) => {
                   <CompactChip color="var(--usercard-accent-2)">
                     {user?.seccion || "Sin grade"}
                   </CompactChip>
-  <CompactChip color="var(--accent)">
+                  <CompactChip color="var(--accent)">
                     Lv. {user?.nivel ?? "-"}
                   </CompactChip>
-          
                 </div>
               </div>
 
@@ -318,8 +305,7 @@ const UserCard = ({ user, isFirst = false }) => {
                 <div className="mb-1 flex items-center justify-between gap-3">
                   <p
                     className="text-xs font-bold uppercase tracking-wide"
-                    style={{ color: "var(--card-text)" }}
-                  >
+                    style={{ color: "var(--card-text)" }}>
                     PROGRESO ACTUAL EN EL NIVEL {user?.nivel ?? "-"}
                   </p>
 
@@ -329,8 +315,7 @@ const UserCard = ({ user, isFirst = false }) => {
                       color: "var(--usercard-accent)",
                       backgroundColor: "rgba(255,255,255,0.05)",
                       boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.05)",
-                    }}
-                  >
+                    }}>
                     {progreso}%
                   </span>
                 </div>
@@ -341,8 +326,7 @@ const UserCard = ({ user, isFirst = false }) => {
                     background:
                       "linear-gradient(180deg, rgba(0,0,0,0.18), rgba(255,255,255,0.03))",
                     boxShadow: "inset 0 1px 3px rgba(0,0,0,0.25)",
-                  }}
-                >
+                  }}>
                   <div
                     className="relative h-full rounded-full transition-all duration-500 ease-out"
                     style={{
@@ -351,8 +335,7 @@ const UserCard = ({ user, isFirst = false }) => {
                         "linear-gradient(90deg, var(--usercard-accent), var(--usercard-accent-2))",
                       boxShadow:
                         "0 0 10px var(--usercard-accent), 0 0 18px var(--usercard-accent-2)",
-                    }}
-                  >
+                    }}>
                     <span
                       className="absolute right-0 top-0 h-full w-10 opacity-60"
                       style={{
