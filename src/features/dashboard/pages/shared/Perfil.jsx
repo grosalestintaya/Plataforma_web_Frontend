@@ -86,11 +86,11 @@ function SmallChip({ label, value }) {
 
 function LoadingView() {
   return (
-    <div className="w-full h-full min-h-0 overflow-x-hidden p-4 lg:p-5 xl:p-6">
+    <div className="h-full min-h-0 w-full overflow-hidden ">
       <ShowDashboardTitle>Perfil</ShowDashboardTitle>
 
       <div
-        className="mx-auto mt-5 w-full max-w-[1600px] rounded-[28px] border p-5 xl:p-6 2xl:p-7"
+        className="mt-6 grid w-full grid-cols-1 gap-6 xl:grid-cols-[1.55fr_0.85fr]"
         style={{
           backgroundColor: "var(--chip-bg)",
           borderColor: "var(--card-border)",
@@ -225,11 +225,11 @@ const Perfil = () => {
   if (!user) return <EmptyView />;
 
   return (
-    <div className="w-full h-full min-h-0 overflow-x-hidden p-4 lg:p-5 xl:p-6">
+    <div className="w-full h-full min-h-0 overflow-x-hidden  lg:p-5 xl:p-0">
       <ShowDashboardTitle>Perfil</ShowDashboardTitle>
 
       <section
-        className="mx-auto mt-5 w-full max-w-[1600px] rounded-[28px] border p-5 shadow-sm xl:p-6 2xl:p-7"
+        className="mx-auto mt-6 w-full max-w-[2000px] rounded-[28px] border  shadow-sm xl:p-0 2xl:p-0"
         style={{
           backgroundColor: "var(--chip-bg)",
           borderColor: "var(--card-border)",

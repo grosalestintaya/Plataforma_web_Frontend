@@ -382,7 +382,7 @@ const Ajustes = () => {
   }
 
   return (
-    <div className="h-full min-h-0 w-full overflow-hidden p-6">
+    <div className="h-full min-h-0 w-full overflow-hidden ">
       <ShowDashboardTitle>Ajustes</ShowDashboardTitle>
 
       <div className="mt-6 grid w-full grid-cols-1 gap-6 xl:grid-cols-[1.55fr_0.85fr]">
