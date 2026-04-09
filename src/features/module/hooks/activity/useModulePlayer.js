@@ -5,6 +5,29 @@ function clamp(n, min, max) {
 }
 
 /**
+ * Identifica la vista de resumen final del flujo Lobby.
+ * Se usa para decidir si la pantalla actual debe mostrar "Finalizar"
+ * antes de entrar al `postGame`.
+ */
+function isPostGameView(view) {
+  const template = String(view?.template ?? "").toLowerCase();
+  const variant = String(view?.variant ?? "").toLowerCase();
+
+  return template.includes("postgame") || variant === "postgame";
+}
+
+/**
+ * Detecta la intro Lobby de la mision.
+ * Sirve para bloquear el regreso desde la primera vista real del flujo.
+ */
+function isPreGameView(view) {
+  const template = String(view?.template ?? "").toLowerCase();
+  const variant = String(view?.variant ?? "").toLowerCase();
+
+  return template.includes("pregame") || variant === "pregame";
+}
+
+/**
  * Controla la vista actual de la mision y el footer de navegacion.
  * Tambien soporta saltos entre vistas cuando una rama lo necesita.
  */
@@ -39,12 +62,29 @@ export function useModulePlayer(
 
   const currentVisiblePosition = visibleIndices.findIndex((index) => index === safeIndex);
   const safeVisiblePosition = currentVisiblePosition >= 0 ? currentVisiblePosition : 0;
+  const nextVisibleIndex =
+    currentVisiblePosition >= 0
+      ? visibleIndices[currentVisiblePosition + 1]
+      : safeIndex + 1;
+  const previousVisibleIndex =
+    currentVisiblePosition >= 0
+      ? visibleIndices[currentVisiblePosition - 1]
+      : safeIndex - 1;
+  const nextVisibleView =
+    typeof nextVisibleIndex === "number" ? views[nextVisibleIndex] : null;
+  const previousVisibleView =
+    typeof previousVisibleIndex === "number" ? views[previousVisibleIndex] : null;
   const isFirst =
     visibleIndices.length === 0 ||
     visibleIndices[safeVisiblePosition] === visibleIndices[0];
   const isLast =
     visibleIndices.length === 0 ||
     visibleIndices[safeVisiblePosition] === visibleIndices[visibleIndices.length - 1];
+  // La vista previa al postGame es donde realmente cerramos el attempt.
+  const isBeforePostGame = !isLast && isPostGameView(nextVisibleView);
+  // La segunda vista del flujo no debe permitir volver a la intro.
+  const isImmediatelyAfterPreGame =
+    currentVisiblePosition === 1 && isPreGameView(previousVisibleView);
 
   const goTo = useCallback(
     (idx) => setViewIndex(views.length ? clamp(idx, 0, views.length - 1) : 0),
@@ -61,22 +101,12 @@ export function useModulePlayer(
   );
 
   const next = useCallback(() => {
-    const nextIndex =
-      currentVisiblePosition >= 0
-        ? visibleIndices[currentVisiblePosition + 1]
-        : safeIndex + 1;
-
-    if (typeof nextIndex === "number") goTo(nextIndex);
-  }, [currentVisiblePosition, goTo, safeIndex, visibleIndices]);
+    if (typeof nextVisibleIndex === "number") goTo(nextVisibleIndex);
+  }, [goTo, nextVisibleIndex]);
 
   const prev = useCallback(() => {
-    const previousIndex =
-      currentVisiblePosition >= 0
-        ? visibleIndices[currentVisiblePosition - 1]
-        : safeIndex - 1;
-
-    if (typeof previousIndex === "number") goTo(previousIndex);
-  }, [currentVisiblePosition, goTo, safeIndex, visibleIndices]);
+    if (typeof previousVisibleIndex === "number") goTo(previousVisibleIndex);
+  }, [goTo, previousVisibleIndex]);
 
   const setMission = useCallback(
     (mk) => {
@@ -109,6 +139,78 @@ export function useModulePlayer(
   const heroApi = useMemo(
     () => ({ next, prev, goTo, goToViewId, setMission }),
     [next, prev, goTo, goToViewId, setMission],
+  );
+
+  /**
+   * Centraliza el avance actual para footer y templates embebidos.
+   * Asi evitamos que un template siga haciendo `next()` cuando en realidad
+   * debe cerrar el attempt antes de entrar al `postGame`.
+   */
+  const advanceCurrentView = useCallback(async () => {
+    if (!view) return;
+
+    if (isBeforePostGame) {
+      try {
+        setFinishing(true);
+
+        const result = await onFinishMission?.({
+          missionKey,
+          currentView: view,
+          nextView: nextVisibleView,
+          phase: "beforePostGame",
+        });
+
+        if (result?.next === false) return;
+        if (typeof nextVisibleIndex === "number") goTo(nextVisibleIndex);
+      } finally {
+        setFinishing(false);
+      }
+
+      return;
+    }
+
+    if (!isLast) {
+      return runActionAndNavigate(
+        view.nav?.action,
+        { missionKey, viewIndex: safeIndex, view },
+        next,
+      );
+    }
+
+    try {
+      setFinishing(true);
+      await onFinishMission?.({
+        missionKey,
+        currentView: view,
+        nextView: null,
+        phase: "final",
+      });
+    } finally {
+      setFinishing(false);
+    }
+  }, [
+    goTo,
+    isBeforePostGame,
+    isLast,
+    missionKey,
+    next,
+    nextVisibleIndex,
+    nextVisibleView,
+    onFinishMission,
+    runActionAndNavigate,
+    safeIndex,
+    view,
+  ]);
+
+  const heroApiWithFlow = useMemo(
+    () => ({
+      ...heroApi,
+      // Los templates embebidos leen la misma accion/etiqueta que el footer.
+      advanceCurrentView,
+      advanceLabel: isBeforePostGame || isLast ? "Finalizar" : "Continuar",
+      isBeforePostGame,
+    }),
+    [advanceCurrentView, heroApi, isBeforePostGame, isLast],
   );
 
   const footerModel = useMemo(() => {
@@ -150,51 +252,35 @@ export function useModulePlayer(
     if (mode === "locked") {
       return {
         type: "locked",
-        left: { label: "< Atras", enabled: false },
+        left: { label: "Atras", enabled: false },
         centerText: view.nav?.label ?? "En progreso...",
-        right: { label: "Siguiente >", enabled: false },
+        right: { label: "Siguiente", enabled: false },
       };
     }
 
     return {
       type: "normal",
       left: {
-        label: "< Atras",
-        enabled: !isFirst && !finishing,
+        label: "Atras",
+        enabled: !isFirst && !isImmediatelyAfterPreGame && !finishing,
         onClick: prev,
       },
       centerText: "Quipu Yachay",
       right: {
-        label: isLast ? "Finalizar" : "Siguiente >",
+        // Si la siguiente visible es postGame, este boton cierra el attempt.
+        label: isBeforePostGame || isLast ? "Finalizar" : "Siguiente",
         enabled: !finishing,
-        onClick: async () => {
-          if (!isLast) {
-            return runActionAndNavigate(
-              view.nav?.action,
-              { missionKey, viewIndex: safeIndex, view },
-              next,
-            );
-          }
-
-          try {
-            setFinishing(true);
-            await onFinishMission?.({ missionKey });
-          } finally {
-            setFinishing(false);
-          }
-        },
+        onClick: advanceCurrentView,
       },
     };
   }, [
+    advanceCurrentView,
     finishing,
     isFirst,
+    isImmediatelyAfterPreGame,
+    isBeforePostGame,
     isLast,
-    missionKey,
-    next,
-    onFinishMission,
     prev,
-    runActionAndNavigate,
-    safeIndex,
     view,
   ]);
 
@@ -202,7 +288,7 @@ export function useModulePlayer(
     missionKey,
     viewIndex: safeIndex,
     view,
-    heroApi,
+    heroApi: heroApiWithFlow,
     footerModel,
     setMission,
     goTo,

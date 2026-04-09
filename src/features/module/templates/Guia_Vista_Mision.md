@@ -99,7 +99,7 @@ El documento funciona como referencia operativa para:
 | Nombre | Variantes | Descripción | Elementos base |
 |---|---|---|---|
 | CompareCard | simple | Compara 2 elementos lado a lado | Card + Card |
-| RowCard | simple | Muestra 2 o más tarjetas en horizontal | Card[] |
+| showCard | simple | Muestra 2 o más tarjetas en horizontal | Card[] |
 | CollageCard | simple | Muestra varias tarjetas en cuadrícula | Card[] |
 
 ## 3. Interactivo

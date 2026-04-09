@@ -1,9 +1,34 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
+import closeIcon from "@/shared/icons/icon-close.svg";
+import musicOffIcon from "@/shared/icons/icon-music-off.svg";
+import musicOnIcon from "@/shared/icons/icon-music-on.svg";
+import volumeDownIcon from "@/shared/icons/icon-volume-down.svg";
+import volumeOffIcon from "@/shared/icons/icon-volume-off.svg";
+import volumeUpIcon from "@/shared/icons/icon-volume-up.svg";
 
+function getEffectsIcon(value) {
+  const volume = Number(value ?? 0);
+
+  if (volume <= 0) return volumeOffIcon;
+  if (volume <= 50) return volumeDownIcon;
+  return volumeUpIcon;
+}
+
+function getMusicIcon(value) {
+  const volume = Number(value ?? 0);
+  return volume <= 0 ? musicOffIcon : musicOnIcon;
+}
+
+/**
+ * Modal de configuracion compartido por menu y actividad.
+ * Los iconos cambian segun el volumen actual y tambien sirven para mute/unmute.
+ */
 export default function ConfiguracionModal({
   open,
   onRequestClose,
   onRequestAbandon,
+  description = "Saldras de la vista actual y volveras al inicio.",
+  showAbandonAction = true,
   sfx = 80,
   music = 50,
   onChangeSfx,
@@ -12,6 +37,11 @@ export default function ConfiguracionModal({
   abandonLabel = "Abandonar actividad",
 }) {
   const panelRef = useRef(null);
+  const lastNonZeroSfxRef = useRef(Number(sfx) > 0 ? Number(sfx) : 80);
+  const lastNonZeroMusicRef = useRef(Number(music) > 0 ? Number(music) : 50);
+
+  const effectsIcon = useMemo(() => getEffectsIcon(sfx), [sfx]);
+  const musicIcon = useMemo(() => getMusicIcon(music), [music]);
 
   useEffect(() => {
     if (!open) return;
@@ -45,7 +75,37 @@ export default function ConfiguracionModal({
     return () => clearTimeout(timer);
   }, [open]);
 
+  useEffect(() => {
+    if (Number(sfx) > 0) {
+      lastNonZeroSfxRef.current = Number(sfx);
+    }
+  }, [sfx]);
+
+  useEffect(() => {
+    if (Number(music) > 0) {
+      lastNonZeroMusicRef.current = Number(music);
+    }
+  }, [music]);
+
   if (!open) return null;
+
+  function handleToggleSfx() {
+    if (Number(sfx) > 0) {
+      onChangeSfx?.(0);
+      return;
+    }
+
+    onChangeSfx?.(lastNonZeroSfxRef.current || 80);
+  }
+
+  function handleToggleMusic() {
+    if (Number(music) > 0) {
+      onChangeMusic?.(0);
+      return;
+    }
+
+    onChangeMusic?.(lastNonZeroMusicRef.current || 50);
+  }
 
   return (
     <>
@@ -100,15 +160,18 @@ export default function ConfiguracionModal({
         aria-labelledby="config-modal-title"
         onMouseDown={(e) => {
           if (e.target === e.currentTarget) onRequestClose?.();
-        }}>
+        }}
+      >
         <div
           ref={panelRef}
           tabIndex={-1}
-          className="w-full max-w-xl rounded-[40px] bg-[#FFC400] shadow-2xl outline-none">
-          <div className="relative px-6 pt-8 pb-5 sm:px-10 sm:pt-10 sm:pb-6">
+          className="w-full max-w-xl rounded-[40px] bg-[#FFC400] shadow-2xl outline-none"
+        >
+          <div className="relative px-6 pb-5 pt-8 sm:px-10 sm:pb-6 sm:pt-10">
             <h2
               id="config-modal-title"
-              className="text-3xl font-extrabold text-slate-800 sm:text-5xl">
+              className="text-3xl font-extrabold text-slate-800 sm:text-5xl"
+            >
               {title}
             </h2>
 
@@ -116,45 +179,54 @@ export default function ConfiguracionModal({
               type="button"
               onClick={onRequestClose}
               aria-label="Cerrar"
-              className="absolute right-5 top-5 grid h-12 w-12 place-items-center rounded-2xl transition active:scale-95 sm:right-8 sm:top-8 sm:h-14 sm:w-14">
-              <span className="relative block h-10 w-10 sm:h-11 sm:w-11">
-                <span className="absolute left-1/2 top-1/2 h-2 w-10 -translate-x-1/2 -translate-y-1/2 rotate-45 rounded-full bg-pink-500 shadow-[0_2px_0_rgba(0,0,0,0.25)] sm:w-12" />
-                <span className="absolute left-1/2 top-1/2 h-2 w-10 -translate-x-1/2 -translate-y-1/2 -rotate-45 rounded-full bg-pink-500 shadow-[0_2px_0_rgba(0,0,0,0.25)] sm:w-12" />
-                <span className="absolute left-1/2 top-1/2 h-[10px] w-10 -translate-x-1/2 -translate-y-1/2 rotate-45 rounded-full border-2 border-slate-900/70 sm:w-12" />
-                <span className="absolute left-1/2 top-1/2 h-[10px] w-10 -translate-x-1/2 -translate-y-1/2 -rotate-45 rounded-full border-2 border-slate-900/70 sm:w-12" />
-              </span>
+              className="absolute right-5 top-5 grid h-12 w-12 place-items-center rounded-2xl border-2 border-slate-900/20 bg-white/35 transition hover:bg-white/50 active:scale-95 sm:right-8 sm:top-8 sm:h-14 sm:w-14"
+            >
+              <img
+                src={closeIcon}
+                alt=""
+                aria-hidden="true"
+                className="h-9 w-9 object-contain sm:h-10 sm:w-10"
+                draggable={false}
+              />
             </button>
           </div>
 
           <div className="space-y-8 px-6 pb-8 sm:space-y-10 sm:px-10 sm:pb-12">
             <SettingRow
-              icon={<SpeakerIcon />}
+              icon={effectsIcon}
               label="Efectos"
               value={sfx}
               onChange={onChangeSfx}
+              onToggle={handleToggleSfx}
+              isMuted={Number(sfx) <= 0}
               ariaLabel="Volumen de efectos"
             />
 
             <SettingRow
-              icon={<MusicIcon />}
-              label="Música"
+              icon={musicIcon}
+              label="Musica"
               value={music}
               onChange={onChangeMusic}
-              ariaLabel="Volumen de música"
+              onToggle={handleToggleMusic}
+              isMuted={Number(music) <= 0}
+              ariaLabel="Volumen de musica"
             />
 
-            <div className="pt-2">
-              <div className="mb-3 text-sm font-semibold text-slate-800/80">
-                Saldrás de la actividad actual y volverás al inicio.
-              </div>
+            {showAbandonAction ? (
+              <div className="pt-2">
+                <div className="mb-3 text-sm font-semibold text-slate-800/80">
+                  {description}
+                </div>
 
-              <button
-                type="button"
-                onClick={onRequestAbandon}
-                className="w-full rounded-2xl border-2 border-red-950/20 bg-red-500 px-5 py-4 text-lg font-black text-white shadow-[0_5px_0_rgba(0,0,0,0.18)] transition hover:brightness-105 active:translate-y-[1px]">
-                {abandonLabel}
-              </button>
-            </div>
+                <button
+                  type="button"
+                  onClick={onRequestAbandon}
+                  className="w-full rounded-2xl border-2 border-red-950/20 bg-red-500 px-5 py-4 text-lg font-black text-white shadow-[0_5px_0_rgba(0,0,0,0.18)] transition hover:brightness-105 active:translate-y-[1px]"
+                >
+                  {abandonLabel}
+                </button>
+              </div>
+            ) : null}
           </div>
         </div>
       </div>
@@ -162,12 +234,32 @@ export default function ConfiguracionModal({
   );
 }
 
-function SettingRow({ icon, label, value, onChange, ariaLabel }) {
+function SettingRow({
+  icon,
+  label,
+  value,
+  onChange,
+  onToggle,
+  isMuted = false,
+  ariaLabel,
+}) {
   return (
     <div className="flex items-center gap-4 sm:gap-8">
-      <div className="grid h-12 w-12 shrink-0 place-items-center text-black sm:h-14 sm:w-14">
-        {icon}
-      </div>
+      <button
+        type="button"
+        onClick={onToggle}
+        aria-label={isMuted ? `Activar ${label}` : `Silenciar ${label}`}
+        aria-pressed={!isMuted}
+        className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border border-slate-900/15 bg-white/25 transition hover:bg-white/40 active:scale-95 sm:h-14 sm:w-14"
+      >
+        <img
+          src={icon}
+          alt=""
+          aria-hidden="true"
+          className="h-10 w-10 object-contain sm:h-12 sm:w-12"
+          draggable={false}
+        />
+      </button>
 
       <div className="flex-1">
         <div className="mb-2 flex items-center justify-between gap-4">
@@ -189,26 +281,6 @@ function SettingRow({ icon, label, value, onChange, ariaLabel }) {
           className="game-slider"
         />
       </div>
-    </div>
-  );
-}
-
-function SpeakerIcon() {
-  return (
-    <div className="relative h-10 w-10 sm:h-12 sm:w-12">
-      <div className="absolute left-1 top-4 h-4 w-3 rounded-sm bg-black" />
-      <div className="absolute left-3 top-2 h-8 w-7 bg-black [clip-path:polygon(0_20%,55%_0,55%_100%,0_80%)]" />
-      <div className="absolute right-1 top-4 h-4 w-2 rounded-r-full border-4 border-l-0 border-black" />
-    </div>
-  );
-}
-
-function MusicIcon() {
-  return (
-    <div className="relative h-10 w-10 sm:h-12 sm:w-12">
-      <div className="absolute left-7 top-2 h-8 w-2 rounded bg-black" />
-      <div className="absolute left-7 top-2 h-2 w-8 rounded bg-black" />
-      <div className="absolute left-2 top-8 h-6 w-6 rounded-full bg-black" />
     </div>
   );
 }

@@ -388,8 +388,8 @@
         ],
         "compound": [
           {
-            "type": "rowCard",
-            "component": "rowCard",
+            "type": "showCard",
+            "component": "showCard",
             "category": "grouper",
             "area": "rewards",
             "items": [
@@ -410,7 +410,9 @@
         ]
       },
       "navigation": {
-        "mode": "normal"
+        "mode": "cta",
+        "label": "Continuar",
+        "action": "goToNextMissionMenu"
       },
       "completionCriteria": {
         "type": "endOfMission"

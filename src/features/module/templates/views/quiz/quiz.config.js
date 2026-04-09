@@ -67,7 +67,7 @@ export const QUIZ_CONFIG = {
   variants: {
     simple: [
       createTypographySlot("title", "title", "h3", {
-        className: "rounded-2xl border border-white/15 bg-white/10 p-5 text-center",
+        className: "rounded-2xl  p-5 text-center",
         containerClassName: "mx-auto max-w-[760px]",
       }),
       {
@@ -81,13 +81,13 @@ export const QUIZ_CONFIG = {
       },
       createTypographySlot("feedback", "feedback", "helper", {
         when: (payload) => Boolean(payload?.feedback),
-        className: "rounded-2xl border border-white/15 bg-white/10 p-5",
+        className: "rounded-2xl  p-5",
         containerClassName: "mx-auto max-w-[760px]",
       }),
     ],
     extended: [
       createTypographySlot("title", "title", "h3", {
-        className: "rounded-2xl border border-white/15 bg-white/10 p-5 text-center",
+        className: "rounded-2xl  p-5 text-center",
         containerClassName: "mx-auto max-w-[760px]",
       }),
       {
@@ -103,7 +103,7 @@ export const QUIZ_CONFIG = {
         area: "media",
         when: (payload) => Boolean(payload?.media),
         block: "Image",
-        className: "rounded-2xl border border-white/15 bg-white/10 p-5",
+        className: "rounded-2xl  p-5",
         props: (payload) => ({
           src: payload?.media?.src,
           alt: payload?.media?.alt ?? "Imagen de apoyo",
@@ -112,7 +112,7 @@ export const QUIZ_CONFIG = {
       },
       createTypographySlot("feedback", "feedback", "helper", {
         when: (payload) => Boolean(payload?.feedback),
-        className: "rounded-2xl border border-white/15 bg-white/10 p-5",
+        className: "rounded-2xl  p-5",
         containerClassName: "mx-auto max-w-[760px]",
       }),
     ],

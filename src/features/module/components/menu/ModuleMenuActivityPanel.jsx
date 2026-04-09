@@ -1,4 +1,5 @@
 import React from "react";
+import { Heading, Text } from "../../blocks/base/Typography";
 
 function hexToRgb(hex) {
   const h = String(hex || "#000").replace("#", "").trim();
@@ -65,7 +66,7 @@ export default function ModuleMenuActivityPanel({
   if (!activity) {
     return (
       <div
-        className="relative w-full max-w-[760px] p-6 md:p-7"
+        className="relative h-full min-h-0 w-full max-w-[760px] p-3 sm:p-4 md:p-5 lg:h-4/5 xl:p-7"
         style={{
           borderRadius: 28,
           background: `linear-gradient(180deg, ${withAlpha("#ffffff", 0.08)}, ${withAlpha("#000000", 0.18)})`,
@@ -77,7 +78,9 @@ export default function ModuleMenuActivityPanel({
           `,
         }}
       >
-        <div className="text-white/70">Selecciona una actividad.</div>
+        <Text variant="bodySm" tone="muted" width="full">
+          Selecciona una actividad.
+        </Text>
       </div>
     );
   }
@@ -90,7 +93,7 @@ export default function ModuleMenuActivityPanel({
 
   return (
     <div
-      className="relative w-full max-w-[760px] p-6 md:p-7"
+      className="relative h-4/5 sm:h-fit min-h-0 w-full max-w-[760px] p-3 sm:p-4 md:p-5 xl:p-7"
       style={{
         borderRadius: 28,
         background: `linear-gradient(180deg, ${withAlpha("#ffffff", 0.08)}, ${withAlpha("#000000", 0.18)})`,
@@ -128,71 +131,129 @@ export default function ModuleMenuActivityPanel({
         }}
       />
 
-      <div className="relative">
-        <div className="text-xs text-white/60 uppercase tracking-wide">
+      {/* La tarjeta usa toda la altura disponible y reparte su contenido
+          en bloques verticales para no quedar centrada en el contenedor. */}
+      <div className="relative flex h-full min-h-0 flex-col">
+        <Text
+          variant="eyebrow"
+          tone="soft"
+          width="full"
+          className="text-[10px] leading-tight sm:text-xs"
+        >
           {prettyType(activity.type)}
-        </div>
+        </Text>
 
-        <h2 className="mt-1 text-2xl font-semibold text-white/95">
+        <Heading
+          as="h2"
+          variant="h2"
+          tone="primary"
+          width="full"
+          className="mt-1 text-base leading-tight sm:text-xl md:text-[1.7rem] xl:text-2xl"
+        >
           {displayTitle}
-        </h2>
+        </Heading>
 
-        <div className="mt-3 flex flex-wrap gap-3 text-sm text-white/70">
-          <span>
+        <div className="mt-2 flex shrink-0 flex-wrap gap-x-2 gap-y-1 sm:mt-3 sm:gap-3">
+          <Text
+            as="span"
+            variant="caption"
+            tone="muted"
+            width="full"
+            className="text-[10px] leading-tight sm:text-sm md:text-xs xl:text-sm"
+          >
             Estado:{" "}
             <b className="text-white/85">{prettyStatus(activity.status)}</b>
-          </span>
+          </Text>
 
-          <span>
+          <Text
+            as="span"
+            variant="caption"
+            tone="muted"
+            width="full"
+            className="text-[10px] leading-tight sm:text-sm md:text-xs xl:text-sm"
+          >
             Intentos:{" "}
             <b className="text-white/85">{activity.attemptsCount ?? 0}</b>
-          </span>
+          </Text>
 
-          <span>
+          <Text
+            as="span"
+            variant="caption"
+            tone="muted"
+            width="full"
+            className="text-[10px] leading-tight sm:text-sm md:text-xs xl:text-sm"
+          >
             Mejor score:{" "}
             <b className="text-white/85">{activity.bestScore ?? "-"}</b>
-          </span>
+          </Text>
         </div>
 
         <div
-          className="mt-6 p-4"
+          className="mt-3 min-h-0 flex-1 p-2.5 sm:mt-4 sm:p-3 md:mt-5 md:p-3 xl:mt-6 xl:p-4"
           style={{
             borderRadius: 22,
             background: `linear-gradient(180deg, ${withAlpha("#ffffff", 0.06)}, ${withAlpha("#000000", 0.22)})`,
             boxShadow: `0 0 0 2px ${withAlpha("#ffffff", 0.1)}`,
           }}
         >
-          <div className="mb-2 text-sm font-semibold text-white/90">
+          <Text
+            variant="label"
+            tone="primary"
+            width="full"
+            className="mb-1 text-xs leading-tight sm:text-sm"
+          >
             Aprenderas
-          </div>
+          </Text>
 
           {displayLearn.length ? (
-            <ul className="ml-5 list-disc space-y-1 text-sm text-white/75">
+            <ul className="ml-4 list-disc space-y-0.5 text-[10px] leading-snug text-white/75 sm:ml-5 sm:space-y-1 sm:text-sm">
               {displayLearn.map((item, idx) => (
-                <li key={idx}>{item}</li>
+                <li key={idx}>
+                  <Text
+                    as="span"
+                    variant="caption"
+                    tone="muted"
+                    width="full"
+                    className="text-[10px] leading-snug sm:text-sm md:text-xs xl:text-sm"
+                  >
+                    {item}
+                  </Text>
+                </li>
               ))}
             </ul>
           ) : (
-            <div className="text-sm text-white/60">
+            <Text variant="bodySm" tone="soft" width="full">
               (Aun no hay contenido definido para esta actividad.)
-            </div>
+            </Text>
           )}
 
           {displayOutcome && (
-            <div className="mt-3 text-sm text-white/75">
+            <Text
+              variant="caption"
+              tone="muted"
+              width="full"
+              className="mt-2 text-[10px] leading-snug sm:mt-3 sm:text-sm md:text-xs xl:text-sm"
+            >
               Resultado esperado:{" "}
               <b className="text-white/90">{displayOutcome}</b>
-            </div>
+            </Text>
           )}
         </div>
 
-        <div className="mt-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <div className="text-xs text-white/55">{getHelperText(activity)}</div>
+        <div className="mt-3 flex shrink-0 flex-col gap-2 sm:mt-4 sm:gap-3 md:mt-5 xl:mt-6 xl:flex-row xl:items-center xl:justify-between">
+          <Text
+            variant="helper"
+            tone="soft"
+            width="full"
+            className="min-w-0 text-[10px] leading-snug break-words sm:text-xs xl:flex-1"
+          >
+            {getHelperText(activity)}
+          </Text>
 
           <button
             disabled={!canPlay}
             onClick={onPlay}
-            className="rounded-2xl border px-5 py-2.5 font-semibold transition"
+            className="w-full shrink-0 rounded-2xl border px-4 py-2 text-sm font-semibold transition xl:w-auto xl:px-5 xl:py-2.5"
             style={{
               borderColor: canPlay
                 ? withAlpha("#ffffff", 0.18)

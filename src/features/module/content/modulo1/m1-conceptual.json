@@ -63,7 +63,7 @@
       "variant": "simple",
       "slots": {
         "title": {
-          "text": "Que es el dinero?",
+          "text": "¿Que es el dinero?",
           "variant": "h1",
           "align": "center"
         },
@@ -74,7 +74,7 @@
             "Recuerda: el dinero es limitado, por eso conviene usarlo con cuidado."
           ],
           "variant": "body1",
-          "align": "left"
+          "align": "center"
         },
         "media": {
           "src": "",
@@ -106,7 +106,7 @@
       "variant": "split",
       "slots": {
         "title": {
-          "text": "Como se usa el dinero en nuestro dia a dia?",
+          "text": "¿Como se usa el dinero en nuestro dia?",
           "variant": "h1",
           "align": "center"
         },
@@ -117,7 +117,7 @@
             "Recuerda: el dinero es limitado, por eso conviene usarlo con cuidado."
           ],
           "variant": "body1",
-          "align": "left"
+          "align": "center"
         },
         "feedback": {
           "title": {
@@ -169,12 +169,12 @@
           "variant": "h1",
           "align": "center"
         },
-        "body": {
-          "text": "El dinero puede entrar o salir. Eso se llama ingreso y gasto.",
-          "variant": "body1",
-          "align": "left"
-        }
-      },
+          "body": {
+            "text": "A veces el dinero entra a nuestras manos y otras veces sale cuando lo usamos.",
+            "variant": "body1",
+            "align": "center"
+          }
+        },
       "elements": {
         "base": [
           { "component": "heading", "slot": "title", "area": "title", "order": 10 },
@@ -182,36 +182,44 @@
         ],
         "compound": [
           {
-            "type": "rowCard",
-            "component": "rowCard",
+            "type": "showCard",
+            "component": "showCard",
             "category": "grouper",
             "area": "content",
             "items": [
-              {
-                "id": "income-card",
-                "title": {
-                  "text": "Ingreso",
-                  "variant": "label",
-                  "align": "center"
+                {
+                  "id": "income-card",
+                  "media": {
+                    "src": "",
+                    "alt": "Ejemplo de ingreso"
+                  },
+                  "title": {
+                    "text": "Ingreso",
+                    "variant": "h3",
+                    "align": "center"
+                  },
+                  "text": {
+                    "text": "Cuando el dinero entra a ti.",
+                    "variant": "bodySm",
+                    "align": "center"
+                  }
                 },
-                "text": {
-                  "text": "Cuando el dinero entra a ti. Palabras clave: recibir, ganar, vender, propina, premio.",
-                  "variant": "bodySm",
-                  "align": "center"
-                }
-              },
-              {
-                "id": "expense-card",
-                "title": {
-                  "text": "Gasto",
-                  "variant": "label",
-                  "align": "center"
-                },
-                "text": {
-                  "text": "Cuando el dinero sale porque pagas algo. Palabras clave: pagar, comprar, recargar.",
-                  "variant": "bodySm",
-                  "align": "center"
-                }
+                {
+                  "id": "expense-card",
+                  "media": {
+                    "src": "",
+                    "alt": "Ejemplo de gasto"
+                  },
+                  "title": {
+                    "text": "Gasto",
+                    "variant": "h3",
+                    "align": "center"
+                  },
+                  "text": {
+                    "text": "Cuando el dinero sale porque pagas algo.",
+                    "variant": "bodySm",
+                    "align": "center"
+                  }
               }
             ]
           }
@@ -240,7 +248,7 @@
         },
         "subtitle": {
           "text": "Toca cada tarjeta para ver si es ingreso o gasto.",
-          "variant": "h3",
+          "variant": "body1",
           "align": "center"
         }
       },
@@ -317,161 +325,234 @@
       "objective": "Evaluar si el estudiante puede distinguir ejemplos de ingreso y gasto.",
       "template": "assessmentTheory",
       "variant": "assessment",
-      "slots": {
-        "title": {
-          "text": "Reconociendo ingresos y gastos",
-          "variant": "h1",
-          "align": "center"
-        }
-      },
-      "elements": {
-        "base": [
-          { "component": "heading", "slot": "title", "area": "title", "order": 10 }
-        ],
-        "compound": [
-          {
-            "type": "chooseOne",
-            "component": "chooseOne",
-            "category": "interactive",
-            "area": "assessment",
-            "instruction": {
-              "text": "Elige si cada caso es ingreso o gasto.",
-              "variant": "helper",
-              "align": "center"
-            },
-            "items": [
-              {
-                "id": "q1",
-                "prompt": {
-                  "text": "Tus papas te dieron S/ 5 para el recreo.",
-                  "variant": "body1",
-                  "align": "center"
-                },
-                "options": [
-                  {
-                    "id": "q1-income",
-                    "label": "Ingreso",
-                    "correct": true,
-                    "score": 100,
-                    "feedback": {
-                      "text": "Es ingreso porque recibiste dinero.",
-                      "variant": "helper",
-                      "align": "center"
-                    }
-                  },
-                  {
-                    "id": "q1-expense",
-                    "label": "Gasto",
-                    "correct": false,
-                    "score": 60,
-                    "feedback": {
-                      "text": "No es gasto, porque no pagaste nada.",
-                      "variant": "helper",
-                      "align": "center"
-                    }
-                  }
-                ]
-              },
-              {
-                "id": "q2",
-                "prompt": {
-                  "text": "Pagas S/ 2 de pasaje en la combi.",
-                  "variant": "body1",
-                  "align": "center"
-                },
-                "options": [
-                  {
-                    "id": "q2-income",
-                    "label": "Ingreso",
-                    "correct": false,
-                    "score": 60,
-                    "feedback": {
-                      "text": "No es ingreso, porque el dinero salio.",
-                      "variant": "helper",
-                      "align": "center"
-                    }
-                  },
-                  {
-                    "id": "q2-expense",
-                    "label": "Gasto",
-                    "correct": true,
-                    "score": 100,
-                    "feedback": {
-                      "text": "Es gasto porque pagaste.",
-                      "variant": "helper",
-                      "align": "center"
-                    }
-                  }
-                ]
-              },
-              {
-                "id": "q3",
-                "prompt": {
-                  "text": "Compras una galleta y una bebida en el kiosko.",
-                  "variant": "body1",
-                  "align": "center"
-                },
-                "options": [
-                  {
-                    "id": "q3-income",
-                    "label": "Ingreso",
-                    "correct": false,
-                    "score": 60,
-                    "feedback": {
-                      "text": "No es ingreso, porque compraste algo.",
-                      "variant": "helper",
-                      "align": "center"
-                    }
-                  },
-                  {
-                    "id": "q3-expense",
-                    "label": "Gasto",
-                    "correct": true,
-                    "score": 100,
-                    "feedback": {
-                      "text": "Es gasto porque pagaste una compra.",
-                      "variant": "helper",
-                      "align": "center"
-                    }
-                  }
-                ]
-              },
-              {
-                "id": "q4",
-                "prompt": {
-                  "text": "Reciclas una botella y te dan S/ 0.50.",
-                  "variant": "body1",
-                  "align": "center"
-                },
-                "options": [
-                  {
-                    "id": "q4-income",
-                    "label": "Ingreso",
-                    "correct": true,
-                    "score": 100,
-                    "feedback": {
-                      "text": "Es ingreso porque recibiste dinero.",
-                      "variant": "helper",
-                      "align": "center"
-                    }
-                  },
-                  {
-                    "id": "q4-expense",
-                    "label": "Gasto",
-                    "correct": false,
-                    "score": 60,
-                    "feedback": {
-                      "text": "No es gasto, porque recuperaste dinero.",
-                      "variant": "helper",
-                      "align": "center"
-                    }
-                  }
-                ]
-              }
-            ]
+        "slots": {
+          "title": {
+            "text": " Hora de Practicar",
+            "variant": "h1",
+            "align": "center"
+          },
+          "subtitle": {
+            "text": "Toca la imagen correcta. Si fallas, aun tendras una segunda oportunidad.",
+            "variant": "h3",
+            "align": "center"
           }
-        ]
-      },
+        },
+        "elements": {
+          "base": [
+            { "component": "heading", "slot": "title", "area": "title", "order": 10 },
+            { "component": "heading", "slot": "subtitle", "area": "subtitle", "order": 20 }
+          ],
+          "compound": [
+            {
+              "type": "chooseOne",
+              "component": "chooseOne",
+              "category": "interactive",
+              "area": "assessment",
+                "items": [
+                  {
+                    "id": "q1",
+                    "prompt": {
+                      "text": "¿Cual de las 2 imagenes es un GASTO?",
+                      "variant": "body1",
+                      "align": "center"
+                    },
+                    "options": [
+                      {
+                        "id": "q1-income",
+                        "label": {
+                          "text": "Me dieron S/ 5 para el recreo",
+                          "variant": "label",
+                          "align": "center"
+                        },
+                        "media": {
+                          "src": "",
+                          "alt": "Recibir dinero"
+                        },
+                        "correct": false,
+                        "score": 100,
+                        "feedback": {
+                          "text": "Ingreso: recibiste dinero para usarlo.",
+                          "variant": "helper",
+                          "align": "center",
+                          "tone": "income"
+                        }
+                      },
+                      {
+                        "id": "q1-expense",
+                        "label": {
+                          "text": "Pague mi pasaje",
+                          "variant": "label",
+                          "align": "center"
+                        },
+                        "media": {
+                          "src": "",
+                          "alt": "Pagar pasaje"
+                        },
+                        "correct": true,
+                        "score": 60,
+                        "feedback": {
+                          "text": "Gasto: tu dinero salio al pagar el pasaje.",
+                          "variant": "helper",
+                          "align": "center",
+                          "tone": "expense"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "id": "q2",
+                    "prompt": {
+                      "text": "¿Cual de las 2 imagenes es un INGRESO?",
+                      "variant": "body1",
+                      "align": "center"
+                    },
+                    "options": [
+                      {
+                        "id": "q2-income",
+                        "label": {
+                          "text": "Vendi un juguete que no usaba",
+                          "variant": "label",
+                          "align": "center"
+                        },
+                        "media": {
+                          "src": "",
+                          "alt": "Vender un juguete"
+                        },
+                        "correct": true,
+                        "score": 60,
+                        "feedback": {
+                          "text": "Ingreso: te pagaron por algo que vendiste.",
+                          "variant": "helper",
+                          "align": "center",
+                          "tone": "income"
+                        }
+                      },
+                      {
+                        "id": "q2-expense",
+                        "label": {
+                          "text": "Compre una galleta y una bebida",
+                          "variant": "label",
+                          "align": "center"
+                        },
+                        "media": {
+                          "src": "",
+                          "alt": "Comprar una galleta y una bebida"
+                        },
+                        "correct": false,
+                        "score": 100,
+                        "feedback": {
+                          "text": "Gasto: pagaste por una compra.",
+                          "variant": "helper",
+                          "align": "center",
+                          "tone": "expense"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "id": "q3",
+                    "prompt": {
+                      "text": "¿Cual de las 2 imagenes es un GASTO?",
+                      "variant": "body1",
+                      "align": "center"
+                    },
+                    "options": [
+                      {
+                        "id": "q3-income",
+                        "label": {
+                          "text": "Recicle una botella y me dieron S/ 0.50",
+                          "variant": "label",
+                          "align": "center"
+                        },
+                        "media": {
+                          "src": "",
+                          "alt": "Reciclar y recibir dinero"
+                        },
+                        "correct": false,
+                        "score": 60,
+                        "feedback": {
+                          "text": "Ingreso: te dieron dinero por reciclar.",
+                          "variant": "helper",
+                          "align": "center",
+                          "tone": "income"
+                        }
+                      },
+                      {
+                        "id": "q3-expense",
+                        "label": {
+                          "text": "Compre una bebida en el kiosko",
+                          "variant": "label",
+                          "align": "center"
+                        },
+                        "media": {
+                          "src": "",
+                          "alt": "Comprar una bebida"
+                        },
+                        "correct": true,
+                        "score": 100,
+                        "feedback": {
+                          "text": "Gasto: usaste tu dinero para comprar.",
+                          "variant": "helper",
+                          "align": "center",
+                          "tone": "expense"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "id": "q4",
+                    "prompt": {
+                      "text": "¿Cual de las 2 imagenes es un INGRESO?",
+                      "variant": "body1",
+                      "align": "center"
+                    },
+                    "options": [
+                      {
+                        "id": "q4-income",
+                        "label": {
+                          "text": "Recibi una propina por ayudar en casa",
+                          "variant": "label",
+                          "align": "center"
+                        },
+                        "media": {
+                          "src": "",
+                          "alt": "Recibir una propina"
+                        },
+                        "correct": true,
+                        "score": 100,
+                        "feedback": {
+                          "text": "Ingreso: recibiste dinero por tu ayuda.",
+                          "variant": "helper",
+                          "align": "center",
+                          "tone": "income"
+                        }
+                      },
+                      {
+                        "id": "q4-expense",
+                        "label": {
+                          "text": "Pague una recarga de celular",
+                          "variant": "label",
+                          "align": "center"
+                        },
+                        "media": {
+                          "src": "",
+                          "alt": "Pagar una recarga"
+                        },
+                        "correct": false,
+                        "score": 60,
+                        "feedback": {
+                          "text": "Gasto: el dinero salio al pagar la recarga.",
+                          "variant": "helper",
+                          "align": "center",
+                          "tone": "expense"
+                        }
+                      }
+                    ]
+                  }
+                ]
+            }
+          ]
+        },
       "navigation": {
         "mode": "lockedUntilComplete"
       },
@@ -508,8 +589,8 @@
         ],
         "compound": [
           {
-            "type": "rowCard",
-            "component": "rowCard",
+            "type": "showCard",
+            "component": "showCard",
             "category": "grouper",
             "area": "rewards",
             "items": [
@@ -548,7 +629,9 @@
         ]
       },
       "navigation": {
-        "mode": "normal"
+        "mode": "cta",
+        "label": "Continuar",
+        "action": "goToNextMissionMenu"
       },
       "completionCriteria": {
         "type": "endOfMission"

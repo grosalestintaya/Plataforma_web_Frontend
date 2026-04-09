@@ -18,7 +18,7 @@
       "slots": {
         "title": {
           "text": "Hora de practicar",
-          "variant": "h3",
+          "variant": "h1",
           "align": "center"
         },
         "body": {
@@ -63,7 +63,7 @@
       "slots": {
         "title": {
           "text": "Situacion 1",
-          "variant": "h4",
+          "variant": "h1",
           "align": "center"
         }
       },
@@ -83,15 +83,24 @@
               "align": "center"
             },
             "options": [
-              { "id": "spend_all", "label": "a) Lo gasto todo en dulces", "score": 60 },
-              { "id": "save_part", "label": "b) Guardo una parte para algo importante", "score": 100 }
+              {
+                "id": "spend_all",
+                "label": { "text": "a) Lo gasto todo en dulces", "variant": "body2" },
+                "score": 60
+              },
+              {
+                "id": "save_part",
+                "label": { "text": "b) Guardo una parte para algo importante", "variant": "body2" },
+                "score": 100
+              }
             ],
             "prompt": {
-              "text": "Explica por que tomarias esa decision.",
-              "variant": "subtitle2"
+              "text": "Si quieres, explica por que tomarias esa decision. (Opcional)",
+              "variant": "helper"
             },
             "placeholder": "Escribe aqui tu razon...",
-            "minReasonLength": 12
+            "minReasonLength": 12,
+            "reasonRequired": false
           }
         ]
       },
@@ -100,7 +109,7 @@
       },
       "completionCriteria": {
         "type": "interaction",
-        "required": "selectOptionAndExplain"
+        "required": "selectOption"
       }
     },
     {
@@ -114,7 +123,7 @@
       "slots": {
         "title": {
           "text": "Situacion 2",
-          "variant": "h4",
+          "variant": "h1",
           "align": "center"
         },
         "media": {
@@ -139,15 +148,24 @@
               "align": "center"
             },
             "options": [
-              { "id": "use_savings", "label": "a) Uso mi ahorro para acompanar al grupo", "score": 60 },
-              { "id": "keep_savings", "label": "b) Cuido mi ahorro para el pasaje", "score": 100 }
+              {
+                "id": "use_savings",
+                "label": { "text": "a) Uso mi ahorro para acompanar al grupo", "variant": "body2" },
+                "score": 60
+              },
+              {
+                "id": "keep_savings",
+                "label": { "text": "b) Cuido mi ahorro para el pasaje", "variant": "body2" },
+                "score": 100
+              }
             ],
             "prompt": {
-              "text": "Cuenta que pensarias en ese momento.",
-              "variant": "subtitle2"
+              "text": "Si quieres, cuenta que pensarias en ese momento. (Opcional)",
+              "variant": "helper"
             },
             "placeholder": "Escribe por que elegirias esa opcion...",
-            "minReasonLength": 12
+            "minReasonLength": 12,
+            "reasonRequired": false
           }
         ]
       },
@@ -156,7 +174,7 @@
       },
       "completionCriteria": {
         "type": "interaction",
-        "required": "selectOptionAndExplain"
+        "required": "selectOption"
       }
     },
     {
@@ -170,7 +188,7 @@
       "slots": {
         "title": {
           "text": "Situacion 3",
-          "variant": "h4",
+          "variant": "h1",
           "align": "center"
         }
       },
@@ -190,15 +208,24 @@
               "align": "center"
             },
             "options": [
-              { "id": "quick_spend", "label": "a) Lo gasto rapido en golosinas", "score": 60 },
-              { "id": "save_or_plan", "label": "b) Guardo una parte o la uso en algo necesario", "score": 100 }
+              {
+                "id": "quick_spend",
+                "label": { "text": "a) Lo gasto rapido en golosinas", "variant": "body2" },
+                "score": 60
+              },
+              {
+                "id": "save_or_plan",
+                "label": { "text": "b) Guardo una parte o la uso en algo necesario", "variant": "body2" },
+                "score": 100
+              }
             ],
             "prompt": {
-              "text": "Explica como esa eleccion te ayudaria.",
-              "variant": "subtitle2"
+              "text": "Si quieres, explica como esa eleccion te ayudaria. (Opcional)",
+              "variant": "helper"
             },
             "placeholder": "Describe tu razon...",
-            "minReasonLength": 12
+            "minReasonLength": 12,
+            "reasonRequired": false
           }
         ]
       },
@@ -207,7 +234,7 @@
       },
       "completionCriteria": {
         "type": "interaction",
-        "required": "selectOptionAndExplain"
+        "required": "selectOption"
       }
     },
     {
@@ -221,7 +248,7 @@
       "slots": {
         "title": {
           "text": "Situacion 4",
-          "variant": "h4",
+          "variant": "h1",
           "align": "center"
         },
         "media": {
@@ -246,15 +273,24 @@
               "align": "center"
             },
             "options": [
-              { "id": "borrow_impulse", "label": "a) Pido prestado para comprarlo por impulso", "score": 60 },
-              { "id": "wait_and_plan", "label": "b) No compro y espero otra ocasion o ahorro", "score": 100 }
+              {
+                "id": "borrow_impulse",
+                "label": { "text": "a) Pido prestado para comprarlo por impulso", "variant": "body2" },
+                "score": 60
+              },
+              {
+                "id": "wait_and_plan",
+                "label": { "text": "b) No compro y espero otra ocasion o ahorro", "variant": "body2" },
+                "score": 100
+              }
             ],
             "prompt": {
-              "text": "Escribe por que esa respuesta te parece mejor.",
-              "variant": "subtitle2"
+              "text": "Si quieres, escribe por que esa respuesta te parece mejor. (Opcional)",
+              "variant": "helper"
             },
             "placeholder": "Comparte tu razon aqui...",
-            "minReasonLength": 12
+            "minReasonLength": 12,
+            "reasonRequired": false
           }
         ]
       },
@@ -263,7 +299,7 @@
       },
       "completionCriteria": {
         "type": "interaction",
-        "required": "selectOptionAndExplain"
+        "required": "selectOption"
       }
     },
     {
@@ -294,8 +330,8 @@
         ],
         "compound": [
           {
-            "type": "rowCard",
-            "component": "rowCard",
+            "type": "showCard",
+            "component": "showCard",
             "category": "grouper",
             "area": "rewards",
             "items": [
@@ -316,7 +352,9 @@
         ]
       },
       "navigation": {
-        "mode": "normal"
+        "mode": "cta",
+        "label": "Continuar",
+        "action": "goToNextMissionMenu"
       },
       "completionCriteria": {
         "type": "endOfMission"

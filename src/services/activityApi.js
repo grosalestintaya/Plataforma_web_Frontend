@@ -34,3 +34,17 @@ export async function completeAttempt(tokenActivity, body) {
   if (!res.ok) throw new Error(await res.text());
   return await res.json(); //muestre el mensaje de "completado" -
 }
+
+/**
+ * Envia un cierre de intento en modo best-effort durante `beforeunload`.
+ * `keepalive` permite que el navegador intente completar la solicitud
+ * aunque la pagina se este cerrando o recargando.
+ */
+export function completeAttemptKeepalive(tokenActivity, body) {
+  return fetch(`${API_BASE}/api/attempts/${tokenActivity}/complete`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify(body),
+    keepalive: true,
+  });
+}

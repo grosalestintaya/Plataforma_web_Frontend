@@ -9,7 +9,7 @@
       "name": "Modulo 1",
       "theme": {
         "tone": "blue",
-        "color": "#049140",
+        "color": "#00c853",
         "accent": "#f5b400"
       },
       "missions": {
@@ -53,7 +53,7 @@
       "name": "Presupuesto personal",
       "theme": {
         "tone": "green",
-        "color": "#1B46F5",
+        "color": "#F54927",
         "accent": "#facc15"
       },
       "missions": {
@@ -97,7 +97,7 @@
       "name": "Ahorro y metas",
       "theme": {
         "tone": "orange",
-        "color": "#E29800",
+        "color": "#0000FF",
         "accent": "#fb7185"
       },
       "missions": {
@@ -136,7 +136,7 @@
       "name": "Consumo informado",
       "theme": {
         "tone": "violet",
-        "color": "#F01253",
+        "color": "#00ffff",
         "accent": "#22d3ee"
       },
       "missions": {

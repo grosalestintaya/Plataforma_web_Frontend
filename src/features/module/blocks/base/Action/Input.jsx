@@ -1,4 +1,11 @@
 
+import Typography from "../Typography";
+
+/**
+ * Input base:
+ * - `text` mantiene un input controlado simple.
+ * - `radio` acepta labels string u objetos tipograficos.
+ */
 function TextInput({
   value = "",
   onChange,
@@ -18,6 +25,31 @@ function TextInput({
         "outline-none placeholder:text-white/40 focus:border-white/35",
         className,
       ].join(" ")}
+    />
+  );
+}
+
+function renderOptionLabel(optionLabel) {
+  if (
+    typeof optionLabel === "string" ||
+    typeof optionLabel === "number" ||
+    Array.isArray(optionLabel)
+  ) {
+    return (
+      <Typography
+        content={{ text: String(optionLabel), variant: "bodySm" }}
+        variant="bodySm"
+        color="secondary"
+      />
+    );
+  }
+
+  return (
+    <Typography
+      content={optionLabel}
+      variant={optionLabel?.variant ?? "bodySm"}
+      color={optionLabel?.color ?? "secondary"}
+      align={optionLabel?.align ?? "left"}
     />
   );
 }
@@ -50,7 +82,7 @@ function RadioInput({
               onChange={(event) => onChange?.(event.target.value, event)}
               className="h-4 w-4"
             />
-            <span className="text-sm text-white/90">{optionLabel}</span>
+            <div className="min-w-0 flex-1">{renderOptionLabel(optionLabel)}</div>
           </label>
         );
       })}

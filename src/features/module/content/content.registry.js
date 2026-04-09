@@ -163,13 +163,30 @@ function normalizeFlexibleNode(value) {
     };
   }
 
+  const looksLikeCompoundItem =
+    "id" in value ||
+    "media" in value ||
+    "image" in value ||
+    "title" in value ||
+    "label" in value ||
+    "items" in value ||
+    "options" in value ||
+    "component" in value ||
+    "type" in value ||
+    "area" in value ||
+    "category" in value ||
+    "feedback" in value;
+
   if (
-    "text" in value ||
-    "paragraphs" in value ||
-    "variant" in value ||
-    "color" in value ||
-    "align" in value ||
-    "tone" in value
+    !looksLikeCompoundItem &&
+    (
+      "text" in value ||
+      "paragraphs" in value ||
+      "variant" in value ||
+      "color" in value ||
+      "align" in value ||
+      "tone" in value
+    )
   ) {
     return {
       ...value,
@@ -202,7 +219,7 @@ function inferDocCompoundCategory(component) {
     return "interactive";
   }
 
-  if (["compareCard", "rowCard", "collageCard"].includes(component)) {
+  if (["compareCard", "showCard", "collageCard"].includes(component)) {
     return "grouper";
   }
 

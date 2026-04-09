@@ -1,14 +1,24 @@
 import { useEffect, useMemo, useState } from "react";
-import Image from "../../base/Media/Image";
 import { cn } from "@/shared/libs/utils";
 import Typography from "../../base/Typography";
+import Card from "../container/Card";
 /**
  * Traduce el tono semantico del reveal a clases visuales.
  */
 function getRevealTone(reveal) {
-  if (reveal?.tone === "success") return "bg-emerald-500 text-white";
-  if (reveal?.tone === "error") return "bg-rose-600 text-white";
-  return "bg-white/15 text-white";
+  if (reveal?.tone === "income") {
+    return "border border-emerald-200/35 bg-emerald-600 text-white";
+  }
+  if (reveal?.tone === "expense") {
+    return "border border-rose-200/35 bg-rose-600 text-white";
+  }
+  if (reveal?.tone === "success") {
+    return "border border-emerald-200/35 bg-emerald-600 text-white";
+  }
+  if (reveal?.tone === "error") {
+    return "border border-rose-200/35 bg-rose-600 text-white";
+  }
+  return "border border-white/15 bg-white/15 text-white";
 }
 
 /**
@@ -29,6 +39,9 @@ export default function FlipCard(props) {
     compact = false,
     containerClassName = "",
     gridContainerClassName = "",
+    allowFlipBack = true,
+    reportToHeroApi = true,
+    onItemClick,
     onComplete,
   } = props;
 
@@ -41,8 +54,10 @@ export default function FlipCard(props) {
     data?.countsTowardScore ?? rawCountsTowardScore ?? mode !== "revealGrid";
   const viewId = view?.id ?? view?.viewId;
 
-  // Estado para reveal grid.
+  // Guarda las tarjetas que ya fueron reveladas al menos una vez.
   const [revealedMap, setRevealedMap] = useState({});
+  // Guarda la cara visible actual para permitir girar ida y vuelta.
+  const [flippedMap, setFlippedMap] = useState({});
   // Estado para seleccion unica.
   const [selectedId, setSelectedId] = useState(null);
   const [attempts, setAttempts] = useState(0);
@@ -56,11 +71,13 @@ export default function FlipCard(props) {
    * Reporta completitud al flujo principal y conserva callback externo.
    */
   function emitComplete(result) {
-    heroApi?.setInteractiveState?.(viewId, {
-      ...result,
-      type: "flipCard",
-      countsTowardScore,
-    });
+    if (reportToHeroApi) {
+      heroApi?.setInteractiveState?.(viewId, {
+        ...result,
+        type: "flipCard",
+        countsTowardScore,
+      });
+    }
     onComplete?.(result);
   }
 
@@ -80,6 +97,11 @@ export default function FlipCard(props) {
   function revealGridCard(cardId) {
     if (locked) return;
 
+    setFlippedMap((prev) => ({
+      ...prev,
+      [cardId]: allowFlipBack ? !prev[cardId] : true,
+    }));
+
     setRevealedMap((prev) => ({
       ...prev,
       [cardId]: true,
@@ -88,6 +110,17 @@ export default function FlipCard(props) {
 
   function pickSingleChoice(item) {
     if (locked || !item) return;
+
+    const isCurrentlyFlipped = Boolean(flippedMap[item.id]);
+    const nextFlipped = allowFlipBack ? !isCurrentlyFlipped : true;
+
+    setFlippedMap((prev) => ({
+      ...prev,
+      [item.id]: nextFlipped,
+    }));
+
+    // Solo evaluamos cuando el usuario abre la respuesta.
+    if (isCurrentlyFlipped) return;
 
     setSelectedId(item.id);
     setAttempts((prev) => prev + 1);
@@ -114,11 +147,66 @@ export default function FlipCard(props) {
           ? "grid-cols-2 xl:grid-cols-4"
           : "grid-cols-2 xl:grid-cols-3";
   const mediaSizingStyle = {
-    // La media de flip card tambien puede ser afinada por el contenedor padre.
-    // Eso permite que collages densos entren sin escalar toda la vista.
-    maxHeight:
-      "var(--card-media-max-height, min(220px, calc(var(--hero-height, 100vh) * 0.26)))",
+    // La tarjeta usa una altura comun para que frente y reverso coincidan.
+    // El valor por defecto es mas contenido para que varias flip cards entren
+    // dentro del hero sin empujar el footer.
+    height:
+      "var(--flip-card-height, min(230px, calc(var(--hero-height, 100vh) * 0.22)))",
   };
+
+  /**
+   * FlipCard usa Card como base visual del frente.
+   * Asi CollageCard solo reune FlipCards y cada FlipCard sigue el mismo
+   * lenguaje visual del resto del sistema.
+   */
+  function getFrontCardProps(item) {
+    return {
+      media: item.image ?? { src: item.src, alt: item.alt ?? item.caption ?? "Carta" },
+      title:
+        item.label ??
+        (item.caption
+          ? {
+              text: item.caption,
+              variant: "subtitle2",
+              align: "center",
+            }
+          : null),
+    };
+  }
+
+  /**
+   * El reverso tambien reutiliza Card para mantener el mismo marco y proporciones.
+   */
+  function renderBackCard(reveal) {
+    const revealContent =
+      typeof reveal === "object" && reveal?.text
+        ? {
+            text: reveal.text,
+            variant: reveal.variant ?? "subtitle1",
+            align: reveal.align ?? "center",
+          }
+        : {
+            text: String(reveal ?? ""),
+            variant: "subtitle1",
+            align: "center",
+          };
+
+    return (
+      <Card
+        as="div"
+        className={cn(
+          "h-full p-0 shadow-none",
+          getRevealTone(reveal),
+        )}
+        contentClassName="items-center justify-center px-4 py-6 text-center"
+      >
+        <Typography
+          content={revealContent}
+          className={cn("w-full font-bold", reveal?.className)}
+        />
+      </Card>
+    );
+  }
 
   return (
     <section
@@ -127,20 +215,17 @@ export default function FlipCard(props) {
         containerClassName,
       )}
     >
-      <div
-        className={cn(
-          compact
-            ? "grid h-full gap-3"
-            : "mx-auto grid max-w-[760px] gap-4 rounded-xl border border-white/15 p-4",
-          gridColsClassName,
-          gridContainerClassName,
+        <div
+          className={cn(
+            compact
+              ? "grid gap-3"
+              : "mx-auto grid max-w-[760px] gap-4 rounded-xl border border-white/15 p-4",
+            gridColsClassName,
+            gridContainerClassName,
         )}
       >
         {items.map((item) => {
-          const isRevealed =
-            mode === "revealGrid"
-              ? Boolean(revealedMap[item.id])
-              : selectedId === item.id;
+          const isFlipped = Boolean(flippedMap[item.id]);
 
           const reveal = item.reveal ?? {
             text: item.correct ? "Correcto" : "Incorrecto",
@@ -153,50 +238,43 @@ export default function FlipCard(props) {
               type="button"
               disabled={locked}
               onClick={() =>
-                mode === "singleChoice"
-                  ? pickSingleChoice(item)
-                  : revealGridCard(item.id)
+                {
+                  if (mode === "singleChoice") {
+                    pickSingleChoice(item);
+                  } else {
+                    revealGridCard(item.id);
+                  }
+
+                  onItemClick?.(item);
+                }
               }
-              className="relative flex min-h-0 flex-col overflow-hidden rounded-sm border border-white/20 bg-white/5 text-left disabled:opacity-70"
+              className="relative overflow-hidden rounded-sm border border-white/20 bg-white/5 text-left [perspective:1000px] disabled:opacity-70"
+              style={mediaSizingStyle}
             >
-              {isRevealed ? (
+              <div
+                className="relative h-full w-full transition-transform duration-500 [transform-style:preserve-3d]"
+                style={{
+                  transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
+                }}
+              >
+                <div className="absolute inset-0 [backface-visibility:hidden]">
+                  <Card
+                    as="div"
+                    {...getFrontCardProps(item)}
+                    className="h-full border-0 bg-transparent p-0"
+                    mediaClassName="border-0 bg-transparent p-0"
+                    contentClassName="px-2 pb-2"
+                  />
+                </div>
+
                 <div
                   className={cn(
-                    "flex min-h-[140px] items-center justify-center px-4 py-6 text-center text-base font-bold md:text-lg",
-                    getRevealTone(reveal),
+                    "absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)]",
                   )}
-                  style={mediaSizingStyle}
                 >
-                  {reveal.text}
+                  {renderBackCard(reveal)}
                 </div>
-              ) : (
-                <div className="flex min-h-0 flex-col">
-                  <div
-                    className="flex w-full items-center justify-center"
-                    style={mediaSizingStyle}
-                  >
-                    <Image
-                      src={item.image?.src ?? item.src}
-                      alt={item.image?.alt ?? item.alt ?? item.label?.text ?? item.caption ?? "Carta"}
-                      className="h-full w-full"
-                      imgClassName="max-h-full max-w-full object-contain"
-                    />
-                  </div>
-
-                  {(item.label || item.caption) ? (
-                    <Typography
-                      content={
-                        item.label ?? {
-                          text: item.caption,
-                          variant: "subtitle2",
-                          align: "center",
-                        }
-                      }
-                      className="px-2 py-2"
-                    />
-                  ) : null}
-                </div>
-              )}
+              </div>
             </button>
           );
         })}

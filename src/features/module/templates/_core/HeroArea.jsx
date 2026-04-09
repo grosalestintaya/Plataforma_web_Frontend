@@ -3,15 +3,17 @@ import { cn } from "@/shared/libs/utils";
 /**
  * HeroArea:
  * - Posiciona cada slot dentro del grid principal del template.
- * - Mantiene una superficie minima para que el contenido no colapse.
+ * - Centra el contenido dentro de su celda por defecto.
+ * - Permite sobrescribir alineacion con clases Tailwind desde `className`.
  */
 export default function HeroArea({ area, className, children }) {
   return (
     <div
       style={{ gridArea: area }}
       className={cn(
-        // Cada area debe poder encogerse dentro del grid sin empujar el canvas.
-        "min-h-0 min-w-0 p-2",
+        // El area ocupa toda su celda y centra su contenido por defecto.
+        // Luego cada variante puede cambiarlo con `place-*`, `justify-*`, `items-*`, etc.
+        "grid h-full w-full min-h-0 min-w-0 place-items-center place-content-center p-2",
         className,
       )}
     >

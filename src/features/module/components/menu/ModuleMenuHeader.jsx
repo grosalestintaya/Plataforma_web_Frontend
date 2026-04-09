@@ -1,7 +1,6 @@
 import React from "react";
 import rope from "@/assets/activity/cord.png";
-import { useNavigate } from "react-router-dom";
-import gearicon from "@/assets/dashboard/gear.png";
+import menuIcon from "@/shared/icons/icon-menu-pen.svg";
 import HeaderSettingsButton from "../ui/HeaderSettingsButton";
 import HeaderBackButton from "../ui/HeaderBackButton";
 
@@ -23,13 +22,30 @@ function hexToRgba(hex, a = 1) {
   return `rgba(${r},${g},${b},${a})`;
 }
 
-export default function QuipuHeader({
+/**
+ * Header del menu del modulo.
+ * Solo expone acciones; el modal se monta en la pagina.
+ */
+export default function ModuleMenuHeader({
   title,
   themeHex = "#7130F7",
   onBack,
   onOpenSettings,
-  gearIconSrc = gearicon,
+  gearIconSrc = menuIcon,
+  audioState,
 }) {
+  const playSfx = audioState?.playSfx;
+
+  function handleBack() {
+    playSfx?.("click");
+    onBack?.();
+  }
+
+  function handleOpenSettings() {
+    playSfx?.("openModal");
+    onOpenSettings?.();
+  }
+
   return (
     <header className="relative w-full overflow-hidden">
       <div
@@ -44,36 +60,36 @@ export default function QuipuHeader({
         }}
       />
 
-      <div className="relative px-3 pb-3 pt-4 md:px-8 lg:px-10">
-        <div className="grid grid-cols-[auto_1fr_auto] items-center gap-3">
+      <div className="relative px-3 pb-1 pt-2.5 sm:px-4 md:px-8 lg:px-10">
+        <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 sm:gap-3">
           <div className="flex items-center">
             <HeaderBackButton
-              onClick={onBack}
+              onClick={handleBack}
               themeHex={themeHex}
               label="Volver"
             />
           </div>
 
-          <div className="flex justify-center px-2">
-            <h1 className="truncate text-center text-xl font-semibold tracking-tight text-white md:text-3xl">
+          <div className="flex min-w-0 justify-center px-1 sm:px-2">
+            <h1 className="truncate text-center text-sm font-semibold tracking-tight text-white sm:text-lg md:text-2xl lg:text-3xl">
               {title}
             </h1>
           </div>
 
           <div className="flex items-center justify-end">
             <HeaderSettingsButton
-              onClick={onOpenSettings}
+              onClick={handleOpenSettings}
               themeHex={themeHex}
               iconSrc={gearIconSrc}
             />
           </div>
         </div>
 
-        <div className="mt-2 -mx-3 md:-mx-8 lg:-mx-10">
+        <div className="mt-0.5 -mx-3 sm:-mx-4 md:-mx-8 lg:-mx-10">
           <img
             src={rope}
             alt="Cuerda del Quipu"
-            className="block h-[100px] w-full"
+            className="block h-[28px] w-full select-none object-fill sm:h-[38px] md:h-[62px] lg:h-[100px]"
             draggable={false}
           />
         </div>

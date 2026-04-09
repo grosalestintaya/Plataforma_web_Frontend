@@ -12,8 +12,7 @@ export { default as Modal } from "./compounds/container/Modal";
 export { default as Form } from "./compounds/container/Form";
 
 // Elementos compuestos: agrupador
-export { default as RowCard } from "./compounds/grouper/RowCard";
-export { default as CompareCard } from "./compounds/grouper/CompareCard";
+export { default as ShowCard } from "./compounds/grouper/ShowCard";
 export { default as CollageCard } from "./compounds/grouper/CollageCard";
 
 // Elementos compuestos: interactivo

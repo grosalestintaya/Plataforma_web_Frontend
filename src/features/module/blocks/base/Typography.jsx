@@ -5,11 +5,11 @@
 export const TYPOGRAPHY = {
   scale: {
     eyebrow: "text-xs md:text-sm font-semibold uppercase tracking-[0.12em] leading-5",
-    h1: "text-3xl md:text-5xl font-extrabold leading-tight",
+    h1: "text-4xl md:text-7xl font-extrabold leading-tight",
     h2: "text-2xl md:text-3xl font-bold leading-snug",
     h3: "text-xl md:text-2xl font-semibold leading-snug",
 
-    body: "text-base md:text-lg font-normal leading-7",
+    body: "text-base md:text-lg font-medium leading-7",
     bodySm: "text-sm md:text-base font-normal leading-6",
     caption: "text-xs md:text-sm font-normal leading-5",
     label: "text-sm font-medium leading-5",
@@ -224,7 +224,7 @@ export default function Typography({
   align = "left",
   component,
   className = "",
-  containerClassName = "",
+  containerClassName = "font-bold",
 }) {
   const resolvedVariant = normalizeVariant(content?.variant ?? variant);
   const resolvedTone = normalizeTone(content?.color ?? color);
@@ -234,7 +234,6 @@ export default function Typography({
 
   if (Array.isArray(content?.paragraphs)) {
     return (
-      <div className={containerClassName}>
         <TextParagraphs
           text={content.paragraphs.join("\n\n")}
           variant={resolvedVariant}
@@ -243,12 +242,10 @@ export default function Typography({
           width="full"
           className={className}
         />
-      </div>
     );
   }
 
   return (
-    <div className={containerClassName}>
       <Tag
         className={getTypographyClassName({
           variant: resolvedVariant,
@@ -260,6 +257,5 @@ export default function Typography({
       >
         {text}
       </Tag>
-    </div>
   );
 }

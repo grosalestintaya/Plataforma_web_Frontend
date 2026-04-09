@@ -8,7 +8,10 @@ import {
   pickModuleByKey,
 } from "../utils/moduleMenu.helpers";
 
-export default function useModuleMenuData(moduleKey) {
+export default function useModuleMenuData(
+  moduleKey,
+  { preferredActivityType = null } = {},
+) {
   const [overview, setOverview] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -47,14 +50,22 @@ export default function useModuleMenuData(moduleKey) {
   useEffect(() => {
     if (!effectiveActivities.length) return;
 
-    // Selecciona la primera actividad visible al abrir el modulo.
+    // PostGame puede pedir que el menu abra la siguiente mision ya seleccionada.
+    const preferredActivity = preferredActivityType
+      ? effectiveActivities.find(
+          (activity) => activity?.type === preferredActivityType,
+        )
+      : null;
+
+    // Si no hay preferencia, cae en la primera actividad del flujo.
     const firstActivity =
+      preferredActivity ||
       effectiveActivities.find(
         (activity) => Number(activity.sortOrder) === 1,
       ) || effectiveActivities[0];
 
     setSelectedActivityId(firstActivity.activityId);
-  }, [moduleData?.moduleId, effectiveActivities]);
+  }, [effectiveActivities, moduleData?.moduleId, preferredActivityType]);
 
   const selectedActivity = useMemo(() => {
     return (

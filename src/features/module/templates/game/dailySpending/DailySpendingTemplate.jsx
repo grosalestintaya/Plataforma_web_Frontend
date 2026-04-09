@@ -157,7 +157,7 @@ function emitDailyResult(heroApi, view, payload) {
 function DailyHeader({ title, amount }) {
   return (
     <div className="grid gap-3 md:grid-cols-[1fr_auto]">
-      <div className="rounded-2xl border border-white/15 bg-white/10 p-3">
+      <div className="rounded-2xl  p-3">
         {title ? (
           <Typography
             content={title}
@@ -166,7 +166,7 @@ function DailyHeader({ title, amount }) {
         ) : null}
       </div>
 
-      <div className="rounded-2xl border border-white/15 bg-white/10 px-4 py-3 md:min-w-[180px]">
+      <div className="rounded-2xl  px-4 py-3 md:min-w-[180px]">
         <Typography
           content={{
             text: `${amount?.label ?? "Saldo"}: ${formatMoney(amount?.value ?? 0)}`,
@@ -204,6 +204,7 @@ function DailyAdvanceButton({ label = "Continuar", onClick, disabled = false }) 
 export default function DailySpendingTemplate({ view, data, heroApi, variant }) {
   const legacyElement = getLegacyDailyElement(view, data);
   const resolvedVariant = resolveVariant(view, variant, legacyElement);
+  const viewId = view?.id ?? view?.viewId;
 
   const title = view?.slots?.title ?? data?.title;
   const amount = view?.slots?.amount ?? data?.amount ?? { label: "Saldo", value: legacyElement?.balance ?? 0 };
@@ -257,7 +258,7 @@ export default function DailySpendingTemplate({ view, data, heroApi, variant }) 
    */
   function continueDecisionFlow() {
     if (!selectedDecision) return;
-    heroApi?.next?.();
+    heroApi?.advanceCurrentView?.();
   }
 
   /**
@@ -275,15 +276,30 @@ export default function DailySpendingTemplate({ view, data, heroApi, variant }) 
    * Confirma la compra y reporta el total gastado.
    */
   function confirmShopSelection() {
-    emitDailyResult(heroApi, view, {
+    const resultPayload = {
       selectedProductIds,
       total: totalProducts,
       balance: nextBalance,
       score: nextBalance >= 0 ? 100 : 60,
-    });
+    };
 
-    // En la practica procedimental, el boton verde del kiosko tambien avanza.
-    heroApi?.next?.();
+    emitDailyResult(heroApi, view, resultPayload);
+
+    // La compra puede abrir una rama nueva (por ejemplo, la situacion extra).
+    // Por eso resolvemos la siguiente vista con el estado ya anticipado.
+    const nextViewId = heroApi?.resolveNextViewId?.(viewId, resultPayload);
+
+    if (heroApi?.isBeforePostGame) {
+      heroApi?.advanceCurrentView?.();
+      return;
+    }
+
+    if (nextViewId) {
+      heroApi?.goToViewId?.(nextViewId);
+      return;
+    }
+
+    heroApi?.advanceCurrentView?.();
   }
 
   if (resolvedVariant === "shop") {
@@ -292,13 +308,13 @@ export default function DailySpendingTemplate({ view, data, heroApi, variant }) 
         <DailyHeader title={title} amount={amount} />
 
         {situation ? (
-          <div className="rounded-2xl border border-white/15 bg-white/10 p-3">
+          <div className="rounded-2xl  p-3">
             <Typography content={situation} variant={situation?.variant ?? "body"} />
           </div>
         ) : null}
 
         <div className="grid min-h-0 flex-1 gap-3 lg:grid-cols-[1.55fr_0.9fr]">
-          <div className="rounded-2xl border border-white/15 bg-white/10 p-3">
+          <div className="rounded-2xl  p-3">
             <CollageCard
               items={shopItems}
               selectable
@@ -324,7 +340,7 @@ export default function DailySpendingTemplate({ view, data, heroApi, variant }) 
         </div>
 
         {feedback ? (
-          <div className="flex min-h-[56px] items-center rounded-2xl border border-white/15 bg-white/10 p-3">
+          <div className="flex min-h-[56px] items-center rounded-2xl  p-3">
             <Typography content={feedback} variant={feedback?.variant ?? "helper"} />
           </div>
         ) : shouldReserveFeedback ? (
@@ -349,12 +365,12 @@ export default function DailySpendingTemplate({ view, data, heroApi, variant }) 
       <DailyHeader title={title} amount={amount} />
 
       <div className={resolvedVariant === "event" || media ? "grid gap-5 lg:grid-cols-[1.2fr_0.8fr]" : "grid gap-5"}>
-        <div className="rounded-2xl border border-white/15 bg-white/10 p-4">
+        <div className="rounded-2xl  p-4">
           {decisionContent}
         </div>
 
         {media ? (
-          <div className="rounded-2xl border border-white/15 bg-white/10 p-4">
+          <div className="rounded-2xl  p-4">
             <Image
               src={media?.src}
               alt={media?.alt ?? "Situacion"}
@@ -368,7 +384,7 @@ export default function DailySpendingTemplate({ view, data, heroApi, variant }) 
       </div>
 
       {resolvedFeedback ? (
-        <div className="flex min-h-[72px] items-center rounded-2xl border border-white/15 bg-white/10 p-4">
+        <div className="flex min-h-[72px] items-center rounded-2xl  p-4">
           <Typography
             content={resolvedFeedback}
             variant={resolvedFeedback?.variant ?? "helper"}
@@ -379,7 +395,7 @@ export default function DailySpendingTemplate({ view, data, heroApi, variant }) 
       ) : null}
 
       <DailyAdvanceButton
-        label="Continuar"
+        label={heroApi?.advanceLabel ?? "Continuar"}
         onClick={continueDecisionFlow}
         disabled={!canAdvanceDecision}
       />
