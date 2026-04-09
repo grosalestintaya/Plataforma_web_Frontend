@@ -7,18 +7,12 @@ import XpQuipuIcon from "@/shared/icons/XpQuipuIcon";
 export default function UserProfileCard({ me, myRank, insigniasState }) {
   const progressPct = useMemo(() => {
     const xp = me?.xp_total ?? 0;
-    const max = 5000;
+    const max = 1000;
     return Math.min(100, Math.max(0, (xp / max) * 100));
   }, [me]);
 
   return (
     <div className="flex h-full min-h-0 flex-col overflow-hidden p-4 xl:p-5">
-      <div className="mb-3 shrink-0 text-center">
-        <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-          Perfil
-        </span>
-      </div>
-
       <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
         {/* Bloque principal */}
         <div className="shrink-0 rounded-2xl border border-border bg-gradient-to-br from-secondary/60 to-muted/30 p-4 xl:p-5">
@@ -84,7 +78,7 @@ export default function UserProfileCard({ me, myRank, insigniasState }) {
           </div>
 
           <div className="mt-2 text-[11px] font-medium text-muted-foreground">
-            Progreso visual hacia 5,000 XP
+            Progreso visual hacia 1080 XP
           </div>
         </div>
 

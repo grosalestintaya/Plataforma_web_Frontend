@@ -4,9 +4,8 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 // Guards: mejor dejarlos eager
 import PublicRoute from "./features/auth/components/PublicRoute.jsx";
 import PrivateRoute from "./features/auth/components/PrivateRoute.jsx";
-
+import SidebarLayout from "./features/dashboard/layouts/SidebarLayout.jsx";
 // Lazy imports: páginas y layouts pesados
-const SideBar = lazy(() => import("./features/dashboard/layouts/SideBar.jsx"));
 
 const NotFound = lazy(() => import("./features/system/pages/NotFoud.jsx"));
 const Introduction = lazy(
@@ -199,7 +198,7 @@ function App() {
           element={
             <PrivateRoute>
               {withSuspense(
-                <SideBar />,
+                <SidebarLayout />,
                 <FullscreenLoader text="Cargando panel..." />,
               )}
             </PrivateRoute>

@@ -26,5 +26,5 @@ RUN printf 'server {\n\
     try_files $uri $uri/ /index.html;\n\
     }\n\
     }\n' > /etc/nginx/conf.d/default.conf
-
+CMD ["nginx", "-g", "daemon off;"]
 EXPOSE 3000

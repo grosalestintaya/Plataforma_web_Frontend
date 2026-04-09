@@ -3,3 +3,5 @@ pasos para instalr una nueva rama
 rm -rf node_modules package-lock.json
 npm cache clean --force
 npm install
+
+                  <div className="h-px min-w-[20px] flex-1 bg-white/80 sm:min-w-[26px] lg:min-w-[32px]" />
