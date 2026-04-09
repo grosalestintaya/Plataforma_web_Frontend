@@ -13,12 +13,6 @@ export default function UserProfileCard({ me, myRank, insigniasState }) {
 
   return (
     <div className="flex h-full min-h-0 flex-col overflow-hidden p-4 xl:p-5">
-      <div className="mb-3 shrink-0 text-center">
-        <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-          Perfil
-        </span>
-      </div>
-
       <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
         {/* Bloque principal */}
         <div className="shrink-0 rounded-2xl border border-border bg-gradient-to-br from-secondary/60 to-muted/30 p-4 xl:p-5">

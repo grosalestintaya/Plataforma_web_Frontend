@@ -3,15 +3,19 @@ import ShowDashboardTitle from "../../components/ShowDashboardTitle";
 import { DataService } from "../../services/data.service";
 import { UsersService } from "../../services/users.service";
 
-const Field = ({ label, children, hint }) => (
-  <div className="flex flex-col gap-1">
+const Field = ({ label, children, hint, error }) => (
+  <div className="flex flex-col gap-1.5">
     <label
       className="text-sm font-semibold"
       style={{ color: "var(--card-muted)" }}>
       {label}
     </label>
+
     {children}
-    {hint ? (
+
+    {error ? (
+      <p className="text-xs font-medium text-red-500">{error}</p>
+    ) : hint ? (
       <p className="text-xs" style={{ color: "var(--card-muted)" }}>
         {hint}
       </p>
@@ -30,6 +34,11 @@ const INITIAL_FORM = {
   password: "",
 };
 
+const INITIAL_ERRORS = {
+  dni: "",
+  password: "",
+};
+
 export default function AddUsers() {
   const [roles, setRoles] = useState([]);
   const [grades, setGrades] = useState([]);
@@ -37,12 +46,13 @@ export default function AddUsers() {
 
   const [selectedRole, setSelectedRole] = useState("");
   const [formData, setFormData] = useState(INITIAL_FORM);
+  const [errors, setErrors] = useState(INITIAL_ERRORS);
 
   const [loading, setLoading] = useState(false);
+  const [checkingDni, setCheckingDni] = useState(false);
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
 
-  // Carga inicial (roles/grades/schools) centralizada
   useEffect(() => {
     let alive = true;
 
@@ -60,7 +70,6 @@ export default function AddUsers() {
         setGrades(Array.isArray(gradesData) ? gradesData : []);
         setSchools(Array.isArray(schoolsData) ? schoolsData : []);
       } catch (err) {
-        // Si fue 401, apiClient ya hizo logout + redirect
         if (err?.status !== 401) {
           console.error("Error cargando data:", err);
           setError(err?.message || "Error al cargar data inicial");
@@ -73,6 +82,74 @@ export default function AddUsers() {
     };
   }, []);
 
+  function validateDni(dni) {
+    if (!dni.trim()) return "El DNI es obligatorio.";
+    if (!/^\d{8}$/.test(dni)) {
+      return "El DNI debe tener exactamente 8 dígitos.";
+    }
+    return "";
+  }
+
+  function validatePassword(password) {
+    const value = String(password || "").trim();
+
+    if (!value) return "La contraseña es obligatoria.";
+    if (value.length < 5) {
+      return "La contraseña debe tener al menos 5 caracteres.";
+    }
+    if (!/^[A-Za-z0-9]+$/.test(value)) {
+      return "La contraseña solo debe contener letras y números.";
+    }
+
+    return "";
+  }
+
+  async function validateDniUnique(dni) {
+    try {
+      if (!dni || dni.length !== 8) return "";
+
+      // Conecta aquí un endpoint real si lo tienes disponible.
+      // Ejemplo:
+      // const res = await UsersService.checkDni(dni);
+      // if (res?.exists) return "Este DNI ya está registrado.";
+
+      return "";
+    } catch (err) {
+      console.error("Error validando DNI único:", err);
+      return "";
+    }
+  }
+
+  async function handleBlur(e) {
+    const { name, value } = e.target;
+
+    if (name === "dni") {
+      let nextError = validateDni(value);
+
+      if (!nextError && value.length === 8) {
+        setCheckingDni(true);
+        const uniqueError = await validateDniUnique(value);
+        setCheckingDni(false);
+        nextError = uniqueError || "";
+      }
+
+      setErrors((prev) => ({
+        ...prev,
+        dni: nextError,
+      }));
+    }
+
+    if (name === "password") {
+      const nextError = validatePassword(value);
+      setErrors((prev) => ({
+        ...prev,
+        password: nextError,
+      }));
+    }
+
+    e.currentTarget.style.boxShadow = "none";
+  }
+
   const roleLabel = useMemo(() => {
     const r = roles.find((x) => String(x.id_rol) === String(selectedRole));
     return r?.name ?? "";
@@ -81,50 +158,113 @@ export default function AddUsers() {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    let nextValue = value;
+    const nextFormData = { ...formData };
+
+    if (name === "dni") {
+      nextValue = value.replace(/\D/g, "").slice(0, 8);
+    }
+
+    if (name === "password") {
+      nextValue = value.replace(/\s/g, "");
+    }
+
+    nextFormData[name] = nextValue;
 
     if (name === "id_rol") {
-      const nextRole = String(value);
+      const nextRole = String(nextValue);
       setSelectedRole(nextRole);
 
-      // limpieza automática de campos dependientes
       if (nextRole !== "3") {
-        setFormData((prev) => ({ ...prev, id_grade: "" }));
+        nextFormData.id_grade = "";
       }
-      if (nextRole === "") {
-        setFormData((prev) => ({ ...prev, id_school: "" }));
+
+      if (nextRole !== "2" && nextRole !== "3") {
+        nextFormData.id_school = "";
       }
+    }
+
+    setFormData(nextFormData);
+
+    if (name === "dni" || name === "password") {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: "",
+      }));
     }
   };
 
   const resetForm = () => {
     setFormData(INITIAL_FORM);
     setSelectedRole("");
+    setErrors(INITIAL_ERRORS);
     setMessage(null);
     setError(null);
   };
 
+  const isBaseComplete =
+    formData.id_rol &&
+    formData.name.trim() &&
+    formData.lastname.trim() &&
+    formData.username.trim() &&
+    formData.dni.trim() &&
+    formData.password.trim();
+
+  const isRoleComplete =
+    selectedRole === "3"
+      ? formData.id_grade && formData.id_school
+      : selectedRole === "2"
+        ? formData.id_school
+        : Boolean(formData.id_rol);
+
+  const dniValidation = validateDni(formData.dni);
+  const passwordValidation = validatePassword(formData.password);
+
+  const canSubmit =
+    Boolean(isBaseComplete) &&
+    Boolean(isRoleComplete) &&
+    !dniValidation &&
+    !passwordValidation &&
+    !errors.dni &&
+    !errors.password &&
+    !loading &&
+    !checkingDni;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    setLoading(true);
     setMessage(null);
     setError(null);
+
+    const dniError = validateDni(formData.dni);
+    const passwordError = validatePassword(formData.password);
+
+    if (dniError || passwordError) {
+      setErrors((prev) => ({
+        ...prev,
+        dni: dniError,
+        password: passwordError,
+      }));
+      return;
+    }
+
+    setLoading(true);
 
     const payload = {
       ...formData,
       id_rol: Number(formData.id_rol),
       id_grade: Number(formData.id_grade) || null,
       id_school: Number(formData.id_school) || null,
+      password: formData.password.trim(),
     };
 
     try {
       await UsersService.create(payload);
-      setMessage("Usuario creado exitosamente");
+      setMessage("Usuario creado exitosamente.");
       resetForm();
     } catch (err) {
       if (err?.status !== 401) {
-        setError(err?.message || "Error al crear usuario");
+        setError(err?.message || "Error al crear usuario.");
       }
     } finally {
       setLoading(false);
@@ -146,32 +286,33 @@ export default function AddUsers() {
     boxShadow: "0 0 0 4px var(--sidebar-accent)",
   };
 
-  return (
-    <div className="p-6">
-      <ShowDashboardTitle>Agregar Usuarios</ShowDashboardTitle>
+  const getFieldStyle = (hasError) => ({
+    ...inputStyle,
+    borderColor: hasError ? "#ef4444" : inputStyle.borderColor,
+  });
 
-      {/* Panel superior con contexto */}
+  return (
+    <div className="p-6 pb-0 pt-0  h-full">
       <div
-        className="mt-6 rounded-2xl border p-5 shadow-sm"
+        className="mt-0 rounded-2xl border p-5 shadow-sm"
         style={{
           backgroundColor: "var(--chip-bg)",
           borderColor: "var(--card-border)",
         }}>
-        <div className="flex items-center justify-between gap-4">
+        <div className=" items-center justify-between gap-4 ">
           <div className="min-w-0">
             <p
               className="text-sm font-semibold"
               style={{ color: "var(--card-text)" }}>
               Creación de cuentas
             </p>
-            <p className="text-xs mt-1" style={{ color: "var(--card-muted)" }}>
-              Selecciona un rol y completa los datos. Los campos de
-              grado/colegio se muestran según el rol.
+            <p className="mt-1 text-xs" style={{ color: "var(--card-muted)" }}>
+              Completa la información requerida según el rol seleccionado.
             </p>
           </div>
 
           <div
-            className="px-3 py-2 rounded-xl border text-xs font-semibold"
+            className="rounded-xl border px-3 py-2 text-xs font-semibold"
             style={{
               borderColor: "var(--card-border)",
               backgroundColor: "var(--usercard-bg)",
@@ -181,7 +322,6 @@ export default function AddUsers() {
           </div>
         </div>
 
-        {/* Mensajes */}
         {(message || error) && (
           <div
             className="mt-4 rounded-2xl border p-3 text-sm"
@@ -202,15 +342,13 @@ export default function AddUsers() {
         )}
       </div>
 
-      {/* Form Card */}
       <div
-        className="mt-6 rounded-3xl border shadow-lg p-6"
+        className="mt-6 rounded-3xl border p-6 shadow-lg"
         style={{
           backgroundColor: "var(--ui-surface, #fff)",
           borderColor: "var(--card-border)",
         }}>
         <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
-          {/* ROL */}
           <div className="col-span-2">
             <Field
               label="Rol"
@@ -235,7 +373,6 @@ export default function AddUsers() {
             </Field>
           </div>
 
-          {/* BLOQUE CONDICIONAL */}
           {selectedRole === "3" && (
             <>
               <div>
@@ -308,7 +445,6 @@ export default function AddUsers() {
             </div>
           )}
 
-          {/* CAMPOS GENERALES */}
           <Field label="Nombres">
             <input
               name="name"
@@ -354,47 +490,60 @@ export default function AddUsers() {
             />
           </Field>
 
-          <Field label="DNI" hint="8 dígitos. Debe ser único.">
+          <Field
+            label="DNI"
+            hint={
+              checkingDni && formData.dni.length === 8
+                ? "Validando DNI..."
+                : "Debe tener 8 dígitos y ser único."
+            }
+            error={errors.dni}>
             <input
               name="dni"
+              type="text"
               placeholder="Ej: 12345678"
-              onChange={handleChange}
               value={formData.dni}
+              onChange={handleChange}
+              onBlur={handleBlur}
               className={inputBase}
-              style={inputStyle}
+              style={getFieldStyle(Boolean(errors.dni))}
               inputMode="numeric"
-              onFocus={(e) =>
-                (e.currentTarget.style.boxShadow = focusStyle.boxShadow)
-              }
-              onBlur={(e) => (e.currentTarget.style.boxShadow = "none")}
+              autoComplete="off"
+              maxLength={8}
+              aria-invalid={Boolean(errors.dni)}
+              onFocus={(e) => {
+                e.currentTarget.style.boxShadow = focusStyle.boxShadow;
+              }}
             />
           </Field>
 
           <div className="col-span-2">
-            <Field label="Contraseña">
+            <Field
+              label="Contraseña"
+              hint="Mínimo 5 caracteres. Solo letras y números."
+              error={errors.password}>
               <input
                 name="password"
-                placeholder="Mínimo recomendado 6–8 caracteres"
+                placeholder="Ej: abc12"
                 type="password"
                 onChange={handleChange}
+                onBlur={handleBlur}
                 value={formData.password}
                 className={inputBase}
-                style={inputStyle}
+                style={getFieldStyle(Boolean(errors.password))}
                 onFocus={(e) =>
                   (e.currentTarget.style.boxShadow = focusStyle.boxShadow)
                 }
-                onBlur={(e) => (e.currentTarget.style.boxShadow = "none")}
               />
             </Field>
           </div>
 
-          {/* ACCIONES */}
-          <div className="col-span-2 flex items-center justify-between gap-3 mt-2">
+          <div className="col-span-2 mt-2 flex items-center justify-between gap-3">
             <button
               type="button"
               onClick={resetForm}
               disabled={loading}
-              className="h-11 px-4 rounded-xl border font-semibold transition disabled:opacity-60"
+              className="h-11 rounded-xl border px-4 font-semibold transition disabled:opacity-60"
               style={{
                 backgroundColor: "white",
                 borderColor: "var(--card-border)",
@@ -405,13 +554,17 @@ export default function AddUsers() {
 
             <button
               type="submit"
-              disabled={loading}
-              className="h-11 px-6 rounded-xl font-semibold shadow transition disabled:opacity-60"
+              disabled={!canSubmit}
+              className="h-11 rounded-xl px-6 font-semibold shadow transition disabled:cursor-not-allowed disabled:opacity-60"
               style={{
                 backgroundColor: "var(--sidebar)",
                 color: "var(--sidebar-foreground)",
               }}>
-              {loading ? "Creando usuario..." : "Crear usuario"}
+              {loading
+                ? "Creando usuario..."
+                : checkingDni
+                  ? "Validando..."
+                  : "Crear usuario"}
             </button>
           </div>
         </form>
