@@ -1,6 +1,6 @@
 import React from "react";
 import rope from "@/assets/activity/cord.png";
-import gearicon from "@/assets/dashboard/gear.png";
+import menuIcon from "@/shared/icons/icon-menu-pen.svg";
 import HeaderSettingsButton from "../ui/HeaderSettingsButton";
 import HeaderBackButton from "../ui/HeaderBackButton";
 
@@ -31,7 +31,7 @@ export default function ModuleMenuHeader({
   themeHex = "#7130F7",
   onBack,
   onOpenSettings,
-  gearIconSrc = gearicon,
+  gearIconSrc = menuIcon,
   audioState,
 }) {
   const playSfx = audioState?.playSfx;

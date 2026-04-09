@@ -106,14 +106,16 @@ export default function Hero({ moduleData, missionKey, viewIndex, heroApi }) {
   return (
     <main
       ref={outerRef}
-      className="h-full min-h-0 w-full overflow-hidden px-[var(--activity-shell-gutter)] pb-2"
+      className="h-full min-h-0 w-full overflow-hidden"
       style={{
-        "--hero-height": heroHeight ? `${heroHeight}px` : undefined,
+        // La variable debe ser una longitud CSS valida porque varios bloques
+        // calculan su alto con `calc(var(--hero-height) * ...)`.
+        "--hero-height": heroHeight ? `${heroHeight}px` : "50px",
       }}
     >
       <div
         ref={innerRef}
-        className="w-full"
+        className="w-full h-full"
         style={{
           transform: `scale(${scale})`,
           transformOrigin: "top center",

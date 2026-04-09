@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 /**
  * Reune las salidas controladas de la actividad:
@@ -15,8 +15,10 @@ export function useActivityExitGuards({
   currentTemplate,
   getInteractiveResponses,
 }) {
-  const confirmExitRef = useRef(() => true);
   const abandonAndExitRef = useRef(async () => {});
+  const pendingExitReasonRef = useRef("header_back");
+  const guardUrlRef = useRef("");
+  const [isExitConfirmOpen, setIsExitConfirmOpen] = useState(false);
 
   const hasActiveAttempt = useMemo(
     () =>
@@ -27,21 +29,11 @@ export function useActivityExitGuards({
       ),
     [activityId, missionAttempt.attemptId, missionAttempt.status],
   );
-
-  // El boton volver solo vive en vistas Lobby.
-  const showHeaderBackButton = String(currentTemplate ?? "")
+  const isLobbyView = String(currentTemplate ?? "")
     .toLowerCase()
     .includes("lobby");
-
-  useEffect(() => {
-    confirmExitRef.current = () => {
-      if (!hasActiveAttempt) return true;
-
-      return window.confirm(
-        "Si sales ahora, perderas el progreso actual de la actividad. El intento quedara registrado. Deseas continuar?",
-      );
-    };
-  }, [hasActiveAttempt]);
+  // La confirmacion solo aplica una vez que dejamos la intro Lobby.
+  const shouldConfirmExit = hasActiveAttempt && !isLobbyView;
 
   useEffect(() => {
     abandonAndExitRef.current = async (reason) => {
@@ -70,26 +62,54 @@ export function useActivityExitGuards({
     navigate,
   ]);
 
+  const requestExitConfirmation = useCallback((reason) => {
+    pendingExitReasonRef.current = reason;
+    setIsExitConfirmOpen(true);
+  }, []);
+
+  const closeExitConfirmation = useCallback(() => {
+    setIsExitConfirmOpen(false);
+  }, []);
+
+  const confirmExitToMenu = useCallback(() => {
+    setIsExitConfirmOpen(false);
+
+    abandonAndExitRef.current(pendingExitReasonRef.current).catch(() => {
+      navigate(moduleMenuPath);
+    });
+  }, [moduleMenuPath, navigate]);
+
   useEffect(() => {
     // Intercepta el boton atras del navegador para salir de la actividad
     // de forma controlada y registrando el intento cuando corresponda.
-    const historyState = { moduleActivityGuard: true, ts: Date.now() };
-    window.history.pushState(historyState, "", window.location.href);
+    guardUrlRef.current = window.location.href;
+
+    const restoreGuardState = () => {
+      window.history.pushState(
+        { moduleActivityGuard: true, ts: Date.now() },
+        "",
+        guardUrlRef.current,
+      );
+    };
+
+    restoreGuardState();
 
     const handlePopState = () => {
-      if (!confirmExitRef.current()) {
-        window.history.pushState(historyState, "", window.location.href);
+      restoreGuardState();
+
+      if (!shouldConfirmExit) {
+        abandonAndExitRef.current("browser_back").catch(() => {
+          navigate(moduleMenuPath);
+        });
         return;
       }
 
-      abandonAndExitRef.current("browser_back").catch(() => {
-        navigate(moduleMenuPath);
-      });
+      requestExitConfirmation("browser_back");
     };
 
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
-  }, [moduleMenuPath, navigate]);
+  }, [moduleMenuPath, navigate, requestExitConfirmation, shouldConfirmExit]);
 
   useEffect(() => {
     /**
@@ -97,7 +117,7 @@ export function useActivityExitGuards({
      * para que el intento quede registrado en el sistema.
      */
     const handleBeforeUnload = (event) => {
-      if (!hasActiveAttempt) return;
+      if (!shouldConfirmExit) return;
 
       missionAttempt.abandonMission({
         score: missionScore,
@@ -118,28 +138,33 @@ export function useActivityExitGuards({
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [
     getInteractiveResponses,
-    hasActiveAttempt,
     missionAttempt,
     missionKey,
     missionScore,
     moduleCode,
+    shouldConfirmExit,
   ]);
 
   const runControlledExit = useCallback(
     (reason) => {
-      if (!confirmExitRef.current()) return;
+      if (!shouldConfirmExit) {
+        abandonAndExitRef.current(reason).catch(() => {
+          navigate(moduleMenuPath);
+        });
+        return;
+      }
 
-      abandonAndExitRef.current(reason).catch(() => {
-        navigate(moduleMenuPath);
-      });
+      requestExitConfirmation(reason);
     },
-    [moduleMenuPath, navigate],
+    [moduleMenuPath, navigate, requestExitConfirmation, shouldConfirmExit],
   );
 
   return {
     hasActiveAttempt,
-    showHeaderBackButton,
-    handleHeaderBack: () => runControlledExit("header_back"),
+    isExitConfirmOpen,
+    closeExitConfirmation,
+    confirmExitToMenu,
+    handleExitToMenu: () => runControlledExit("header_back"),
     handleSettingsExit: () => runControlledExit("settings_exit"),
   };
 }

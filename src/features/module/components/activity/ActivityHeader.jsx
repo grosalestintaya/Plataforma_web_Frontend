@@ -1,10 +1,10 @@
 import { useMemo } from "react";
 
 import rope from "@/assets/activity/cord.png";
-import gearicon from "@/assets/dashboard/gear.png";
+import menuIcon from "@/shared/icons/icon-menu-pen.svg";
 
 import HeaderSettingsButton from "../ui/HeaderSettingsButton";
-import HeaderBackButton from "../ui/HeaderBackButton";
+import HeaderExitButton from "../ui/HeaderExitButton";
 
 function hexToRgba(hex, a = 1) {
   const h = String(hex || "#000").replace("#", "");
@@ -32,10 +32,9 @@ export default function ActivityHeader({
   moduleData,
   missionKey,
   themeHex = "",
-  onBack,
+  onExitActivity,
   onOpenSettings,
-  gearIconSrc = gearicon,
-  showBackButton = true,
+  gearIconSrc = menuIcon,
   audioState,
 }) {
   const mission = moduleData?.missions?.[missionKey];
@@ -49,9 +48,9 @@ export default function ActivityHeader({
     );
   }, [mission, moduleData, missionKey]);
 
-  function handleBack() {
+  function handleExitActivity() {
     playSfx?.("click");
-    onBack?.();
+    onExitActivity?.();
   }
 
   function handleOpenSettings() {
@@ -79,39 +78,15 @@ export default function ActivityHeader({
       />
 
       <div className="relative px-[var(--activity-shell-gutter)] pt-3 pb-0 md:pt-3.5">
-        <div
-          className={
-            showBackButton
-              ? "grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 md:gap-3"
-              : "grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 md:gap-3"
-          }
-        >
-          {showBackButton ? (
-            <div className="flex items-center">
-              <HeaderBackButton
-                onClick={handleBack}
-                themeHex={themeHex}
-                label="Volver"
-              />
-            </div>
-          ) : null}
-
-          <div
-            className={
-              showBackButton
-                ? "flex min-w-0 items-center justify-center px-1"
-                : "flex min-w-0 items-center justify-start px-1"
-            }
-          >
-          <button className={showBackButton ? "invisible":"pr-4"}>
-            fdfd
-          </button>
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 md:gap-3">
+          <div className="flex min-w-0 items-center gap-3 px-1">
+            <HeaderExitButton
+              onClick={handleExitActivity}
+              themeHex={themeHex}
+              title="Salir de la actividad"
+            />
             <h1
-              className={
-                showBackButton
-                  ? "truncate text-center text-base font-semibold tracking-tight text-white sm:text-lg md:text-xl lg:text-2xl"
-                  : "truncate text-left text-base font-semibold tracking-tight text-white sm:text-lg md:text-xl lg:text-2xl"
-              }
+              className="truncate text-left text-base font-semibold tracking-tight text-white sm:text-lg md:text-xl lg:text-2xl"
             >
               {missionTitle || "Mision"}
             </h1>

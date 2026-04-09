@@ -330,8 +330,8 @@
         ],
         "compound": [
           {
-            "type": "rowCard",
-            "component": "rowCard",
+            "type": "showCard",
+            "component": "showCard",
             "category": "grouper",
             "area": "rewards",
             "items": [

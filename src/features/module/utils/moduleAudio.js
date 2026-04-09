@@ -1,13 +1,14 @@
-import missionTheme from "@/assets/audios/mission-theme.mp3";
+import missionTheme from "@/assets/audios/modules/module1-theme.wav";
+import module1 from "@/assets/audios/modules/module1-theme.wav";
 
 // Por ahora todos los modulos usan la misma pista base.
 // Dejamos el mapa listo para cuando cada modulo tenga su propio audio.
 const MODULE_MUSIC_MAP = {
-  m01: missionTheme,
-  m02: missionTheme,
-  m03: missionTheme,
-  m04: missionTheme,
-  m05: missionTheme,
+  m01: module1,
+  // m02: module2,
+  // m03: module3,
+  // m04: module4,
+  // m05: module5,
 };
 
 /**

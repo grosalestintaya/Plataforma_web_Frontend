@@ -5,7 +5,7 @@ import { cn } from "@/shared/libs/utils";
 /**
  * Card:
  * - Superficie simple para titulo, media y texto corto.
- * - Sirve como base de agrupadores como RowCard, CompareCard y CollageCard.
+ * - Sirve como base de agrupadores como showCard, CompareCard y CollageCard.
  */
 export default function Card({
   as,
@@ -59,25 +59,31 @@ export default function Card({
         </div>
       ) : null}
 
-      <div className={cn("flex min-h-0 flex-1 flex-col gap-1.5", contentClassName)}>
-        {title ? (
+      {title ? (
+        <div className={cn("flex w-full items-center justify-center", contentClassName)}>
           <Typography
             content={title}
             variant={title?.variant ?? "h3"}
             align={title?.align ?? "center"}
           />
-        ) : null}
+        </div>
+      ) : null}
 
-        {text ? (
+      {text ? (
+        <div className={cn("flex min-h-0 w-full items-start justify-center", contentClassName)}>
           <Typography
             content={text}
             variant={text?.variant ?? "bodySm"}
             align={text?.align ?? "center"}
           />
-        ) : null}
+        </div>
+      ) : null}
 
-        {children}
-      </div>
+      {children ? (
+        <div className={cn("flex min-h-0 flex-1 flex-col gap-1.5", contentClassName)}>
+          {children}
+        </div>
+      ) : null}
 
       {footer ? <div className="mt-auto">{footer}</div> : null}
     </Component>

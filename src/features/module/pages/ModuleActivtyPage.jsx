@@ -4,6 +4,7 @@ import Header from "../components/activity/ActivityHeader";
 import Hero from "../components/activity/ActivityHero";
 import Footer from "../components/activity/ActivityFooter";
 import SceneBackground from "../components/ui/SceneBackground";
+import ActivityExitConfirmModal from "../components/sections/ActivityExitConfirmModal";
 import ConfiguracionModal from "../components/sections/ConfiguracionModal";
 import { MODULE_CONTENT_MAP } from "../content/content.registry";
 import {
@@ -160,7 +161,12 @@ export default function ModuleActivtyPage() {
     ],
   );
 
-  const { showHeaderBackButton, handleHeaderBack, handleSettingsExit } =
+  const {
+    isExitConfirmOpen,
+    closeExitConfirmation,
+    confirmExitToMenu,
+    handleExitToMenu,
+  } =
     useActivityExitGuards({
       activityId,
       missionAttempt,
@@ -182,11 +188,6 @@ export default function ModuleActivtyPage() {
     audio.playSfx?.("closeModal");
   }
 
-  function handleExitFromSettings() {
-    setIsSettingsOpen(false);
-    handleSettingsExit();
-  }
-
   return (
     <>
       <SceneBackground moduleCode={moduleCode} className="overflow-hidden">
@@ -203,8 +204,7 @@ export default function ModuleActivtyPage() {
             missionKey={player.missionKey}
             themeHex={moduleData?.theme?.color}
             audioState={audio}
-            showBackButton={showHeaderBackButton}
-            onBack={handleHeaderBack}
+            onExitActivity={handleExitToMenu}
             onOpenSettings={handleOpenSettings}
           />
           <Hero
@@ -217,6 +217,7 @@ export default function ModuleActivtyPage() {
           <Footer
             model={footerModel}
             onUiClick={() => audio.playSfx?.("click")}
+            themeHex={moduleData?.theme?.color}
           />
         </div>
       </SceneBackground>
@@ -224,7 +225,10 @@ export default function ModuleActivtyPage() {
       <ConfiguracionModal
         open={isSettingsOpen}
         onRequestClose={handleCloseSettings}
-        onRequestAbandon={handleExitFromSettings}
+        onRequestAbandon={() => {
+          setIsSettingsOpen(false);
+          handleExitToMenu();
+        }}
         sfx={audio.sfx}
         music={audio.music}
         onChangeSfx={audio.setSfx}
@@ -232,6 +236,12 @@ export default function ModuleActivtyPage() {
         title="Opciones"
         description="Saldras de la actividad actual y volveras al menu del modulo."
         abandonLabel="Salir de la actividad"
+      />
+
+      <ActivityExitConfirmModal
+        open={isExitConfirmOpen}
+        onRequestClose={closeExitConfirmation}
+        onConfirmExit={confirmExitToMenu}
       />
     </>
   );

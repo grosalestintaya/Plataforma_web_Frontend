@@ -59,9 +59,13 @@ function createTypographySlot(area, contentKey, fallbackVariant, extra = {}) {
  * Busca el agrupador de recompensas de la vista.
  */
 function getBaseRowItems(view) {
-  const compounds = Array.isArray(view?.elements?.compound) ? view.elements.compound : [];
-  const rowCard = compounds.find((item) => (item?.component ?? item?.type) === "rowCard");
-  return rowCard?.items ?? [];
+  const compounds = Array.isArray(view?.elements?.compound)
+    ? view.elements.compound
+    : [];
+  const showCard = compounds.find(
+    (item) => (item?.component ?? item?.type) === "showCard",
+  );
+  return showCard?.items ?? [];
 }
 
 /**
@@ -79,7 +83,8 @@ function getMissionRewards(heroApi) {
 function getRewardRowItems(view, rewards) {
   const baseItems = getBaseRowItems(view);
   const baseXp =
-    baseItems.find((item) => String(item?.id).toLowerCase().includes("xp")) ?? {};
+    baseItems.find((item) => String(item?.id).toLowerCase().includes("xp")) ??
+    {};
   const baseCoins =
     baseItems.find((item) =>
       ["intis", "coins", "coin"].some((token) =>
@@ -94,7 +99,9 @@ function getRewardRowItems(view, rewards) {
       title: baseXp?.title ?? { text: "XP", variant: "label", align: "center" },
       text: {
         ...(baseXp?.text ?? {}),
-        text: rewards ? `+ ${Number(rewards?.xp ?? 0)}` : baseXp?.text?.text ?? "+ 0",
+        text: rewards
+          ? `+ ${Number(rewards?.xp ?? 0)}`
+          : (baseXp?.text?.text ?? "+ 0"),
         variant: baseXp?.text?.variant ?? "bodySm",
         align: baseXp?.text?.align ?? "center",
       },
@@ -107,10 +114,16 @@ function getRewardRowItems(view, rewards) {
     {
       ...baseCoins,
       id: baseCoins?.id ?? "reward-intis",
-      title: baseCoins?.title ?? { text: "INTIS", variant: "label", align: "center" },
+      title: baseCoins?.title ?? {
+        text: "INTIS",
+        variant: "label",
+        align: "center",
+      },
       text: {
         ...(baseCoins?.text ?? {}),
-        text: rewards ? `+ ${Number(rewards?.coins ?? 0)}` : baseCoins?.text?.text ?? "+ 0",
+        text: rewards
+          ? `+ ${Number(rewards?.coins ?? 0)}`
+          : (baseCoins?.text?.text ?? "+ 0"),
         variant: baseCoins?.text?.variant ?? "bodySm",
         align: baseCoins?.text?.align ?? "center",
       },
@@ -143,20 +156,21 @@ export const LOBBY_CONFIG = {
     preGame: {
       base: {
         cols: "1fr",
-        rows: "auto auto auto",
+        // rows: "auto auto auto",
+        rows: "auto auto minmax(0,1fr)",
         areas: ["title", "body", "media"],
         gap: "20px",
       },
       md: {
         cols: "1fr 1fr",
-        rows: "auto auto",
+        rows: "auto minmax(0,1fr)",
         areas: ["title title", "body media"],
       },
     },
     postGame: {
       base: {
         cols: "1fr",
-        rows: "auto auto auto",
+        rows: "auto auto minmax(0,1fr)",
         areas: ["title", "rewards", "feedback"],
         gap: "20px",
       },
@@ -164,7 +178,7 @@ export const LOBBY_CONFIG = {
     wait: {
       base: {
         cols: "1fr",
-        rows: "auto auto",
+        rows: "auto minmax(0,1fr)",
         areas: ["title", "media"],
         gap: "20px",
       },
@@ -199,8 +213,11 @@ export const LOBBY_CONFIG = {
       }),
       {
         area: "rewards",
-        when: (payload) => Array.isArray(payload?.rowItems) && payload.rowItems.length > 0,
-        block: "RowCard",
+        when: (payload) =>
+          Array.isArray(payload?.rowItems) && payload.rowItems.length > 0,
+        // Usa el compuesto exportado real para que postGame pinte
+        // las 2 cards de recompensas (XP e INTIS).
+        block: "ShowCard",
         className: "rounded-2xl  p-5",
         props: (payload) => ({
           items: payload?.rowItems ?? [],
@@ -239,7 +256,8 @@ export const LOBBY_CONFIG = {
 function resolveVariant(variant, view) {
   if (variant && LOBBY_CONFIG.variants[variant]) return variant;
   const mappedVariant = LOBBY_VARIANT_BY_TEMPLATE[view?.template];
-  if (mappedVariant && LOBBY_CONFIG.variants[mappedVariant]) return mappedVariant;
+  if (mappedVariant && LOBBY_CONFIG.variants[mappedVariant])
+    return mappedVariant;
   return LOBBY_CONFIG.fallbackVariant;
 }
 
@@ -253,7 +271,11 @@ function getPayload(data = {}, view, heroApi) {
     title: view?.slots?.title ?? data?.title,
     body: view?.slots?.body ?? data?.body ?? data?.text,
     media: view?.slots?.media ?? data?.media ?? data?.image,
-    feedback: getLobbyFeedback(view?.slots?.feedback ?? data?.feedback, rewards, view),
+    feedback: getLobbyFeedback(
+      view?.slots?.feedback ?? data?.feedback,
+      rewards,
+      view,
+    ),
     rowItems: getRewardRowItems(view, rewards),
   };
 }

@@ -135,7 +135,12 @@ export function useMissionAttempt(activityId, { mode = "manual" } = {}) {
 
       if (keepalive) {
         completeAttemptKeepalive(attemptId, body);
-        setStatus("completed");
+        /**
+         * No cambiamos el estado local a `completed` aqui:
+         * si el usuario cancela el refresh/cierre del navegador,
+         * la sesion sigue viva y todavia debe poder mostrar
+         * el modal de confirmacion al salir.
+         */
         return null;
       }
 

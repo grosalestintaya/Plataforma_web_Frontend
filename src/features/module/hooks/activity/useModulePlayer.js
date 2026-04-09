@@ -252,23 +252,23 @@ export function useModulePlayer(
     if (mode === "locked") {
       return {
         type: "locked",
-        left: { label: "< Atras", enabled: false },
+        left: { label: "Atras", enabled: false },
         centerText: view.nav?.label ?? "En progreso...",
-        right: { label: "Siguiente >", enabled: false },
+        right: { label: "Siguiente", enabled: false },
       };
     }
 
     return {
       type: "normal",
       left: {
-        label: "< Atras",
+        label: "Atras",
         enabled: !isFirst && !isImmediatelyAfterPreGame && !finishing,
         onClick: prev,
       },
       centerText: "Quipu Yachay",
       right: {
         // Si la siguiente visible es postGame, este boton cierra el attempt.
-        label: isBeforePostGame || isLast ? "Finalizar" : "Siguiente >",
+        label: isBeforePostGame || isLast ? "Finalizar" : "Siguiente",
         enabled: !finishing,
         onClick: advanceCurrentView,
       },

@@ -81,11 +81,24 @@ function normalizeFeedback(feedback) {
 }
 
 /**
+ * Asegura que las cards simples lleguen con `text` consistente al bloque ShowCard.
+ * Algunos contenidos antiguos podian traer la descripcion corta con otra clave.
+ */
+function normalizeShowCardItems(items = []) {
+  if (!Array.isArray(items)) return [];
+
+  return items.map((item) => ({
+    ...item,
+    text: item?.text ?? item?.description ?? item?.subtitle ?? item?.label ?? null,
+  }));
+}
+
+/**
  * Construye el payload unico que consumen las variantes.
  */
 function getPayload(view = {}) {
   const compounds = Array.isArray(view?.elements?.compound) ? view.elements.compound : [];
-  const rowCard = findCompound(compounds, "rowCard");
+  const showCard = findCompound(compounds, "showCard");
   const flipCard = findCompound(compounds, "flipCard");
   const collageCard = findCompound(compounds, "collageCard");
   const chooseOne = findCompound(compounds, "chooseOne");
@@ -94,14 +107,15 @@ function getPayload(view = {}) {
 
   return {
     title: view?.slots?.title,
-    subtitle: view?.slots?.subtitle,
+    // Assessment usa `subtitle` como texto guia del ejercicio.
+    subtitle: view?.slots?.subtitle ?? chooseOne?.instruction ?? null,
     body: view?.slots?.body,
     media: view?.slots?.media,
     feedbackText,
     supportList,
     supportListTitle: supportList?.title ?? null,
     supportListContent: toListContent(supportList),
-    rowItems: rowCard?.items ?? [],
+    rowItems: normalizeShowCardItems(showCard?.items ?? []),
     flipCardData: flipCard ?? null,
     collageCardData: collageCard ?? null,
     chooseOneData: chooseOne ?? null,
@@ -114,87 +128,95 @@ export const THEORY_CONFIG = {
     simple: {
       base: {
         cols: "1fr",
-        rows: "auto auto auto",
-        areas: ["title", "content", "media"],
-        gap: "20px",
+        rows: "auto auto minmax(0,1fr)",
+        areas: ["title", "body1", "media"],
       },
     },
     explanation: {
       base: {
         cols: "1fr",
-        rows: "auto auto auto",
-        areas: ["title", "subtitle", "interaction"],
-        gap: "20px",
+        rows: "auto minmax(0,1fr)",
+        areas: ["title", "media"],
       },
     },
     split: {
       base: {
         cols: "1fr",
-        rows: "auto auto auto auto",
-        areas: ["title", "body", "support", "media"],
-        gap: "20px",
+        rows: "auto auto minmax(0,1fr)",
+        areas: ["title", "body1", "media"],
       },
       md: {
         cols: "1fr 1fr",
-        rows: "auto auto auto",
-        areas: ["title title", "body body", "support media"],
+        rows: "auto auto minmax(0,1fr)",
+        areas: ["title title", "body1 body1", "media media"],
       },
     },
     assessment: {
       base: {
         cols: "1fr",
-        rows: "auto auto",
+        rows: "auto minmax(0,1fr)",
         areas: ["title", "assessment"],
-        gap: "20px",
       },
     },
   },
   variants: {
     simple: [
       createTypographySlot("title", "title", "h1", {
-        className: "rounded-2xl p-5 text-center",
+        // Los bloques solo textuales se anclan arriba para no aparentar
+        // que consumen mas alto del que realmente necesita el texto.
+        className: "self-start rounded-2xl text-center",
         containerClassName: "mx-auto max-w-[760px]",
       }),
       {
-        // Corregir este area
-        area: "content",
+        area: "body1",
         when: (payload) =>
           Boolean(payload?.body) ||
-          Boolean(payload?.supportListContent) ||
-          (Array.isArray(payload?.rowItems) && payload.rowItems.length > 0),
-        className: "rounded-2xl p-5",
+          Boolean(payload?.supportListContent),
+        className: "rounded-2xl",
         stackClassName: "gap-10",
         items: [
-          createTypographySlot("content", "body", "body", {
+          createTypographySlot("body1", "body", "body", {
             when: (payload) => Boolean(payload?.body),
           }),
-          createTypographySlot("content", "supportListTitle", "label", {
+          createTypographySlot("body1", "supportListTitle", "label", {
             when: (payload) => Boolean(payload?.supportListTitle),
           }),
-          createTypographySlot("content", "supportListContent", "bodySm", {
+          createTypographySlot("body1", "supportListContent", "bodySm", {
             when: (payload) => Boolean(payload?.supportListContent),
           }),
-          {
-            area: "content",
-            when: (payload) => Array.isArray(payload?.rowItems) && payload.rowItems.length > 0,
-            block: "RowCard",
-            props: (payload) => ({ items: payload?.rowItems ?? [] }),
-          },
         ],
       },
       {
         area: "media",
-        when: (payload) => Boolean(payload?.media),
-        block: "Image",
-        className: "rounded-2xl  p-5",
-        props: (payload) => ({
-          src: payload?.media?.src,
-          alt: payload?.media?.alt ?? "Imagen de apoyo",
-          className: "min-h-[220px] w-full",
-        }),
+        when: (payload) =>
+          Boolean(payload?.media) ||
+          (Array.isArray(payload?.rowItems) && payload.rowItems.length > 0),
+        className: "rounded-2xl place-items-stretch content-start",
+        stackClassName: "w-full gap-4",
+        items: [
+          {
+            area: "media",
+            when: (payload) => Array.isArray(payload?.rowItems) && payload.rowItems.length > 0,
+            // Usa el compuesto real exportado por blocks/index.
+            // Aqui no se crea nada extra: solo se entregan items con media,
+            // titulo y texto para que ShowCard construya Cards normales.
+            block: "ShowCard",
+            props: (payload) => ({ items: payload?.rowItems ?? [] }),
+          },
+          {
+            area: "media",
+            when: (payload) => Boolean(payload?.media),
+            block: "Image",
+            props: (payload) => ({
+              src: payload?.media?.src,
+              alt: payload?.media?.alt ?? "Imagen de apoyo",
+              className: "min-h-[220px] w-full",
+            }),
+          },
+        ],
       },
       {
-        area: "additional",
+        area: "feedback",
         reserveSpace: true,
         reserveWhen: (payload) => Boolean(payload?.feedbackText?.hiddenUntilAction),
         placeholderClassName: "min-h-[72px]",
@@ -211,21 +233,23 @@ export const THEORY_CONFIG = {
     ],
     explanation: [
       createTypographySlot("title", "title", "h1", {
-        className: "rounded-2xl  p-5 text-center",
+        className: "self-start rounded-2xl text-center",
         containerClassName: "mx-auto max-w-[760px]",
       }),
       createTypographySlot("subtitle", "subtitle", "h3", {
         when: (payload) => Boolean(payload?.subtitle),
-        className: "rounded-2xl  p-5 text-center",
+        className: "self-start rounded-2xl text-center",
         containerClassName: "mx-auto max-w-[760px]",
       }),
       {
-        area: "interaction",
-        className: "rounded-2xl  p-5",
-        stackClassName: "gap-4",
+        area: "media",
+        // El area visual principal ocupa el espacio disponible del hero.
+        className:
+          "h-full min-h-0 rounded-2xl place-items-stretch place-content-stretch",
+        stackClassName: "h-full min-h-0 justify-start gap-4 px-20",
         items: [
           {
-            area: "interaction",
+            area: "media",
             when: (payload) => Boolean(payload?.collageCardData),
             block: "CollageCard",
             props: (payload, ctx) => ({
@@ -233,20 +257,22 @@ export const THEORY_CONFIG = {
               columns: payload?.collageCardData?.columns ?? 2,
               heroApi: ctx?.heroApi,
               view: ctx?.view,
+              className: "h-full",
             }),
           },
           {
-            area: "interaction",
+            area: "media",
             when: (payload) => Boolean(payload?.flipCardData),
             block: "FlipCard",
             props: (payload, ctx) => ({
               data: payload?.flipCardData,
               heroApi: ctx?.heroApi,
               view: ctx?.view,
+              containerClassName: "h-full",
             }),
           },
           {
-            area: "interaction",
+            area: "media",
             when: (payload) =>
               Boolean(payload?.media) &&
               !payload?.flipCardData &&
@@ -260,41 +286,27 @@ export const THEORY_CONFIG = {
           },
         ],
       },
-      {
-        area: "additional",
-        reserveSpace: true,
-        reserveWhen: (payload) => Boolean(payload?.feedbackText?.hiddenUntilAction),
-        placeholderClassName: "min-h-[72px]",
-        when: (payload) => Boolean(payload?.feedbackText) && !payload?.feedbackText?.hiddenUntilAction,
-        block: "Typography",
-        props: (payload) => ({
-          content: payload?.feedbackText,
-          variant: payload?.feedbackText?.variant ?? "helper",
-          align: payload?.feedbackText?.align ?? "center",
-          containerClassName:
-            "mx-auto flex min-h-[72px] w-full max-w-[760px] items-center justify-center rounded-2xl  p-4",
-        }),
-      },
     ],
     split: [
       createTypographySlot("title", "title", "h1", {
-        className: "rounded-2xl p-5 text-center",
+        className: "self-start rounded-2xl text-center",
         containerClassName: "mx-auto max-w-[760px]",
       }),
-      createTypographySlot("body", "body", "h2", {
+      createTypographySlot("body1", "body", "h2", {
         when: (payload) => Boolean(payload?.body),
-        className: "rounded-2xl font-black p-5",
+        className: "self-start rounded-2xl font-black",
       }),
       {
-        area: "support",
-        when: (payload) => Boolean(payload?.supportListContent),
-        className: "rounded-2xl  p-5",
-        stackClassName: "gap-4",
+        area: "body2",
+        when: (payload) =>
+          Boolean(payload?.supportListTitle) || Boolean(payload?.supportListContent),
+        className: "self-start rounded-2xl text-left",
+        stackClassName: "gap-3",
         items: [
-          createTypographySlot("support", "supportListTitle", "label", {
+          createTypographySlot("body2", "supportListTitle", "label", {
             when: (payload) => Boolean(payload?.supportListTitle),
           }),
-          createTypographySlot("support", "supportListContent", "bodySm", {
+          createTypographySlot("body2", "supportListContent", "bodySm", {
             when: (payload) => Boolean(payload?.supportListContent),
           }),
         ],
@@ -303,45 +315,27 @@ export const THEORY_CONFIG = {
         area: "media",
         when: (payload) => Boolean(payload?.media),
         block: "Image",
-        className: "rounded-2xl p-5",
+        className: "rounded-2xl",
         props: (payload) => ({
           src: payload?.media?.src,
           alt: payload?.media?.alt ?? "Imagen de apoyo",
-          className: "min-h-[220px] w-full",
-        }),
-      },
-      {
-        area: "additional",
-        reserveSpace: true,
-        reserveWhen: (payload) => Boolean(payload?.feedbackText?.hiddenUntilAction),
-        placeholderClassName: "min-h-[72px]",
-        when: (payload) => Boolean(payload?.feedbackText) && !payload?.feedbackText?.hiddenUntilAction,
-        block: "Typography",
-        props: (payload) => ({
-          content: payload?.feedbackText,
-          variant: payload?.feedbackText?.variant ?? "helper",
-          align: payload?.feedbackText?.align ?? "center",
-          containerClassName:
-            "mx-auto flex min-h-[72px] w-full items-center justify-center rounded-2xl  p-4",
+            className: "min-h-[220px] w-full",
         }),
       },
     ],
     assessment: [
-      {
-        area: "title",
-        className: "rounded-2xl  p-5 text-center",
-        stackClassName: "gap-3",
-        items: [
-          createTypographySlot("title", "title", "h1"),
-          createTypographySlot("title", "subtitle", "h3", {
-            when: (payload) => Boolean(payload?.subtitle),
-          }),
-        ],
-      },
+      createTypographySlot("title", "title", "h1", {
+        className: "self-start rounded-2xl text-center",
+      }),
+      createTypographySlot("subtitle", "subtitle", "h3", {
+        when: (payload) => Boolean(payload?.subtitle),
+        className: "self-start rounded-2xl text-center",
+        containerClassName: "mx-auto max-w-[760px]",
+      }),
       {
         area: "assessment",
-        className: "rounded-2xl  p-5",
-        stackClassName: "gap-4",
+        className: "h-full min-h-0 rounded-2xl place-items-stretch place-content-stretch",
+        stackClassName: "h-full min-h-0 justify-start gap-4",
         items: [
           {
             area: "assessment",
@@ -371,35 +365,94 @@ export const THEORY_CONFIG = {
 };
 
 /**
- * Identifica si la vista realmente usa un slot adicional.
+ * Inserta una fila opcional en un layout sin romper sus otras areas.
+ * Se usa para subtitle/body2/feedback segun la variante de la guia.
  */
-function hasAdditionalSlot(payload) {
-  return Boolean(payload?.feedbackText);
-}
-
-/**
- * Extiende el layout solo cuando esa vista necesita el area adicional.
- */
-function appendAdditionalArea(layoutDef) {
+function insertLayoutRow(layoutDef, { index, area, rowSize = "auto", mdArea }) {
   if (!layoutDef?.base) return layoutDef;
 
-  return {
+  const baseRows = String(layoutDef.base.rows).trim().split(/\s+/);
+  const baseAreas = [...layoutDef.base.areas];
+
+  baseRows.splice(index, 0, rowSize);
+  baseAreas.splice(index, 0, area);
+
+  const next = {
     ...layoutDef,
     base: {
       ...layoutDef.base,
-      rows: `${layoutDef.base.rows} minmax(72px,auto)`,
-      areas: [...layoutDef.base.areas, "additional"],
+      rows: baseRows.join(" "),
+      areas: baseAreas,
     },
-    ...(layoutDef.md
-      ? {
-          md: {
-            ...layoutDef.md,
-            rows: `${layoutDef.md.rows} minmax(72px,auto)`,
-            areas: [...layoutDef.md.areas, "additional additional"],
-          },
-        }
-      : {}),
   };
+
+  if (layoutDef.md) {
+    const mdRows = String(layoutDef.md.rows).trim().split(/\s+/);
+    const mdAreas = [...layoutDef.md.areas];
+    mdRows.splice(index, 0, rowSize);
+    mdAreas.splice(index, 0, mdArea ?? `${area} ${area}`);
+
+    next.md = {
+      ...layoutDef.md,
+      rows: mdRows.join(" "),
+      areas: mdAreas,
+    };
+  }
+
+  return next;
+}
+
+/**
+ * Resuelve el layout final segun la variante y sus slots opcionales.
+ */
+function resolveLayoutDef(variant, baseLayout, payload) {
+  if (!baseLayout?.base) return baseLayout;
+
+  if (variant === "simple" && payload?.feedbackText) {
+    return insertLayoutRow(baseLayout, {
+      index: baseLayout.base.areas.length,
+      area: "feedback",
+      rowSize: "minmax(72px,auto)",
+      mdArea: "feedback feedback",
+    });
+  }
+
+  if (variant === "explanation" && payload?.subtitle) {
+    return insertLayoutRow(baseLayout, {
+      index: 1,
+      area: "subtitle",
+    });
+  }
+
+  if (variant === "split" && (payload?.supportListTitle || payload?.supportListContent)) {
+    const next = insertLayoutRow(baseLayout, {
+      // En mobile body2 va antes de media; en desktop comparte la fila con media.
+      index: 2,
+      area: "body2",
+      rowSize: "minmax(0,1fr)",
+      mdArea: "body2 media",
+    });
+
+    if (next?.md?.areas?.length) {
+      next.md.areas = next.md.areas.filter((row, index) => !(index === 3 && row === "media media"));
+      next.md.rows = String(next.md.rows)
+        .trim()
+        .split(/\s+/)
+        .filter((_, index) => index !== 3)
+        .join(" ");
+    }
+
+    return next;
+  }
+
+  if (variant === "assessment" && payload?.subtitle) {
+    return insertLayoutRow(baseLayout, {
+      index: 1,
+      area: "subtitle",
+    });
+  }
+
+  return baseLayout;
 }
 
 /**
@@ -424,7 +477,7 @@ export function getTheoryRuntime({ variant = "simple", view }) {
   const baseLayout = THEORY_CONFIG.layouts[resolvedVariant];
 
   return {
-    layoutDef: hasAdditionalSlot(payload) ? appendAdditionalArea(baseLayout) : baseLayout,
+    layoutDef: resolveLayoutDef(resolvedVariant, baseLayout, payload),
     slots: THEORY_CONFIG.variants[resolvedVariant],
     payload,
   };
