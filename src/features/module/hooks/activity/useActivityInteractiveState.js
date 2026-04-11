@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 function getComparableInteractiveState(result = {}) {
   return {
@@ -36,6 +36,14 @@ function isViewAllowedByState(view, interactiveState) {
   const sourceState = interactiveState?.[rule.viewId];
   const sourceValue = sourceState?.[rule.stateKey];
 
+  if (rule.includesAny !== undefined) {
+    return (
+      Array.isArray(sourceValue) &&
+      Array.isArray(rule.includesAny) &&
+      rule.includesAny.some((item) => sourceValue.includes(item))
+    );
+  }
+
   if (rule.includes !== undefined) {
     return Array.isArray(sourceValue) && sourceValue.includes(rule.includes);
   }
@@ -61,9 +69,11 @@ export function useActivityInteractiveState({
   missionAttemptTrack,
 }) {
   const [interactiveState, setInteractiveState] = useState({});
+  const interactiveStateRef = useRef({});
 
   useEffect(() => {
     // Cada nueva mision arranca con estado interactivo limpio.
+    interactiveStateRef.current = {};
     setInteractiveState({});
   }, [missionKey]);
 
@@ -71,32 +81,29 @@ export function useActivityInteractiveState({
     (viewId, result) => {
       if (!viewId) return;
 
-      let didChange = false;
-      let shouldTrackEvent = false;
+      const previousState = interactiveStateRef.current[viewId] ?? {};
+      const nextResult = {
+        ...previousState,
+        ...result,
+      };
 
-      setInteractiveState((prev) => {
-        const nextResult = {
-          ...prev[viewId],
-          ...result,
-        };
+      if (!hasInteractiveStateChanged(previousState, nextResult)) return;
 
-        if (!hasInteractiveStateChanged(prev[viewId], nextResult)) {
-          return prev;
-        }
+      const shouldTrackEvent =
+        previousState?.completed !== nextResult?.completed ||
+        previousState?.selectedOptionId !== nextResult?.selectedOptionId;
 
-        const previousState = prev[viewId] ?? {};
-        shouldTrackEvent =
-          previousState?.completed !== nextResult?.completed ||
-          previousState?.selectedOptionId !== nextResult?.selectedOptionId;
-        didChange = true;
+      const nextState = {
+        ...interactiveStateRef.current,
+        [viewId]: nextResult,
+      };
 
-        return {
-          ...prev,
-          [viewId]: nextResult,
-        };
-      });
+      // La ref se actualiza primero para que cualquier vista siguiente
+      // lea el saldo correcto incluso antes del re-render de React.
+      interactiveStateRef.current = nextState;
+      setInteractiveState(nextState);
 
-      if (!didChange || !shouldTrackEvent) return;
+      if (!shouldTrackEvent) return;
 
       missionAttemptTrack?.({
         type: "interactive_result",
@@ -126,8 +133,8 @@ export function useActivityInteractiveState({
   }, [interactiveState]);
 
   const getInteractiveState = useCallback(
-    (viewId) => interactiveState[viewId] ?? null,
-    [interactiveState],
+    (viewId) => interactiveStateRef.current[viewId] ?? null,
+    [],
   );
 
   const resolveNextViewId = useCallback(
@@ -141,13 +148,13 @@ export function useActivityInteractiveState({
 
       const previewState = anticipatedResult
         ? {
-            ...interactiveState,
+            ...interactiveStateRef.current,
             [fromViewId]: {
-              ...interactiveState[fromViewId],
+              ...interactiveStateRef.current[fromViewId],
               ...anticipatedResult,
             },
           }
-        : interactiveState;
+        : interactiveStateRef.current;
 
       const nextVisibleView = views
         .slice(currentIndex + 1)
@@ -155,7 +162,7 @@ export function useActivityInteractiveState({
 
       return nextVisibleView?.id ?? nextVisibleView?.viewId ?? null;
     },
-    [interactiveState, missionKey, moduleData],
+    [missionKey, moduleData],
   );
 
   /**

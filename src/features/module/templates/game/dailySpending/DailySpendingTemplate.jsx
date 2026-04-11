@@ -1,7 +1,8 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Typography from "@/features/module/blocks/base/Typography";
 import Image from "@/features/module/blocks/base/Media/Image";
 import Button from "@/features/module/blocks/base/Action/Button";
+import Card from "@/features/module/blocks/compounds/container/Card";
 import ChooseOne from "@/features/module/blocks/compounds/Iterative/ChooseOne";
 import CollageCard from "@/features/module/blocks/compounds/grouper/CollageCard";
 import Calculator from "@/features/module/blocks/compounds/Iterative/Calculator";
@@ -50,6 +51,51 @@ function formatMoney(value) {
 }
 
 /**
+ * Toma el saldo inicial de la mision desde la primera vista que lo declare.
+ * Asi evitamos depender de montos fijos repetidos en cada situacion.
+ */
+function getInitialMissionBalance(heroApi, fallbackBalance) {
+  const missionViews = heroApi?.getMissionViews?.() ?? [];
+
+  for (const item of missionViews) {
+    const amountValue = Number(item?.slots?.amount?.value);
+    if (Number.isFinite(amountValue)) {
+      return amountValue;
+    }
+  }
+
+  return fallbackBalance;
+}
+
+/**
+ * Busca el ultimo saldo interactivo valido antes de la vista actual.
+ * Esto permite que las ramas del minijuego hereden el dinero restante
+ * en vez de depender del valor fijo que vino en el JSON.
+ */
+function getInheritedBalance(heroApi, viewId, fallbackBalance) {
+  const missionViews = heroApi?.getMissionViews?.() ?? [];
+  const currentIndex = missionViews.findIndex(
+    (item) => (item?.id ?? item?.viewId) === viewId,
+  );
+
+  if (currentIndex <= 0) return fallbackBalance;
+
+  for (let index = currentIndex - 1; index >= 0; index -= 1) {
+    const candidateViewId = missionViews[index]?.id ?? missionViews[index]?.viewId;
+    if (!candidateViewId) continue;
+
+    const candidateState = heroApi?.getInteractiveState?.(candidateViewId);
+    const candidateBalance = Number(candidateState?.balance);
+
+    if (Number.isFinite(candidateBalance)) {
+      return candidateBalance;
+    }
+  }
+
+  return fallbackBalance;
+}
+
+/**
  * Normaliza un nodo tipografico simple sin anidar objetos dentro de `text`.
  */
 function normalizeTextNode(value, fallbackVariant = "label") {
@@ -94,10 +140,44 @@ function normalizeChoiceItem(option, index) {
         : null),
     score: Number(option?.score ?? 100),
     nextBalance: option?.nextBalance,
-    cost: Number(option?.cost ?? 0),
-    reward: Number(option?.reward ?? 0),
+    // Conservamos `undefined` para distinguir entre gastar y recuperar dinero.
+    cost: option?.cost !== undefined ? Number(option.cost) : undefined,
+    reward: option?.reward !== undefined ? Number(option.reward) : undefined,
     correct: option?.correct,
   };
+}
+
+/**
+ * Resuelve la siguiente vista del flujo shop respetando la regla del documento:
+ * solo aparece la situacion extra si se compro gaseosa o agua.
+ */
+function resolveShopNextViewId(heroApi, currentViewId, selectedIds) {
+  const missionViews = heroApi?.getMissionViews?.() ?? [];
+  const currentIndex = missionViews.findIndex(
+    (item) => (item?.id ?? item?.viewId) === currentViewId,
+  );
+
+  if (currentIndex < 0) return null;
+
+  const hasPlasticBottle = selectedIds.some((item) => item === "gaseosa" || item === "agua");
+
+  for (let index = currentIndex + 1; index < missionViews.length; index += 1) {
+    const candidate = missionViews[index];
+    const candidateId = candidate?.id ?? candidate?.viewId;
+    const branchRule = candidate?.availability?.dependsOn ?? candidate?.when;
+
+    if (
+      branchRule?.viewId === currentViewId &&
+      branchRule?.stateKey === "selectedProductIds"
+    ) {
+      if (hasPlasticBottle) return candidateId;
+      continue;
+    }
+
+    return candidateId;
+  }
+
+  return null;
 }
 
 /**
@@ -152,27 +232,99 @@ function emitDailyResult(heroApi, view, payload) {
 }
 
 /**
+ * Espera un frame antes de navegar para que la siguiente vista ya pueda
+ * leer el estado interactivo recien guardado.
+ */
+function navigateAfterStateCommit(navigate) {
+  if (typeof window === "undefined") {
+    navigate?.();
+    return;
+  }
+
+  window.requestAnimationFrame(() => {
+    navigate?.();
+  });
+}
+
+/**
  * Cabecera reutilizable del template: titulo a la izquierda y saldo a la derecha.
  */
 function DailyHeader({ title, amount }) {
   return (
     <div className="grid gap-3 md:grid-cols-[1fr_auto]">
-      <div className="rounded-2xl  p-3">
+      <div className="rounded-2xl content-center p-3">
         {title ? (
           <Typography
-            content={title}
-            variant={title?.variant ?? "h1"}
+            content={{
+              ...title,
+              variant: title?.variant ?? "h3",
+            }}
           />
         ) : null}
       </div>
 
-      <div className="rounded-2xl  px-4 py-3 md:min-w-[180px]">
-        <Typography
-          content={{
-            text: `${amount?.label ?? "Saldo"}: ${formatMoney(amount?.value ?? 0)}`,
+      <div className="md:min-w-[190px]">
+        <Card
+          title={{
+            text: amount?.label ?? "Saldo",
             variant: "label",
             align: "center",
           }}
+          text={{
+            text: formatMoney(amount?.value ?? 0),
+            variant: "h2",
+            align: "center",
+          }}
+          className="justify-center gap-1.5 px-4 py-3"
+        />
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Cabecera especifica para shop:
+ * - Agrupa titulo + descripcion en una sola columna.
+ * - Mantiene el saldo en la columna lateral.
+ */
+function DailyShopHeader({ title, situation, amount }) {
+  return (
+    <div className="grid gap-3 md:grid-cols-[1fr_auto]">
+      <div className="rounded-2xl p-3">
+        <div className="flex flex-col gap-3">
+          {title ? (
+            <Typography
+              content={{
+                ...title,
+                variant: title?.variant ?? "h3",
+              }}
+            />
+          ) : null}
+
+          {situation ? (
+            <Typography
+              content={{
+                ...situation,
+                variant: situation?.variant ?? "h2",
+              }}
+            />
+          ) : null}
+        </div>
+      </div>
+
+      <div className="md:min-w-[190px]">
+        <Card
+          title={{
+            text: amount?.label ?? "Saldo",
+            variant: "label",
+            align: "center",
+          }}
+          text={{
+            text: formatMoney(amount?.value ?? 0),
+            variant: "h2",
+            align: "center",
+          }}
+          className="justify-center gap-1.5 px-4 py-3"
         />
       </div>
     </div>
@@ -219,7 +371,12 @@ export default function DailySpendingTemplate({ view, data, heroApi, variant }) 
 
   const [selectedDecision, setSelectedDecision] = useState(null);
   const [selectedProductIds, setSelectedProductIds] = useState([]);
-  const currentBalance = Number(legacyElement?.balance ?? amount?.value ?? 0);
+  const initialBalance = getInitialMissionBalance(
+    heroApi,
+    Number(legacyElement?.balance ?? amount?.value ?? 0),
+  );
+  const baseBalance = Number.isFinite(initialBalance) ? initialBalance : 0;
+  const currentBalance = getInheritedBalance(heroApi, viewId, baseBalance);
   const resolvedFeedback = selectedDecision?.feedback ?? feedback;
   const shouldReserveFeedback =
     resolvedVariant !== "shop" &&
@@ -233,6 +390,27 @@ export default function DailySpendingTemplate({ view, data, heroApi, variant }) 
 
   const totalProducts = selectedProducts.reduce((sum, item) => sum + Number(item?.price ?? 0), 0);
   const nextBalance = currentBalance - totalProducts;
+  const decisionBalance = selectedDecision
+    ? selectedDecision?.nextBalance ??
+      (selectedDecision?.cost !== undefined
+        ? currentBalance - Number(selectedDecision.cost)
+        : currentBalance + Number(selectedDecision?.reward ?? 0))
+    : currentBalance;
+  const displayedBalance =
+    resolvedVariant === "shop"
+      ? nextBalance
+      : decisionBalance;
+  const displayedAmount = {
+    ...(amount ?? {}),
+    value: displayedBalance,
+  };
+
+  useEffect(() => {
+    // Cada situacion debe iniciar con su propio estado local limpio.
+    // Si no lo hacemos, una decision previa puede contaminar la siguiente vista.
+    setSelectedDecision(null);
+    setSelectedProductIds([]);
+  }, [viewId]);
 
   /**
    * Registra una decision simple tomada por el usuario.
@@ -258,7 +436,9 @@ export default function DailySpendingTemplate({ view, data, heroApi, variant }) 
    */
   function continueDecisionFlow() {
     if (!selectedDecision) return;
-    heroApi?.advanceCurrentView?.();
+    navigateAfterStateCommit(() => {
+      heroApi?.advanceCurrentView?.();
+    });
   }
 
   /**
@@ -285,67 +465,77 @@ export default function DailySpendingTemplate({ view, data, heroApi, variant }) 
 
     emitDailyResult(heroApi, view, resultPayload);
 
-    // La compra puede abrir una rama nueva (por ejemplo, la situacion extra).
-    // Por eso resolvemos la siguiente vista con el estado ya anticipado.
-    const nextViewId = heroApi?.resolveNextViewId?.(viewId, resultPayload);
+    // La situacion extra solo aparece si se compro una botella plastica.
+    const nextViewId = resolveShopNextViewId(heroApi, viewId, selectedProductIds);
 
     if (heroApi?.isBeforePostGame) {
-      heroApi?.advanceCurrentView?.();
+      navigateAfterStateCommit(() => {
+        heroApi?.advanceCurrentView?.();
+      });
       return;
     }
 
     if (nextViewId) {
-      heroApi?.goToViewId?.(nextViewId);
+      navigateAfterStateCommit(() => {
+        heroApi?.goToViewId?.(nextViewId);
+      });
       return;
     }
 
-    heroApi?.advanceCurrentView?.();
+    navigateAfterStateCommit(() => {
+      heroApi?.advanceCurrentView?.();
+    });
   }
 
   if (resolvedVariant === "shop") {
     return (
       <section className="mx-auto flex h-full min-h-0 w-full max-w-6xl flex-col gap-3 overflow-hidden px-4 py-3 text-white md:px-5 md:py-4">
-        <DailyHeader title={title} amount={amount} />
+        <DailyShopHeader
+          title={title}
+          situation={situation}
+          amount={displayedAmount}
+        />
 
-        {situation ? (
-          <div className="rounded-2xl  p-3">
-            <Typography content={situation} variant={situation?.variant ?? "body"} />
+        <div className="flex min-h-0 flex-1 flex-col gap-3">
+          <div className="grid min-h-0 flex-1 gap-3 lg:grid-cols-[1.55fr_0.9fr]">
+            <div className="min-h-0 overflow-hidden rounded-2xl p-2.5 md:p-3">
+              <CollageCard
+                items={shopItems}
+                selectable
+                selectedIds={selectedProductIds}
+                onSelect={toggleProduct}
+                columns={3}
+                className="h-full content-center gap-3"
+                style={{
+                  // En shop aprovechamos mas el slot para que las cards crezcan
+                  // sin sobrepasar el area asignada.
+                  "--card-media-max-height": "min(126px, calc(var(--hero-height, 100vh) * 0.145))",
+                }}
+              />
+            </div>
+
+            <div className="min-h-0 overflow-hidden rounded-2xl p-2.5 md:p-3">
+              <Calculator
+                data={calculatorData}
+                items={selectedProducts}
+                total={totalProducts}
+                balance={nextBalance}
+                onSubmit={confirmShopSelection}
+                disabled={selectedProducts.length === 0}
+              />
+            </div>
           </div>
-        ) : null}
 
-        <div className="grid min-h-0 flex-1 gap-3 lg:grid-cols-[1.55fr_0.9fr]">
-          <div className="rounded-2xl  p-3">
-            <CollageCard
-              items={shopItems}
-              selectable
-              selectedIds={selectedProductIds}
-              onSelect={toggleProduct}
-              columns={3}
-              className="gap-2.5"
-              style={{
-                // La grilla del kiosko necesita cards mas compactas para no empujar el footer.
-                "--card-media-max-height": "min(118px, calc(var(--hero-height, 100vh) * 0.14))",
-              }}
-            />
+          <div className="shrink-0">
+            {feedback ? (
+              <div className="flex min-h-[56px] items-center rounded-2xl border border-white/15 p-3">
+                <Typography content={feedback} variant={feedback?.variant ?? "helper"} />
+              </div>
+            ) : shouldReserveFeedback ? (
+              <div className="min-h-[56px]" aria-hidden="true" />
+            ) : null}
           </div>
-
-          <Calculator
-            data={calculatorData}
-            items={selectedProducts}
-            total={totalProducts}
-            balance={nextBalance}
-            onSubmit={confirmShopSelection}
-            disabled={selectedProducts.length === 0}
-          />
         </div>
-
-        {feedback ? (
-          <div className="flex min-h-[56px] items-center rounded-2xl  p-3">
-            <Typography content={feedback} variant={feedback?.variant ?? "helper"} />
-          </div>
-        ) : shouldReserveFeedback ? (
-          <div className="min-h-[56px]" aria-hidden="true" />
-        ) : null}
       </section>
     );
   }
@@ -353,7 +543,12 @@ export default function DailySpendingTemplate({ view, data, heroApi, variant }) 
   const decisionContent = (
     <ChooseOne
       data={{
-        instruction: situation,
+        instruction: situation
+          ? {
+              ...situation,
+              variant: situation?.variant ?? "h2",
+            }
+          : null,
         items: choiceItems,
       }}
       onSelection={handleDecisionSelection}
@@ -361,44 +556,58 @@ export default function DailySpendingTemplate({ view, data, heroApi, variant }) 
   );
 
   return (
-      <section className="mx-auto flex h-full min-h-0 w-full max-w-6xl flex-col gap-5 overflow-hidden px-6 py-6 text-white">
-      <DailyHeader title={title} amount={amount} />
+    <section className="mx-auto flex h-full min-h-0 w-full max-w-6xl flex-col gap-3 overflow-hidden px-5 py-4 text-white">
+      <DailyHeader title={title} amount={displayedAmount} />
 
-      <div className={resolvedVariant === "event" || media ? "grid gap-5 lg:grid-cols-[1.2fr_0.8fr]" : "grid gap-5"}>
-        <div className="rounded-2xl  p-4">
-          {decisionContent}
+      <div className="flex min-h-0 flex-1 flex-col gap-3">
+        <div
+          className={
+            resolvedVariant === "event" || media
+              ? "grid min-h-0 flex-1 gap-3 lg:grid-cols-[1.2fr_0.8fr]"
+              : "grid min-h-0 flex-1 gap-3"
+          }
+        >
+          <div
+            className="min-h-0 rounded-2xl p-3 [--card-media-max-height:min(220px,calc(var(--hero-height,100vh)*0.24))]"
+          >
+            {decisionContent}
+          </div>
+
+          {media ? (
+            <div className="rounded-2xl  p-3">
+              <Image
+                src={media?.src}
+                alt={media?.alt ?? "Situacion"}
+                // Esta media lateral se controla por la altura del hero
+                // para no empujar el resto de la vista fuera del canvas.
+                className="w-full"
+                imgClassName="max-h-[min(260px,calc(var(--hero-height,100vh)*0.34))] max-w-full object-contain"
+              />
+            </div>
+          ) : null}
         </div>
 
-        {media ? (
-          <div className="rounded-2xl  p-4">
-            <Image
-              src={media?.src}
-              alt={media?.alt ?? "Situacion"}
-              // Esta media lateral se controla por la altura del hero
-              // para no empujar el resto de la vista fuera del canvas.
-              className="w-full"
-              imgClassName="max-h-[min(260px,calc(var(--hero-height,100vh)*0.34))] max-w-full object-contain"
-            />
-          </div>
-        ) : null}
-      </div>
+        <div className="shrink-0">
+          {resolvedFeedback ? (
+            <div className="flex min-h-[56px] items-center rounded-2xl border border-white/15 p-3">
+              <Typography
+                content={resolvedFeedback}
+                variant={resolvedFeedback?.variant ?? "helper"}
+              />
+            </div>
+          ) : shouldReserveFeedback ? (
+            <div className="min-h-[56px]" aria-hidden="true" />
+          ) : null}
+        </div>
 
-      {resolvedFeedback ? (
-        <div className="flex min-h-[72px] items-center rounded-2xl  p-4">
-          <Typography
-            content={resolvedFeedback}
-            variant={resolvedFeedback?.variant ?? "helper"}
+        <div className="shrink-0">
+          <DailyAdvanceButton
+            label={heroApi?.advanceLabel ?? "Continuar"}
+            onClick={continueDecisionFlow}
+            disabled={!canAdvanceDecision}
           />
         </div>
-      ) : shouldReserveFeedback ? (
-        <div className="min-h-[72px]" aria-hidden="true" />
-      ) : null}
-
-      <DailyAdvanceButton
-        label={heroApi?.advanceLabel ?? "Continuar"}
-        onClick={continueDecisionFlow}
-        disabled={!canAdvanceDecision}
-      />
+      </div>
     </section>
   );
 }

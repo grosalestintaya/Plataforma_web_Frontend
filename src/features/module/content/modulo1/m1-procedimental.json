@@ -61,11 +61,11 @@
       "template": "decisionDailySpending",
       "variant": "decision",
       "slots": {
-        "title": { "text": "Situacion 1", "variant": "h1" },
-        "amount": { "label": "Saldo", "value": 5 },
+        "title": { "text": "Situacion 1", "variant": "h2" },
+        "amount": { "label": "Monto", "value": 5 },
         "assessment": {
           "text": "Debes ir al colegio y necesitas decidir como llegar.",
-          "variant": "body1",
+          "variant": "h2",
           "align": "center"
         }
       },
@@ -132,11 +132,11 @@
       "template": "shopDailySpending",
       "variant": "shop",
       "slots": {
-        "title": { "text": "Situacion 2", "variant": "h1" },
-        "amount": { "label": "Saldo", "value": 4.5 },
+        "title": { "text": "Situacion 2", "variant": "h3" },
+        "amount": { "text": "Monto", "variant": "h2" },
         "situation": {
           "text": "Ya estas en el recreo. Tienes hambre y debes decidir que hacer con tu dinero.",
-          "variant": "body1",
+          "variant": "h2",
           "align": "left"
         },
         "feedback": {
@@ -222,11 +222,11 @@
       "template": "decisionDailySpending",
       "variant": "decision",
       "slots": {
-        "title": { "text": "Situacion extra", "variant": "h1" },
-        "amount": { "label": "Saldo", "value": 0 },
+        "title": { "text": "Situacion extra", "variant": "h2" },
+        "amount": { "label": "Monto" },
         "assessment": {
-          "text": "Puedes canjear la botella de la gaseosa o dejarla pasar.",
-          "variant": "body1",
+          "text": "Puedes canjear la botella plastica o dejarla pasar.",
+          "variant": "h2",
           "align": "center"
         },
         "media": { "src": "", "alt": "Botella para canje" }
@@ -279,7 +279,7 @@
         "dependsOn": {
           "viewId": "m1_2_v3",
           "stateKey": "selectedProductIds",
-          "includes": "gaseosa"
+          "includesAny": ["gaseosa", "agua"]
         }
       },
       "navigation": {
@@ -300,11 +300,11 @@
       "template": "decisionDailySpending",
       "variant": "decision",
       "slots": {
-        "title": { "text": "Situacion 3", "variant": "h1" },
-        "amount": { "label": "Saldo", "value": 0 },
+        "title": { "text": "Situacion 3", "variant": "h2" },
+        "amount": { "label": "Monto" },
         "assessment": {
           "text": "Termino el dia escolar y debes decidir como volver a casa.",
-          "variant": "body1",
+          "variant": "h2",
           "align": "center"
         }
       },

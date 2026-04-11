@@ -11,7 +11,11 @@ export default function ShowCard({ items = [] }) {
 
   return (
     <div
-      className={isPair ? "mx-auto grid w-full max-w-[720px] gap-4 md:grid-cols-2" : "grid gap-4"}
+      className={
+        isPair
+          ? "mx-auto grid h-full min-h-0 w-full max-w-[720px] content-center gap-4 md:grid-cols-2"
+          : "grid h-full min-h-0 content-start gap-4"
+      }
       style={
         isPair
           ? undefined

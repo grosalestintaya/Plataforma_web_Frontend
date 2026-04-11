@@ -86,6 +86,7 @@ export default function ChooseOne({
   const items = Array.isArray(data?.items) ? data.items : [];
   const isQuestionSequence = items.every((item) => Array.isArray(item?.options));
   const viewId = view?.id ?? view?.viewId;
+  const instruction = data?.instruction ?? null;
 
   const [selectedId, setSelectedId] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -248,11 +249,14 @@ export default function ChooseOne({
     const isFinished = currentIndex >= items.length;
 
     const currentQuestionResult = useCardOptions ? resolvedCardQuestionResult : pendingQuestionResult;
+    const feedbackMessage =
+      currentQuestionResult?.feedback ?? pendingQuestionResult?.feedback ?? null;
+    const canContinue = Boolean(currentQuestionResult);
 
     return (
       <section
         className={cn(
-          "mx-auto flex h-full min-h-0 w-full flex-col gap-3 rounded-2xl p-2",
+          "mx-auto flex h-full min-h-0 w-full flex-col justify-between gap-3 rounded-2xl p-2",
           useCardOptions ? "max-w-[1020px]" : "max-w-[760px]",
         )}
       >
@@ -269,15 +273,17 @@ export default function ChooseOne({
         ) : (
           <>
             {currentQuestion?.prompt ? (
-              <div className="rounded-xl border border-white/15 bg-white/5 px-4 py-2">
+              <div className="shrink-0 rounded-xl border border-white/15 bg-white/5 px-4 py-2">
                 {renderPromptWithHighlight(currentQuestion.prompt)}
               </div>
             ) : null}
 
             <div
               className={cn(
-                "grid min-h-0 flex-1 content-start gap-4",
-                useCardOptions ? "mx-auto w-full max-w-[1020px] grid-cols-2" : "md:grid-cols-2",
+                "grid min-h-0 flex-1 gap-4",
+                useCardOptions
+                  ? "mx-auto w-full max-w-[1020px] flex-1 grid-cols-2 items-center content-center"
+                  : "content-start md:grid-cols-2",
               )}
             >
               {currentOptions.map((option) =>
@@ -318,9 +324,9 @@ export default function ChooseOne({
                       ],
                     }}
                     containerClassName={cn(
-                      "w-full [--flip-card-height:min(330px,calc(var(--hero-height,100vh)*0.34))] [--card-media-max-height:min(220px,calc(var(--flip-card-height)*0.68))]",
+                      "w-full [--flip-card-height:min(300px,calc(var(--hero-height,100vh)*0.3))] [--card-media-max-height:min(205px,calc(var(--flip-card-height)*0.66))]",
                       currentQuestionResult?.selectedOptionId === option.id
-                        ? "ring-2 ring-amber-300/60 ring-offset-0"
+                        ? "ring-2 ring-amber-300/60 ring-offset-0 rounded-2xl"
                         : "",
                     )}
                     gridContainerClassName="grid-cols-1"
@@ -343,35 +349,41 @@ export default function ChooseOne({
               )}
             </div>
 
-            {(currentQuestionResult?.feedback ?? pendingQuestionResult?.feedback) ? (
-              <div
-                className={cn(
-                  "rounded-xl p-3",
-                  (currentQuestionResult?.feedback ?? pendingQuestionResult?.feedback)?.color === "danger"
-                    ? "border border-rose-300/25 bg-rose-500/10"
-                    : "border border-amber-300/25 bg-amber-500/10",
-                )}
-              >
-                <Typography content={currentQuestionResult?.feedback ?? pendingQuestionResult?.feedback} />
+            <div className="shrink-0 flex flex-col gap-2">
+              <div className="min-h-[72px]">
+                {feedbackMessage ? (
+                  <div
+                    className={cn(
+                      "rounded-xl p-3",
+                      feedbackMessage?.color === "danger"
+                        ? "border border-rose-300/25 bg-rose-500/10"
+                        : "border border-amber-300/25 bg-amber-500/10",
+                    )}
+                  >
+                    <Typography content={feedbackMessage} />
+                  </div>
+                ) : null}
               </div>
-            ) : null}
 
-            {currentQuestionResult ? (
-              <Button
-                variant="primary"
-                label={currentIndex < items.length - 1 ? "Continuar" : "Finalizar"}
-                className="mx-auto"
-                onClick={goToNextQuestion}
+              <div className="flex min-h-[44px] items-center justify-center">
+                {canContinue ? (
+                  <Button
+                    variant="primary"
+                    label={currentIndex < items.length - 1 ? "Continuar" : "Finalizar"}
+                    className="mx-auto"
+                    onClick={goToNextQuestion}
+                  />
+                ) : null}
+              </div>
+
+              <Typography
+                content={{
+                  text: `Pregunta ${Math.min(currentIndex + 1, items.length)} de ${items.length}`,
+                  variant: "helper",
+                  align: "center",
+                }}
               />
-            ) : null}
-
-            <Typography
-              content={{
-                text: `Pregunta ${Math.min(currentIndex + 1, items.length)} de ${items.length}`,
-                variant: "helper",
-                align: "center",
-              }}
-            />
+            </div>
           </>
         )}
       </section>
@@ -379,33 +391,55 @@ export default function ChooseOne({
   }
 
   return (
-    <div className="grid gap-4 md:grid-cols-2">
-      {items.map((item, index) => (
-        <Card
-          key={item?.id ?? index}
-          as="button"
-          onClick={() => selectCard(item)}
-          className={cn(
-            "h-full",
-            selectedId === item?.id ? "border-emerald-300/50 bg-emerald-500/10" : "",
-          )}
-          media={item?.media ?? item?.image ?? { src: item?.src, alt: item?.alt }}
-          title={item?.title ?? item?.label ?? { text: item?.caption, variant: "label" }}
-          text={item?.text}
-          footer={
-            item?.detail ? (
-              <Typography
-                content={
-                  typeof item.detail === "string"
-                    ? { text: item.detail, variant: "label" }
-                    : item.detail
-                }
-                align="center"
-              />
-            ) : null
-          }
-        />
-      ))}
+    <div className="flex h-full min-h-0 max-h-full w-full max-w-full flex-col gap-4 overflow-hidden">
+      {instruction ? (
+        <div className="shrink-0 rounded-xl border border-white/15 p-4">
+          <Typography
+            content={instruction}
+            variant={instruction?.variant ?? "body"}
+            align={instruction?.align ?? "center"}
+          />
+        </div>
+      ) : null}
+
+      <div className="grid min-h-0 flex-1 auto-rows-fr items-stretch content-stretch gap-4 md:grid-cols-2">
+        {items.map((item, index) => (
+          <Card
+            key={item?.id ?? index}
+            as="button"
+            onClick={() => selectCard(item)}
+            className={cn(
+              // En procedimental la card debe aprovechar mejor su alto disponible.
+              // Por eso acercamos el detalle al titulo y dejamos crecer mas la media.
+              "h-full min-h-0 self-stretch [--card-media-max-height:min(100%,calc(var(--hero-height,100vh)*0.34))]",
+              selectedId === item?.id ? "border-emerald-300/50" : "",
+            )}
+            mediaClassName="min-h-0 flex-1"
+            media={item?.media ?? item?.image ?? { src: item?.src, alt: item?.alt }}
+            title={item?.title ?? item?.label ?? { text: item?.caption, variant: "label" }}
+            text={
+              item?.text ??
+              (!item?.text && item?.detail
+                ? typeof item.detail === "string"
+                  ? { text: item.detail, variant: "label", align: "center" }
+                  : item.detail
+                : null)
+            }
+            footer={
+              item?.detail && item?.text ? (
+                <Typography
+                  content={
+                    typeof item.detail === "string"
+                      ? { text: item.detail, variant: "label" }
+                      : item.detail
+                  }
+                  align="center"
+                />
+              ) : null
+            }
+          />
+        ))}
+      </div>
     </div>
   );
 }

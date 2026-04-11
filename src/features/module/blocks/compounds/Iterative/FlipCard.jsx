@@ -7,18 +7,18 @@ import Card from "../container/Card";
  */
 function getRevealTone(reveal) {
   if (reveal?.tone === "income") {
-    return "border border-emerald-200/35 bg-emerald-600 text-white";
+    return "border border-emerald-200/35 bg-emerald-600 text-white rounded-2xl";
   }
   if (reveal?.tone === "expense") {
-    return "border border-rose-200/35 bg-rose-600 text-white";
+    return "border border-rose-200/35 bg-rose-600 text-white rounded-2xl";
   }
   if (reveal?.tone === "success") {
-    return "border border-emerald-200/35 bg-emerald-600 text-white";
+    return "border border-emerald-200/35 bg-emerald-600 text-white rounded-2xl";
   }
   if (reveal?.tone === "error") {
-    return "border border-rose-200/35 bg-rose-600 text-white";
+    return "border border-rose-200/35 bg-rose-600 text-white rounded-2xl";
   }
-  return "border border-white/15 bg-white/15 text-white";
+  return "border border-white/15 bg-white/15 text-white rounded-xl";
 }
 
 /**
@@ -195,10 +195,10 @@ export default function FlipCard(props) {
       <Card
         as="div"
         className={cn(
-          "h-full p-0 shadow-none",
+          "h-full rounded-2xl p-3 shadow-none",
           getRevealTone(reveal),
         )}
-        contentClassName="items-center justify-center px-4 py-6 text-center"
+        contentClassName="items-center justify-center px-2 py-4 text-center"
       >
         <Typography
           content={revealContent}
@@ -211,15 +211,17 @@ export default function FlipCard(props) {
   return (
     <section
       className={cn(
-        compact ? "w-full text-white" : "mx-auto w-full max-w-5xl px-6 py-8 text-white",
+        compact
+          ? "h-full min-h-0 w-full max-h-full max-w-full overflow-hidden text-white"
+          : "mx-auto h-full min-h-0 w-full max-w-5xl overflow-hidden px-6 py-8 text-white",
         containerClassName,
       )}
     >
         <div
           className={cn(
             compact
-              ? "grid gap-3"
-              : "mx-auto grid max-w-[760px] gap-4 rounded-xl border border-white/15 p-4",
+              ? "grid h-full min-h-0 max-h-full gap-3"
+              : "mx-auto grid h-full min-h-0 max-w-[760px] gap-4 rounded-xl border p-4",
             gridColsClassName,
             gridContainerClassName,
         )}
@@ -248,7 +250,7 @@ export default function FlipCard(props) {
                   onItemClick?.(item);
                 }
               }
-              className="relative overflow-hidden rounded-sm border border-white/20 bg-white/5 text-left [perspective:1000px] disabled:opacity-70"
+              className="relative h-full min-h-0 w-full max-h-full overflow-hidden rounded-2xl bg-transparent text-left [perspective:1000px] disabled:opacity-70"
               style={mediaSizingStyle}
             >
               <div
@@ -261,9 +263,9 @@ export default function FlipCard(props) {
                   <Card
                     as="div"
                     {...getFrontCardProps(item)}
-                    className="h-full border-0 bg-transparent p-0"
-                    mediaClassName="border-0 bg-transparent p-0"
-                    contentClassName="px-2 pb-2"
+                    className="h-full rounded-2xl p-3"
+                    mediaClassName="p-0"
+                    contentClassName="gap-2 px-1"
                   />
                 </div>
 
