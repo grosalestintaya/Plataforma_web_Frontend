@@ -24,11 +24,11 @@ export default function SidebarNavItem({
           "focus:outline-none focus:ring-2 focus:ring-white/30",
 
           collapsed
-            ? "mx-2 justify-center px-2 py-3"
+            ? "mx-2 justify-center px-8 py-5"
             : isDesktop
               ? "mx-3 gap-3 px-4 py-3.5"
               : isMobileModal
-                ? "mx-2 gap-3 px-4 py-3.5"
+                ? "mx-2 gap-3 px-4 py-3"
                 : "mx-3 gap-3 px-4 py-3",
 
           isActive

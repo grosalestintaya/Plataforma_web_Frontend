@@ -1,9 +1,8 @@
 import React from "react";
-import rope from "@/assets/activity/cord.png";
 import menuIcon from "@/shared/icons/icon-menu-pen.svg";
 import HeaderSettingsButton from "../ui/HeaderSettingsButton";
 import HeaderBackButton from "../ui/HeaderBackButton";
-
+import HeaderRopeSvg from "../HeaderRopeSvg";
 function hexToRgba(hex, a = 1) {
   const h = String(hex || "#000").replace("#", "");
   const full =
@@ -60,7 +59,7 @@ export default function ModuleMenuHeader({
         }}
       />
 
-      <div className="relative px-3 pb-1 pt-2.5 sm:px-4 md:px-8 lg:px-10">
+      <div className="relative px-3 py-0 pb-1 pt-2.5 sm:px-4 md:px-8 lg:px-1">
         <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 sm:gap-3">
           <div className="flex items-center">
             <HeaderBackButton
@@ -84,13 +83,10 @@ export default function ModuleMenuHeader({
             />
           </div>
         </div>
-
-        <div className="mt-0.5 -mx-3 sm:-mx-4 md:-mx-8 lg:-mx-10">
-          <img
-            src={rope}
-            alt="Cuerda del Quipu"
-            className="block h-[28px] w-full select-none object-fill sm:h-[38px] md:h-[62px] lg:h-[100px]"
-            draggable={false}
+        <div className="mt-0 -mx-3 overflow-hidden sm:-mx-4 md:-mx-8 lg:-mx-10">
+          <HeaderRopeSvg
+            themeHex={themeHex}
+            className="block h-[40px] w-full select-none sm:h-[54px] md:h-[78px] lg:h-[122px]"
           />
         </div>
       </div>
