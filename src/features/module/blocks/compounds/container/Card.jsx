@@ -35,32 +35,35 @@ export default function Card({
       disabled={Component === "button" ? disabled : undefined}
       className={cn(
         // La card ocupa su area, pero no fuerza alturas internas innecesarias.
-        "flex h-full min-h-0 w-full flex-col gap-2.5 rounded-2xl  p-3 text-left",
+        "flex h-full min-h-0 w-full max-h-full max-w-full flex-col gap-2.5 overflow-hidden rounded-2xl border border-white/15 p-3 text-left",
         "transition disabled:cursor-not-allowed disabled:opacity-60",
-        onClick ? "hover:bg-white/15" : "",
+        onClick ? "hover:border-white/25" : "",
         className,
       )}
     >
       {media ? (
         <div
           className={cn(
-            // La media usa un maximo controlado por el hero para no desbordar la vista.
-            "flex w-full items-center justify-center rounded-xl border border-white/12 bg-black/10 p-1.5",
+            // La media usa un marco sutil para que la imagen siempre se lea
+            // como una pieza dentro de la card sin competir con el contenido.
+            "flex min-h-0 w-full shrink-0 items-center justify-center rounded-xl border border-white/12 p-1.5",
             mediaClassName,
           )}
           style={mediaSizingStyle}
         >
-          <Image
-            src={media?.src ?? media?.img}
-            alt={media?.alt ?? "Imagen"}
-            className="h-full w-full"
-            imgClassName="max-h-full max-w-full object-contain"
-          />
+          <div className="flex h-full w-full items-center justify-center rounded-lg border border-white/10 p-1">
+            <Image
+              src={media?.src ?? media?.img}
+              alt={media?.alt ?? "Imagen"}
+              className="h-full w-full"
+              imgClassName="max-h-full max-w-full rounded-md object-contain"
+            />
+          </div>
         </div>
       ) : null}
 
       {title ? (
-        <div className={cn("flex w-full items-center justify-center", contentClassName)}>
+        <div className={cn("flex min-w-0 w-full items-center justify-center", contentClassName)}>
           <Typography
             content={title}
             variant={title?.variant ?? "h3"}
@@ -70,7 +73,7 @@ export default function Card({
       ) : null}
 
       {text ? (
-        <div className={cn("flex min-h-0 w-full items-start justify-center", contentClassName)}>
+        <div className={cn("flex min-h-0 min-w-0 w-full items-start justify-center", contentClassName)}>
           <Typography
             content={text}
             variant={text?.variant ?? "bodySm"}
@@ -80,7 +83,7 @@ export default function Card({
       ) : null}
 
       {children ? (
-        <div className={cn("flex min-h-0 flex-1 flex-col gap-1.5", contentClassName)}>
+        <div className={cn("flex min-h-0 min-w-0 flex-1 flex-col gap-1.5", contentClassName)}>
           {children}
         </div>
       ) : null}

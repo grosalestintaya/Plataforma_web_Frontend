@@ -142,6 +142,11 @@ export default function ModuleActivtyPage() {
       track: missionAttempt.track,
       setInteractiveState: setInteractiveViewState,
       getInteractiveState,
+      /**
+       * Expone las vistas activas de la mision para que ciertos templates
+       * puedan heredar datos dinamicos (por ejemplo, el saldo acumulado).
+       */
+      getMissionViews: () => moduleData.missions?.[player.missionKey]?.views ?? [],
       resolveNextViewId,
       // Expone el resumen final para que Lobby postGame lea XP/coins reales.
       getMissionCompletion: () => missionCompletion,
@@ -149,10 +154,12 @@ export default function ModuleActivtyPage() {
     }),
     [
       getInteractiveState,
+      moduleData.missions,
       missionCompletion,
       missionAttempt.track,
       nextMissionKey,
       player.heroApi,
+      player.missionKey,
       resolveNextViewId,
       setInteractiveViewState,
     ],

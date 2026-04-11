@@ -12,7 +12,12 @@ export function renderSlot(slotDef, data, Blocks, ctx = {}) {
   if (slotDef.when && !slotDef.when(data, ctx)) {
     // Algunos slots opcionales deben reservar su area para evitar saltos de layout.
     if (slotDef.reserveSpace && (!slotDef.reserveWhen || slotDef.reserveWhen(data, ctx))) {
-      return <div className={cn("w-full", slotDef.placeholderClassName)} aria-hidden="true" />;
+      return (
+        <div
+          className={cn("w-full max-w-full", slotDef.placeholderClassName)}
+          aria-hidden="true"
+        />
+      );
     }
 
     return null;
@@ -20,7 +25,12 @@ export function renderSlot(slotDef, data, Blocks, ctx = {}) {
 
   if (Array.isArray(slotDef.items)) {
     return (
-      <div className={cn("flex flex-col gap-3", slotDef.stackClassName)}>
+      <div
+        className={cn(
+          "flex min-h-0 min-w-0 max-h-full max-w-full flex-col gap-3",
+          slotDef.stackClassName,
+        )}
+      >
         {slotDef.items.map((child, index) => (
           <React.Fragment key={index}>
             {renderSlot(child, data, Blocks, ctx)}

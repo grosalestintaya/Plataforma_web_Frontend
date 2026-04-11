@@ -90,7 +90,7 @@ export default function CollageCard({
       // ya tiene una distribucion cuadrada y puede aprovechar mejor el area.
       "--card-media-max-height":
         preferredColumns === 2
-          ? "min(190px, calc(var(--hero-height, 100vh) * 0.22))"
+          ? "min(165px, calc(var(--hero-height, 100vh) * 0.18))"
           : preferredColumns >= 3
             ? "min(145px, calc(var(--hero-height, 100vh) * 0.17))"
           : "min(190px, calc(var(--hero-height, 100vh) * 0.24))",
@@ -98,7 +98,7 @@ export default function CollageCard({
       // Asi dos filas de tarjetas pueden convivir con titulo e instruccion.
       "--flip-card-height":
         preferredColumns === 2
-          ? "min(280px, calc(var(--hero-height, 100vh) * 0.27))"
+          ? "min(275px, calc(var(--hero-height, 100vh) * 0.27))"
           : preferredColumns >= 3
             ? "min(210px, calc(var(--hero-height, 100vh) * 0.2))"
           : "min(260px, calc(var(--hero-height, 100vh) * 0.25))",
@@ -136,7 +136,14 @@ export default function CollageCard({
 
   return (
     <div
-      className={cn("grid h-full min-h-0 content-start gap-3 md:gap-4", colsClassName, className)}
+      className={cn(
+        // El collage ocupa el area disponible del slot, pero centra su grilla
+        // interna para que las cards no se estiren mas alla de su tamano visual.
+        "grid h-full min-h-0 w-full max-h-full max-w-full justify-center justify-items-center overflow-hidden gap-3 md:gap-4",
+        preferredColumns === 2 ? "content-center" : "content-start",
+        colsClassName,
+        className,
+      )}
       style={{
         ...mediaScaleStyle,
         ...style,
@@ -148,7 +155,17 @@ export default function CollageCard({
 
         if (isFlipItem(item)) {
           return (
-            <div key={itemId} className="min-w-0">
+            <div
+              key={itemId}
+              className={cn(
+                "min-w-0",
+                // Cada tarjeta tiene un ancho propio; la grilla la centra y ya
+                // no necesita estirarla a todo el ancho de la columna.
+                preferredColumns === 2
+                  ? "w-[min(320px,34vw)] max-w-full"
+                  : "w-[min(300px,30vw)] max-w-full",
+              )}
+            >
               <FlipCard
                 compact
                 data={{

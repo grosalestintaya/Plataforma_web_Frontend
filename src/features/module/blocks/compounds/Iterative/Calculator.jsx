@@ -22,7 +22,7 @@ export default function Calculator({
   const emptyLabel = data?.emptyLabel ?? "Aun no has seleccionado productos.";
 
   return (
-    <section className="flex h-full min-h-0 flex-col gap-3 rounded-2xl  p-3">
+    <section className="flex h-full min-h-0 flex-col gap-2.5 rounded-2xl p-2.5">
       {data?.title ? (
         <Typography
           content={data.title}
@@ -31,7 +31,7 @@ export default function Calculator({
         />
       ) : null}
 
-      <div className="flex min-h-0 flex-1 flex-col gap-2 rounded-xl border border-white/12 bg-black/10 p-3">
+      <div className="flex min-h-0 flex-1 flex-col gap-2 rounded-xl border border-white/12 bg-black/10 p-2.5">
         {items.length === 0 ? (
           <Typography
             content={{ text: emptyLabel, variant: "bodySm", align: "center" }}
@@ -55,7 +55,7 @@ export default function Calculator({
         )}
       </div>
 
-      <div className="rounded-xl border border-white/12 bg-black/10 p-3">
+      <div className="rounded-xl border border-white/12 bg-black/10 p-2.5">
         <div className="flex items-center justify-between gap-3">
           <Typography content={{ text: "Suma total", variant: "label" }} />
           <Typography content={{ text: formatMoney(total), variant: "label" }} />
@@ -71,7 +71,7 @@ export default function Calculator({
         label={submitLabel}
         onClick={onSubmit}
         disabled={disabled}
-        className="min-h-[48px]"
+        className="min-h-[44px] shrink-0"
       />
     </section>
   );

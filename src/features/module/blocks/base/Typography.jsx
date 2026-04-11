@@ -52,6 +52,8 @@ export function getTypographyClassName({
     TYPOGRAPHY.tone[tone] || TYPOGRAPHY.tone.secondary,
     TYPOGRAPHY.width[width] || TYPOGRAPHY.width.reading,
     TYPOGRAPHY.align[align] || TYPOGRAPHY.align.left,
+    // La tipografia no debe romper el ancho del slot donde se renderiza.
+    "max-w-full break-words [overflow-wrap:anywhere]",
     className,
   ].join(" ");
 }
@@ -155,7 +157,7 @@ export function TextParagraphs({
   if (parts.length === 0) return null;
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex max-w-full flex-col gap-4">
       {parts.map((part, index) => (
         <p
           key={`${part}-${index}`}
