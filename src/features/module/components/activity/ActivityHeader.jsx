@@ -2,9 +2,9 @@ import { useMemo } from "react";
 
 import rope from "@/assets/activity/cord.png";
 import menuIcon from "@/shared/icons/icon-menu-pen.svg";
-
 import HeaderSettingsButton from "../ui/HeaderSettingsButton";
 import HeaderExitButton from "../ui/HeaderExitButton";
+import ContentRopeSvg from "../ContentRopeSvg";
 
 function hexToRgba(hex, a = 1) {
   const h = String(hex || "#000").replace("#", "");
@@ -63,8 +63,7 @@ export default function ActivityHeader({
       className="relative w-full overflow-hidden leading-none"
       style={{
         minHeight: "var(--activity-header-height, 112px)",
-      }}
-    >
+      }}>
       <div
         className="pointer-events-none absolute inset-0"
         style={{
@@ -77,17 +76,15 @@ export default function ActivityHeader({
         }}
       />
 
-      <div className="relative px-[var(--activity-shell-gutter)] pt-3 pb-0 md:pt-3.5">
+      <div className="relative px-[var(--activity-shell-gutter)] pt-0 pb-0 md:pt-">
         <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 md:gap-3">
-          <div className="flex min-w-0 items-center gap-3 px-1">
+          <div className="flex min-w-0 items-center gap-2 px-1">
             <HeaderExitButton
               onClick={handleExitActivity}
               themeHex={themeHex}
               title="Salir de la actividad"
             />
-            <h1
-              className="truncate text-left text-base font-semibold tracking-tight text-white sm:text-lg md:text-xl lg:text-2xl"
-            >
+            <h1 className="truncate text-left text-base font-semibold tracking-tight text-white sm:text-lg md:text-xl lg:text-2xl">
               {missionTitle || "Mision"}
             </h1>
           </div>
@@ -101,13 +98,10 @@ export default function ActivityHeader({
             />
           </div>
         </div>
-
-        <div className="mt-1 -mx-[var(--activity-shell-gutter)]">
-          <img
-            src={rope}
-            alt="Cuerda del Quipu"
-            className="block h-[34px] w-full select-none object-fill sm:h-[38px] lg:h-[44px]"
-            draggable={false}
+        <div className="mt-0 -mx-3 overflow-hidden sm:-mx-4 md:-mx-8 lg:-mx-10">
+          <ContentRopeSvg
+            themeHex={themeHex}
+            className="block h-[40px] w-full select-none sm:h-[54px] md:h-[78px] lg:h-[48px]"
           />
         </div>
       </div>

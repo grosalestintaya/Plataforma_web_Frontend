@@ -31,7 +31,7 @@ export default function ModuleMenuBody({
       selectedId={selectedActivityId}
       onSelect={onSelectActivity}
       themeHex={themeHex}
-      className="xl:justify-center"
+      className="xl:justify-center pt-{6}"
     />
   );
 
@@ -57,7 +57,7 @@ export default function ModuleMenuBody({
   );
 
   return (
-    <main className="h-full min-h-0 px-2 pb-2 pt-1 sm:px-3 md:px-4 lg:px-6 xl:px-10">
+    <main className="h-full min-h-0 px-2 pb-2 pt-0 sm:px-3 md:px-4 lg:px-6 xl:px-10">
       {/* Un solo grid responsive:
           en pantallas pequeñas deja selector + tarjeta arriba y mascota abajo;
           en desktop reparte selector, contenido y mascota en tres columnas. */}
@@ -72,9 +72,8 @@ export default function ModuleMenuBody({
 
           lg:grid-cols-[132px_minmax(0,1fr)_240px] 
           xl:grid-cols-[168px_minmax(0,1fr)_280px]
-        "
-      >
-        <div className="min-h-0 min-w-0">{left}</div>
+        ">
+        <div className="min-h-0 min-w-0 -mt-26">{left}</div>
         <section className="flex h-full min-h-0 min-w-0 items-start justify-center lg:items-stretch">
           {center}
         </section>

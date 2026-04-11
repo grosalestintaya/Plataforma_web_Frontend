@@ -36,13 +36,10 @@ export default function HeaderExitButton({
       onClick={onClick}
       title={title}
       aria-label={title}
-      className={`group relative grid h-15 w-10 shrink-0 place-items-center rounded-2xl transition duration-300 hover:scale-[1.04] active:scale-[0.97] sm:h-[44px] sm:w-[44px] md:h-[48px] md:w-[48px] ${className}`}
-    >
-      <span
-        className="pointer-events-none absolute inset-1 rounded-2xl"
-      />
+      className={`group relative grid h-15 w-10 shrink-0 place-items-center rounded-2xl transition duration-300 hover:scale-[1.04] active:scale-[0.97] sm:h-[44px] sm:w-[44px] md:h-[48px] md:w-[48px] ${className}`}>
+      <span className="pointer-events-none absolute inset-1 rounded-2xl" />
 
-      <XpQuipuIcon className="relative z-10 h-6 w-6 text-white transition-transform duration-300 group-hover:scale-110 sm:h-7 sm:w-7" />
+      <XpQuipuIcon className="relative z-10 h-6 w-6 text-white transition-transform duration-300 group-hover:scale-110 sm:h-14 sm:w-14" />
     </button>
   );
 }

@@ -62,11 +62,8 @@ export default function ModuleActivtyPage() {
     missionAttemptTrack: missionAttempt.track,
   });
 
-  const {
-    missionCompletion,
-    nextMissionKey,
-    registerMissionCompletion,
-  } = useActivityMissionCompletion(moduleData, safeMissionKey);
+  const { missionCompletion, nextMissionKey, registerMissionCompletion } =
+    useActivityMissionCompletion(moduleData, safeMissionKey);
 
   const actions = useMemo(
     () => ({
@@ -166,18 +163,17 @@ export default function ModuleActivtyPage() {
     closeExitConfirmation,
     confirmExitToMenu,
     handleExitToMenu,
-  } =
-    useActivityExitGuards({
-      activityId,
-      missionAttempt,
-      missionScore,
-      moduleCode,
-      missionKey: player.missionKey,
-      moduleMenuPath,
-      navigate,
-      currentTemplate: player.view?.template,
-      getInteractiveResponses: buildInteractiveResponsesPayload,
-    });
+  } = useActivityExitGuards({
+    activityId,
+    missionAttempt,
+    missionScore,
+    moduleCode,
+    missionKey: player.missionKey,
+    moduleMenuPath,
+    navigate,
+    currentTemplate: player.view?.template,
+    getInteractiveResponses: buildInteractiveResponsesPayload,
+  });
 
   function handleOpenSettings() {
     setIsSettingsOpen(true);
@@ -197,8 +193,7 @@ export default function ModuleActivtyPage() {
             // La pagina reparte header, hero y footer con alturas controladas.
             gridTemplateRows:
               "var(--activity-header-height, auto) minmax(0, 1fr) var(--activity-footer-height, auto)",
-          }}
-        >
+          }}>
           <Header
             moduleData={moduleData}
             missionKey={player.missionKey}

@@ -73,8 +73,7 @@ export default function SceneBackground({
           "--activity-header-height": "clamp(96px, 13vh, 132px)",
           "--activity-footer-height": "clamp(56px, 8vh, 72px)",
           "--activity-shell-gutter": "clamp(12px, 2vw, 28px)",
-        }}
-      >
+        }}>
         {children}
       </div>
     </div>

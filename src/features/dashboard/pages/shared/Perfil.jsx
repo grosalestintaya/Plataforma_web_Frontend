@@ -5,6 +5,10 @@ import { useAuth } from "../../../auth/components/AuthContext";
 
 const getAvatarPath = (imgKey) => `/avatars/${imgKey}.png`;
 
+function cn(...classes) {
+  return classes.filter(Boolean).join(" ");
+}
+
 function hexToRgba(hex, alpha = 1) {
   const clean = String(hex || "#000").replace("#", "");
   const full =
@@ -71,47 +75,62 @@ function buildProfileUser(
 function PanelShell({ children, color, className = "" }) {
   return (
     <section
-      className={`relative overflow-hidden rounded-[26px] border ${className}`}
+      className={cn(
+        "relative h-full min-h-0 overflow-hidden rounded-[24px] border",
+        "transition-shadow duration-200",
+        className,
+      )}
       style={{
-        borderColor: hexToRgba(color, 0.22),
+        borderColor: hexToRgba(color, 0.2),
         background: `
-          radial-gradient(circle at top right, ${hexToRgba(color, 0.16)}, transparent 28%),
+          radial-gradient(circle at top right, ${hexToRgba(color, 0.14)}, transparent 28%),
           radial-gradient(circle at bottom left, ${hexToRgba(color, 0.1)}, transparent 24%),
-          linear-gradient(180deg, rgba(255,255,255,0.97), rgba(255,255,255,0.90))
+          linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.91))
         `,
-        boxShadow: `0 20px 44px ${hexToRgba(color, 0.11)}`,
+        boxShadow: `0 14px 34px ${hexToRgba(color, 0.08)}`,
       }}>
       <div
-        className="pointer-events-none absolute inset-0 opacity-60"
+        className="pointer-events-none absolute inset-0 opacity-55"
         style={{
-          backgroundImage: `
-            radial-gradient(circle at 12px 12px, ${hexToRgba(color, 0.08)} 1.2px, transparent 1.4px)
-          `,
+          backgroundImage: `radial-gradient(circle at 12px 12px, ${hexToRgba(
+            color,
+            0.065,
+          )} 1.2px, transparent 1.4px)`,
           backgroundSize: "22px 22px",
         }}
       />
-      <div className="relative h-full">{children}</div>
+      <div className="relative h-full min-h-0">{children}</div>
     </section>
+  );
+}
+
+function SectionLabel({ children, color }) {
+  return (
+    <p
+      className="text-[10px] font-black uppercase tracking-[0.18em]"
+      style={{ color: hexToRgba(color, 0.92) }}>
+      {children}
+    </p>
   );
 }
 
 function InfoRow({ label, value, color }) {
   return (
     <div
-      className="rounded-2xl border px-3.5 py-3"
+      className="rounded-[18px] border px-3 py-2.5"
       style={{
-        borderColor: hexToRgba(color, 0.16),
+        borderColor: hexToRgba(color, 0.14),
         background:
-          "linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.82))",
-        boxShadow: `0 10px 20px ${hexToRgba(color, 0.05)}`,
+          "linear-gradient(180deg, rgba(255,255,255,0.94), rgba(255,255,255,0.85))",
+        boxShadow: `0 8px 18px ${hexToRgba(color, 0.04)}`,
       }}>
       <p
-        className="text-[10px] font-black uppercase tracking-[0.18em]"
+        className="text-[9px] font-black uppercase tracking-[0.16em]"
         style={{ color: "var(--card-muted, rgba(15,23,42,0.62))" }}>
         {label}
       </p>
       <p
-        className="mt-1 break-words text-sm font-extrabold lg:text-[14px]"
+        className="mt-1 break-words text-[13px] font-extrabold leading-tight xl:text-sm"
         style={{ color: "var(--card-text, #0f172a)" }}>
         {value || "—"}
       </p>
@@ -122,10 +141,10 @@ function InfoRow({ label, value, color }) {
 function StatusPill({ active, color }) {
   return (
     <div
-      className="inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.16em] lg:text-[11px]"
+      className="inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.14em]"
       style={{
-        borderColor: hexToRgba(color, 0.28),
-        background: active ? hexToRgba(color, 0.12) : "rgba(15,23,42,0.06)",
+        borderColor: hexToRgba(color, 0.24),
+        background: active ? hexToRgba(color, 0.11) : "rgba(15,23,42,0.06)",
         color: active
           ? hexToRgba(color, 0.95)
           : "var(--card-muted, rgba(15,23,42,0.62))",
@@ -135,8 +154,8 @@ function StatusPill({ active, color }) {
         style={{
           background: active ? color : "var(--accent, #f59e0b)",
           boxShadow: active
-            ? `0 0 12px ${hexToRgba(color, 0.65)}`
-            : "0 0 12px rgba(245,158,11,0.45)",
+            ? `0 0 10px ${hexToRgba(color, 0.55)}`
+            : "0 0 10px rgba(245,158,11,0.40)",
         }}
       />
       {active ? "Cuenta activa" : "Pendiente"}
@@ -147,25 +166,86 @@ function StatusPill({ active, color }) {
 function SmallChip({ label, value, color }) {
   return (
     <div
-      className="rounded-2xl border px-3 py-2"
+      className="rounded-[18px] border px-3 py-2"
       style={{
-        borderColor: hexToRgba(color, 0.18),
+        borderColor: hexToRgba(color, 0.16),
         background: `linear-gradient(180deg, ${hexToRgba(
           color,
-          0.08,
-        )}, rgba(255,255,255,0.80))`,
+          0.07,
+        )}, rgba(255,255,255,0.82))`,
       }}>
       <p
-        className="text-[10px] font-black uppercase tracking-[0.16em]"
+        className="text-[9px] font-black uppercase tracking-[0.16em]"
         style={{ color: "var(--card-muted, rgba(15,23,42,0.62))" }}>
         {label}
       </p>
       <p
-        className="mt-1 text-sm font-black"
+        className="mt-1 text-[13px] font-black leading-none"
         style={{ color: hexToRgba(color, 0.96) }}>
         {value}
       </p>
     </div>
+  );
+}
+
+function ActionTile({
+  icon,
+  title,
+  subtitle,
+  actionText = "Abrir",
+  color,
+  onClick,
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={cn(
+        "group flex w-full max-w-[250px] items-center gap-3 rounded-[18px] border px-3 py-2.5 text-left",
+        "transition-all duration-200 hover:shadow-md active:scale-[0.99]",
+        "focus-visible:outline-none focus-visible:ring-4",
+      )}
+      style={{
+        borderColor: hexToRgba(color, 0.2),
+        background: `linear-gradient(180deg, ${hexToRgba(
+          color,
+          0.07,
+        )}, rgba(255,255,255,0.92))`,
+        boxShadow: `0 10px 20px ${hexToRgba(color, 0.06)}`,
+        "--tw-ring-color": hexToRgba(color, 0.16),
+      }}>
+      <span
+        className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl text-base"
+        style={{
+          background: hexToRgba(color, 0.16),
+          border: `1px solid ${hexToRgba(color, 0.24)}`,
+        }}>
+        {icon}
+      </span>
+
+      <div className="min-w-0 flex-1">
+        <p
+          className="text-sm font-black leading-none"
+          style={{ color: "var(--card-text, #0f172a)" }}>
+          {title}
+        </p>
+        <p
+          className="mt-1 text-[11px] leading-tight"
+          style={{ color: "var(--card-muted, rgba(15,23,42,0.62))" }}>
+          {subtitle}
+        </p>
+      </div>
+
+      <span
+        className="rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-[0.12em]"
+        style={{
+          background: hexToRgba(color, 0.12),
+          color: hexToRgba(color, 0.95),
+          border: `1px solid ${hexToRgba(color, 0.2)}`,
+        }}>
+        {actionText}
+      </span>
+    </button>
   );
 }
 
@@ -175,70 +255,74 @@ function StyleCard({ option, active, onClick, disabled }) {
       type="button"
       disabled={disabled}
       onClick={() => onClick(option.value)}
-      className="group relative overflow-hidden rounded-2xl border p-4 text-left transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-60"
+      className={cn(
+        "group relative overflow-hidden rounded-[20px] border p-3.5 text-left",
+        "transition-all duration-200 active:scale-[0.99]",
+        "focus-visible:outline-none focus-visible:ring-4",
+        "disabled:cursor-not-allowed disabled:opacity-60",
+      )}
       style={{
         borderColor: active
-          ? hexToRgba(option.color, 0.95)
+          ? hexToRgba(option.color, 0.92)
           : "rgba(15,23,42,0.08)",
         background: active
           ? `
             radial-gradient(circle at top left, ${hexToRgba(
               option.glow,
-              0.28,
+              0.24,
             )}, transparent 55%),
             linear-gradient(180deg, ${hexToRgba(
               option.color,
-              0.16,
+              0.14,
             )}, rgba(255,255,255,0.96))
           `
           : `
             radial-gradient(circle at top left, ${hexToRgba(
               option.color,
-              0.12,
+              0.09,
             )}, transparent 55%),
-            linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,255,255,0.88))
+            linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,255,255,0.89))
           `,
         boxShadow: active
           ? `0 0 0 1px ${hexToRgba(
               option.color,
-              0.24,
-            )}, 0 16px 28px ${hexToRgba(option.color, 0.2)}`
-          : "0 8px 18px rgba(15,23,42,0.07)",
-        transform: active ? "translateY(-2px) scale(1.01)" : "translateY(0)",
+              0.2,
+            )}, 0 12px 24px ${hexToRgba(option.color, 0.14)}`
+          : "0 8px 16px rgba(15,23,42,0.06)",
+        "--tw-ring-color": hexToRgba(option.color, 0.16),
       }}>
       <div
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "linear-gradient(135deg, rgba(255,255,255,0.18), transparent 45%, rgba(255,255,255,0.08) 100%)",
+            "linear-gradient(135deg, rgba(255,255,255,0.16), transparent 45%, rgba(255,255,255,0.08) 100%)",
         }}
       />
 
       <div className="relative flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          <div className="flex items-center gap-2">
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-2.5">
             <div
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl text-lg"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl text-base"
               style={{
                 background: `linear-gradient(180deg, ${hexToRgba(
                   option.color,
-                  0.24,
+                  0.22,
                 )}, ${hexToRgba(option.color, 0.12)})`,
-                border: `1px solid ${hexToRgba(option.color, 0.35)}`,
-                boxShadow: `0 8px 20px ${hexToRgba(option.color, 0.18)}`,
+                border: `1px solid ${hexToRgba(option.color, 0.3)}`,
               }}>
               {option.icon}
             </div>
 
             <div className="min-w-0">
               <p
-                className="truncate text-sm font-black tracking-wide"
+                className="truncate text-sm font-black"
                 style={{ color: "var(--card-text, #0f172a)" }}>
                 {option.label}
               </p>
               <p
-                className="truncate text-[11px] font-semibold uppercase tracking-[0.18em]"
-                style={{ color: hexToRgba(option.color, 0.9) }}>
+                className="truncate text-[10px] font-semibold uppercase tracking-[0.16em]"
+                style={{ color: hexToRgba(option.color, 0.92) }}>
                 {option.short}
               </p>
             </div>
@@ -248,11 +332,13 @@ function StyleCard({ option, active, onClick, disabled }) {
             {[1, 2, 3].map((i) => (
               <span
                 key={i}
-                className="h-2.5 rounded-full"
+                className="h-2 rounded-full"
                 style={{
-                  width: i === 3 ? 20 : 13,
-                  background: hexToRgba(option.color, 0.86),
-                  boxShadow: `0 0 12px ${hexToRgba(option.color, 0.4)}`,
+                  width: i === 3 ? 18 : 12,
+                  background: hexToRgba(option.color, active ? 0.9 : 0.72),
+                  boxShadow: active
+                    ? `0 0 10px ${hexToRgba(option.color, 0.32)}`
+                    : "none",
                 }}
               />
             ))}
@@ -260,16 +346,16 @@ function StyleCard({ option, active, onClick, disabled }) {
         </div>
 
         <div
-          className="mt-1 flex h-7 min-w-[82px] shrink-0 items-center justify-center rounded-full px-3 text-[10px] font-black uppercase tracking-[0.16em]"
+          className="mt-0.5 flex h-7 min-w-[78px] shrink-0 items-center justify-center rounded-full px-3 text-[10px] font-black uppercase tracking-[0.14em]"
           style={{
             background: active
-              ? hexToRgba(option.color, 0.16)
+              ? hexToRgba(option.color, 0.14)
               : "rgba(15,23,42,0.06)",
             color: active
               ? hexToRgba(option.color, 0.96)
               : "var(--card-muted, rgba(15,23,42,0.65))",
             border: `1px solid ${
-              active ? hexToRgba(option.color, 0.35) : "rgba(15,23,42,0.08)"
+              active ? hexToRgba(option.color, 0.28) : "rgba(15,23,42,0.08)"
             }`,
           }}>
           {active ? "Activo" : "Elegir"}
@@ -281,15 +367,13 @@ function StyleCard({ option, active, onClick, disabled }) {
 
 function LoadingView() {
   return (
-    <div className="flex h-full min-h-0 w-full min-w-0 flex-col overflow-hidden">
+    <div className="flex h-full min-h-0 w-full min-w-0 flex-col gap-3 overflow-hidden">
       <ShowDashboardTitle>Perfil</ShowDashboardTitle>
 
-      <div className="mt-3 flex min-h-0 flex-1 flex-col gap-4 overflow-hidden">
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1.34fr)_minmax(280px,0.76fr)]">
-          <div className="h-[290px] animate-pulse rounded-[26px] bg-white/60" />
-          <div className="h-[290px] animate-pulse rounded-[26px] bg-white/60" />
-        </div>
-        <div className="h-[250px] animate-pulse rounded-[26px] bg-white/60" />
+      <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 overflow-hidden xl:grid-cols-[minmax(0,1.45fr)_minmax(300px,0.8fr)] xl:grid-rows-[minmax(0,1fr)_auto]">
+        <div className="h-full animate-pulse rounded-[24px] bg-white/60 xl:row-span-1" />
+        <div className="h-full animate-pulse rounded-[24px] bg-white/60" />
+        <div className="h-full animate-pulse rounded-[24px] bg-white/60 xl:col-span-2" />
       </div>
     </div>
   );
@@ -297,13 +381,13 @@ function LoadingView() {
 
 function EmptyView() {
   return (
-    <div className="flex h-full min-h-0 w-full min-w-0 flex-col overflow-hidden">
+    <div className="flex h-full min-h-0 w-full min-w-0 flex-col gap-3 overflow-hidden">
       <ShowDashboardTitle>Perfil</ShowDashboardTitle>
 
       <div
-        className="mt-3 rounded-[26px] border p-6"
+        className="rounded-[24px] border p-6"
         style={{
-          background: "rgba(255,255,255,0.88)",
+          background: "rgba(255,255,255,0.9)",
           borderColor: "var(--card-border, rgba(15,23,42,0.10))",
         }}>
         <p
@@ -324,6 +408,14 @@ function EmptyView() {
 const Perfil = () => {
   const { user: authUser, updateStyle } = useAuth();
 
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [showAvatars, setShowAvatars] = useState(false);
+
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [savingPassword, setSavingPassword] = useState(false);
+  const [passwordError, setPasswordError] = useState("");
+
   const [profile, setProfile] = useState(null);
   const [ownedAvatars, setOwnedAvatars] = useState([]);
   const [selectedAvatar, setSelectedAvatar] = useState(null);
@@ -334,7 +426,6 @@ const Perfil = () => {
   const [loading, setLoading] = useState(true);
   const [savingStyle, setSavingStyle] = useState(false);
   const [equipping, setEquipping] = useState(false);
-  const [showAvatars, setShowAvatars] = useState(false);
   const [message, setMessage] = useState("");
 
   const mountedRef = useRef(false);
@@ -360,6 +451,38 @@ const Perfil = () => {
       STYLE_OPTIONS[0]
     );
   }, [draftStyle]);
+
+  const isStyleDirty = draftStyle !== savedStyle;
+  const displayAvatar =
+    selectedAvatar?.img_avatar || profile?.pinned_img || "avatar_m_base";
+
+  useEffect(() => {
+    if (!showPasswordModal && !showAvatars) return;
+
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") {
+        if (showPasswordModal && !savingPassword) {
+          setShowPasswordModal(false);
+          setNewPassword("");
+          setConfirmPassword("");
+          setPasswordError("");
+        }
+        if (showAvatars && !equipping) {
+          setShowAvatars(false);
+        }
+      }
+    };
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [showPasswordModal, showAvatars, savingPassword, equipping]);
+
   useEffect(() => {
     mountedRef.current = true;
 
@@ -387,7 +510,6 @@ const Perfil = () => {
           setProfile(nextProfile);
           setDraftStyle(nextProfile.style);
           setSavedStyle(nextProfile.style);
-
           updateStyleRef.current?.(nextProfile.style);
         }
 
@@ -433,16 +555,73 @@ const Perfil = () => {
       }
     };
   }, [authUser?.id]);
+
+  const handleOpenPasswordModal = () => {
+    setPasswordError("");
+    setNewPassword("");
+    setConfirmPassword("");
+    setShowPasswordModal(true);
+  };
+
+  const handleClosePasswordModal = () => {
+    if (savingPassword) return;
+    setShowPasswordModal(false);
+    setNewPassword("");
+    setConfirmPassword("");
+    setPasswordError("");
+  };
+
+  const handleSavePassword = async () => {
+    const trimmed = newPassword.trim();
+    const trimmedConfirm = confirmPassword.trim();
+
+    if (!trimmed || !trimmedConfirm) {
+      setPasswordError("Completa ambos campos.");
+      return;
+    }
+
+    if (trimmed.length < 4) {
+      setPasswordError("La contraseña debe tener al menos 4 caracteres.");
+      return;
+    }
+
+    if (trimmed !== trimmedConfirm) {
+      setPasswordError("Las contraseñas no coinciden.");
+      return;
+    }
+
+    setSavingPassword(true);
+    setPasswordError("");
+    setMessage("");
+
+    try {
+      const res = await UserService.editMyData({
+        username: profile.username?.trim() || "",
+        style: savedStyleRef.current || draftStyle || "green",
+        password: trimmed,
+      });
+
+      setMessage(res?.msg || "Contraseña actualizada correctamente.");
+      handleClosePasswordModal();
+    } catch (error) {
+      console.error("Error cambiando contraseña:", error);
+      setPasswordError(
+        error?.message || "No se pudo actualizar la contraseña.",
+      );
+    } finally {
+      setSavingPassword(false);
+    }
+  };
+
   const handleStyleChange = (value) => {
     if (!value || value === draftStyle || savingStyle) return;
-
     setDraftStyle(value);
     setMessage("");
     updateStyleRef.current?.(value);
   };
 
   const handleSaveStyle = async () => {
-    if (!profile || savingStyle) return;
+    if (!profile || savingStyle || !isStyleDirty) return;
 
     setSavingStyle(true);
     setMessage("");
@@ -510,137 +689,97 @@ const Perfil = () => {
   if (loading) return <LoadingView />;
   if (!profile) return <EmptyView />;
 
-  const displayAvatar =
-    selectedAvatar?.img_avatar || profile.pinned_img || "avatar_m_base";
-
   return (
-    <div className="flex h-full min-h-0 w-full min-w-0 flex-col overflow-hidden">
-      <div className="mt-0 min-h-0 flex-1 overflow-y-auto pr-1">
-        <div className="flex min-h-full flex-col gap-4">
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1.34fr)_minmax(280px,0.76fr)] xl:grid-cols-[minmax(0,1.42fr)_minmax(300px,0.78fr)]">
-            <div className="min-w-0">
-              <PanelShell
-                color={currentStyleMeta.color}
-                className="h-full p-4 lg:p-5 xl:p-6">
-                <div className="flex h-full flex-col gap-4">
-                  <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                    <div className="flex min-w-0 flex-col gap-4 sm:flex-row sm:items-center">
-                      <div className="relative mx-auto shrink-0 sm:mx-0">
-                        <div
-                          className="absolute inset-[-10px] rounded-full blur-2xl"
-                          style={{
-                            background: `radial-gradient(circle, ${hexToRgba(
-                              currentStyleMeta.color,
-                              0.24,
-                            )} 0%, transparent 70%)`,
-                          }}
-                        />
-                        <img
-                          src={getAvatarPath(displayAvatar)}
-                          alt={profile.username}
-                          className="relative h-22 w-22 rounded-full border-[4px] object-cover sm:h-24 sm:w-24 xl:h-28 xl:w-28"
-                          style={{
-                            borderColor: currentStyleMeta.color,
-                            backgroundColor: "var(--app-bg, #f8fafc)",
-                            boxShadow: `0 0 0 8px ${hexToRgba(
-                              currentStyleMeta.color,
-                              0.12,
-                            )}`,
-                          }}
-                        />
-                      </div>
-
-                      <div className="min-w-0 flex-1 text-center sm:text-left">
-                        <p
-                          className="text-[11px] font-black uppercase tracking-[0.2em]"
-                          style={{
-                            color: hexToRgba(currentStyleMeta.color, 0.92),
-                          }}>
-                          Perfil del jugador
-                        </p>
-
-                        <h2
-                          className="mt-1 break-words text-xl font-black tracking-tight lg:text-2xl xl:text-[2rem]"
-                          style={{ color: "var(--card-text, #0f172a)" }}>
-                          {profile.name} {profile.lastname}
-                        </h2>
-
-                        <p
-                          className="mt-1 break-all text-sm font-semibold lg:text-[15px]"
-                          style={{
-                            color: "var(--card-muted, rgba(15,23,42,0.62))",
-                          }}>
-                          @{profile.username}
-                        </p>
-                      </div>
-                    </div>
-
+    <div className="flex h-full min-h-0 w-full min-w-0 flex-col gap-3 overflow-hidden">
+      <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 overflow-hidden xl:grid-cols-[minmax(0,1.45fr)_minmax(300px,0.8fr)] xl:grid-rows-[minmax(0,1fr)_auto]">
+        <div className="min-h-0 xl:row-span-1">
+          <PanelShell
+            color={currentStyleMeta.color}
+            className="p-4 lg:p-4 xl:p-5">
+            <div className="flex h-full min-h-0 flex-col gap-4">
+              <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                <div className="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-center">
+                  <div className="relative mx-auto shrink-0 sm:mx-0">
                     <div
-                      className="mx-auto w-full max-w-[250px] rounded-[20px] border px-3.5 py-3 sm:mx-0 sm:w-auto"
+                      className="absolute inset-[-10px] rounded-full blur-2xl"
                       style={{
-                        borderColor: hexToRgba(currentStyleMeta.color, 0.22),
-                        background: `linear-gradient(180deg, ${hexToRgba(
+                        background: `radial-gradient(circle, ${hexToRgba(
+                          currentStyleMeta.color,
+                          0.22,
+                        )} 0%, transparent 70%)`,
+                      }}
+                    />
+                    <img
+                      src={getAvatarPath(displayAvatar)}
+                      alt={profile.username}
+                      className="relative rounded-full border-[4px] object-cover"
+                      style={{
+                        width: "clamp(82px, 7vw, 106px)",
+                        height: "clamp(82px, 7vw, 106px)",
+                        borderColor: currentStyleMeta.color,
+                        backgroundColor: "var(--app-bg, #f8fafc)",
+                        boxShadow: `0 0 0 8px ${hexToRgba(
                           currentStyleMeta.color,
                           0.1,
-                        )}, rgba(255,255,255,0.82))`,
+                        )}`,
+                      }}
+                    />
+                  </div>
+
+                  <div className="min-w-0 flex-1 text-center sm:text-left">
+                    <SectionLabel color={currentStyleMeta.color}>
+                      Perfil del jugador
+                    </SectionLabel>
+
+                    <h2
+                      className="mt-1 break-words text-[clamp(1.1rem,1.6vw,1.8rem)] font-black leading-tight"
+                      style={{ color: "var(--card-text, #0f172a)" }}>
+                      {profile.name} {profile.lastname}
+                    </h2>
+
+                    <p
+                      className="mt-1 break-all text-sm font-semibold"
+                      style={{
+                        color: "var(--card-muted, rgba(15,23,42,0.62))",
                       }}>
-                      <p
-                        className="text-[10px] font-black uppercase tracking-[0.18em]"
-                        style={{
-                          color: "var(--card-muted, rgba(15,23,42,0.62))",
-                        }}>
-                        Núcleo activo
-                      </p>
-
-                      <div className="mt-2 flex items-center gap-2">
-                        <span
-                          className="inline-flex h-9 w-9 items-center justify-center rounded-2xl text-lg"
-                          style={{
-                            background: hexToRgba(currentStyleMeta.color, 0.16),
-                            border: `1px solid ${hexToRgba(
-                              currentStyleMeta.color,
-                              0.28,
-                            )}`,
-                          }}>
-                          {currentStyleMeta.icon}
-                        </span>
-
-                        <div>
-                          <p
-                            className="text-sm font-black"
-                            style={{ color: "var(--card-text, #0f172a)" }}>
-                            {currentStyleMeta.short}
-                          </p>
-                          <p
-                            className="text-xs"
-                            style={{
-                              color: "var(--card-muted, rgba(15,23,42,0.62))",
-                            }}>
-                            Personalización lista
-                          </p>
-                        </div>
-                      </div>
-                    </div>
+                      @{profile.username}
+                    </p>
                   </div>
+                </div>
 
-                  <div className="flex flex-wrap justify-center gap-2.5 sm:justify-start">
-                    <StatusPill
-                      active={profile.is_active}
-                      color={currentStyleMeta.color}
-                    />
-                    <SmallChip
-                      label="Tema"
-                      value={currentStyleMeta.label}
-                      color={currentStyleMeta.color}
-                    />
-                    <SmallChip
-                      label="Clase"
-                      value={profile.gradeName}
-                      color={currentStyleMeta.color}
-                    />
-                  </div>
+                <ActionTile
+                  icon="🔐"
+                  title="Cambiar contraseña"
+                  subtitle="Actualiza el acceso"
+                  color={currentStyleMeta.color}
+                  onClick={handleOpenPasswordModal}
+                />
+              </div>
 
-                  <div className="grid gap-3 md:grid-cols-2">
+              <div className="flex flex-wrap justify-center gap-2.5 sm:justify-start">
+                <StatusPill
+                  active={profile.is_active}
+                  color={currentStyleMeta.color}
+                />
+                <SmallChip
+                  label="Tema"
+                  value={currentStyleMeta.label}
+                  color={currentStyleMeta.color}
+                />
+                <SmallChip
+                  label="Clase"
+                  value={profile.gradeName}
+                  color={currentStyleMeta.color}
+                />
+              </div>
+
+              <div className="grid min-h-0 flex-1 gap-4 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
+                <div className="space-y-3 min-h-0">
+                  <SectionLabel color={currentStyleMeta.color}>
+                    Datos académicos
+                  </SectionLabel>
+
+                  <div className="grid gap-3">
                     <InfoRow
                       label="Colegio"
                       value={profile.schoolName}
@@ -651,6 +790,15 @@ const Perfil = () => {
                       value={profile.gradeName}
                       color={currentStyleMeta.color}
                     />
+                  </div>
+                </div>
+
+                <div className="space-y-3 min-h-0">
+                  <SectionLabel color={currentStyleMeta.color}>
+                    Información general
+                  </SectionLabel>
+
+                  <div className="grid gap-3 sm:grid-cols-2">
                     <InfoRow
                       label="Rol"
                       value={profile.roleName}
@@ -661,314 +809,306 @@ const Perfil = () => {
                       value={profile.is_active ? "Disponible" : "Restringido"}
                       color={currentStyleMeta.color}
                     />
-                  </div>
-
-                  <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-                    <InfoRow
-                      label="Usuario"
-                      value={`@${profile.username}`}
-                      color={currentStyleMeta.color}
-                    />
-                    <InfoRow
-                      label="Nombres"
-                      value={profile.name}
-                      color={currentStyleMeta.color}
-                    />
-                    <InfoRow
-                      label="Apellidos"
-                      value={profile.lastname}
-                      color={currentStyleMeta.color}
-                    />
                     <InfoRow
                       label="Avatar"
                       value={selectedAvatar?.name || "Activo"}
                       color={currentStyleMeta.color}
                     />
+                    <InfoRow
+                      label="Usuario"
+                      value={profile.username}
+                      color={currentStyleMeta.color}
+                    />
                   </div>
                 </div>
-              </PanelShell>
+              </div>
             </div>
+          </PanelShell>
+        </div>
 
-            <div className="min-w-0">
-              <PanelShell
-                color={currentStyleMeta.color}
-                className="h-full min-h-[320px] p-4 lg:p-5 xl:p-6">
-                <div className="flex h-full flex-col items-center text-center">
-                  <p
-                    className="text-[11px] font-black uppercase tracking-[0.22em]"
-                    style={{ color: hexToRgba(currentStyleMeta.color, 0.94) }}>
-                    Avatar activo
-                  </p>
+        <div className="min-h-0">
+          <PanelShell
+            color={currentStyleMeta.color}
+            className="p-4 lg:p-4 xl:p-5">
+            <div className="flex h-full min-h-0 flex-col items-center text-center">
+              <SectionLabel color={currentStyleMeta.color}>
+                Avatar activo
+              </SectionLabel>
 
-                  <div className="relative mt-4">
-                    <div
-                      className="absolute inset-[-14px] rounded-full blur-2xl"
-                      style={{
-                        background: `radial-gradient(circle, ${hexToRgba(
-                          currentStyleMeta.color,
-                          0.26,
-                        )} 0%, transparent 70%)`,
-                      }}
-                    />
+              <div className="relative mt-3">
+                <div
+                  className="absolute inset-[-12px] rounded-full blur-2xl"
+                  style={{
+                    background: `radial-gradient(circle, ${hexToRgba(
+                      currentStyleMeta.color,
+                      0.24,
+                    )} 0%, transparent 70%)`,
+                  }}
+                />
 
-                    <img
-                      src={getAvatarPath(displayAvatar)}
-                      alt="avatar actual"
-                      className="relative h-26 w-26 rounded-full border-[5px] object-cover sm:h-28 sm:w-28 lg:h-32 lg:w-32 xl:h-36 xl:w-36"
-                      style={{
-                        borderColor: currentStyleMeta.color,
-                        boxShadow: `0 0 0 8px ${hexToRgba(
-                          currentStyleMeta.color,
-                          0.14,
-                        )}`,
-                      }}
-                    />
+                <img
+                  src={getAvatarPath(displayAvatar)}
+                  alt="avatar actual"
+                  className="relative rounded-full border-[5px] object-cover"
+                  style={{
+                    width: "clamp(92px, 8vw, 128px)",
+                    height: "clamp(92px, 8vw, 128px)",
+                    borderColor: currentStyleMeta.color,
+                    boxShadow: `0 0 0 8px ${hexToRgba(
+                      currentStyleMeta.color,
+                      0.12,
+                    )}`,
+                  }}
+                />
 
-                    <button
-                      type="button"
-                      onClick={() => setShowAvatars(true)}
-                      className="absolute bottom-1 right-0 rounded-full px-3 py-2 text-[10px] font-black uppercase tracking-[0.14em] transition"
-                      style={{
-                        background: `linear-gradient(180deg, ${hexToRgba(
-                          currentStyleMeta.color,
-                          0.98,
-                        )}, ${hexToRgba(currentStyleMeta.color, 0.82)})`,
-                        color: "#fff",
-                        boxShadow: `0 12px 24px ${hexToRgba(
-                          currentStyleMeta.color,
-                          0.3,
-                        )}`,
-                      }}>
-                      Editar
-                    </button>
-                  </div>
+                <button
+                  type="button"
+                  onClick={() => setShowAvatars(true)}
+                  className={cn(
+                    "absolute bottom-0 right-0 rounded-full px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.12em]",
+                    "transition-all duration-200 active:scale-[0.98]",
+                    "focus-visible:outline-none focus-visible:ring-4",
+                  )}
+                  style={{
+                    background: `linear-gradient(180deg, ${hexToRgba(
+                      currentStyleMeta.color,
+                      0.98,
+                    )}, ${hexToRgba(currentStyleMeta.color, 0.82)})`,
+                    color: "#fff",
+                    boxShadow: `0 12px 24px ${hexToRgba(
+                      currentStyleMeta.color,
+                      0.24,
+                    )}`,
+                    "--tw-ring-color": hexToRgba(currentStyleMeta.color, 0.16),
+                  }}>
+                  Editar
+                </button>
+              </div>
 
-                  <p
-                    className="mt-4 break-all text-lg font-black"
-                    style={{ color: "var(--card-text, #0f172a)" }}>
-                    @{profile.username}
-                  </p>
+              <p
+                className="mt-3 break-all text-base font-black"
+                style={{ color: "var(--card-text, #0f172a)" }}>
+                @{profile.username}
+              </p>
 
+              <div
+                className="mt-2 rounded-full px-4 py-2 text-[10px] font-black uppercase tracking-[0.14em]"
+                style={{
+                  background: hexToRgba(currentStyleMeta.color, 0.12),
+                  color: hexToRgba(currentStyleMeta.color, 0.96),
+                  border: `1px solid ${hexToRgba(currentStyleMeta.color, 0.2)}`,
+                }}>
+                {equipping
+                  ? "Cambiando avatar..."
+                  : selectedAvatar?.name || "Avatar actual"}
+              </div>
+
+              <div
+                className="mt-4 w-full rounded-[20px] border p-3.5 text-left"
+                style={{
+                  borderColor: hexToRgba(currentStyleMeta.color, 0.16),
+                  background:
+                    "linear-gradient(180deg, rgba(255,255,255,0.94), rgba(255,255,255,0.85))",
+                }}>
+                <p
+                  className="text-[9px] font-black uppercase tracking-[0.16em]"
+                  style={{
+                    color: "var(--card-muted, rgba(15,23,42,0.62))",
+                  }}>
+                  Personalización equipada
+                </p>
+
+                <div className="mt-3 flex items-center gap-3">
                   <div
-                    className="mt-3 rounded-full px-4 py-2 text-[10px] font-black uppercase tracking-[0.16em] lg:text-xs"
+                    className="flex h-10 w-10 items-center justify-center rounded-2xl text-base"
                     style={{
-                      background: hexToRgba(currentStyleMeta.color, 0.12),
-                      color: hexToRgba(currentStyleMeta.color, 0.96),
+                      background: hexToRgba(currentStyleMeta.color, 0.16),
                       border: `1px solid ${hexToRgba(
                         currentStyleMeta.color,
                         0.24,
                       )}`,
                     }}>
-                    {equipping
-                      ? "Cambiando avatar..."
-                      : selectedAvatar?.name || "Avatar actual"}
+                    {currentStyleMeta.icon}
                   </div>
 
-                  <div
-                    className="mt-5 w-full rounded-[22px] border p-4 text-left"
-                    style={{
-                      borderColor: hexToRgba(currentStyleMeta.color, 0.18),
-                      background:
-                        "linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.82))",
-                    }}>
+                  <div className="min-w-0">
                     <p
-                      className="text-[10px] font-black uppercase tracking-[0.18em]"
+                      className="text-sm font-black"
+                      style={{ color: "var(--card-text, #0f172a)" }}>
+                      Tema {currentStyleMeta.label}
+                    </p>
+                    <p
+                      className="text-[11px]"
                       style={{
                         color: "var(--card-muted, rgba(15,23,42,0.62))",
                       }}>
-                      Personalización equipada
+                      Avatar y estilo sincronizados
                     </p>
-
-                    <div className="mt-3 flex items-center gap-3">
-                      <div
-                        className="flex h-11 w-11 items-center justify-center rounded-2xl text-lg"
-                        style={{
-                          background: hexToRgba(currentStyleMeta.color, 0.16),
-                          border: `1px solid ${hexToRgba(
-                            currentStyleMeta.color,
-                            0.28,
-                          )}`,
-                          boxShadow: `0 10px 20px ${hexToRgba(
-                            currentStyleMeta.color,
-                            0.16,
-                          )}`,
-                        }}>
-                        {currentStyleMeta.icon}
-                      </div>
-
-                      <div className="min-w-0">
-                        <p
-                          className="text-sm font-black"
-                          style={{ color: "var(--card-text, #0f172a)" }}>
-                          Tema {currentStyleMeta.label}
-                        </p>
-                        <p
-                          className="text-xs"
-                          style={{
-                            color: "var(--card-muted, rgba(15,23,42,0.62))",
-                          }}>
-                          Avatar y estilo sincronizados
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mt-auto w-full pt-5">
-                    <div className="grid w-full grid-cols-3 gap-2">
-                      {[1, 2, 3].map((n) => (
-                        <div
-                          key={n}
-                          className="h-3 rounded-full"
-                          style={{
-                            background:
-                              n === 2
-                                ? hexToRgba(currentStyleMeta.color, 0.92)
-                                : hexToRgba(currentStyleMeta.color, 0.34),
-                            boxShadow:
-                              n === 2
-                                ? `0 0 14px ${hexToRgba(
-                                    currentStyleMeta.color,
-                                    0.45,
-                                  )}`
-                                : "none",
-                          }}
-                        />
-                      ))}
-                    </div>
                   </div>
                 </div>
+              </div>
 
-                {showAvatars && (
-                  <div
-                    className="absolute inset-0 z-20 flex items-center justify-center rounded-[26px] bg-black/30 p-3 backdrop-blur-sm"
-                    onClick={() => setShowAvatars(false)}>
+              <div className="mt-auto w-full pt-4">
+                <div className="grid w-full grid-cols-3 gap-2">
+                  {[1, 2, 3].map((n) => (
                     <div
-                      className="max-h-[82vh] w-full max-w-[420px] overflow-y-auto rounded-[24px] border p-4 shadow-2xl sm:p-5"
+                      key={n}
+                      className="h-2.5 rounded-full"
                       style={{
-                        borderColor: hexToRgba(currentStyleMeta.color, 0.22),
-                        background: `
-                          radial-gradient(circle at top center, ${hexToRgba(
-                            currentStyleMeta.color,
-                            0.12,
-                          )}, transparent 35%),
-                          linear-gradient(180deg, rgba(255,255,255,0.97), rgba(255,255,255,0.92))
-                        `,
+                        background:
+                          n === 2
+                            ? hexToRgba(currentStyleMeta.color, 0.92)
+                            : hexToRgba(currentStyleMeta.color, 0.32),
+                        boxShadow:
+                          n === 2
+                            ? `0 0 12px ${hexToRgba(
+                                currentStyleMeta.color,
+                                0.4,
+                              )}`
+                            : "none",
                       }}
-                      onClick={(e) => e.stopPropagation()}>
-                      <div className="flex items-start justify-between gap-3">
-                        <div className="min-w-0">
-                          <p
-                            className="text-sm font-black uppercase tracking-[0.18em]"
-                            style={{ color: "var(--card-text, #0f172a)" }}>
-                            Tus avatares
-                          </p>
-                          <p
-                            className="mt-1 text-xs"
-                            style={{
-                              color: "var(--card-muted, rgba(15,23,42,0.62))",
-                            }}>
-                            Selecciona uno para equiparlo al instante.
-                          </p>
-                        </div>
-
-                        <button
-                          type="button"
-                          onClick={() => setShowAvatars(false)}
-                          className="shrink-0 rounded-full px-3 py-1.5 text-xs font-black uppercase tracking-[0.14em]"
-                          style={{
-                            background: "rgba(15,23,42,0.06)",
-                            color: "var(--card-text, #0f172a)",
-                            border: "1px solid rgba(15,23,42,0.08)",
-                          }}>
-                          Cerrar
-                        </button>
-                      </div>
-
-                      {ownedAvatars.length === 0 ? (
-                        <p
-                          className="mt-4 text-sm"
-                          style={{
-                            color: "var(--card-muted, rgba(15,23,42,0.62))",
-                          }}>
-                          No tienes avatares disponibles.
-                        </p>
-                      ) : (
-                        <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
-                          {ownedAvatars.map((avatar) => {
-                            const isSelected =
-                              selectedAvatar?.id_avatar === avatar.id_avatar;
-
-                            return (
-                              <button
-                                key={avatar.id_avatar}
-                                type="button"
-                                onClick={() => handleAvatarSelect(avatar)}
-                                disabled={equipping}
-                                className="rounded-2xl p-2 transition disabled:cursor-not-allowed disabled:opacity-60"
-                                style={{
-                                  border: `2px solid ${
-                                    isSelected
-                                      ? hexToRgba(currentStyleMeta.color, 0.95)
-                                      : "rgba(15,23,42,0.08)"
-                                  }`,
-                                  background: isSelected
-                                    ? hexToRgba(currentStyleMeta.color, 0.12)
-                                    : "rgba(255,255,255,0.76)",
-                                  boxShadow: isSelected
-                                    ? `0 12px 24px ${hexToRgba(
-                                        currentStyleMeta.color,
-                                        0.24,
-                                      )}`
-                                    : "0 8px 18px rgba(15,23,42,0.08)",
-                                  transform: isSelected
-                                    ? "translateY(-2px) scale(1.03)"
-                                    : "scale(1)",
-                                }}
-                                title={avatar.name}>
-                                <img
-                                  src={getAvatarPath(avatar.img_avatar)}
-                                  alt={avatar.name}
-                                  className="mx-auto h-16 w-16 rounded-full object-cover"
-                                />
-                                <p
-                                  className="mt-2 truncate text-[10px] font-black uppercase tracking-[0.12em]"
-                                  style={{
-                                    color: isSelected
-                                      ? hexToRgba(currentStyleMeta.color, 0.96)
-                                      : "var(--card-text, #0f172a)",
-                                  }}>
-                                  {avatar.name}
-                                </p>
-                              </button>
-                            );
-                          })}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )}
-              </PanelShell>
+                    />
+                  ))}
+                </div>
+              </div>
             </div>
-          </div>
 
-          <div className="min-w-0">
-            <PanelShell
-              color={currentStyleMeta.color}
-              className="p-4 lg:p-5 xl:p-6">
-              <div className="mb-5 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            {showAvatars && (
+              <div
+                className="absolute inset-0 z-20 flex items-center justify-center rounded-[24px] bg-black/30 p-3 backdrop-blur-sm"
+                onClick={() => !equipping && setShowAvatars(false)}>
+                <div
+                  className="max-h-[80vh] w-full max-w-[430px] overflow-y-auto rounded-[22px] border p-4 shadow-2xl"
+                  style={{
+                    borderColor: hexToRgba(currentStyleMeta.color, 0.22),
+                    background: `
+                      radial-gradient(circle at top center, ${hexToRgba(
+                        currentStyleMeta.color,
+                        0.12,
+                      )}, transparent 35%),
+                      linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.93))
+                    `,
+                  }}
+                  onClick={(e) => e.stopPropagation()}>
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <p
+                        className="text-sm font-black uppercase tracking-[0.18em]"
+                        style={{ color: "var(--card-text, #0f172a)" }}>
+                        Tus avatares
+                      </p>
+                      <p
+                        className="mt-1 text-xs"
+                        style={{
+                          color: "var(--card-muted, rgba(15,23,42,0.62))",
+                        }}>
+                        Selecciona uno para equiparlo al instante.
+                      </p>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => !equipping && setShowAvatars(false)}
+                      className="shrink-0 rounded-full px-3 py-1.5 text-xs font-black uppercase tracking-[0.14em]"
+                      style={{
+                        background: "rgba(15,23,42,0.06)",
+                        color: "var(--card-text, #0f172a)",
+                        border: "1px solid rgba(15,23,42,0.08)",
+                      }}>
+                      Cerrar
+                    </button>
+                  </div>
+
+                  {ownedAvatars.length === 0 ? (
+                    <p
+                      className="mt-4 text-sm"
+                      style={{
+                        color: "var(--card-muted, rgba(15,23,42,0.62))",
+                      }}>
+                      No tienes avatares disponibles.
+                    </p>
+                  ) : (
+                    <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                      {ownedAvatars.map((avatar) => {
+                        const isSelected =
+                          selectedAvatar?.id_avatar === avatar.id_avatar;
+
+                        return (
+                          <button
+                            key={avatar.id_avatar}
+                            type="button"
+                            onClick={() => handleAvatarSelect(avatar)}
+                            disabled={equipping}
+                            className={cn(
+                              "rounded-[20px] p-2.5 transition-all duration-200 active:scale-[0.99]",
+                              "disabled:cursor-not-allowed disabled:opacity-60",
+                              "focus-visible:outline-none focus-visible:ring-4",
+                            )}
+                            style={{
+                              border: `2px solid ${
+                                isSelected
+                                  ? hexToRgba(currentStyleMeta.color, 0.92)
+                                  : "rgba(15,23,42,0.08)"
+                              }`,
+                              background: isSelected
+                                ? hexToRgba(currentStyleMeta.color, 0.12)
+                                : "rgba(255,255,255,0.82)",
+                              boxShadow: isSelected
+                                ? `0 10px 20px ${hexToRgba(
+                                    currentStyleMeta.color,
+                                    0.18,
+                                  )}`
+                                : "0 8px 16px rgba(15,23,42,0.06)",
+                              "--tw-ring-color": hexToRgba(
+                                currentStyleMeta.color,
+                                0.16,
+                              ),
+                            }}
+                            title={avatar.name}>
+                            <img
+                              src={getAvatarPath(avatar.img_avatar)}
+                              alt={avatar.name}
+                              className="mx-auto h-16 w-16 rounded-full object-cover"
+                            />
+                            <p
+                              className="mt-2 truncate text-[10px] font-black uppercase tracking-[0.12em]"
+                              style={{
+                                color: isSelected
+                                  ? hexToRgba(currentStyleMeta.color, 0.96)
+                                  : "var(--card-text, #0f172a)",
+                              }}>
+                              {avatar.name}
+                            </p>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </PanelShell>
+        </div>
+
+        <div className="min-h-0 xl:col-span-2">
+          <PanelShell
+            color={currentStyleMeta.color}
+            className="p-4 lg:p-4 xl:p-5">
+            <div className="flex h-full min-h-0 flex-col gap-4">
+              <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
                 <div className="min-w-0">
                   <p
-                    className="text-xs font-black uppercase tracking-[0.22em]"
+                    className="text-[11px] font-black uppercase tracking-[0.18em]"
                     style={{ color: hexToRgba(currentStyleMeta.color, 0.92) }}>
                     Estilo de interfaz
                   </p>
                   <h3
-                    className="mt-1 text-lg font-black lg:text-xl"
+                    className="mt-1 text-lg font-black"
                     style={{ color: "var(--card-text, #0f172a)" }}>
                     Personaliza tu zona de juego
                   </h3>
                   <p
-                    className="mt-2 text-sm"
+                    className="mt-1.5 text-sm"
                     style={{
                       color: "var(--card-muted, rgba(15,23,42,0.62))",
                     }}>
@@ -980,28 +1120,28 @@ const Perfil = () => {
                 <div
                   className="inline-flex w-fit items-center gap-2 rounded-2xl border px-3 py-2"
                   style={{
-                    borderColor: hexToRgba(currentStyleMeta.color, 0.24),
+                    borderColor: hexToRgba(currentStyleMeta.color, 0.22),
                     background: hexToRgba(currentStyleMeta.color, 0.08),
                   }}>
                   <div
                     className="h-4 w-4 rounded-full"
                     style={{
                       background: currentStyleMeta.color,
-                      boxShadow: `0 0 14px ${hexToRgba(
+                      boxShadow: `0 0 12px ${hexToRgba(
                         currentStyleMeta.color,
-                        0.58,
+                        0.5,
                       )}`,
                     }}
                   />
                   <span
-                    className="text-xs font-black uppercase tracking-[0.16em]"
+                    className="text-xs font-black uppercase tracking-[0.14em]"
                     style={{ color: hexToRgba(currentStyleMeta.color, 0.94) }}>
                     {currentStyleMeta.label}
                   </span>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
+              <div className="grid min-h-0 grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
                 {STYLE_OPTIONS.map((option) => (
                   <StyleCard
                     key={option.value}
@@ -1013,42 +1153,194 @@ const Perfil = () => {
                 ))}
               </div>
 
-              <div className="mt-5 flex flex-wrap items-center gap-3">
+              <div className="flex flex-wrap items-center gap-3">
                 <button
                   type="button"
                   onClick={handleSaveStyle}
-                  disabled={savingStyle}
-                  className="rounded-2xl px-6 py-3 text-sm font-black uppercase tracking-[0.16em] transition disabled:opacity-60"
+                  disabled={savingStyle || !isStyleDirty}
+                  className={cn(
+                    "rounded-2xl px-5 py-3 text-sm font-black uppercase tracking-[0.14em]",
+                    "transition-all duration-200 active:scale-[0.99]",
+                    "focus-visible:outline-none focus-visible:ring-4",
+                    "disabled:cursor-not-allowed disabled:opacity-60",
+                  )}
                   style={{
                     background: `linear-gradient(180deg, ${hexToRgba(
                       currentStyleMeta.color,
                       0.98,
                     )}, ${hexToRgba(currentStyleMeta.color, 0.82)})`,
-                    color: "#ffffff",
-                    boxShadow: `0 16px 30px ${hexToRgba(
+                    color: "#fff",
+                    boxShadow: `0 14px 26px ${hexToRgba(
                       currentStyleMeta.color,
-                      0.34,
+                      0.28,
                     )}`,
+                    "--tw-ring-color": hexToRgba(currentStyleMeta.color, 0.16),
                   }}>
-                  {savingStyle ? "Guardando..." : "Guardar estilo"}
+                  {savingStyle
+                    ? "Guardando..."
+                    : isStyleDirty
+                      ? "Guardar estilo"
+                      : "Estilo guardado"}
                 </button>
 
                 {message && (
                   <div
                     className="rounded-2xl border px-4 py-2 text-sm font-semibold"
                     style={{
-                      borderColor: hexToRgba(currentStyleMeta.color, 0.18),
-                      background: "rgba(255,255,255,0.86)",
+                      borderColor: hexToRgba(currentStyleMeta.color, 0.16),
+                      background: "rgba(255,255,255,0.88)",
                       color: "var(--card-text, #0f172a)",
                     }}>
                     {message}
                   </div>
                 )}
               </div>
-            </PanelShell>
-          </div>
+            </div>
+          </PanelShell>
         </div>
       </div>
+
+      {showPasswordModal && (
+        <div
+          className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm"
+          onClick={handleClosePasswordModal}>
+          <div
+            className="w-full max-w-md rounded-[26px] border p-5 shadow-2xl sm:p-6"
+            style={{
+              borderColor: hexToRgba(currentStyleMeta.color, 0.24),
+              background: `
+                radial-gradient(circle at top, ${hexToRgba(
+                  currentStyleMeta.color,
+                  0.12,
+                )}, transparent 38%),
+                linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.94))
+              `,
+            }}
+            onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p
+                  className="text-[11px] font-black uppercase tracking-[0.18em]"
+                  style={{ color: hexToRgba(currentStyleMeta.color, 0.92) }}>
+                  Seguridad
+                </p>
+                <h3
+                  className="mt-1 text-xl font-black"
+                  style={{ color: "var(--card-text, #0f172a)" }}>
+                  Cambiar contraseña
+                </h3>
+                <p
+                  className="mt-2 text-sm"
+                  style={{ color: "var(--card-muted, rgba(15,23,42,0.62))" }}>
+                  Ingresa una nueva contraseña para tu cuenta.
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleClosePasswordModal}
+                className="rounded-full px-3 py-1.5 text-xs font-black uppercase tracking-[0.14em]"
+                style={{
+                  background: "rgba(15,23,42,0.06)",
+                  color: "var(--card-text, #0f172a)",
+                  border: "1px solid rgba(15,23,42,0.08)",
+                }}>
+                Cerrar
+              </button>
+            </div>
+
+            <div className="mt-5 space-y-4">
+              <div>
+                <label
+                  className="mb-1.5 block text-[11px] font-black uppercase tracking-[0.16em]"
+                  style={{ color: "var(--card-muted, rgba(15,23,42,0.62))" }}>
+                  Nueva contraseña
+                </label>
+                <input
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder="Escribe la nueva contraseña"
+                  className="h-12 w-full rounded-2xl border px-4 outline-none transition-all duration-200 focus:border-transparent focus:ring-4"
+                  style={{
+                    borderColor: hexToRgba(currentStyleMeta.color, 0.18),
+                    background: "rgba(255,255,255,0.95)",
+                    color: "var(--card-text, #0f172a)",
+                    "--tw-ring-color": hexToRgba(currentStyleMeta.color, 0.16),
+                  }}
+                />
+              </div>
+
+              <div>
+                <label
+                  className="mb-1.5 block text-[11px] font-black uppercase tracking-[0.16em]"
+                  style={{ color: "var(--card-muted, rgba(15,23,42,0.62))" }}>
+                  Confirmar contraseña
+                </label>
+                <input
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="Repite la nueva contraseña"
+                  className="h-12 w-full rounded-2xl border px-4 outline-none transition-all duration-200 focus:border-transparent focus:ring-4"
+                  style={{
+                    borderColor: hexToRgba(currentStyleMeta.color, 0.18),
+                    background: "rgba(255,255,255,0.95)",
+                    color: "var(--card-text, #0f172a)",
+                    "--tw-ring-color": hexToRgba(currentStyleMeta.color, 0.16),
+                  }}
+                />
+              </div>
+
+              {passwordError && (
+                <div
+                  className="rounded-2xl border px-4 py-3 text-sm font-semibold"
+                  style={{
+                    borderColor: "rgba(239,68,68,0.18)",
+                    background: "rgba(254,242,242,0.95)",
+                    color: "#b91c1c",
+                  }}>
+                  {passwordError}
+                </div>
+              )}
+
+              <div className="flex flex-wrap gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={handleSavePassword}
+                  disabled={savingPassword}
+                  className="rounded-2xl px-5 py-3 text-sm font-black uppercase tracking-[0.14em] transition-all duration-200 active:scale-[0.99] disabled:opacity-60"
+                  style={{
+                    background: `linear-gradient(180deg, ${hexToRgba(
+                      currentStyleMeta.color,
+                      0.98,
+                    )}, ${hexToRgba(currentStyleMeta.color, 0.82)})`,
+                    color: "#fff",
+                    boxShadow: `0 14px 24px ${hexToRgba(
+                      currentStyleMeta.color,
+                      0.24,
+                    )}`,
+                  }}>
+                  {savingPassword ? "Guardando..." : "Actualizar"}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleClosePasswordModal}
+                  disabled={savingPassword}
+                  className="rounded-2xl border px-5 py-3 text-sm font-black uppercase tracking-[0.14em] transition-all duration-200 active:scale-[0.99] disabled:opacity-60"
+                  style={{
+                    borderColor: "rgba(15,23,42,0.10)",
+                    background: "rgba(255,255,255,0.82)",
+                    color: "var(--card-text, #0f172a)",
+                  }}>
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

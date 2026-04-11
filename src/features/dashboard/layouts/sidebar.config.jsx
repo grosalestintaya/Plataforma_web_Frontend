@@ -1,11 +1,4 @@
-import {
-  BarChart2,
-  Home,
-  User,
-  Trophy,
-  Settings,
-  Store,
-} from "lucide-react";
+import { BarChart2, Home, User, Trophy, Settings, Store } from "lucide-react";
 import {
   FaUsers,
   FaUserPlus,
@@ -18,11 +11,6 @@ export const COMMON_ITEMS = [
   {
     name: "Perfil",
     path: "perfil",
-    icon: User,
-  },
-  {
-    name: "Ajustes",
-    path: "ajustes",
     icon: FaUserCog,
   },
 ];
