@@ -202,6 +202,7 @@ export const LOBBY_CONFIG = {
         props: (payload) => ({
           src: payload?.media?.src,
           alt: payload?.media?.alt ?? "Imagen",
+          variant: payload?.media?.variant ?? payload?.media?.ratio,
           className: "min-h-[220px] w-full",
         }),
       },
@@ -242,6 +243,7 @@ export const LOBBY_CONFIG = {
         props: (payload) => ({
           src: payload?.media?.src,
           alt: payload?.media?.alt ?? "Imagen",
+          variant: payload?.media?.variant ?? payload?.media?.ratio,
           className: "min-h-[220px] w-full",
         }),
       },

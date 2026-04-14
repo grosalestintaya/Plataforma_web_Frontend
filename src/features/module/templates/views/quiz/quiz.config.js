@@ -107,6 +107,7 @@ export const QUIZ_CONFIG = {
         props: (payload) => ({
           src: payload?.media?.src,
           alt: payload?.media?.alt ?? "Imagen de apoyo",
+          variant: payload?.media?.variant ?? payload?.media?.ratio,
           className: "h-full w-full",
         }),
       },

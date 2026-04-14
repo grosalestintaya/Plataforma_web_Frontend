@@ -210,6 +210,7 @@ export const THEORY_CONFIG = {
             props: (payload) => ({
               src: payload?.media?.src,
               alt: payload?.media?.alt ?? "Imagen de apoyo",
+              variant: payload?.media?.variant ?? payload?.media?.ratio,
               className: "min-h-[220px] w-full",
             }),
           },
@@ -281,6 +282,7 @@ export const THEORY_CONFIG = {
             props: (payload) => ({
               src: payload?.media?.src,
               alt: payload?.media?.alt ?? "Imagen de apoyo",
+              variant: payload?.media?.variant ?? payload?.media?.ratio,
               className: "min-h-[220px] w-full",
             }),
           },
@@ -319,7 +321,8 @@ export const THEORY_CONFIG = {
         props: (payload) => ({
           src: payload?.media?.src,
           alt: payload?.media?.alt ?? "Imagen de apoyo",
-            className: "min-h-[220px] w-full",
+          variant: payload?.media?.variant ?? payload?.media?.ratio,
+          className: "min-h-[220px] w-full",
         }),
       },
     ],

@@ -21,7 +21,8 @@
         ],
         "rightImage": {
           "src": "",
-          "alt": "Intro presupuesto"
+          "alt": "Intro presupuesto",
+          "variant": "vertical"
         }
       },
       "nav": {
@@ -53,6 +54,7 @@
         "rightImage": {
           "src": "",
           "alt": "Presupuesto",
+          "variant": "vertical",
           "placeholderLabel": "MAPA DE TU DINERO"
         }
       }
@@ -73,6 +75,7 @@
         "examples": [
           {
             "src": "",
+            "variant": "square",
             "label": {
               "text": "Controlar gastos",
               "variant": "subtitle2",
@@ -81,6 +84,7 @@
           },
           {
             "src": "",
+            "variant": "square",
             "label": {
               "text": "Planificar una compra",
               "variant": "subtitle2",
@@ -89,6 +93,7 @@
           },
           {
             "src": "",
+            "variant": "square",
             "label": {
               "text": "Ahorrar para una meta",
               "variant": "subtitle2",

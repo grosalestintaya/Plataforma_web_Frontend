@@ -33,7 +33,8 @@
         },
         "media": {
           "src": "/src/assets/activity/inicio-conceptual.jpeg",
-          "alt": "Inicio de la mision conceptual"
+          "alt": "Inicio de la mision conceptual",
+          "variant": "vertical"
         }
       },
       "elements": {
@@ -66,7 +67,7 @@
     {
       "viewId": "m1_1_v2",
       "order": 2,
-      "name": "VISTA 2 - Teoria: Que es el dinero?",
+      "name": "VISTA 2 - Teoria: ¿Que es el dinero?",
       "viewType": "Teoria",
       "objective": "Explicar que es el dinero y para que sirve en la vida diaria.",
       "template": "simpleTheory",
@@ -79,16 +80,16 @@
         },
         "body": {
           "paragraphs": [
-            "El dinero es un medio que usamos para pagar bienes y servicios como pasaje, comida, utiles o recargas.",
-            "Sirve porque facilita el intercambio: en vez de cambiar cosas por cosas, usamos dinero para conseguir lo que necesitamos o queremos.",
-            "Recuerda: el dinero es limitado, por eso conviene usarlo con cuidado."
+            "El dinero es un medio de pago que usamos para obtener bienes y servicios. Los bienes son cosas que compramos, como comida, cuadernos o ropa. Los servicios son acciones por las que pagamos, como el pasaje, una recarga o una impresión. En otras palabras: el dinero nos permite pagar y así conseguir lo que necesitamos en la vida diaria.",
+            "El dinero facilita el intercambio. Si no existiera, tendríamos que cambiar cosas por cosas (por ejemplo, cambiar un cuaderno por una bebida). Eso no siempre funciona, porque la otra persona puede no querer lo que tú ofreces. Por eso el dinero es útil: porque es un medio aceptado por todos para comprar de forma más rápida y ordenada."
           ],
           "variant": "body1",
           "align": "center"
         },
         "media": {
           "src": "/src/assets/activity/recibir-dinero.jpeg",
-          "alt": "Estudiante usando dinero"
+          "alt": "Estudiante usando dinero",
+          "variant": "square"
         }
       },
       "elements": {
@@ -137,9 +138,9 @@
         },
         "body": {
           "paragraphs": [
-            "El dinero es un medio que usamos para pagar bienes y servicios como pasaje, comida, utiles o recargas.",
-            "Sirve porque facilita el intercambio: en vez de cambiar cosas por cosas, usamos dinero para conseguir lo que necesitamos o queremos.",
-            "Recuerda: el dinero es limitado, por eso conviene usarlo con cuidado."
+            "En el día a día usamos dinero para pagar cosas que necesitamos como estudiantes: movernos, alimentarnos, estudiar y comunicarnos.",
+            "Cada vez que pagas algo, estás tomando una decisión: eliges en qué se va tu dinero. Por eso es importante reconocer en qué cosas gastas más.",
+            "Recuerda: aunque un gasto sea pequeño, si se repite varias veces, al final suma bastante."
           ],
           "variant": "body1",
           "align": "center"
@@ -151,17 +152,18 @@
             "align": "left"
           },
           "items": [
-            "Transporte: pasaje de ida y vuelta.",
-            "Recreo: comida o bebida.",
-            "Utiles: cuaderno, lapicero, fotocopias.",
-            "Recargas: saldo o datos."
+            "Transporte: pasaje de ida y vuelta al colegio.",
+            "Recreo: comida o bebida en el kiosko.",
+            "Útiles: cuaderno, lapicero, fotocopias o materiales para trabajos.",
+            "Recargas: saldo o datos para comunicarse o para tareas."
           ],
           "variant": "bodySm",
           "align": "left"
         },
         "media": {
-          "src": "/src/assets/activity/uso-del-dinero.jpeg",
-          "alt": "Uso diario del dinero"
+          "src": "/src/assets/activity/uso-del-dinero.png",
+          "alt": "Uso diario del dinero",
+          "variant": "horizontal"
         }
       },
       "elements": {
@@ -205,12 +207,16 @@
       "variant": "simple",
       "slots": {
         "title": {
-          "text": "Que son ingresos y gastos?",
+          "text": "¿Que son ingresos y gastos?",
           "variant": "h1",
           "align": "center"
         },
         "body": {
-          "text": "A veces el dinero entra a nuestras manos y otras veces sale cuando lo usamos.",
+          "paragraphs": [
+            "A lo largo del día, el dinero no se queda quieto: a veces llega a ti y otras veces se va. A ese movimiento del dinero lo llamamos ingresos y gastos.",
+            "Un ingreso ocurre cuando el dinero entra a tu mano o a tu cuenta. Es decir, cuando recibes dinero por alguna razón. En los ingresos, la idea clave es: “me llegó dinero”.",
+            "Un gasto ocurre cuando el dinero sale porque pagas algo o compras algo. En los gastos, la idea clave es: “yo pagué”."
+          ],
           "variant": "body1",
           "align": "center"
         }
@@ -241,7 +247,8 @@
                 "id": "income-card",
                 "media": {
                   "src": "/src/assets/activity/recibir-dinero.jpeg",
-                  "alt": "Ejemplo de ingreso"
+                  "alt": "Ejemplo de ingreso",
+                  "variant": "horizontal"
                 },
                 "title": {
                   "text": "Ingreso",
@@ -249,7 +256,7 @@
                   "align": "center"
                 },
                 "text": {
-                  "text": "Cuando el dinero entra a ti.",
+                  "text": "Cuando te llega o recibes dinero",
                   "variant": "bodySm",
                   "align": "center"
                 }
@@ -258,7 +265,8 @@
                 "id": "expense-card",
                 "media": {
                   "src": "",
-                  "alt": "Ejemplo de gasto"
+                  "alt": "Ejemplo de gasto",
+                  "variant": "horizontal"
                 },
                 "title": {
                   "text": "Gasto",
@@ -266,7 +274,7 @@
                   "align": "center"
                 },
                 "text": {
-                  "text": "Cuando el dinero sale porque pagas algo.",
+                  "text": "Cuando usas dinero para pagar o comprar",
                   "variant": "bodySm",
                   "align": "center"
                 }
@@ -436,7 +444,8 @@
                     },
                     "media": {
                       "src": "",
-                      "alt": "Recibir dinero"
+                      "alt": "Recibir dinero",
+                      "variant": "horizontal"
                     },
                     "correct": false,
                     "score": 100,
@@ -456,7 +465,8 @@
                     },
                     "media": {
                       "src": "",
-                      "alt": "Pagar pasaje"
+                      "alt": "Pagar pasaje",
+                      "variant": "horizontal"
                     },
                     "correct": true,
                     "score": 60,
@@ -486,7 +496,8 @@
                     },
                     "media": {
                       "src": "",
-                      "alt": "Vender un juguete"
+                      "alt": "Vender un juguete",
+                      "variant": "horizontal"
                     },
                     "correct": true,
                     "score": 60,
@@ -506,7 +517,8 @@
                     },
                     "media": {
                       "src": "",
-                      "alt": "Comprar una galleta y una bebida"
+                      "alt": "Comprar una galleta y una bebida",
+                      "variant": "horizontal"
                     },
                     "correct": false,
                     "score": 100,
@@ -536,7 +548,8 @@
                     },
                     "media": {
                       "src": "",
-                      "alt": "Reciclar y recibir dinero"
+                      "alt": "Reciclar y recibir dinero",
+                      "variant": "horizontal"
                     },
                     "correct": false,
                     "score": 60,
@@ -556,7 +569,8 @@
                     },
                     "media": {
                       "src": "",
-                      "alt": "Comprar una bebida"
+                      "alt": "Comprar una bebida",
+                      "variant": "horizontal"
                     },
                     "correct": true,
                     "score": 100,
@@ -586,7 +600,8 @@
                     },
                     "media": {
                       "src": "",
-                      "alt": "Recibir una propina"
+                      "alt": "Recibir una propina",
+                      "variant": "horizontal"
                     },
                     "correct": true,
                     "score": 100,
@@ -606,7 +621,8 @@
                     },
                     "media": {
                       "src": "",
-                      "alt": "Pagar una recarga"
+                      "alt": "Pagar una recarga",
+                      "variant": "horizontal"
                     },
                     "correct": false,
                     "score": 60,
@@ -686,7 +702,8 @@
                 },
                 "media": {
                   "src": "",
-                  "alt": "Recompensa de XP"
+                  "alt": "Recompensa de XP",
+                  "variant": "square"
                 }
               },
               {
@@ -701,7 +718,8 @@
                 },
                 "media": {
                   "src": "",
-                  "alt": "Recompensa de INTIS"
+                  "alt": "Recompensa de INTIS",
+                  "variant": "square"
                 }
               }
             ]

@@ -21,6 +21,14 @@ function getRevealTone(reveal) {
   return "border border-white/15 bg-white/15 text-white rounded-xl";
 }
 
+function toHorizontalMedia(media, fallbackAlt = "Carta") {
+  return {
+    ...(media ?? {}),
+    alt: media?.alt ?? fallbackAlt,
+    variant: "horizontal",
+  };
+}
+
 /**
  * FlipCard:
  * - Modo `revealGrid`: revela todas las tarjetas para completar.
@@ -160,8 +168,12 @@ export default function FlipCard(props) {
    * lenguaje visual del resto del sistema.
    */
   function getFrontCardProps(item) {
+    const media =
+      item.image ??
+      { src: item.src, alt: item.alt ?? item.caption ?? "Carta" };
+
     return {
-      media: item.image ?? { src: item.src, alt: item.alt ?? item.caption ?? "Carta" },
+      media: toHorizontalMedia(media, item.alt ?? item.caption ?? "Carta"),
       title:
         item.label ??
         (item.caption
