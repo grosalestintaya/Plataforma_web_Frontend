@@ -4,8 +4,7 @@ import rope from "@/assets/activity/cord.png";
 import menuIcon from "@/shared/icons/icon-menu-pen.svg";
 import HeaderSettingsButton from "../ui/HeaderSettingsButton";
 import HeaderExitButton from "../ui/HeaderExitButton";
-import ContentRopeSvg from "../ContentRopeSvg";
-
+import HeaderRopeSvg from "../HeaderRopeSvg";
 function hexToRgba(hex, a = 1) {
   const h = String(hex || "#000").replace("#", "");
   const full =
@@ -98,10 +97,10 @@ export default function ActivityHeader({
             />
           </div>
         </div>
-        <div className="mt-0 -mx-3 overflow-hidden sm:-mx-4 md:-mx-8 lg:-mx-10">
-          <ContentRopeSvg
+        <div className="-mt-5 -pt-5 -mx-3 overflow-hidden sm:-mx-4 md:-mx-8 lg:-mx-10">
+          <HeaderRopeSvg
             themeHex={themeHex}
-            className="block h-[40px] w-full select-none sm:h-[54px] md:h-[78px] lg:h-[48px]"
+            className="block h-[40px] w-full select-none sm:h-[54px] md:h-[78px] lg:h-[78px]"
           />
         </div>
       </div>

@@ -1,4 +1,10 @@
-import React, { useId, useMemo } from "react";
+import React, {
+  useId,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import conceptual from "@/assets/modules/conceptual.png";
 import procedimental from "@/assets/modules/procedimental.png";
 import actitudinal from "@/assets/modules/actitudinal.png";
@@ -17,13 +23,6 @@ function stateGlyph(status) {
   return ">";
 }
 
-function getActiveIndex(list, selectedId) {
-  const idx = list.findIndex(
-    (a) => String(a.activityId) === String(selectedId),
-  );
-  return idx >= 0 ? idx : 0;
-}
-
 function statusBadgeBackground(status, themeHex) {
   if (status === "completed") {
     return "linear-gradient(180deg, #10b981, #047857)";
@@ -34,7 +33,85 @@ function statusBadgeBackground(status, themeHex) {
   if (status === "in_progress") {
     return "linear-gradient(180deg, #f59e0b, #b45309)";
   }
-  return `linear-gradient(180deg, ${themeHex}, ${themeHex}aa)`;
+  return `linear-gradient(180deg, ${themeHex}, ${themeHex}cc)`;
+}
+
+function hexToRgba(hex, alpha = 1) {
+  const clean = String(hex || "#000000").replace("#", "");
+  const full =
+    clean.length === 3
+      ? clean
+          .split("")
+          .map((c) => c + c)
+          .join("")
+      : clean.padEnd(6, "0");
+
+  const num = parseInt(full, 16);
+  const r = (num >> 16) & 255;
+  const g = (num >> 8) & 255;
+  const b = num & 255;
+
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
+function mixHex(hex, target = "#ffffff", amount = 0.5) {
+  const parse = (value) => {
+    const clean = String(value || "#000000").replace("#", "");
+    const full =
+      clean.length === 3
+        ? clean
+            .split("")
+            .map((c) => c + c)
+            .join("")
+        : clean.padEnd(6, "0");
+
+    const num = parseInt(full, 16);
+    return {
+      r: (num >> 16) & 255,
+      g: (num >> 8) & 255,
+      b: num & 255,
+    };
+  };
+
+  const toHex = (value) => value.toString(16).padStart(2, "0");
+
+  const a = parse(hex);
+  const b = parse(target);
+
+  const r = Math.round(a.r + (b.r - a.r) * amount);
+  const g = Math.round(a.g + (b.g - a.g) * amount);
+  const b2 = Math.round(a.b + (b.b - a.b) * amount);
+
+  return `#${toHex(r)}${toHex(g)}${toHex(b2)}`;
+}
+
+function makePalette(themeHex) {
+  const base = themeHex || "#7130F7";
+
+  return {
+    main: base,
+    dark: mixHex(base, "#2a160b", 0.52),
+    light: mixHex(base, "#ffffff", 0.5),
+    shadow: hexToRgba(mixHex(base, "#160c06", 0.72), 0.24),
+  };
+}
+
+function makeRopeTones(palette) {
+  return {
+    patternFill: palette.main,
+    patternStroke: palette.dark,
+    crossShadow: hexToRgba(palette.dark, 0.34),
+    hi: hexToRgba(palette.light, 0.3),
+    inner: hexToRgba(palette.dark, 0.16),
+    shadow: hexToRgba(palette.dark, 0.16),
+    support1: hexToRgba(palette.dark, 0.92),
+    support2: hexToRgba(palette.main, 0.56),
+    topLight: hexToRgba(palette.light, 0.16),
+    knotPalette: {
+      dark: palette.dark,
+      light: palette.light,
+    },
+  };
 }
 
 function buildRopePath(points, stemTopY = -34) {
@@ -44,8 +121,8 @@ function buildRopePath(points, stemTopY = -34) {
 
   let d = `
     M ${first.x} ${stemTopY}
-    C ${first.x + 1.5} ${stemTopY + 18},
-      ${first.x - 1.5} ${first.y - 18},
+    C ${first.x + 1.4} ${stemTopY + 18},
+      ${first.x - 1.4} ${first.y - 18},
       ${first.x} ${first.y}
   `;
 
@@ -55,7 +132,7 @@ function buildRopePath(points, stemTopY = -34) {
     const dy = b.y - a.y;
     const dx = b.x - a.x;
     const dir = dx === 0 ? (i % 2 === 0 ? 1 : -1) : Math.sign(dx);
-    const bend = 22;
+    const bend = 24;
 
     d += `
       C ${a.x + dir * bend} ${a.y + dy * 0.36},
@@ -67,99 +144,204 @@ function buildRopePath(points, stemTopY = -34) {
   return d;
 }
 
-function TopUnionPendant({ x, y }) {
+function useBraidStamps(
+  pathRef,
+  { step = 9.6, trimStart = 5, trimEnd = 5, sideOffset = 1.65 } = {},
+) {
+  const [items, setItems] = useState([]);
+
+  useLayoutEffect(() => {
+    const pathNode = pathRef.current;
+    if (!pathNode) return;
+
+    let frame = 0;
+
+    const build = () => {
+      try {
+        const total = pathNode.getTotalLength();
+        const end = Math.max(trimStart, total - trimEnd);
+        const nextItems = [];
+
+        let i = 0;
+        for (let d = trimStart; d <= end; d += step) {
+          const p = pathNode.getPointAtLength(d);
+          const prev = pathNode.getPointAtLength(Math.max(0, d - 1.4));
+          const next = pathNode.getPointAtLength(Math.min(total, d + 1.4));
+
+          const dx = next.x - prev.x;
+          const dy = next.y - prev.y;
+          const len = Math.hypot(dx, dy) || 1;
+
+          const angle = (Math.atan2(dy, dx) * 180) / Math.PI;
+          const nx = -dy / len;
+          const ny = dx / len;
+
+          const sign = i % 2 === 0 ? 1 : -1;
+          const offset = sign * sideOffset;
+
+          nextItems.push({
+            x: p.x + nx * offset,
+            y: p.y + ny * offset,
+            angle,
+            flip: sign,
+            scaleX: i % 2 === 0 ? 1.05 : 1.0,
+            scaleY: i % 2 === 0 ? 1.03 : 0.99,
+            opacity: i % 2 === 0 ? 1 : 0.94,
+          });
+
+          i += 1;
+        }
+
+        setItems(nextItems);
+      } catch {
+        setItems([]);
+      }
+    };
+
+    frame = requestAnimationFrame(build);
+    return () => cancelAnimationFrame(frame);
+  }, [pathRef, step, trimStart, trimEnd, sideOffset]);
+
+  return items;
+}
+
+function useTailMeta(pathRef, ratio = 0.965) {
+  const [meta, setMeta] = useState(null);
+
+  useLayoutEffect(() => {
+    const pathNode = pathRef.current;
+    if (!pathNode) return;
+
+    let frame = 0;
+
+    const build = () => {
+      try {
+        const total = pathNode.getTotalLength();
+        const d = total * ratio;
+
+        const p = pathNode.getPointAtLength(d);
+        const prev = pathNode.getPointAtLength(Math.max(0, d - 1.6));
+        const next = pathNode.getPointAtLength(Math.min(total, d + 1.6));
+
+        const angle =
+          (Math.atan2(next.y - prev.y, next.x - prev.x) * 180) / Math.PI;
+
+        setMeta({
+          x: p.x,
+          y: p.y,
+          angle,
+        });
+      } catch {
+        setMeta(null);
+      }
+    };
+
+    frame = requestAnimationFrame(build);
+    return () => cancelAnimationFrame(frame);
+  }, [pathRef, ratio]);
+
+  return meta;
+}
+
+function TopBindKnot({ x, y, palette }) {
+  const fill = palette.dark;
+  const stroke = hexToRgba(palette.light, 0.72);
+  const shine = hexToRgba(palette.light, 0.86);
+
   return (
-    <g transform={`translate(${x} ${y})`} opacity="1">
-      {/* cuerda superior corta */}
-      <path
-        d="M 0 -18 C 0 -13, 0 -8, 0 -3"
-        fill="none"
-        stroke="#7C4924"
-        strokeWidth="3"
-        strokeLinecap="round"
+    <g transform={`translate(${x} ${y})`}>
+      <ellipse cx="0" cy="0" rx="8.8" ry="6.5" fill="rgba(0,0,0,0.15)" />
+      <ellipse
+        cx="0"
+        cy="0"
+        rx="7.1"
+        ry="5.2"
+        fill={fill}
+        stroke={stroke}
+        strokeWidth="1.05"
       />
       <path
-        d="M 0 -18 C 0 -13, 0 -8, 0 -3"
+        d="M -4 -2.4 Q 0 -0.7 4 -2.4"
         fill="none"
-        stroke="rgba(255,234,205,0.24)"
-        strokeWidth="0.9"
-        strokeLinecap="round"
-      />
-
-      {/* lazadas laterales */}
-      <path
-        d="M -10 -1 C -13 5, -12 11, -7 15"
-        fill="none"
-        stroke="#8A542C"
-        strokeWidth="2.4"
+        stroke={shine}
+        strokeWidth="0.85"
         strokeLinecap="round"
       />
       <path
-        d="M 10 -1 C 13 5, 12 11, 7 15"
+        d="M -4 2.4 Q 0 0.7 4 2.4"
         fill="none"
-        stroke="#6E3E1F"
-        strokeWidth="2.4"
-        strokeLinecap="round"
-      />
-
-      <path
-        d="M -10 -1 C -13 5, -12 11, -7 15"
-        fill="none"
-        stroke="rgba(255,229,191,0.16)"
-        strokeWidth="0.75"
-        strokeLinecap="round"
-      />
-      <path
-        d="M 10 -1 C 13 5, 12 11, 7 15"
-        fill="none"
-        stroke="rgba(255,236,205,0.14)"
-        strokeWidth="0.75"
-        strokeLinecap="round"
-      />
-
-      {/* cuerpo principal del nudo */}
-      <circle cx="0" cy="0" r="7.4" fill="#8F552D" />
-      <circle cx="0" cy="0" r="2.3" fill="#F2CFA0" />
-
-      {/* nudos compactos inferiores */}
-      <circle cx="-7" cy="8" r="4.9" fill="#9B6236" />
-      <circle cx="-7" cy="8" r="1.35" fill="#EAC08A" />
-
-      <circle cx="7" cy="8" r="4.9" fill="#7D4723" />
-      <circle cx="7" cy="8" r="1.2" fill="#EBC895" />
-
-      <circle cx="0" cy="15" r="5.8" fill="#8C532C" />
-      <circle cx="0" cy="15" r="1.75" fill="#F1CEA0" />
-
-      {/* colitas mínimas del nudo */}
-      <line
-        x1="-2.8"
-        y1="20"
-        x2="-2.8"
-        y2="28"
-        stroke="#8B532C"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-      />
-      <line
-        x1="2.8"
-        y1="20"
-        x2="2.8"
-        y2="28"
-        stroke="#6E3D1D"
-        strokeWidth="1.5"
+        stroke={hexToRgba(palette.dark, 0.22)}
+        strokeWidth="0.7"
         strokeLinecap="round"
       />
     </g>
   );
 }
+
+function TailKnot({ x, y, angle = 0, palette }) {
+  const fill = palette.dark;
+  const stroke = hexToRgba(palette.light, 0.68);
+  const shine = hexToRgba(palette.light, 0.8);
+
+  return (
+    <g transform={`translate(${x} ${y}) rotate(${angle})`}>
+      <ellipse cx="0" cy="0" rx="7.8" ry="5.8" fill="rgba(0,0,0,0.13)" />
+      <ellipse
+        cx="0"
+        cy="0"
+        rx="6.3"
+        ry="4.6"
+        fill={fill}
+        stroke={stroke}
+        strokeWidth="0.95"
+      />
+      <path
+        d="M -3.6 -2 Q 0 -0.55 3.6 -2"
+        fill="none"
+        stroke={shine}
+        strokeWidth="0.72"
+        strokeLinecap="round"
+      />
+    </g>
+  );
+}
+
+function MidRopeKnot({ x, y, palette }) {
+  return (
+    <g transform={`translate(${x} ${y})`}>
+      <ellipse cx="0" cy="0" rx="6.2" ry="4.7" fill="rgba(0,0,0,0.14)" />
+      <ellipse
+        cx="0"
+        cy="0"
+        rx="4.9"
+        ry="3.7"
+        fill={palette.dark}
+        stroke={hexToRgba(palette.light, 0.54)}
+        strokeWidth="0.9"
+      />
+      <path
+        d="M -2.8 -1.5 Q 0 -0.35 2.8 -1.5"
+        fill="none"
+        stroke={hexToRgba(palette.light, 0.68)}
+        strokeWidth="0.65"
+        strokeLinecap="round"
+      />
+    </g>
+  );
+}
+
 export default function ActivityDots({
   activities,
+  onClickDot,
   selectedId,
   onSelect,
   themeHex = "#7130F7",
 }) {
   const uid = useId().replace(/:/g, "");
+  const guideRef = useRef(null);
+
+  const palette = useMemo(() => makePalette(themeHex), [themeHex]);
+  const tones = useMemo(() => makeRopeTones(palette), [palette]);
 
   const list = useMemo(() => {
     return [...(activities || [])].sort(
@@ -167,18 +349,13 @@ export default function ActivityDots({
     );
   }, [activities]);
 
-  const activeIdx = useMemo(
-    () => getActiveIndex(list, selectedId),
-    [list, selectedId],
-  );
-
   const buttonSize = 110;
-  const gap = 32;
-  const topStemSpace = 46;
-  const bottomPad = 10;
+  const gap = 54;
+  const topStemSpace = 84;
+  const bottomPad = 14;
   const xOffsets = [0, 10, -6];
 
-  const W = 188;
+  const W = 196;
   const centerX = W / 2;
 
   const centers = list.map((_, idx) => ({
@@ -191,16 +368,12 @@ export default function ActivityDots({
     buttonSize / 2 +
     bottomPad;
 
-  const ropePath = buildRopePath(centers, -34);
-  const glowPath = buildRopePath(centers.slice(0, activeIdx + 1), -34);
+  const ropePath = useMemo(() => buildRopePath(centers, -34), [centers]);
 
   const ids = {
-    base: `activity-rope-base-${uid}`,
-    inner: `activity-rope-inner-${uid}`,
-    accent: `activity-rope-accent-${uid}`,
     shadow: `activity-rope-shadow-${uid}`,
-    glow: `activity-rope-glow-${uid}`,
     mask: `activity-rope-mask-${uid}`,
+    braidCell: `activity-rope-braid-${uid}`,
   };
 
   const ropeKnots = centers.slice(0, -1).map((a, i) => {
@@ -211,44 +384,32 @@ export default function ActivityDots({
     };
   });
 
+  const stamps = useBraidStamps(guideRef, {
+    step: 9.6,
+    trimStart: 5,
+    trimEnd: 5,
+    sideOffset: 1.65,
+  });
+
+  const tailMeta = useTailMeta(guideRef, 0.965);
+
   return (
     <div className="relative flex w-full justify-center overflow-visible">
-      <div className="relative w-[188px] overflow-visible">
+      <div className="relative w-[196px] overflow-visible">
         <div className="pointer-events-none absolute inset-0 overflow-visible">
           <svg
             width={W}
             height={H}
-            viewBox={`0 -78 ${W} ${H + 78}`}
+            viewBox={`0 -74 ${W} ${H + 82}`}
             className="overflow-visible"
             aria-hidden="true">
             <defs>
-              <linearGradient id={ids.base} x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#693C1E" />
-                <stop offset="16%" stopColor="#88522B" />
-                <stop offset="34%" stopColor="#B4713D" />
-                <stop offset="50%" stopColor="#D49A5E" />
-                <stop offset="66%" stopColor="#B6723C" />
-                <stop offset="84%" stopColor="#88512A" />
-                <stop offset="100%" stopColor="#63381C" />
-              </linearGradient>
-
-              <linearGradient id={ids.inner} x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="rgba(255,239,214,0.40)" />
-                <stop offset="50%" stopColor="rgba(255,207,150,0.18)" />
-                <stop offset="100%" stopColor="rgba(92,51,24,0.05)" />
-              </linearGradient>
-
-              <linearGradient id={ids.accent} x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor={`${themeHex}D9`} />
-                <stop offset="100%" stopColor={`${themeHex}40`} />
-              </linearGradient>
-
               <filter
                 id={ids.shadow}
                 x="-70%"
-                y="-50%"
+                y="-60%"
                 width="240%"
-                height="220%">
+                height="240%">
                 <feDropShadow
                   dx="0"
                   dy="3"
@@ -257,36 +418,89 @@ export default function ActivityDots({
                 />
               </filter>
 
-              <filter
-                id={ids.glow}
-                x="-80%"
-                y="-60%"
-                width="260%"
-                height="240%">
-                <feGaussianBlur stdDeviation="3.4" result="blur" />
-                <feMerge>
-                  <feMergeNode in="blur" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
+              <g id={ids.braidCell}>
+                <path
+                  d="
+                    M -14.8 0
+                    C -12.4 -5.2, -7.2 -8.8, -0.5 -9
+                    C 6.2 -9.2, 11.3 -5.3, 14.6 0
+                    C 11.4 5.3, 6.2 9.2, -0.5 9
+                    C -7.2 8.8, -12.4 5.2, -14.8 0
+                    Z
+                  "
+                  fill={tones.patternFill}
+                  stroke="#4A2812"
+                  strokeWidth="1.18"
+                  strokeLinejoin="round"
+                />
+
+                <path
+                  d="
+                    M -9.5 5.8
+                    C -5.9 3.2, -1.8 0.4, 8.2 -6.3
+                  "
+                  fill="none"
+                  stroke={tones.crossShadow}
+                  strokeWidth="2.05"
+                  strokeLinecap="round"
+                />
+
+                <path
+                  d="
+                    M -8.7 -4.7
+                    C -4.8 -6.8, 0.1 -6.2, 7.9 -2.2
+                  "
+                  fill="none"
+                  stroke={tones.hi}
+                  strokeWidth="1.18"
+                  strokeLinecap="round"
+                />
+
+                <path
+                  d="
+                    M -10.9 -1.4
+                    C -4.8 -3.8, 2 -3.2, 9.8 2.5
+                  "
+                  fill="none"
+                  stroke={tones.inner}
+                  strokeWidth="0.82"
+                  strokeLinecap="round"
+                />
+              </g>
 
               <mask id={ids.mask}>
-                <rect x="0" y="-100" width={W} height={H + 140} fill="black" />
+                <rect
+                  x="-120"
+                  y="-110"
+                  width="600"
+                  height={H + 220}
+                  fill="black"
+                />
                 <path
                   d={ropePath}
                   fill="none"
                   stroke="white"
-                  strokeWidth="14"
+                  strokeWidth="22"
                   strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </mask>
             </defs>
 
             <path
+              ref={guideRef}
               d={ropePath}
               fill="none"
-              stroke="rgba(24,11,5,0.20)"
-              strokeWidth="18"
+              stroke="transparent"
+              strokeWidth="1"
+              pointerEvents="none"
+            />
+
+            <path
+              d={ropePath}
+              fill="none"
+              stroke={tones.shadow}
+              strokeWidth="24.5"
               strokeLinecap="round"
               filter={`url(#${ids.shadow})`}
             />
@@ -294,120 +508,66 @@ export default function ActivityDots({
             <path
               d={ropePath}
               fill="none"
-              stroke={`url(#${ids.base})`}
-              strokeWidth="14"
+              stroke={tones.support1}
+              strokeWidth="15.5"
               strokeLinecap="round"
-              strokeLinejoin="round"
+              opacity="0.72"
             />
 
             <path
               d={ropePath}
               fill="none"
-              stroke={`url(#${ids.inner})`}
-              strokeWidth="8.5"
+              stroke={tones.support2}
+              strokeWidth="8.9"
               strokeLinecap="round"
-              strokeLinejoin="round"
+              opacity="0.52"
             />
 
-            <path
-              d={ropePath}
-              fill="none"
-              stroke="rgba(255,247,233,0.58)"
-              strokeWidth="2.4"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              transform="translate(0,-1.4)"
-            />
-
-            <path
-              d={ropePath}
-              fill="none"
-              stroke="rgba(82,45,21,0.34)"
-              strokeWidth="2.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              transform="translate(0,1.6)"
-            />
-
-            <g mask={`url(#${ids.mask})`} opacity="0.78">
-              {Array.from({ length: 16 }).map((_, i) => {
-                const x = 42 + i * 8;
-                return (
-                  <g key={`braid-a-${i}`}>
-                    <line
-                      x1={x}
-                      y1={-18}
-                      x2={x + 56}
-                      y2={H - 18}
-                      stroke="rgba(108,60,30,0.20)"
-                      strokeWidth="3.2"
-                      strokeLinecap="round"
-                    />
-                    <line
-                      x1={x + 5}
-                      y1={-22}
-                      x2={x + 61}
-                      y2={H - 22}
-                      stroke="rgba(255,224,182,0.14)"
-                      strokeWidth="1.2"
-                      strokeLinecap="round"
-                    />
-                  </g>
-                );
-              })}
-
-              {Array.from({ length: 16 }).map((_, i) => {
-                const x = 82 + i * 8;
-                return (
-                  <line
-                    key={`braid-b-${i}`}
-                    x1={x}
-                    y1={-18}
-                    x2={x - 56}
-                    y2={H - 18}
-                    stroke="rgba(125,73,38,0.10)"
-                    strokeWidth="1.2"
-                    strokeLinecap="round"
-                  />
-                );
-              })}
-            </g>
-
-            <path
-              d={glowPath}
-              fill="none"
-              stroke={`url(#${ids.accent})`}
-              strokeWidth="10"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              filter={`url(#${ids.glow})`}
-              opacity="0.94"
-            />
-
-            <path
-              d={glowPath}
-              fill="none"
-              stroke={`${themeHex}AA`}
-              strokeWidth="2.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              opacity="0.92"
-            />
-
-            <g opacity="0.96">
-              {ropeKnots.map((k, i) => (
-                <g key={i}>
-                  <circle cx={k.x} cy={k.y} r="4.5" fill="#9A6033" />
-                  <circle cx={k.x} cy={k.y} r="1.5" fill="#F4D3A3" />
-                </g>
+            <g mask={`url(#${ids.mask})`}>
+              {stamps.map((item, i) => (
+                <use
+                  key={i}
+                  href={`#${ids.braidCell}`}
+                  transform={`
+                    translate(${item.x} ${item.y})
+                    rotate(${item.angle + item.flip * 162})
+                    scale(${item.scaleX} ${item.flip * item.scaleY})
+                  `}
+                  opacity={item.opacity}
+                />
               ))}
             </g>
 
-            {centers[0] && (
-              <TopUnionPendant
-                x={centers[0].x}
-                y={centers[0].y - 154}
-                themeHex={themeHex}
+            <path
+              d={ropePath}
+              fill="none"
+              stroke={tones.topLight}
+              strokeWidth="0.9"
+              strokeLinecap="round"
+              transform="translate(0,-0.7)"
+            />
+
+            <TopBindKnot
+              x={centers[0]?.x ?? centerX}
+              y={-33}
+              palette={tones.knotPalette}
+            />
+
+            {ropeKnots.map((k, i) => (
+              <MidRopeKnot
+                key={i}
+                x={k.x}
+                y={k.y}
+                palette={tones.knotPalette}
+              />
+            ))}
+
+            {tailMeta && (
+              <TailKnot
+                x={tailMeta.x}
+                y={tailMeta.y}
+                angle={tailMeta.angle}
+                palette={tones.knotPalette}
               />
             )}
           </svg>
@@ -452,7 +612,10 @@ export default function ActivityDots({
                 )}
 
                 <button
-                  onClick={() => onSelect?.(a.activityId)}
+                  onClick={() => {
+                    onClickDot?.(a);
+                    onSelect?.(a.activityId);
+                  }}
                   disabled={disabled}
                   className={[
                     "group relative h-[110px] w-[110px] overflow-hidden rounded-full",
@@ -472,19 +635,6 @@ export default function ActivityDots({
                       : "0 16px 44px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,255,255,0.14)",
                   }}
                   title={disabled ? "Bloqueada" : "Ver actividad"}>
-                  <div
-                    className="pointer-events-none absolute rounded-full"
-                    style={{
-                      inset: 4,
-                      border: selected
-                        ? "2px solid rgba(229,176,111,0.72)"
-                        : "1px solid rgba(217,169,106,0.34)",
-                      boxShadow: selected
-                        ? `inset 0 0 0 1px rgba(255,255,255,0.18), 0 0 20px ${themeHex}20`
-                        : "inset 0 0 0 1px rgba(255,255,255,0.10)",
-                    }}
-                  />
-
                   <img
                     src={img}
                     alt={a.type}

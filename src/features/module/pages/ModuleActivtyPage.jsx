@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Header from "../components/activity/ActivityHeader";
 import Hero from "../components/activity/ActivityHero";
 import Footer from "../components/activity/ActivityFooter";
-import SceneBackground from "../components/ui/SceneBackground";
+import ContentBackground from "../components/ui/ContentBackground";
 import ActivityExitConfirmModal from "../components/sections/ActivityExitConfirmModal";
 import ConfiguracionModal from "../components/sections/ConfiguracionModal";
 import { MODULE_CONTENT_MAP } from "../content/content.registry";
@@ -146,7 +146,8 @@ export default function ModuleActivtyPage() {
        * Expone las vistas activas de la mision para que ciertos templates
        * puedan heredar datos dinamicos (por ejemplo, el saldo acumulado).
        */
-      getMissionViews: () => moduleData.missions?.[player.missionKey]?.views ?? [],
+      getMissionViews: () =>
+        moduleData.missions?.[player.missionKey]?.views ?? [],
       resolveNextViewId,
       // Expone el resumen final para que Lobby postGame lea XP/coins reales.
       getMissionCompletion: () => missionCompletion,
@@ -193,7 +194,15 @@ export default function ModuleActivtyPage() {
 
   return (
     <>
-      <SceneBackground moduleCode={moduleCode} className="overflow-hidden">
+      <ContentBackground
+        vignetteStrength={0.16}
+        topGlow={0.07}
+        bottomShade={0.61}
+        patternSize={320}
+        patternOpacity={0.41}
+        ambientOpacity={0.85}
+        moduleCode={moduleCode}
+        className="overflow-hidden">
         <div
           className="grid h-full min-h-0 w-full overflow-hidden"
           style={{
@@ -222,7 +231,7 @@ export default function ModuleActivtyPage() {
             themeHex={moduleData?.theme?.color}
           />
         </div>
-      </SceneBackground>
+      </ContentBackground>
 
       <ConfiguracionModal
         open={isSettingsOpen}

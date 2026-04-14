@@ -1,11 +1,13 @@
 import { Howl } from "howler";
 
-import clickSfx from "@/assets/audios/sfx/click.mp3";
-import hoverSfx from "@/assets/audios/sfx/hover.mp3";
-import successSfx from "@/assets/audios/sfx/success.mp3";
-import errorSfx from "@/assets/audios/sfx/error.mp3";
-import openModalSfx from "@/assets/audios/sfx/open-modal.mp3";
-import closeModalSfx from "@/assets/audios/sfx/close-modal.mp3";
+import clickSfx from "@/assets/audios/sfxmenu/Cursor Saliente.wav";
+import hoverSfx from "@/assets/audios/sfxmenu/Cursor sobre siguiente.wav";
+import successSfx from "@/assets/audios/sfx/Cursor sobre siguiente.wav";
+import errorSfx from "@/assets/audios/sfx/error.wav";
+import openModalSfx from "@/assets/audios/sfxmenu/Cursor entrante.wav";
+import closeModalSfx from "@/assets/audios/sfxmenu/Cursor Saliente.wav";
+import mascotTapSfx from "@/assets/audios/sfxmenu/avatar.wav";
+import clickdot from "@/assets/audios/sfxmenu/Cursor sobre siguiente.wav";
 
 function makeSfx(name, src, volume = 1) {
   return new Howl({
@@ -37,5 +39,7 @@ export function createSfxCatalog() {
     error: makeSfx("error", errorSfx, 1),
     openModal: makeSfx("openModal", openModalSfx, 1),
     closeModal: makeSfx("closeModal", closeModalSfx, 1),
+    mascotTap: makeSfx("mascotTap", mascotTapSfx, 1),
+    clickdot: makeSfx("clickdot", clickdot, 1),
   };
 }
