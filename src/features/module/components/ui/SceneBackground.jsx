@@ -4,12 +4,11 @@ import { getModuleTheme } from "../../utils/moduleTheme";
 export default function SceneBackground({
   moduleCode,
   themeHex = "#7130F7",
-  backgroundHex = "#0B1020",
+  backgroundHex = "#141B2D", // antes: #0B1020
   children,
   pattern = true,
   patternOpacity = 0.06,
   patternSize = 52,
-  // opacidades del tintado
   t1 = 0.62,
   t2 = 0.45,
   t3 = 0.26,
@@ -25,10 +24,12 @@ export default function SceneBackground({
       };
     }
 
-    const base = `linear-gradient(180deg, ${hexToRgba(
-      backgroundHex,
-      1,
-    )} 0%, ${hexToRgba(backgroundHex, 1)} 100%)`;
+    const base = `linear-gradient(
+      180deg,
+      ${hexToRgba("#182033", 1)} 0%,
+      ${hexToRgba(backgroundHex, 1)} 100%,
+      ${hexToRgba("#101726", 1)} 100%
+    )`;
 
     const _t1 = hexToRgba(themeHex, t1);
     const _t2 = hexToRgba(themeHex, t2);
@@ -68,11 +69,9 @@ export default function SceneBackground({
       <div
         className="relative h-full"
         style={{
-          // Variables base del frame de actividad.
-          // Se reutilizan para mantener proporciones consistentes en toda la pantalla.
           "--activity-header-height": "clamp(96px, 13vh, 132px)",
           "--activity-footer-height": "clamp(56px, 8vh, 72px)",
-          "--activity-shell-gutter": "clamp(12px, 2vw, 28px)",
+          "--activity-shell-gutter": "clamp(12px, 2vw, 10px)",
         }}>
         {children}
       </div>
@@ -80,7 +79,6 @@ export default function SceneBackground({
   );
 }
 
-// util
 function hexToRgba(hex, a = 1) {
   const h = String(hex || "").replace("#", "");
   const full =

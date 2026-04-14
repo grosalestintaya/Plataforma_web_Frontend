@@ -83,10 +83,10 @@ export default function ModuleMenuHeader({
             />
           </div>
         </div>
-        <div className="mt-0 -mx-3 overflow-hidden sm:-mx-4 md:-mx-8 lg:-mx-10">
+        <div className="-mt-5 -m-3 overflow-hidden sm:-mx-4 md:-mx-8 lg:-mx-10 -pt-2">
           <HeaderRopeSvg
             themeHex={themeHex}
-            className="block h-[40px] w-full select-none sm:h-[54px] md:h-[78px] lg:h-[122px]"
+            className="block h-[40px] w-full select-none sm:h-[54px] md:h-[78px] lg:h-[142px] "
           />
         </div>
       </div>

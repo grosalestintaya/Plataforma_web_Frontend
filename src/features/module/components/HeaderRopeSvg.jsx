@@ -1,361 +1,361 @@
-import React from "react";
+import React, {
+  useId,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
-function ImperialPendant({ x, y = 92, side = "left", themeHex = "#7130F7" }) {
-  const dir = side === "left" ? -1 : 1;
+function hexToRgba(hex, alpha = 1) {
+  const clean = String(hex || "#000000").replace("#", "");
+  const full =
+    clean.length === 3
+      ? clean
+          .split("")
+          .map((c) => c + c)
+          .join("")
+      : clean.padEnd(6, "0");
 
+  const num = parseInt(full, 16);
+  const r = (num >> 16) & 255;
+  const g = (num >> 8) & 255;
+  const b = num & 255;
+
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
+function mixHex(hex, target = "#ffffff", amount = 0.5) {
+  const parse = (value) => {
+    const clean = String(value || "#000000").replace("#", "");
+    const full =
+      clean.length === 3
+        ? clean
+            .split("")
+            .map((c) => c + c)
+            .join("")
+        : clean.padEnd(6, "0");
+
+    const num = parseInt(full, 16);
+    return {
+      r: (num >> 16) & 255,
+      g: (num >> 8) & 255,
+      b: num & 255,
+    };
+  };
+
+  const a = parse(hex);
+  const b = parse(target);
+
+  const r = Math.round(a.r + (b.r - a.r) * amount);
+  const g = Math.round(a.g + (b.g - a.g) * amount);
+  const b2 = Math.round(a.b + (b.b - a.b) * amount);
+
+  return `rgb(${r}, ${g}, ${b2})`;
+}
+
+function makePalette(themeHex) {
+  const base = themeHex || "#8B5CF6";
+
+  return {
+    main: base,
+    dark: mixHex(base, "#1f140d", 0.48),
+    light: mixHex(base, "#ffffff", 0.52),
+    shadow: hexToRgba(mixHex(base, "#1f140d", 0.7), 0.26),
+    glowSoft: hexToRgba(base, 0.18),
+  };
+}
+
+function useBraidStamps(
+  pathRef,
+  { step = 13, trimStart = 12, trimEnd = 12, sideOffset = 2.15 } = {},
+) {
+  const [items, setItems] = useState([]);
+
+  useLayoutEffect(() => {
+    const pathNode = pathRef.current;
+    if (!pathNode) return;
+
+    let frame = 0;
+
+    const build = () => {
+      try {
+        const total = pathNode.getTotalLength();
+        const end = Math.max(trimStart, total - trimEnd);
+        const nextItems = [];
+
+        let i = 0;
+        for (let d = trimStart; d <= end; d += step) {
+          const p = pathNode.getPointAtLength(d);
+          const prev = pathNode.getPointAtLength(Math.max(0, d - 1.6));
+          const next = pathNode.getPointAtLength(Math.min(total, d + 1.6));
+
+          const dx = next.x - prev.x;
+          const dy = next.y - prev.y;
+          const len = Math.hypot(dx, dy) || 1;
+
+          const angle = (Math.atan2(dy, dx) * 180) / Math.PI;
+          const nx = -dy / len;
+          const ny = dx / len;
+
+          const sign = i % 2 === 0 ? 1 : -1;
+          const offset = sign * sideOffset;
+
+          nextItems.push({
+            x: p.x + nx * offset,
+            y: p.y + ny * offset,
+            angle,
+            flip: sign,
+            scaleX: i % 2 === 0 ? 1.06 : 1,
+            scaleY: i % 2 === 0 ? 1.03 : 0.99,
+            opacity: i % 2 === 0 ? 1 : 0.95,
+          });
+
+          i += 1;
+        }
+
+        setItems(nextItems);
+      } catch {
+        setItems([]);
+      }
+    };
+
+    frame = requestAnimationFrame(build);
+    return () => cancelAnimationFrame(frame);
+  }, [pathRef, step, trimStart, trimEnd, sideOffset]);
+
+  return items;
+}
+
+function EndKnot({ x, y, palette, flip = 1 }) {
   return (
-    <g transform={`translate(${x} ${y})`}>
-      <circle cx="0" cy="0" r="4.2" fill="#8C532C" />
-      <circle cx="0" cy="0" r="1.6" fill="#F3D29F" />
+    <g transform={`translate(${x} ${y}) scale(${flip} 1)`}>
+      <ellipse cx="0" cy="0" rx="13.8" ry="9.6" fill="rgba(0,0,0,0.14)" />
 
-      <path
-        d={`M ${-10 * dir} 2 C ${-12 * dir} 14, ${-10 * dir} 28, ${-8 * dir} 42`}
-        fill="none"
-        stroke="#7A451F"
-        strokeWidth="4"
-        strokeLinecap="round"
-      />
-      <path
-        d={`M 0 3 C 0 16, 0 30, 0 46`}
-        fill="none"
-        stroke="#8C532C"
-        strokeWidth="4.2"
-        strokeLinecap="round"
-      />
-      <path
-        d={`M ${10 * dir} 2 C ${12 * dir} 14, ${10 * dir} 28, ${8 * dir} 42`}
-        fill="none"
-        stroke="#6C3C1C"
-        strokeWidth="4"
-        strokeLinecap="round"
-      />
-
-      <path
-        d={`M ${-10 * dir} 2 C ${-12 * dir} 14, ${-10 * dir} 28, ${-8 * dir} 42`}
-        fill="none"
-        stroke="rgba(255,229,191,0.26)"
+      <ellipse
+        cx="0"
+        cy="0"
+        rx="11.4"
+        ry="7.9"
+        fill={palette.dark}
+        stroke={hexToRgba(palette.light, 0.65)}
         strokeWidth="1.2"
-        strokeLinecap="round"
       />
+
       <path
-        d={`M 0 3 C 0 16, 0 30, 0 46`}
+        d="M -5.8 -2.7 Q 0 -0.9 5.8 -2.7"
         fill="none"
-        stroke="rgba(255,236,205,0.3)"
-        strokeWidth="1.2"
+        stroke={hexToRgba(palette.light, 0.8)}
+        strokeWidth="0.9"
         strokeLinecap="round"
       />
 
-      <g transform={`translate(${-8 * dir} 18)`}>
-        <circle cx="0" cy="0" r="5.5" fill="#9B6236" />
-        <circle cx="0" cy="0" r="2" fill="#EAC08A" />
-      </g>
-
-      <g transform="translate(0 24)">
-        <circle cx="0" cy="0" r="6.4" fill="#8E552D" />
-        <circle cx="0" cy="0" r="2.2" fill="#F1CEA0" />
-      </g>
-
-      <g transform={`translate(${8 * dir} 31)`}>
-        <circle cx="0" cy="0" r="5.2" fill="#7D4723" />
-        <circle cx="0" cy="0" r="1.8" fill="#EBC895" />
-      </g>
-
-      <g transform="translate(0 46)">
-        <circle cx="0" cy="0" r="6.2" fill="#9A6034" />
-        <circle cx="0" cy="0" r="2.1" fill="#F5D7AB" />
-      </g>
-
-      <g transform="translate(0 62)">
-        <path
-          d="M 0 -10 L 10 0 L 0 10 L -10 0 Z"
-          fill="#6A3B1C"
-          stroke="#D9A96A"
-          strokeWidth="1.8"
-        />
-        <path
-          d="M 0 -5 L 5 0 L 0 5 L -5 0 Z"
-          fill={themeHex}
-          opacity="0.9"
-          stroke="rgba(255,255,255,0.45)"
-          strokeWidth="0.8"
-        />
-        <circle cx="0" cy="0" r="1.6" fill="#FFFFFF" opacity="0.9" />
-      </g>
-
-      <line
-        x1="-4"
-        y1="71"
-        x2="-4"
-        y2="85"
-        stroke="#8B532C"
-        strokeWidth="2.6"
-        strokeLinecap="round"
-      />
-      <line
-        x1="4"
-        y1="71"
-        x2="4"
-        y2="85"
-        stroke="#6E3D1D"
-        strokeWidth="2.6"
-        strokeLinecap="round"
+      <path
+        d="
+          M 11.2 0
+          C 17.4 -2.1, 23.4 -2.1, 27.5 0
+          C 23.7 2.1, 17.6 2.1, 11.2 0
+        "
+        fill={palette.dark}
+        opacity="0.95"
       />
     </g>
   );
 }
 
 export default function HeaderRopeSvg({
+  themeHex = "#7C3AED",
   className = "",
-  themeHex = "#7130F7",
 }) {
-  const ropePath = `
-    M -60 94
-    C 120 78, 250 108, 410 94
-    S 710 78, 860 94
-    S 1160 110, 1320 94
-    S 1510 80, 1660 94
-  `;
+  const guideRef = useRef(null);
+  const uid = useId().replace(/:/g, "");
+  const palette = useMemo(() => makePalette(themeHex), [themeHex]);
+
+  const path = useMemo(
+    () => `
+      M -24 46
+      C 90 39, 185 28, 300 36
+      C 400 44, 515 57, 640 47
+      C 770 37, 865 24, 985 35
+      C 1090 44, 1178 47, 1236 43
+    `,
+    [],
+  );
+
+  const stamps = useBraidStamps(guideRef, {
+    step: 13,
+    trimStart: 14,
+    trimEnd: 14,
+    sideOffset: 2.15,
+  });
+
+  const braidCellId = `header-rope-braid-${uid}`;
+  const maskId = `header-rope-mask-${uid}`;
+  const glowId = `header-rope-glow-${uid}`;
+  const shadowId = `header-rope-shadow-${uid}`;
 
   return (
     <svg
-      viewBox="0 54 1600 128"
-      preserveAspectRatio="none"
       className={className}
-      aria-hidden="true">
+      viewBox="0 0 1200 92"
+      preserveAspectRatio="none"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <linearGradient id="ropeBaseImperial" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#693C1E" />
-          <stop offset="16%" stopColor="#88522B" />
-          <stop offset="34%" stopColor="#B4713D" />
-          <stop offset="50%" stopColor="#D49A5E" />
-          <stop offset="66%" stopColor="#B6723C" />
-          <stop offset="84%" stopColor="#88512A" />
-          <stop offset="100%" stopColor="#63381C" />
-        </linearGradient>
-
-        <linearGradient
-          id="ropeInnerImperial"
-          x1="0%"
-          y1="0%"
-          x2="0%"
-          y2="100%">
-          <stop offset="0%" stopColor="rgba(255,239,214,0.42)" />
-          <stop offset="50%" stopColor="rgba(255,207,150,0.18)" />
-          <stop offset="100%" stopColor="rgba(92,51,24,0.05)" />
-        </linearGradient>
-
-        <linearGradient id="imperialAccent" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="rgba(255,255,255,0)" />
-          <stop offset="20%" stopColor="rgba(255,255,255,0.05)" />
-          <stop offset="50%" stopColor={themeHex} />
-          <stop offset="80%" stopColor="rgba(255,255,255,0.05)" />
-          <stop offset="100%" stopColor="rgba(255,255,255,0)" />
-        </linearGradient>
-
         <filter
-          id="ropeShadowImperial"
-          x="-15%"
-          y="-100%"
-          width="130%"
-          height="320%">
+          id={shadowId}
+          x="-10%"
+          y="-120%"
+          width="120%"
+          height="300%"
+          colorInterpolationFilters="sRGB">
           <feDropShadow
             dx="0"
             dy="5"
-            stdDeviation="4.5"
-            floodColor="rgba(0,0,0,0.32)"
+            stdDeviation="5"
+            floodColor={hexToRgba("#000000", 0.22)}
           />
         </filter>
 
         <filter
-          id="ropeGlowImperial"
-          x="-20%"
-          y="-120%"
-          width="140%"
-          height="340%">
-          <feGaussianBlur stdDeviation="4" result="blur" />
+          id={glowId}
+          x="-10%"
+          y="-150%"
+          width="120%"
+          height="400%"
+          colorInterpolationFilters="sRGB">
+          <feGaussianBlur stdDeviation="4.8" result="blur" />
           <feMerge>
             <feMergeNode in="blur" />
             <feMergeNode in="SourceGraphic" />
           </feMerge>
         </filter>
 
-        <mask id="ropeMaskImperial">
-          <rect width="1600" height="210" fill="black" />
+        <g id={braidCellId}>
           <path
-            d={ropePath}
+            d="
+              M -16.5 0
+              C -13.4 -5.8, -7.9 -9.7, -0.4 -9.9
+              C 7.2 -10.1, 12.8 -5.8, 16.2 0
+              C 12.8 5.8, 7.2 10.1, -0.4 9.9
+              C -7.9 9.7, -13.4 5.8, -16.5 0
+              Z
+            "
+            fill={"#C1814B"}
+            stroke={"#3e352b"}
+            strokeWidth="1.26"
+            strokeLinejoin="round"
+          />
+
+          <path
+            d="M -10.6 6.3 C -6.6 3.5, -2.1 0.5, 9.3 -7"
             fill="none"
-            stroke="white"
-            strokeWidth="34"
+            stroke={hexToRgba(palette.dark, 0.32)}
+            strokeWidth="2.2"
             strokeLinecap="round"
           />
-        </mask>
 
-        <radialGradient id="centerGemImperial" cx="50%" cy="40%" r="70%">
-          <stop offset="0%" stopColor="#FFFFFF" />
-          <stop offset="16%" stopColor="#F8ECFF" />
-          <stop offset="54%" stopColor={themeHex} />
-          <stop offset="100%" stopColor="#2A1246" />
-        </radialGradient>
+          <path
+            d="M -9.6 -5 C -5.2 -7.3, 0.2 -6.7, 8.9 -2.4"
+            fill="none"
+            stroke={hexToRgba(palette.light, 0.3)}
+            strokeWidth="1.18"
+            strokeLinecap="round"
+          />
+
+          <path
+            d="M -11.6 -1.4 C -5.2 -4.1, 2.1 -3.3, 10.8 2.9"
+            fill="none"
+            stroke={hexToRgba(palette.dark, 0.14)}
+            strokeWidth="0.86"
+            strokeLinecap="round"
+          />
+        </g>
+
+        <mask id={maskId}>
+          <rect x="-120" y="-70" width="1500" height="240" fill="black" />
+          <path
+            d={path}
+            fill="none"
+            stroke="white"
+            strokeWidth="36"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </mask>
       </defs>
 
-      {/* sombra */}
       <path
-        d={ropePath}
+        ref={guideRef}
+        d={path}
         fill="none"
-        stroke="rgba(24,11,5,0.22)"
-        strokeWidth="42"
-        strokeLinecap="round"
-        filter="url(#ropeShadowImperial)"
+        stroke="transparent"
+        strokeWidth="1"
+        pointerEvents="none"
       />
 
-      {/* cuerpo base más ancho */}
       <path
-        d={ropePath}
+        d={path}
         fill="none"
-        stroke="url(#ropeBaseImperial)"
-        strokeWidth="34"
+        stroke={palette.shadow}
+        strokeWidth="9"
         strokeLinecap="round"
+        filter={`url(#${shadowId})`}
       />
 
-      {/* volumen interior */}
       <path
-        d={ropePath}
+        d={path}
         fill="none"
-        stroke="url(#ropeInnerImperial)"
-        strokeWidth="22"
+        stroke={hexToRgba(palette.dark, 0.09)}
+        strokeWidth="25"
         strokeLinecap="round"
+        opacity="0.76"
       />
 
-      {/* borde superior */}
       <path
-        d={ropePath}
+        d={path}
         fill="none"
-        stroke="rgba(255,247,233,0.62)"
-        strokeWidth="5.2"
+        stroke={hexToRgba(palette.main, 0.55)}
+        strokeWidth="15"
         strokeLinecap="round"
-        transform="translate(0,-2.4)"
+        opacity="0.86"
       />
 
-      {/* borde inferior */}
-      <path
-        d={ropePath}
-        fill="none"
-        stroke="rgba(82,45,21,0.42)"
-        strokeWidth="5.6"
-        strokeLinecap="round"
-        transform="translate(0,3.2)"
-      />
-
-      {/* trenzado interno */}
-      <g mask="url(#ropeMaskImperial)" opacity="0.8">
-        {Array.from({ length: 34 }).map((_, i) => {
-          const x = -120 + i * 55;
-          return (
-            <g key={`braid-a-${i}`}>
-              <line
-                x1={x}
-                y1={36}
-                x2={x + 90}
-                y2={154}
-                stroke="rgba(108,60,30,0.34)"
-                strokeWidth="9"
-                strokeLinecap="round"
-              />
-              <line
-                x1={x + 20}
-                y1={30}
-                x2={x + 110}
-                y2={148}
-                stroke="rgba(255,224,182,0.22)"
-                strokeWidth="3.4"
-                strokeLinecap="round"
-              />
-            </g>
-          );
-        })}
-
-        {Array.from({ length: 34 }).map((_, i) => {
-          const x = -92 + i * 55;
-          return (
-            <g key={`braid-b-${i}`}>
-              <line
-                x1={x + 92}
-                y1={38}
-                x2={x}
-                y2={152}
-                stroke="rgba(125,73,38,0.16)"
-                strokeWidth="3.2"
-                strokeLinecap="round"
-              />
-            </g>
-          );
-        })}
-      </g>
-
-      {/* hilo mágico */}
-      <path
-        d={ropePath}
-        fill="none"
-        stroke="url(#imperialAccent)"
-        strokeWidth="2.2"
-        strokeLinecap="round"
-        opacity="0.7"
-        filter="url(#ropeGlowImperial)"
-      />
-
-      {/* micro nudos */}
-      <g opacity="0.96">
-        {[
-          [315, 96],
-          [585, 88],
-          [1035, 98],
-          [1275, 90],
-        ].map(([cx, cy], i) => (
-          <g key={i}>
-            <circle cx={cx} cy={cy} r="5.8" fill="#9A6033" />
-            <circle cx={cx} cy={cy} r="2.1" fill="#F4D3A3" />
-          </g>
+      <g mask={`url(#${maskId})`}>
+        {stamps.map((item, i) => (
+          <use
+            key={i}
+            href={`#${braidCellId}`}
+            transform={`
+              translate(${item.x} ${item.y})
+              rotate(${item.angle + item.flip * 168})
+              scale(${item.scaleX} ${item.flip * item.scaleY})
+            `}
+            opacity={item.opacity}
+          />
         ))}
       </g>
 
-      {/* colgantes */}
-      <ImperialPendant x={92} y={92} side="left" themeHex={themeHex} />
-      <ImperialPendant x={1508} y={92} side="right" themeHex={themeHex} />
+      <path
+        d={path}
+        fill="none"
+        stroke={hexToRgba(palette.light, 0.18)}
+        strokeWidth="1.3"
+        strokeLinecap="round"
+        transform="translate(0,-0.9)"
+      />
 
-      {/* centro */}
-      <g transform="translate(800 95)">
-        <path
-          d="M 0 0 C -1.5 10, -1.5 18, 0 28"
-          fill="none"
-          stroke="#8B542C"
-          strokeWidth="3.8"
-          strokeLinecap="round"
-        />
-        <path
-          d="M 0 0 C 1.5 10, 1.5 18, 0 28"
-          fill="none"
-          stroke="rgba(255,238,205,0.34)"
-          strokeWidth="1.2"
-          strokeLinecap="round"
-        />
+      <path
+        d={path}
+        fill="none"
+        stroke={palette.glowSoft}
+        strokeWidth="1.9"
+        strokeLinecap="round"
+        filter={`url(#${glowId})`}
+        opacity="0.7"
+      />
 
-        <g transform="translate(0 40)">
-          <path
-            d="M 0 -15 L 15 0 L 0 15 L -15 0 Z"
-            fill="#6C3B1E"
-            stroke="#E5B06F"
-            strokeWidth="1.8"
-          />
-          <path
-            d="M 0 -9 L 9 0 L 0 9 L -9 0 Z"
-            fill="url(#centerGemImperial)"
-            stroke="rgba(255,255,255,0.42)"
-            strokeWidth="1"
-            filter="url(#ropeGlowImperial)"
-          />
-          <circle cx="0" cy="0" r="2.2" fill="#FFFFFF" opacity="0.95" />
-        </g>
-      </g>
+      <EndKnot x="24" y="46" palette={palette} flip={1} />
+      <EndKnot x="1178" y="43.5" palette={palette} flip={-1} />
     </svg>
   );
 }

@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { createPortal } from "react-dom";
 import { Menu } from "lucide-react";
-
+import bg from "@/assets/dashboard/bg3.png";
 import { useAuth } from "../../auth/components/AuthContext";
 import LogoutModal from "../../auth/pages/LogOut";
 import SidebarPanel from "./SidebarPanel";
@@ -56,13 +56,15 @@ export default function SidebarLayout() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [mobileOpen]);
 
-  const desktopMainClass = "flex-1 min-w-0 ml-37 p-5 pt-4 pr-3 pb-3";
+  const desktopMainClass = "flex-1 min-w-0 ml-37 p-5 pt-4 pr-3 pb-3 ";
   const mobileMainClass = "min-h-screen w-full min-w-0 p-4 pt-16";
 
   return (
     <div
       className={`flex min-h-screen w-full ${themeClass} transition-colors duration-300`}
-      style={{ backgroundColor: "var(--app-bg)" }}>
+      style={{
+        backgroundColor: "var(--app-bg)",
+      }}>
       {isDesktop && (
         <SidebarPanel
           menuItems={menuItems}

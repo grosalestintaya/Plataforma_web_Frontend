@@ -24,14 +24,23 @@ export default function ModuleMenuBody({
   ctaLabel,
   onSelectActivity,
   onPlay,
+  onHoverActivity,
+  audioState,
 }) {
+  const handleClickDot = () => {
+    audioState?.playSfx?.("clickDot");
+  };
+
   const left = (
     <ModuleMenuSelectorPanel
       activities={activities}
+      onClickDot={() => audioState?.playSfx?.("clickDot")}
       selectedId={selectedActivityId}
       onSelect={onSelectActivity}
+      onHoverActivity={onHoverActivity}
+      audioState={audioState}
       themeHex={themeHex}
-      className="xl:justify-center pt-{6}"
+      className="xl:justify-center pt-6"
     />
   );
 
@@ -43,6 +52,8 @@ export default function ModuleMenuBody({
       canPlay={canPlay}
       ctaLabel={ctaLabel}
       onPlay={onPlay}
+      onHoverActivity={onHoverActivity}
+      audioState={audioState}
     />
   );
 
@@ -53,30 +64,28 @@ export default function ModuleMenuBody({
       text={mascotText}
       wallet={wallet}
       className="xl:justify-center"
+      onHoverMascot={() => audioState?.playSfx?.("hover", { rate: 1.02 })}
+      onClickMascot={() => audioState?.playSfx?.("mascotTap")}
     />
   );
 
   return (
     <main className="h-full min-h-0 px-2 pb-2 pt-0 sm:px-3 md:px-4 lg:px-6 xl:px-10">
-      {/* Un solo grid responsive:
-          en pantallas pequeñas deja selector + tarjeta arriba y mascota abajo;
-          en desktop reparte selector, contenido y mascota en tres columnas. */}
       <div
         className="
           mx-auto grid h-full min-h-0 w-full max-w-[1380px] gap-2 sm:gap-3 md:gap-4
           grid-cols-[88px_minmax(0,1fr)] grid-rows-[50%_50%]
-
           sm:grid-cols-[108px_minmax(0,1fr)] sm:grid-rows-[50%_50%]
-
           md:grid-cols-[108px_minmax(0,1fr)] md:grid-rows-[50%_50%]
-
-          lg:grid-cols-[132px_minmax(0,1fr)_240px] 
+          lg:grid-cols-[132px_minmax(0,1fr)_240px]
           xl:grid-cols-[168px_minmax(0,1fr)_280px]
         ">
-        <div className="min-h-0 min-w-0 -mt-26">{left}</div>
-        <section className="flex h-full min-h-0 min-w-0 items-start justify-center lg:items-stretch">
+        <div className="min-h-0 min-w-0 -mt-32">{left}</div>
+
+        <section className="flex h-full min-h-0 min-w-0 items-start justify-center lg:items-stretch lg:justify-center">
           {center}
         </section>
+
         <div className="col-span-2 min-h-0 lg:col-span-1">{right}</div>
       </div>
     </main>

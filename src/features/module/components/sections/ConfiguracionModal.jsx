@@ -29,12 +29,13 @@ export default function ConfiguracionModal({
   onRequestAbandon,
   description = "Saldras de la vista actual y volveras al inicio.",
   showAbandonAction = true,
-  sfx = 80,
-  music = 50,
+  sfx = 70,
+  music = 10,
   onChangeSfx,
   onChangeMusic,
   title = "Opciones",
   abandonLabel = "Abandonar actividad",
+  audioState,
 }) {
   const panelRef = useRef(null);
   const lastNonZeroSfxRef = useRef(Number(sfx) > 0 ? Number(sfx) : 80);
@@ -89,16 +90,25 @@ export default function ConfiguracionModal({
 
   if (!open) return null;
 
+  function playVolumeClick() {
+    audioState?.playSfx?.("clickDot");
+  }
+
   function handleToggleSfx() {
     if (Number(sfx) > 0) {
+      // Debe sonar antes de mutear para que el clic siga siendo audible.
+      playVolumeClick();
       onChangeSfx?.(0);
       return;
     }
 
     onChangeSfx?.(lastNonZeroSfxRef.current || 80);
+    playVolumeClick();
   }
 
   function handleToggleMusic() {
+    playVolumeClick();
+
     if (Number(music) > 0) {
       onChangeMusic?.(0);
       return;
@@ -160,18 +170,15 @@ export default function ConfiguracionModal({
         aria-labelledby="config-modal-title"
         onMouseDown={(e) => {
           if (e.target === e.currentTarget) onRequestClose?.();
-        }}
-      >
+        }}>
         <div
           ref={panelRef}
           tabIndex={-1}
-          className="w-full max-w-xl rounded-[40px] bg-[#FFC400] shadow-2xl outline-none"
-        >
+          className="w-full max-w-xl rounded-[40px] bg-[#FFC400] shadow-2xl outline-none">
           <div className="relative px-6 pb-5 pt-8 sm:px-10 sm:pb-6 sm:pt-10">
             <h2
               id="config-modal-title"
-              className="text-3xl font-extrabold text-slate-800 sm:text-5xl"
-            >
+              className="text-3xl font-extrabold text-slate-800 sm:text-5xl">
               {title}
             </h2>
 
@@ -179,8 +186,7 @@ export default function ConfiguracionModal({
               type="button"
               onClick={onRequestClose}
               aria-label="Cerrar"
-              className="absolute right-5 top-5 grid h-12 w-12 place-items-center rounded-2xl border-2 border-slate-900/20 bg-white/35 transition hover:bg-white/50 active:scale-95 sm:right-8 sm:top-8 sm:h-14 sm:w-14"
-            >
+              className="absolute right-5 top-5 grid h-12 w-12 place-items-center rounded-2xl border-2 border-slate-900/20 bg-white/35 transition hover:bg-white/50 active:scale-95 sm:right-8 sm:top-8 sm:h-14 sm:w-14">
               <img
                 src={closeIcon}
                 alt=""
@@ -198,6 +204,7 @@ export default function ConfiguracionModal({
               value={sfx}
               onChange={onChangeSfx}
               onToggle={handleToggleSfx}
+              onReleaseSlider={playVolumeClick}
               isMuted={Number(sfx) <= 0}
               ariaLabel="Volumen de efectos"
             />
@@ -208,6 +215,7 @@ export default function ConfiguracionModal({
               value={music}
               onChange={onChangeMusic}
               onToggle={handleToggleMusic}
+              onReleaseSlider={playVolumeClick}
               isMuted={Number(music) <= 0}
               ariaLabel="Volumen de musica"
             />
@@ -221,8 +229,7 @@ export default function ConfiguracionModal({
                 <button
                   type="button"
                   onClick={onRequestAbandon}
-                  className="w-full rounded-2xl border-2 border-red-950/20 bg-red-500 px-5 py-4 text-lg font-black text-white shadow-[0_5px_0_rgba(0,0,0,0.18)] transition hover:brightness-105 active:translate-y-[1px]"
-                >
+                  className="w-full rounded-2xl border-2 border-red-950/20 bg-red-500 px-5 py-4 text-lg font-black text-white shadow-[0_5px_0_rgba(0,0,0,0.18)] transition hover:brightness-105 active:translate-y-[1px]">
                   {abandonLabel}
                 </button>
               </div>
@@ -242,6 +249,7 @@ function SettingRow({
   onToggle,
   isMuted = false,
   ariaLabel,
+  onReleaseSlider,
 }) {
   return (
     <div className="flex items-center gap-4 sm:gap-8">
@@ -250,8 +258,7 @@ function SettingRow({
         onClick={onToggle}
         aria-label={isMuted ? `Activar ${label}` : `Silenciar ${label}`}
         aria-pressed={!isMuted}
-        className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border border-slate-900/15 bg-white/25 transition hover:bg-white/40 active:scale-95 sm:h-14 sm:w-14"
-      >
+        className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border border-slate-900/15 bg-white/25 transition hover:bg-white/40 active:scale-95 sm:h-14 sm:w-14">
         <img
           src={icon}
           alt=""
@@ -277,6 +284,18 @@ function SettingRow({
           max={100}
           value={value}
           onChange={(e) => onChange?.(Number(e.target.value))}
+          onMouseUp={onReleaseSlider}
+          onTouchEnd={onReleaseSlider}
+          onKeyUp={(e) => {
+            if (
+              e.key === "ArrowLeft" ||
+              e.key === "ArrowRight" ||
+              e.key === "Home" ||
+              e.key === "End"
+            ) {
+              onReleaseSlider?.();
+            }
+          }}
           aria-label={ariaLabel}
           className="game-slider"
         />

@@ -72,7 +72,7 @@
   --usercard-accent: #ff4081;
   --usercard-accent-2: #7c4dff;
   --coin-panel-bg: #ffc400;
-  --coin-panel-text: #ffffff;
+  --coin-panel-text: #4a2b00;
 }
 
 /* BLUE: sidebar base = #2962FF */
@@ -111,7 +111,7 @@
   --usercard-accent: #2962ff;
   --usercard-accent-2: #00c853;
   --coin-panel-bg: #ffc400;
-  --coin-panel-text: #ffffff;
+  --coin-panel-text: #4a2b00;
 }
 
 /* GREEN: sidebar base = #00C853 */
@@ -149,7 +149,7 @@
   --usercard-accent-2: #2962ff; /* institución */
 
   --coin-panel-bg: #ffc400;
-  --coin-panel-text: #ffffff;
+  --coin-panel-text: #4a2b00;
 }
 
 /* -----------------------------

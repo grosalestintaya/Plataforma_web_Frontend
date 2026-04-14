@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { resolveAvatar } from "../helpers/helpers";
 import coin from "@/assets/dashboard/coin.png";
 import XpQuipuIcon from "@/shared/icons/XpQuipuIcon";
-
+import { Building2, Users, Sparkles } from "lucide-react";
 const clamp = (n, min = 0, max = 100) =>
   Math.min(max, Math.max(min, Number(n) || 0));
 
@@ -53,30 +53,47 @@ function useCountUp(value, { duration = 650 } = {}) {
   return display;
 }
 
-const CompactChip = ({ color, children }) => (
+const CompactChip = ({ color, icon: Icon, children }) => (
   <div
     className="group relative flex min-w-0 items-center gap-2 overflow-hidden rounded-lg border px-2.5 py-1.5"
     style={{
-      background:
-        "linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02))",
-      borderColor: "var(--card-border)",
-      color: "var(--chip-text)",
+      background: `
+        linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0.06))
+      `,
+      borderColor: "rgba(255,255,255,0.14)",
+      color: "#F8FAFC",
       boxShadow:
-        "inset 0 1px 0 rgba(255,255,255,0.10), 0 4px 10px rgba(0,0,0,0.08)",
-      backdropFilter: "blur(6px)",
+        "inset 0 1px 0 rgba(255,255,255,0.10), 0 6px 12px rgba(0,0,0,0.10)",
     }}>
     <span
       className="absolute inset-y-0 left-0 w-[3px]"
-      style={{ backgroundColor: color }}
-    />
-    <span
-      className="h-2.5 w-2.5 shrink-0 rounded-sm"
       style={{
-        backgroundColor: color,
-        boxShadow: `0 0 10px ${color}`,
+        background: `linear-gradient(180deg, ${color}, color-mix(in srgb, ${color} 60%, white 40%))`,
+        boxShadow: `0 0 12px ${color}`,
       }}
     />
-    <span className="truncate text-xs font-medium">{children}</span>
+
+    <span
+      className="relative flex h-5 w-5 shrink-0 items-center justify-center rounded-md"
+      style={{
+        background: "rgba(255,255,255,0.10)",
+        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08)",
+      }}>
+      {Icon ? (
+        <Icon
+          size={13}
+          strokeWidth={2.2}
+          style={{
+            color,
+            filter: `drop-shadow(0 0 6px ${color})`,
+          }}
+        />
+      ) : null}
+    </span>
+
+    <span className="truncate text-xs font-semibold tracking-[0.01em]">
+      {children}
+    </span>
   </div>
 );
 
@@ -99,31 +116,47 @@ const MetricPanel = ({
     <aside
       className={panelClass}
       style={{
-        backgroundColor: color,
+        background: `
+          linear-gradient(
+            180deg,
+            color-mix(in srgb, ${color} 88%, white 12%) 0%,
+            color-mix(in srgb, ${color} 78%, black 22%) 100%
+          )
+        `,
         color: textColor,
-        border: "1px solid rgba(255,255,255,0.08)",
+        border: "1px solid rgba(255,255,255,0.12)",
         boxShadow: glow
-          ? "0 8px 22px rgba(0,0,0,0.16), 0 0 0 3px var(--sidebar-accent), inset 0 1px 0 rgba(255,255,255,0.08)"
-          : "0 8px 18px rgba(0,0,0,0.10), inset 0 1px 0 rgba(255,255,255,0.08)",
+          ? `0 10px 24px rgba(0,0,0,0.18), 0 0 0 2px color-mix(in srgb, ${color} 40%, white 60%), inset 0 1px 0 rgba(255,255,255,0.14)`
+          : "0 8px 18px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.12)",
       }}>
       <div
         className="pointer-events-none absolute inset-0 opacity-20"
         style={{
-          background:
-            "linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.14) 45%, transparent 100%)",
+          background: `
+            radial-gradient(circle at 20% 18%, rgba(255,255,255,0.22), transparent 34%),
+            linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.12) 48%, transparent 100%)
+          `,
         }}
+      />
+
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-[1px]"
+        style={{ background: "rgba(255,255,255,0.24)" }}
       />
 
       <div className="relative flex h-full items-center gap-3 px-3 py-3.4">
         <div className="relative flex h-18 w-18 shrink-0 items-center justify-center rounded-xl">
-          <div className="absolute inset-0 rounded-xl" />
-          {icon}
+          <div className="absolute inset-[6px] rounded-[10px]" />
+          <div className="relative z-[1]">{icon}</div>
         </div>
 
         <div className="min-w-0">
           <p
-            className="text-[11px] uppercase tracking-[0.18em] opacity-80"
-            style={{ color: textColor }}>
+            className="text-[11px] uppercase tracking-[0.18em]"
+            style={{
+              color: textColor,
+              opacity: 0.82,
+            }}>
             {title}
           </p>
 
@@ -132,18 +165,18 @@ const MetricPanel = ({
               className="text-2xl font-extrabold leading-none tabular-nums xl:text-3xl"
               style={{
                 color: textColor,
-                textShadow:
-                  "0 2px 6px rgba(0,0,0,0.25), 0 0 16px rgba(255,255,255,0.08)",
+                textShadow: "0 2px 10px rgba(0,0,0,0.20)",
               }}>
               {value}
             </p>
 
             {delta !== null && (
               <span
-                className="pointer-events-none absolute -top-4 right-0 text-xs font-semibold"
+                className="pointer-events-none absolute -top-4 right-0 text-xs font-black"
                 style={{
                   color: textColor,
-                  opacity: 0.95,
+                  opacity: 0.96,
+                  textShadow: "0 2px 8px rgba(0,0,0,0.22)",
                   animation: "coinFloat 900ms ease-out forwards",
                 }}>
                 +{formatInt(delta)}
@@ -202,34 +235,46 @@ const UserCard = ({ user, isFirst = false }) => {
       "
       style={{
         background: `
-          radial-gradient(circle at top left, rgba(255,255,255,0.08), transparent 28%),
-          linear-gradient(135deg, var(--usercard-bg), color-mix(in srgb, var(--usercard-bg) 88%, black 12%))
+          linear-gradient(
+            135deg,
+            color-mix(in srgb, var(--primary) 78%, black 22%) 0%,
+            color-mix(in srgb, var(--primary) 58%, var(--accent) 42%) 52%,
+            color-mix(in srgb, var(--accent) 72%, black 28%) 100%
+          )
         `,
-        borderColor: "var(--usercard-border)",
+        borderColor: "rgba(255,255,255,0.12)",
         minHeight: "clamp(90px, 16vh, 105px)",
         maxHeight: "18vh",
         boxShadow:
-          "inset 0 1px 0 rgba(255,255,255,0.08), 0 10px 24px rgba(0,0,0,0.12)",
+          "inset 0 1px 0 rgba(255,255,255,0.10), 0 10px 24px rgba(0,0,0,0.14)",
       }}>
       <div
-        className="pointer-events-none absolute inset-0 opacity-40"
+        className="pointer-events-none absolute inset-0 opacity-25"
         style={{
-          backgroundImage: `
-            linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)
+          background: `
+            radial-gradient(circle at 14% 18%, rgba(255,255,255,0.16), transparent 20%),
+            radial-gradient(circle at 84% 22%, rgba(255,255,255,0.12), transparent 18%),
+            linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)
           `,
-          backgroundSize: "18px 18px",
+          backgroundSize: "auto, auto, 18px 18px, 18px 18px",
           maskImage:
-            "linear-gradient(to right, rgba(0,0,0,0.9), rgba(0,0,0,0.35), rgba(0,0,0,0.9))",
+            "linear-gradient(to right, rgba(0,0,0,0.95), rgba(0,0,0,0.45), rgba(0,0,0,0.95))",
         }}
+      />
+
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-[1px]"
+        style={{ background: "rgba(255,255,255,0.18)" }}
       />
 
       <div
         className="pointer-events-none absolute left-0 top-0 h-full w-1.5"
         style={{
           background:
-            "linear-gradient(180deg, var(--usercard-accent), var(--usercard-accent-2))",
-          boxShadow: "0 0 18px var(--usercard-accent)",
+            "linear-gradient(180deg, #ffffff, var(--usercard-accent), var(--usercard-accent-2))",
+          boxShadow:
+            "0 0 18px var(--usercard-accent), 0 0 28px var(--usercard-accent-2)",
         }}
       />
 
@@ -238,22 +283,35 @@ const UserCard = ({ user, isFirst = false }) => {
           relative grid h-full items-center gap-12
           xl:grid-cols-[minmax(320px,1fr)_340px]
         ">
-        {/* BLOQUE IZQUIERDO: AVATAR + INFO APILADA */}
         <section className="min-w-0">
           <div className="flex h-full min-w-0 items-center gap-3">
-            {/* AVATAR */}
             <div className="relative shrink-1">
               <div
-                className="absolute inset-0 rounded-xl blur-[6px] opacity-60"
-                style={{ backgroundColor: "var(--usercard-accent)" }}
+                className="absolute inset-0 rounded-xl opacity-70 blur-[8px]"
+                style={{
+                  background: `
+                    linear-gradient(
+                      135deg,
+                      var(--usercard-accent),
+                      var(--usercard-accent-2)
+                    )
+                  `,
+                }}
               />
               <div
                 className="relative rounded-xl border p-[2px]"
                 style={{
-                  background:
-                    "linear-gradient(135deg, var(--usercard-accent), var(--usercard-accent-2))",
+                  background: `
+                    linear-gradient(
+                      135deg,
+                      rgba(255,255,255,0.95) 0%,
+                      var(--usercard-accent) 45%,
+                      var(--usercard-accent-2) 100%
+                    )
+                  `,
+                  borderColor: "rgba(255,255,255,0.18)",
                   boxShadow:
-                    "0 0 0 1px rgba(255,255,255,0.05), 0 8px 16px rgba(0,0,0,0.18)",
+                    "0 0 0 1px rgba(255,255,255,0.08), 0 8px 18px rgba(0,0,0,0.20)",
                 }}>
                 <img
                   src={resolveAvatar(user?.foto)}
@@ -269,52 +327,65 @@ const UserCard = ({ user, isFirst = false }) => {
               <span
                 className="absolute -bottom-1 -right-1 h-3.5 w-3.5 rounded-full border-2"
                 style={{
-                  backgroundColor: "var(--usercard-accent)",
-                  borderColor: "var(--usercard-bg)",
-                  boxShadow: "0 0 10px var(--usercard-accent-2)",
+                  background:
+                    "linear-gradient(180deg, #ffffff, var(--usercard-accent))",
+                  borderColor:
+                    "color-mix(in srgb, var(--primary) 80%, black 20%)",
+                  boxShadow:
+                    "0 0 10px var(--usercard-accent), 0 0 16px var(--usercard-accent-2)",
                 }}
               />
             </div>
 
-            {/* INFO APILADA */}
             <div className="flex min-w-0 flex-1 flex-col justify-center gap-2">
-              {/* SECCIÓN SUPERIOR */}
               <div className="flex min-w-0 items-center gap-3">
                 <h2
-                  className={`truncate font-bold ${isFirst ? "text-2xl" : "text-xl"} text-accent`}
-                  title={user?.nombre}>
+                  className={`truncate font-bold ${isFirst ? "text-2xl" : "text-xl"}`}
+                  title={user?.nombre}
+                  style={{
+                    color: "#F8FAFC",
+                    textShadow: "0 2px 10px rgba(0,0,0,0.20)",
+                  }}>
                   {user?.nombre || "Usuario"}
                 </h2>
-
                 <div className="flex min-w-0 flex-wrap items-center gap-2">
-                  <CompactChip color="var(--usercard-accent)">
+                  <CompactChip
+                    color="var(--usercard-accent-2)"
+                    icon={Building2}>
                     {user?.institucion || "Sin sección"}
                   </CompactChip>
 
-                  <CompactChip color="var(--usercard-accent-2)">
+                  <CompactChip color="var(--usercard-accent-)" icon={Users}>
                     {user?.seccion || "Sin grade"}
                   </CompactChip>
-                  <CompactChip color="var(--accent)">
+
+                  <CompactChip
+                    color="var( --usercard-accent-2)"
+                    icon={Sparkles}>
                     Lv. {user?.nivel ?? "-"}
                   </CompactChip>
                 </div>
               </div>
 
-              {/* SECCIÓN INFERIOR */}
               <div className="min-w-0">
                 <div className="mb-1 flex items-center justify-between gap-3">
                   <p
                     className="text-xs font-bold uppercase tracking-wide"
-                    style={{ color: "var(--card-text)" }}>
+                    style={{
+                      color: "rgba(255,255,255,0.88)",
+                      textShadow: "0 1px 6px rgba(0,0,0,0.14)",
+                    }}>
                     PROGRESO ACTUAL EN EL NIVEL {user?.nivel ?? "-"}
                   </p>
 
                   <span
                     className="shrink-0 rounded-md px-2 py-1 text-xs font-extrabold"
                     style={{
-                      color: "var(--usercard-accent)",
-                      backgroundColor: "rgba(255,255,255,0.05)",
-                      boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.05)",
+                      color: "#ffffff",
+                      background:
+                        "linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.08))",
+                      boxShadow:
+                        "inset 0 0 0 1px rgba(255,255,255,0.12), 0 4px 10px rgba(0,0,0,0.10)",
                     }}>
                     {progreso}%
                   </span>
@@ -324,15 +395,22 @@ const UserCard = ({ user, isFirst = false }) => {
                   className="relative h-2.5 w-full overflow-hidden rounded-full"
                   style={{
                     background:
-                      "linear-gradient(180deg, rgba(0,0,0,0.18), rgba(255,255,255,0.03))",
-                    boxShadow: "inset 0 1px 3px rgba(0,0,0,0.25)",
+                      "linear-gradient(180deg, rgba(0,0,0,0.26), rgba(255,255,255,0.05))",
+                    boxShadow:
+                      "inset 0 1px 3px rgba(0,0,0,0.28), inset 0 0 0 1px rgba(255,255,255,0.04)",
                   }}>
                   <div
                     className="relative h-full rounded-full transition-all duration-500 ease-out"
                     style={{
                       width: `${progreso}%`,
-                      background:
-                        "linear-gradient(90deg, var(--usercard-accent), var(--usercard-accent-2))",
+                      background: `
+                        linear-gradient(
+                          90deg,
+                          var(--usercard-accent) 0%,
+                          color-mix(in srgb, var(--usercard-accent) 60%, var(--usercard-accent-2) 40%) 55%,
+                          var(--usercard-accent-2) 100%
+                        )
+                      `,
                       boxShadow:
                         "0 0 10px var(--usercard-accent), 0 0 18px var(--usercard-accent-2)",
                     }}>
@@ -340,7 +418,7 @@ const UserCard = ({ user, isFirst = false }) => {
                       className="absolute right-0 top-0 h-full w-10 opacity-60"
                       style={{
                         background:
-                          "linear-gradient(90deg, transparent, rgba(255,255,255,0.65))",
+                          "linear-gradient(90deg, transparent, rgba(255,255,255,0.75))",
                       }}
                     />
                   </div>
@@ -350,7 +428,6 @@ const UserCard = ({ user, isFirst = false }) => {
           </div>
         </section>
 
-        {/* REWARD + XP */}
         <section className="grid h-full grid-cols-2 gap-3">
           <MetricPanel
             title="intis"
@@ -358,6 +435,8 @@ const UserCard = ({ user, isFirst = false }) => {
             delta={coinDelta}
             glow={coinGlow}
             pulse={coinPulse}
+            color="var(--coin-panel-bg)"
+            textColor="#4A2B00"
             icon={
               <img
                 src={coin}
@@ -370,8 +449,9 @@ const UserCard = ({ user, isFirst = false }) => {
           <MetricPanel
             title="XP"
             value={formatInt(animatedXp)}
-            icon={<XpQuipuIcon className="h-18 w-18 " />}
+            icon={<XpQuipuIcon className="h-18 w-18" />}
             color="var(--sidebar)"
+            textColor="#ffffff"
           />
         </section>
       </div>

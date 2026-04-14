@@ -12,6 +12,7 @@ import module4 from "@/assets/modulepics/module-4.png";
 import module5 from "@/assets/modulepics/module-5.png";
 import { useProgressOverview } from "../../hooks/useProgressOverview";
 
+import bg from "@/assets/dashboard/bg3.png";
 const MODULE_IMAGES = {
   1: module1,
   2: module2,
@@ -56,7 +57,12 @@ const Inicio = () => {
   }, []);
 
   return (
-    <div className="flex h-full w-full min-w-0 flex-col overflow-hidden pb-0 ">
+    <div
+      className="flex h-full w-full min-w-0 flex-col overflow-hidden pb-0 "
+      style={{
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}>
       <div className="shrink-0">
         <UserCard user={user} />
       </div>

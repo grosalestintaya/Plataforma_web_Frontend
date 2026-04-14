@@ -69,7 +69,7 @@ export default function Ranking() {
   const myRank = rankingState.myRank ?? rankingState.me?.rank ?? null;
 
   return (
-    <div className="w-full h-[calc(100dvh-60px)] overflow-hidden px-0">
+    <div className="w-full h-[calc(100dvh-30px)] overflow-hidden px-0">
       <div className="flex h-full min-h-0 flex-col overflow-hidden">
         {error && (
           <div className="mb-4 shrink-0 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
