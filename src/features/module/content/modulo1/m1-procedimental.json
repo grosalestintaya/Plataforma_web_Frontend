@@ -32,7 +32,8 @@
         },
         "media": {
           "src": "",
-          "alt": "Inicio de la practica procedimental"
+          "alt": "Inicio de la practica procedimental",
+          "variant": "vertical"
         }
       },
       "elements": {
@@ -86,7 +87,7 @@
                 "id": "go-by-combi",
                 "title": { "text": "Ir en combi", "variant": "label", "align": "center" },
                 "detail": { "text": "S/ 0.50", "variant": "label", "align": "center" },
-                "media": { "src": "", "alt": "Ir en combi" },
+                "media": { "src": "", "alt": "Ir en combi", "variant": "horizontal" },
                 "score": 100,
                 "cost": 0.5,
                 "nextBalance": 4.5,
@@ -100,7 +101,7 @@
                 "id": "go-walking",
                 "title": { "text": "Ir caminando", "variant": "label", "align": "center" },
                 "detail": { "text": "S/ 0.00", "variant": "label", "align": "center" },
-                "media": { "src": "", "alt": "Ir caminando" },
+                "media": { "src": "", "alt": "Ir caminando", "variant": "horizontal" },
                 "score": 60,
                 "cost": 0,
                 "nextBalance": 5,
@@ -163,28 +164,28 @@
                 "id": "gaseosa",
                 "title": { "text": "Gaseosa", "variant": "label", "align": "center" },
                 "text": { "text": "S/ 1.50", "variant": "label", "align": "center" },
-                "media": { "src": "", "alt": "Gaseosa" },
+                "media": { "src": "", "alt": "Gaseosa", "variant": "square" },
                 "price": 1.5
               },
               {
                 "id": "galleta",
                 "title": { "text": "Galleta", "variant": "label", "align": "center" },
                 "text": { "text": "S/ 1.00", "variant": "label", "align": "center" },
-                "media": { "src": "", "alt": "Galleta" },
+                "media": { "src": "", "alt": "Galleta", "variant": "square" },
                 "price": 1
               },
               {
                 "id": "agua",
                 "title": { "text": "Agua", "variant": "label", "align": "center" },
                 "text": { "text": "S/ 1.00", "variant": "label", "align": "center" },
-                "media": { "src": "", "alt": "Agua" },
+                "media": { "src": "", "alt": "Agua", "variant": "square" },
                 "price": 1
               },
               {
                 "id": "caramelo",
                 "title": { "text": "Caramelo", "variant": "label", "align": "center" },
                 "text": { "text": "S/ 0.50", "variant": "label", "align": "center" },
-                "media": { "src": "", "alt": "Caramelo" },
+                "media": { "src": "", "alt": "Caramelo", "variant": "square" },
                 "price": 0.5
               }
             ]
@@ -225,11 +226,11 @@
         "title": { "text": "Situacion extra", "variant": "h2" },
         "amount": { "label": "Monto" },
         "assessment": {
-          "text": "Puedes canjear la botella plastica o dejarla pasar.",
+          "text": "Tienes una botella de plastico, puedes canjearla.",
           "variant": "h2",
           "align": "center"
         },
-        "media": { "src": "", "alt": "Botella para canje" }
+        "media": { "src": "", "alt": "Botella para canje", "variant": "vertical" }
       },
       "elements": {
         "base": [
@@ -249,7 +250,7 @@
                 "id": "recycle-bottle",
                 "title": { "text": "Canjear botella", "variant": "label", "align": "center" },
                 "detail": { "text": "+ S/ 0.50", "variant": "label", "align": "center" },
-                "media": { "src": "", "alt": "Canjear botella" },
+                "media": { "src": "", "alt": "Canjear botella", "variant": "horizontal" },
                 "score": 100,
                 "reward": 0.5,
                 "feedback": {
@@ -262,7 +263,7 @@
                 "id": "skip-bottle",
                 "title": { "text": "No canjear botella", "variant": "label", "align": "center" },
                 "detail": { "text": "S/ 0.00", "variant": "label", "align": "center" },
-                "media": { "src": "", "alt": "No canjear botella" },
+                "media": { "src": "", "alt": "No canjear botella", "variant": "horizontal" },
                 "score": 60,
                 "reward": 0,
                 "feedback": {
@@ -325,7 +326,7 @@
                 "id": "return-combi",
                 "title": { "text": "Regresar en combi", "variant": "label", "align": "center" },
                 "detail": { "text": "S/ 0.50", "variant": "label", "align": "center" },
-                "media": { "src": "", "alt": "Regresar en combi" },
+                "media": { "src": "", "alt": "Regresar en combi", "variant": "horizontal" },
                 "score": 80,
                 "cost": 0.5,
                 "feedback": {
@@ -338,7 +339,7 @@
                 "id": "return-walking",
                 "title": { "text": "Regresar caminando", "variant": "label", "align": "center" },
                 "detail": { "text": "S/ 0.00", "variant": "label", "align": "center" },
-                "media": { "src": "", "alt": "Regresar caminando" },
+                "media": { "src": "", "alt": "Regresar caminando", "variant": "horizontal" },
                 "score": 100,
                 "cost": 0,
                 "feedback": {
@@ -397,13 +398,13 @@
                 "id": "reward-xp",
                 "title": { "text": "XP", "variant": "label" },
                 "text": { "text": "+ 10", "variant": "bodySm" },
-                "media": { "src": "", "alt": "Recompensa de XP" }
+                "media": { "src": "", "alt": "Recompensa de XP", "variant": "square" }
               },
               {
                 "id": "reward-intis",
                 "title": { "text": "INTIS", "variant": "label" },
                 "text": { "text": "+ 5", "variant": "bodySm" },
-                "media": { "src": "", "alt": "Recompensa de INTIS" }
+                "media": { "src": "", "alt": "Recompensa de INTIS", "variant": "square" }
               }
             ]
           }

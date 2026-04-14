@@ -5,6 +5,14 @@ import Card from "../container/Card";
 import FlipCard from "./FlipCard";
 import { cn } from "@/shared/libs/utils";
 
+function toHorizontalMedia(media, fallbackAlt = "Opcion") {
+  return {
+    ...(media ?? {}),
+    alt: media?.alt ?? fallbackAlt,
+    variant: "horizontal",
+  };
+}
+
 /**
  * Normaliza una opcion corta para preguntas secuenciales.
  */
@@ -415,7 +423,10 @@ export default function ChooseOne({
               selectedId === item?.id ? "border-emerald-300/50" : "",
             )}
             mediaClassName="min-h-0 flex-1"
-            media={item?.media ?? item?.image ?? { src: item?.src, alt: item?.alt }}
+            media={toHorizontalMedia(
+              item?.media ?? item?.image ?? { src: item?.src, alt: item?.alt },
+              item?.alt ?? item?.caption ?? "Opcion",
+            )}
             title={item?.title ?? item?.label ?? { text: item?.caption, variant: "label" }}
             text={
               item?.text ??

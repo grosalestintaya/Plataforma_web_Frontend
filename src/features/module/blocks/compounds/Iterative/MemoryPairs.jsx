@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { cn } from "@/shared/libs/utils";
-import Image from "../../base/Media/Image";
+import Image, { getMediaVariant } from "../../base/Media/Image";
 import Typography from "../../base/Typography";
 
 /**
@@ -182,6 +182,10 @@ export default function MemoryPairs(props) {
         {deck.map((card, index) => {
           const isFaceUp =
             isPreviewActive || open.includes(index) || matched.has(card.pairId);
+          const media = card?.media ?? card?.image ?? null;
+          const imageSrc = media?.src ?? card.img ?? "";
+          const imageAlt = media?.alt ?? card.alt ?? `Par ${card.pairId}`;
+          const imageVariant = getMediaVariant(media);
 
           return (
             <button
@@ -196,10 +200,11 @@ export default function MemoryPairs(props) {
               )}
             >
               {isFaceUp ? (
-                card.img ? (
+                imageSrc ? (
                   <Image
-                    src={card.img}
-                    alt={card.alt ?? `Par ${card.pairId}`}
+                    src={imageSrc}
+                    alt={imageAlt}
+                    variant={imageVariant}
                     className="h-[70%]"
                   />
                 ) : (

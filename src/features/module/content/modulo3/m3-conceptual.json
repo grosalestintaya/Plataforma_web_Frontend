@@ -21,7 +21,8 @@
         ],
         "rightImage": {
           "src": "",
-          "alt": "Intro presupuesto personal"
+          "alt": "Intro presupuesto personal",
+          "variant": "vertical"
         }
       },
       "nav": {
@@ -53,6 +54,7 @@
         "rightImage": {
           "src": "",
           "alt": "Referencia de presupuesto",
+          "variant": "vertical",
           "placeholderLabel": "IMAGEN DE REFERENCIA"
         }
       }
@@ -79,6 +81,7 @@
         "rightImage": {
           "src": "",
           "alt": "Persona celebrando",
+          "variant": "vertical",
           "placeholderLabel": "IMAGEN DE REFERENCIA"
         }
       }
@@ -106,6 +109,7 @@
         "rightImage": {
           "src": "",
           "alt": "Referencia de presupuesto",
+          "variant": "vertical",
           "placeholderLabel": "IMAGEN DE REFERENCIA"
         }
       }
@@ -144,6 +148,7 @@
               "image": {
                 "src": "",
                 "alt": "Ingresos",
+                "variant": "square",
                 "placeholderLabel": "IMAGEN DE REFERENCIA"
               }
             }
@@ -171,6 +176,7 @@
               "image": {
                 "src": "",
                 "alt": "Gastos",
+                "variant": "square",
                 "placeholderLabel": "IMAGEN DE REFERENCIA"
               }
             }
@@ -198,6 +204,7 @@
               "image": {
                 "src": "",
                 "alt": "Clasifica",
+                "variant": "square",
                 "placeholderLabel": "IMAGEN DE REFERENCIA"
               }
             }
@@ -225,6 +232,7 @@
               "image": {
                 "src": "",
                 "alt": "Saldo",
+                "variant": "square",
                 "placeholderLabel": "IMAGEN DE REFERENCIA"
               }
             }
@@ -252,6 +260,7 @@
               "image": {
                 "src": "",
                 "alt": "Ajusta",
+                "variant": "square",
                 "placeholderLabel": "IMAGEN DE REFERENCIA"
               }
             }

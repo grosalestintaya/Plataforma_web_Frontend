@@ -217,6 +217,7 @@ La forma recomendada es un objeto de media.
 {
   "src": "assets/m1/need_comida.png",
   "alt": "Un plato de comida",
+  "variant": "horizontal",
   "fit": "contain",
   "ratio": "4/3",
   "caption": {
@@ -230,10 +231,17 @@ Campos:
 
 - `src`: ruta del asset.
 - `alt`: texto accesible.
+- `variant`: `square`, `vertical` o `horizontal`.
 - `fit`: `contain` o `cover`.
 - `ratio`: relacion visual sugerida.
 - `caption`: texto asociado a la imagen.
 - `className`: ajuste visual puntual.
+
+Convencion recomendada:
+
+- `square` = `1:1`
+- `vertical` = `2:3`
+- `horizontal` = `3:2`
 
 ### Galerias o listas visuales
 

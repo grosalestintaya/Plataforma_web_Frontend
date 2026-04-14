@@ -578,6 +578,7 @@ export default function DailySpendingTemplate({ view, data, heroApi, variant }) 
               <Image
                 src={media?.src}
                 alt={media?.alt ?? "Situacion"}
+                variant={media?.variant ?? media?.ratio}
                 // Esta media lateral se controla por la altura del hero
                 // para no empujar el resto de la vista fuera del canvas.
                 className="w-full"

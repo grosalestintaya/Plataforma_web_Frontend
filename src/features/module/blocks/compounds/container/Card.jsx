@@ -1,5 +1,5 @@
 import Typography from "../../base/Typography";
-import Image from "../../base/Media/Image";
+import Image, { getMediaAspectRatio, getMediaVariant } from "../../base/Media/Image";
 import { cn } from "@/shared/libs/utils";
 
 /**
@@ -27,6 +27,8 @@ export default function Card({
     maxHeight:
       "var(--card-media-max-height, min(220px, calc(var(--hero-height, 100vh) * 0.3)))",
   };
+  const mediaVariant = getMediaVariant(media);
+  const mediaAspectRatio = getMediaAspectRatio(media);
 
   return (
     <Component
@@ -56,6 +58,8 @@ export default function Card({
               src={media?.src ?? media?.img}
               alt={media?.alt ?? "Imagen"}
               className="h-full w-full"
+              variant={mediaVariant}
+              ratio={mediaAspectRatio}
               imgClassName="max-h-full max-w-full rounded-md object-contain"
             />
           </div>

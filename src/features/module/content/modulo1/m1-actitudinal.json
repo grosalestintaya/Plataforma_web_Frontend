@@ -32,7 +32,8 @@
         },
         "media": {
           "src": "",
-          "alt": "Inicio de la mision actitudinal"
+          "alt": "Inicio de la mision actitudinal",
+          "variant": "vertical"
         }
       },
       "elements": {
@@ -128,7 +129,8 @@
         },
         "media": {
           "src": "",
-          "alt": "Situacion de ahorro frente al kiosko"
+          "alt": "Situacion de ahorro frente al kiosko",
+          "variant": "vertical"
         }
       },
       "elements": {
@@ -253,7 +255,8 @@
         },
         "media": {
           "src": "",
-          "alt": "Kiosko con compra no planificada"
+          "alt": "Kiosko con compra no planificada",
+          "variant": "vertical"
         }
       },
       "elements": {
@@ -339,13 +342,13 @@
                 "id": "reward-xp",
                 "title": { "text": "XP", "variant": "label" },
                 "text": { "text": "+10", "variant": "body1", "color": "secondary" },
-                "media": { "src": "", "alt": "Recompensa de XP" }
+                "media": { "src": "", "alt": "Recompensa de XP", "variant": "square" }
               },
               {
                 "id": "reward-intis",
                 "title": { "text": "INTIS", "variant": "label" },
                 "text": { "text": "+10", "variant": "body1", "color": "secondary" },
-                "media": { "src": "", "alt": "Recompensa de Intis" }
+                "media": { "src": "", "alt": "Recompensa de Intis", "variant": "square" }
               }
             ]
           }
