@@ -27,7 +27,7 @@ export default function StartButton({
         aria-label={ariaLabel}
         className={[
           "inline-flex items-center justify-center select-none",
-          "transition active:scale-[0.98]",
+          "transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 active:scale-[0.98]",
           disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer",
           className,
         ].join(" ")}

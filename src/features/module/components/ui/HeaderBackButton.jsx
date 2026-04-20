@@ -31,7 +31,7 @@ export default function HeaderBackButton({
     <button
       onClick={onClick}
       type="button"
-      className={`group relative h-[48px] overflow-hidden rounded-2xl px-3 font-semibold text-white transition-all duration-300 hover:-translate-y-[1px] hover:scale-[1.02] active:scale-[0.98] sm:h-[52px] md:h-[56px] md:px-4 ${className}`}
+      className={`group relative h-[48px] cursor-pointer overflow-hidden rounded-2xl px-3 font-semibold text-white transition-all duration-300 hover:-translate-y-[1px] hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 active:scale-[0.98] sm:h-[52px] md:h-[56px] md:px-4 ${className}`}
       style={{
         background: `linear-gradient(180deg, ${hexToRgba(themeHex, 0.34)} 0%, ${hexToRgba(themeHex, 0.16)} 100%)`,
         border: `1px solid ${hexToRgba("#ffffff", 0.18)}`,

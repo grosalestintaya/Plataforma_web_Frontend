@@ -195,8 +195,8 @@ export default function MemoryPairs(props) {
               onClick={() => pick(index)}
               className={cn(
                 "aspect-square rounded-sm border border-white/20 bg-black/10",
-                "flex items-center justify-center transition",
-                isPreviewActive ? "cursor-default" : "hover:bg-black/20",
+                "flex items-center justify-center transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50",
+                isPreviewActive ? "cursor-not-allowed" : "cursor-pointer hover:-translate-y-0.5 hover:bg-black/20 active:translate-y-0",
               )}
             >
               {isFaceUp ? (
@@ -251,7 +251,7 @@ export default function MemoryPairs(props) {
             });
             onFinish?.(result);
           }}
-          className="h-9 rounded border border-white/20 bg-black/20 px-5 font-semibold text-white disabled:opacity-40"
+          className="h-9 cursor-pointer rounded border border-white/20 bg-black/20 px-5 font-semibold text-white transition hover:-translate-y-0.5 hover:bg-black/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 active:translate-y-0 disabled:cursor-not-allowed disabled:translate-y-0 disabled:opacity-40"
         >
           {finishLabel}
         </button>

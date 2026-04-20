@@ -33,7 +33,7 @@ export default function HeaderSettingsButton({
       onClick={onClick}
       type="button"
       title={title}
-      className={`group relative grid h-[48px] w-[48px] place-items-center rounded-2xl transition duration-300 hover:scale-[1.05] active:scale-[0.97] sm:h-[54px] sm:w-[54px] md:h-[60px] md:w-[60px] ${className}`}
+      className={`group relative grid h-[48px] w-[48px] cursor-pointer place-items-center rounded-2xl transition duration-300 hover:scale-[1.05] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 active:scale-[0.97] sm:h-[54px] sm:w-[54px] md:h-[60px] md:w-[60px] ${className}`}
       style={{
         background: `linear-gradient(180deg, ${hexToRgba(themeHex, 0.3)}, ${hexToRgba(themeHex, 0.14)})`,
         border: `1px solid ${hexToRgba("#ffffff", 0.18)}`,

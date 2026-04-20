@@ -82,7 +82,6 @@ export default function Hero({ moduleData, missionKey, viewIndex, heroApi }) {
         Math.min(
           1,
           availableWidth / contentWidth,
-          availableHeight / contentHeight,
         ),
       );
     }
@@ -106,7 +105,7 @@ export default function Hero({ moduleData, missionKey, viewIndex, heroApi }) {
   return (
     <main
       ref={outerRef}
-      className="h-full min-h-0 w-full overflow-hidden"
+      className="h-full min-h-0 w-full overflow-x-hidden overflow-y-auto md:overflow-hidden"
       style={{
         // La variable debe ser una longitud CSS valida porque varios bloques
         // calculan su alto con `calc(var(--hero-height) * ...)`.
@@ -115,7 +114,7 @@ export default function Hero({ moduleData, missionKey, viewIndex, heroApi }) {
     >
       <div
         ref={innerRef}
-        className="w-full h-full"
+        className="min-h-full w-full md:h-full"
         style={{
           transform: `scale(${scale})`,
           transformOrigin: "top center",

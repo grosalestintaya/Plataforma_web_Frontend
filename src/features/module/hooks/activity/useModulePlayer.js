@@ -262,7 +262,12 @@ export function useModulePlayer(
       type: "normal",
       left: {
         label: "Atras",
-        enabled: !isFirst && !isImmediatelyAfterPreGame && !finishing,
+        visible: !isBeforePostGame && !isImmediatelyAfterPreGame,
+        enabled:
+          !isBeforePostGame &&
+          !isFirst &&
+          !isImmediatelyAfterPreGame &&
+          !finishing,
         onClick: prev,
       },
       centerText: "Quipu Yachay",
