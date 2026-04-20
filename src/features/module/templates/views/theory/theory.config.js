@@ -247,7 +247,7 @@ export const THEORY_CONFIG = {
         // El area visual principal ocupa el espacio disponible del hero.
         className:
           "h-full min-h-0 rounded-2xl place-items-stretch place-content-stretch",
-        stackClassName: "h-full min-h-0 justify-start gap-4 px-20",
+        stackClassName: "h-full min-h-0 justify-start gap-4 px-0 sm:px-6 xl:px-20",
         items: [
           {
             area: "media",

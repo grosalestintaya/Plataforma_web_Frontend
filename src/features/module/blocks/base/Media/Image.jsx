@@ -60,41 +60,48 @@ export function getMediaAspectRatio(value) {
  * - Siempre respeta el espacio que el bloque padre ya le asigno.
  */
 export default function Image({
-  src = "",
+  src,
   alt = "Imagen",
   className = "",
   imgClassName = "",
   placeholderLabel = "Imagen",
   variant = null,
   ratio = null,
+  fitToContent = false,
+  style,
 }) {
-  const resolvedSrc = src || activityImage001;
+  const urlBase ="/src/assets/activity/"
+  const resolvedSrc = urlBase+src || activityImage001;
   const resolvedAlt = alt || placeholderLabel || "Imagen";
   const aspectRatio = getMediaAspectRatio(variant ?? ratio);
+  const aspectStyle = !fitToContent && aspectRatio ? { aspectRatio } : null;
+  const resolvedStyle =
+    aspectStyle || style ? { ...(aspectStyle ?? {}), ...(style ?? {}) } : undefined;
 
   return (
-    <div className={cn("flex h-full w-full items-center justify-center overflow-hidden", className)}>
-      <div
+    <div
+      className={cn(
+        fitToContent
+          ? "inline-flex w-fit max-w-full items-center justify-center overflow-hidden"
+          : "flex w-full items-center justify-center overflow-hidden",
+        className,
+      )}
+      style={resolvedStyle}
+    >
+      <img
+        src={resolvedSrc}
+        alt={resolvedAlt}
         className={cn(
-          aspectRatio
-            ? "flex w-full max-w-full max-h-full items-center justify-center overflow-hidden"
-            : "contents",
+          // La imagen se adapta solo al espacio disponible del contenedor.
+          // Nunca define por si sola el tamano del layout.
+          fitToContent
+            ? "block h-auto max-h-[var(--card-media-max-height,min(340px,calc(var(--hero-height,100vh)*0.36)))] w-auto max-w-full object-contain"
+            : aspectRatio
+            ? "h-full w-full max-h-full max-w-full object-contain"
+            : "h-auto max-w-full object-contain",
+          imgClassName,
         )}
-        style={aspectRatio ? { aspectRatio, maxHeight: "100%" } : undefined}
-      >
-        <img
-          src={resolvedSrc}
-          alt={resolvedAlt}
-          className={cn(
-            // La imagen se adapta solo al espacio disponible del contenedor.
-            // Nunca define por si sola el tamano del layout.
-            aspectRatio
-              ? "h-full w-full max-h-full max-w-full object-contain"
-              : "max-h-full max-w-full object-contain",
-            imgClassName,
-          )}
-        />
-      </div>
+      />
     </div>
   );
 }

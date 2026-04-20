@@ -505,11 +505,12 @@ export default function DailySpendingTemplate({ view, data, heroApi, variant }) 
                 selectedIds={selectedProductIds}
                 onSelect={toggleProduct}
                 columns={3}
+                rows={2}
                 className="h-full content-center gap-3"
                 style={{
                   // En shop aprovechamos mas el slot para que las cards crezcan
                   // sin sobrepasar el area asignada.
-                  "--card-media-max-height": "min(126px, calc(var(--hero-height, 100vh) * 0.145))",
+                  "--card-media-max-height": "min(158px, calc(var(--hero-height, 100vh) * 0.18))",
                 }}
               />
             </div>
@@ -568,7 +569,7 @@ export default function DailySpendingTemplate({ view, data, heroApi, variant }) 
           }
         >
           <div
-            className="min-h-0 rounded-2xl p-3 [--card-media-max-height:min(220px,calc(var(--hero-height,100vh)*0.24))]"
+            className="min-h-0 rounded-2xl p-3 [--card-media-max-height:min(320px,calc(var(--hero-height,100vh)*0.34))]"
           >
             {decisionContent}
           </div>

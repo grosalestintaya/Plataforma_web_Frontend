@@ -29,6 +29,34 @@ function toHorizontalMedia(media, fallbackAlt = "Carta") {
   };
 }
 
+function normalizeFrontTitle(item) {
+  const content =
+    item.label ??
+    (item.caption
+      ? {
+          text: item.caption,
+        }
+      : null);
+
+  if (!content) return null;
+
+  if (typeof content === "object") {
+    return {
+      ...content,
+      variant: "label",
+      align: content.align ?? "center",
+      className: cn("font-bold leading-tight", content.className),
+    };
+  }
+
+  return {
+    text: content,
+    variant: "label",
+    align: "center",
+    className: "font-bold leading-tight",
+  };
+}
+
 /**
  * FlipCard:
  * - Modo `revealGrid`: revela todas las tarjetas para completar.
@@ -47,8 +75,11 @@ export default function FlipCard(props) {
     compact = false,
     containerClassName = "",
     gridContainerClassName = "",
+    style,
     allowFlipBack = true,
     reportToHeroApi = true,
+    fillContainer = false,
+    selectedId: controlledSelectedId,
     onItemClick,
     onComplete,
   } = props;
@@ -159,8 +190,15 @@ export default function FlipCard(props) {
     // El valor por defecto es mas contenido para que varias flip cards entren
     // dentro del hero sin empujar el footer.
     height:
-      "var(--flip-card-height, min(230px, calc(var(--hero-height, 100vh) * 0.22)))",
+      "var(--flip-card-height, min(340px, calc(var(--hero-height, 100vh) * 0.34)))",
+    aspectRatio: "var(--flip-card-aspect-ratio, auto)",
+    maxHeight: "var(--flip-card-max-height, none)",
   };
+  const mediaFitStyle = {
+    "--card-media-max-height":
+      "var(--flip-card-media-max-height, calc(min(340px, calc(var(--hero-height, 100vh) * 0.34)) - var(--flip-card-content-reserve, 78px)))",
+  };
+  const shouldRenderSingleInline = compact && columns === 1 && items.length === 1;
 
   /**
    * FlipCard usa Card como base visual del frente.
@@ -174,32 +212,30 @@ export default function FlipCard(props) {
 
     return {
       media: toHorizontalMedia(media, item.alt ?? item.caption ?? "Carta"),
-      title:
-        item.label ??
-        (item.caption
-          ? {
-              text: item.caption,
-              variant: "subtitle2",
-              align: "center",
-            }
-          : null),
+      title: normalizeFrontTitle(item),
     };
   }
 
   /**
    * El reverso tambien reutiliza Card para mantener el mismo marco y proporciones.
    */
-  function renderBackCard(reveal) {
+  function getSelectionClass(item, isSelected) {
+    if (!isSelected || !item.correct) return "";
+
+    return "border-amber-200/95 bg-amber-300/10 shadow-[0_0_28px_rgba(251,191,36,0.38)] ring-4 ring-inset ring-amber-300/90";
+  }
+
+  function renderBackCard(reveal, className = "") {
     const revealContent =
       typeof reveal === "object" && reveal?.text
         ? {
             text: reveal.text,
-            variant: reveal.variant ?? "subtitle1",
+            variant: "h3",
             align: reveal.align ?? "center",
           }
         : {
             text: String(reveal ?? ""),
-            variant: "subtitle1",
+            variant: "h3",
             align: "center",
           };
 
@@ -209,6 +245,7 @@ export default function FlipCard(props) {
         className={cn(
           "h-full rounded-2xl p-3 shadow-none",
           getRevealTone(reveal),
+          className,
         )}
         contentClassName="items-center justify-center px-2 py-4 text-center"
       >
@@ -220,78 +257,107 @@ export default function FlipCard(props) {
     );
   }
 
+  function renderFlipButton(item, { inline = false } = {}) {
+    const isFlipped = Boolean(flippedMap[item.id]);
+    const isSelected = (controlledSelectedId ?? selectedId) === item.id;
+    const shouldFitToMedia = inline && fillContainer;
+    const selectionClassName = getSelectionClass(item, isSelected);
+
+    const reveal = item.reveal ?? {
+      text: item.correct ? "Correcto" : "Incorrecto",
+      tone: item.correct ? "success" : "error",
+    };
+
+    return (
+      <button
+        key={item.id}
+        type="button"
+        disabled={locked}
+        onClick={() => {
+          if (mode === "singleChoice") {
+            pickSingleChoice(item);
+          } else {
+            revealGridCard(item.id);
+          }
+
+          onItemClick?.(item);
+        }}
+        className={cn(
+          "relative min-h-0 w-full cursor-pointer overflow-visible rounded-2xl bg-transparent p-1 text-left [perspective:1000px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/55 disabled:cursor-not-allowed disabled:opacity-70",
+          inline && !fillContainer ? "h-auto max-h-none" : "h-full max-h-full",
+          inline ? "text-white" : "",
+          inline && fillContainer ? "flex items-center justify-center" : "",
+          inline ? containerClassName : "",
+        )}
+        style={inline ? { ...mediaFitStyle, ...(style ?? {}) } : { ...mediaSizingStyle, ...mediaFitStyle }}
+      >
+        <div
+          className={cn(
+            "relative transition-transform duration-500 [transform-style:preserve-3d]",
+            shouldFitToMedia ? "mx-auto w-fit max-w-full" : "w-full",
+            shouldFitToMedia ? "h-fit" : inline && !fillContainer ? "" : "h-full max-h-full",
+          )}
+          style={{
+            transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
+          }}
+        >
+          <Card
+            as="div"
+            {...getFrontCardProps(item)}
+            fitToMedia={shouldFitToMedia}
+            selected={isSelected && item.correct}
+            className={cn(
+              "rounded-2xl p-2 [backface-visibility:hidden]",
+              selectionClassName,
+              inline
+                ? shouldFitToMedia
+                  ? "relative w-fit max-h-full"
+                  : "relative w-full"
+                : "absolute inset-0 h-full",
+            )}
+            mediaClassName={cn(
+              "p-0",
+              shouldFitToMedia ? "border-transparent" : "",
+            )}
+            contentClassName="gap-1 px-1"
+          />
+
+          {renderBackCard(
+            reveal,
+            cn(
+              "absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)]",
+              selectionClassName,
+            ),
+          )}
+        </div>
+      </button>
+    );
+  }
+
+  if (shouldRenderSingleInline) {
+    return renderFlipButton(items[0], { inline: true });
+  }
+
   return (
     <section
       className={cn(
         compact
-          ? "h-full min-h-0 w-full max-h-full max-w-full overflow-hidden text-white"
-          : "mx-auto h-full min-h-0 w-full max-w-5xl overflow-hidden px-6 py-8 text-white",
+          ? "min-h-full w-full max-w-full overflow-visible text-white md:h-full md:min-h-0 md:max-h-full md:overflow-hidden"
+          : "mx-auto min-h-full w-full max-w-5xl overflow-visible px-6 py-8 text-white md:h-full md:min-h-0 md:overflow-hidden",
         containerClassName,
       )}
+      style={style}
     >
         <div
           className={cn(
             compact
-              ? "grid h-full min-h-0 max-h-full gap-3"
-              : "mx-auto grid h-full min-h-0 max-w-[760px] gap-4 rounded-xl border p-4",
+              ? "grid min-h-full gap-3 md:h-full md:min-h-0 md:max-h-full"
+              : "mx-auto grid min-h-full max-w-[760px] gap-4 rounded-xl border p-4 md:h-full md:min-h-0",
             gridColsClassName,
             gridContainerClassName,
         )}
       >
-        {items.map((item) => {
-          const isFlipped = Boolean(flippedMap[item.id]);
-
-          const reveal = item.reveal ?? {
-            text: item.correct ? "Correcto" : "Incorrecto",
-            tone: item.correct ? "success" : "error",
-          };
-
-          return (
-            <button
-              key={item.id}
-              type="button"
-              disabled={locked}
-              onClick={() =>
-                {
-                  if (mode === "singleChoice") {
-                    pickSingleChoice(item);
-                  } else {
-                    revealGridCard(item.id);
-                  }
-
-                  onItemClick?.(item);
-                }
-              }
-              className="relative h-full min-h-0 w-full max-h-full overflow-hidden rounded-2xl bg-transparent text-left [perspective:1000px] disabled:opacity-70"
-              style={mediaSizingStyle}
-            >
-              <div
-                className="relative h-full w-full transition-transform duration-500 [transform-style:preserve-3d]"
-                style={{
-                  transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
-                }}
-              >
-                <div className="absolute inset-0 [backface-visibility:hidden]">
-                  <Card
-                    as="div"
-                    {...getFrontCardProps(item)}
-                    className="h-full rounded-2xl p-3"
-                    mediaClassName="p-0"
-                    contentClassName="gap-2 px-1"
-                  />
-                </div>
-
-                <div
-                  className={cn(
-                    "absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)]",
-                  )}
-                >
-                  {renderBackCard(reveal)}
-                </div>
-              </div>
-            </button>
-          );
-        })}
+        {items.map((item) => renderFlipButton(item))}
       </div>
     </section>
   );

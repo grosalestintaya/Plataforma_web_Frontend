@@ -612,6 +612,7 @@ export default function ActivityDots({
                 )}
 
                 <button
+                  type="button"
                   onClick={() => {
                     onClickDot?.(a);
                     onSelect?.(a.activityId);
@@ -619,10 +620,10 @@ export default function ActivityDots({
                   disabled={disabled}
                   className={[
                     "group relative h-[110px] w-[110px] overflow-hidden rounded-full",
-                    "transition-all duration-300",
+                    "transition-all duration-300 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/55",
                     disabled
                       ? "cursor-not-allowed opacity-55"
-                      : "hover:scale-[1.045] active:scale-[1.015]",
+                      : "cursor-pointer hover:scale-[1.045] active:scale-[1.015]",
                   ].join(" ")}
                   style={{
                     background:

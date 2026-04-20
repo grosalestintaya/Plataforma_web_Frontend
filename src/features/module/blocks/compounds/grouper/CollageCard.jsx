@@ -2,7 +2,21 @@ import Typography from "../../base/Typography";
 import Card from "../container/Card";
 import FlipCard from "../Iterative/FlipCard";
 import { cn } from "@/shared/libs/utils";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
+
+const GRID_COLUMNS_CLASS = {
+  1: "grid-cols-1",
+  2: "grid-cols-2",
+  3: "grid-cols-3",
+  4: "grid-cols-4",
+};
+
+const GRID_ROWS_CLASS = {
+  1: "grid-rows-1",
+  2: "grid-rows-2",
+  3: "grid-rows-3",
+  4: "grid-rows-4",
+};
 
 /**
  * Detecta si un item del collage debe comportarse como flip card.
@@ -22,43 +36,50 @@ function getItemId(item, index) {
   return item?.id ?? `collage-item-${index + 1}`;
 }
 
-/**
- * Busca una grilla lo mas cuadrada posible para que el collage se acople mejor.
- * Ejemplos:
- * - 4 items -> 2x2
- * - 9 items -> 3x3
- * - 16 items -> 4x4
- * En cantidades intermedias usamos la raiz para acercarnos a un cuadrado.
- */
-function getPreferredColumns(requestedColumns, itemCount) {
-  if (!Number.isFinite(itemCount) || itemCount <= 0) return 1;
+function clampGridAxisSize(value) {
+  if (!Number.isFinite(value)) return 1;
+  return Math.max(1, Math.min(4, Math.round(value)));
+}
 
-  const squareColumns = Math.ceil(Math.sqrt(itemCount));
-  const normalizedRequested =
+function getGridLayout(requestedColumns, requestedRows, itemCount) {
+  if (!Number.isFinite(itemCount) || itemCount <= 0) {
+    return {
+      columns: 1,
+      rows: 1,
+    };
+  }
+
+  const columns =
     Number.isFinite(requestedColumns) && requestedColumns > 0
-      ? requestedColumns
-      : 1;
+      ? clampGridAxisSize(requestedColumns)
+      : clampGridAxisSize(Math.sqrt(itemCount));
+  const rows =
+    Number.isFinite(requestedRows) && requestedRows > 0
+      ? clampGridAxisSize(requestedRows)
+      : columns;
 
-  return Math.max(normalizedRequested, Math.min(4, squareColumns));
+  return { columns, rows };
 }
 
 /**
- * Traduce el numero ideal de columnas a una grilla responsive.
- * En pantallas chicas se compacta, y cuando el ancho lo permite
- * recupera la distribucion cuadrada.
+ * En Collage, FlipCard y ChooseOne las imagenes siempre son horizontales.
  */
-function getResponsiveColsClassName(preferredColumns) {
-  if (preferredColumns <= 1) return "grid-cols-1";
-  if (preferredColumns === 2) return "grid-cols-1 sm:grid-cols-2";
-  if (preferredColumns === 3) return "grid-cols-1 sm:grid-cols-2 xl:grid-cols-3";
+function getItemMedia(item, fallbackAlt = "Tarjeta") {
+  const media = item?.media ?? item?.image ?? {};
 
-  return "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4";
+  return {
+    ...media,
+    src: media?.src ?? item?.src,
+    alt: media?.alt ?? item?.alt ?? item?.caption ?? fallbackAlt,
+    variant: "horizontal",
+  };
 }
 
 /**
  * CollageCard:
- * - Organiza multiples tarjetas en una grilla.
- * - Cada item puede mostrarse como Card simple o como FlipCard dentro del collage.
+ * - Organiza tarjetas en grillas de hasta 4 columnas y 4 filas.
+ * - Si `rows` no se declara, mantiene la grilla cuadrada anterior.
+ * - Solo compone. El tamano visual lo resuelven FlipCard/Card/Image.
  */
 export default function CollageCard({
   items = [],
@@ -66,6 +87,7 @@ export default function CollageCard({
   selectedIds = [],
   onSelect,
   columns = 2,
+  rows,
   heroApi,
   view,
   className = "",
@@ -73,38 +95,10 @@ export default function CollageCard({
 }) {
   if (!Array.isArray(items) || items.length === 0) return null;
   const [revealedIds, setRevealedIds] = useState([]);
-  const preferredColumns = useMemo(
-    () => getPreferredColumns(columns, items.length),
-    [columns, items.length],
-  );
-
-  const colsClassName = useMemo(
-    () => getResponsiveColsClassName(preferredColumns),
-    [preferredColumns],
-  );
-  const mediaScaleStyle = useMemo(
-    () => ({
-      // Cuando el collage tiene varias tarjetas, reducimos la media maxima
-      // para que todas entren en desktop sin cortar el hero.
-      // En una grilla 2x2 dejamos crecer mas la media porque el collage
-      // ya tiene una distribucion cuadrada y puede aprovechar mejor el area.
-      "--card-media-max-height":
-        preferredColumns === 2
-          ? "min(165px, calc(var(--hero-height, 100vh) * 0.18))"
-          : preferredColumns >= 3
-            ? "min(145px, calc(var(--hero-height, 100vh) * 0.17))"
-          : "min(190px, calc(var(--hero-height, 100vh) * 0.24))",
-      // Las flip cards del collage usan una altura comun mas compacta.
-      // Asi dos filas de tarjetas pueden convivir con titulo e instruccion.
-      "--flip-card-height":
-        preferredColumns === 2
-          ? "min(275px, calc(var(--hero-height, 100vh) * 0.27))"
-          : preferredColumns >= 3
-            ? "min(210px, calc(var(--hero-height, 100vh) * 0.2))"
-          : "min(260px, calc(var(--hero-height, 100vh) * 0.25))",
-    }),
-    [preferredColumns],
-  );
+  const gridLayout = getGridLayout(columns, rows, items.length);
+  const gridColumnsClassName =
+    GRID_COLUMNS_CLASS[gridLayout.columns] ?? GRID_COLUMNS_CLASS[1];
+  const gridRowsClassName = GRID_ROWS_CLASS[gridLayout.rows] ?? GRID_ROWS_CLASS[1];
   const interactiveViewId = view?.id ?? view?.viewId;
 
   /**
@@ -137,37 +131,29 @@ export default function CollageCard({
   return (
     <div
       className={cn(
-        // El collage ocupa el area disponible del slot, pero centra su grilla
-        // interna para que las cards no se estiren mas alla de su tamano visual.
-        "grid h-full min-h-0 w-full max-h-full max-w-full justify-center justify-items-center overflow-hidden gap-3 md:gap-4",
-        preferredColumns === 2 ? "content-center" : "content-start",
-        colsClassName,
+        "flex h-full min-h-0 w-full items-center justify-center overflow-hidden",
         className,
       )}
-      style={{
-        ...mediaScaleStyle,
-        ...style,
-      }}
+      style={style}
     >
-      {items.map((item, index) => {
-        const itemId = getItemId(item, index);
-        const isSelected = selectedIds.includes(itemId);
+      <div
+        className={cn(
+          "grid h-fit max-h-full w-fit max-w-full place-items-center content-center justify-center gap-4 overflow-hidden",
+          gridColumnsClassName,
+          gridRowsClassName,
+        )}
+      >
+        {items.map((item, index) => {
+          const itemId = getItemId(item, index);
+          const isSelected = selectedIds.includes(itemId);
+          const media = getItemMedia(item, item?.caption ?? "Tarjeta");
 
-        if (isFlipItem(item)) {
-          return (
-            <div
-              key={itemId}
-              className={cn(
-                "min-w-0",
-                // Cada tarjeta tiene un ancho propio; la grilla la centra y ya
-                // no necesita estirarla a todo el ancho de la columna.
-                preferredColumns === 2
-                  ? "w-[min(320px,34vw)] max-w-full"
-                  : "w-[min(300px,30vw)] max-w-full",
-              )}
-            >
+          if (isFlipItem(item)) {
+            return (
               <FlipCard
+                key={itemId}
                 compact
+                fillContainer
                 data={{
                   mode: item?.mode ?? "revealGrid",
                   columns: 1,
@@ -175,8 +161,7 @@ export default function CollageCard({
                   items: [
                     {
                       id: itemId,
-                      src: item?.src ?? item?.image?.src ?? item?.media?.src,
-                      alt: item?.alt ?? item?.image?.alt ?? item?.media?.alt,
+                      image: media,
                       label: item?.title ?? item?.label,
                       caption: item?.caption,
                       correct: item?.correct,
@@ -190,36 +175,39 @@ export default function CollageCard({
                     },
                   ],
                 }}
-                // El collage ya es la grilla.
-                // No envolvemos el FlipCard con otra card para no duplicar espacio.
-                containerClassName="w-full"
+                selectedId={isSelected ? itemId : null}
+                containerClassName="h-full w-fit max-w-full"
                 gridContainerClassName="grid-cols-1"
                 onComplete={() => handleFlipComplete(itemId)}
               />
-            </div>
-          );
-        }
+            );
+          }
 
-        return (
-          <Card
-            key={itemId}
-            as={selectable ? "button" : "article"}
-            onClick={selectable ? () => onSelect?.(item, index) : undefined}
-            className={cn(
-              "h-full",
-              selectable && isSelected ? "border-emerald-300/50 bg-emerald-500/10" : "",
-            )}
-            media={item?.media ?? item?.image ?? { src: item?.src, alt: item?.alt }}
-            title={item?.title ?? item?.label}
-            text={item?.text}
-            footer={
-              item?.footer ? (
-                <Typography content={item.footer} variant="label" align="center" />
-              ) : null
-            }
-          />
-        );
-      })}
+          return (
+            <Card
+              key={itemId}
+              as={selectable ? "button" : "article"}
+              onClick={selectable ? () => onSelect?.(item, index) : undefined}
+              fitToMedia
+              selected={selectable && isSelected}
+              className={cn(
+                "max-h-full",
+                selectable && isSelected
+                  ? "border-emerald-200/90 bg-emerald-500/15 shadow-[0_0_26px_rgba(52,211,153,0.32)] ring-4 ring-inset ring-emerald-300/80"
+                  : "",
+              )}
+              media={media}
+              title={item?.title ?? item?.label}
+              text={item?.text}
+              footer={
+                item?.footer ? (
+                  <Typography content={item.footer} variant="label" align="center" />
+                ) : null
+              }
+            />
+          );
+        })}
+      </div>
     </div>
   );
 }

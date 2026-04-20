@@ -27,7 +27,7 @@ export function renderSlot(slotDef, data, Blocks, ctx = {}) {
     return (
       <div
         className={cn(
-          "flex min-h-0 min-w-0 max-h-full max-w-full flex-col gap-3",
+          "flex min-h-0 min-w-0 max-w-full flex-col gap-3 md:max-h-full",
           slotDef.stackClassName,
         )}
       >

@@ -115,6 +115,14 @@ export default function ChooseOne({
       ),
     [currentOptions],
   );
+  const activeQuestionResult =
+    isQuestionSequence
+      ? useCardOptions
+        ? resolvedCardQuestionResult
+        : pendingQuestionResult
+      : null;
+  const isLastQuestion =
+    isQuestionSequence && items.length > 0 && currentIndex === items.length - 1;
 
   const selectedCard = useMemo(
     () => items.find((item) => item?.id === selectedId) ?? null,
@@ -141,6 +149,37 @@ export default function ChooseOne({
       score,
     });
   }, [answers, heroApi, isQuestionSequence, items.length, viewId]);
+
+  useEffect(() => {
+    if (!isQuestionSequence || !isLastQuestion || !activeQuestionResult?.correct) {
+      return;
+    }
+
+    const finalAnswers = [...answers, activeQuestionResult];
+    const correctCount = finalAnswers.filter((item) => item.correct).length;
+    const totalScore = finalAnswers.reduce(
+      (sum, item) => sum + Number(item?.score ?? 0),
+      0,
+    );
+    const score = Math.round(totalScore / finalAnswers.length);
+
+    heroApi?.setInteractiveState?.(viewId, {
+      completed: true,
+      type: "chooseOne",
+      answers: finalAnswers,
+      totalQuestions: items.length,
+      correctCount,
+      score,
+    });
+  }, [
+    activeQuestionResult,
+    answers,
+    heroApi,
+    isLastQuestion,
+    isQuestionSequence,
+    items.length,
+    viewId,
+  ]);
 
   /**
    * Al cambiar de pregunta limpiamos su estado local.
@@ -229,17 +268,13 @@ export default function ChooseOne({
   function goToNextQuestion() {
     const result = useCardOptions ? resolvedCardQuestionResult : pendingQuestionResult;
     if (!result) return;
+    if (currentIndex >= items.length - 1) return;
 
     setAnswers((prev) => [...prev, result]);
     setPendingQuestionResult(null);
     setResolvedCardQuestionResult(null);
 
-    if (currentIndex < items.length - 1) {
-      setCurrentIndex((prev) => prev + 1);
-      return;
-    }
-
-    setCurrentIndex(items.length);
+    setCurrentIndex((prev) => prev + 1);
   }
 
   /**
@@ -254,111 +289,117 @@ export default function ChooseOne({
   if (!data || items.length === 0) return null;
 
   if (isQuestionSequence) {
-    const isFinished = currentIndex >= items.length;
-
-    const currentQuestionResult = useCardOptions ? resolvedCardQuestionResult : pendingQuestionResult;
+    const currentQuestionResult = activeQuestionResult;
     const feedbackMessage =
       currentQuestionResult?.feedback ?? pendingQuestionResult?.feedback ?? null;
     const canContinue = Boolean(currentQuestionResult);
+    const canAdvance = canContinue && !isLastQuestion;
+    const isCompleted = isLastQuestion && Boolean(currentQuestionResult?.correct);
 
     return (
       <section
         className={cn(
-          "mx-auto flex h-full min-h-0 w-full flex-col justify-between gap-3 rounded-2xl p-2",
+          "mx-auto flex min-h-full w-full flex-col justify-between gap-3 overflow-visible rounded-2xl p-2 md:h-full md:min-h-0 md:overflow-hidden",
           useCardOptions ? "max-w-[1020px]" : "max-w-[760px]",
         )}
       >
-        {isFinished ? (
-          <div className="rounded-xl border border-emerald-300/25 bg-emerald-500/10 p-4">
-            <Typography
-              content={{
-                text: `Completaste ${answers.length} preguntas.`,
-                variant: "body",
-                align: "center",
-              }}
-            />
-          </div>
-        ) : (
-          <>
-            {currentQuestion?.prompt ? (
-              <div className="shrink-0 rounded-xl border border-white/15 bg-white/5 px-4 py-2">
-                {renderPromptWithHighlight(currentQuestion.prompt)}
-              </div>
-            ) : null}
+        <>
+            <div className="shrink-0 rounded-xl border border-white/15 bg-white/5 px-4 py-2">
+                {currentQuestion?.prompt
+                  ? renderPromptWithHighlight(currentQuestion.prompt)
+                  : null}
+            </div>
 
-            <div
-              className={cn(
-                "grid min-h-0 flex-1 gap-4",
-                useCardOptions
-                  ? "mx-auto w-full max-w-[1020px] flex-1 grid-cols-2 items-center content-center"
-                  : "content-start md:grid-cols-2",
-              )}
-            >
-              {currentOptions.map((option) =>
-                useCardOptions ? (
-                  <FlipCard
-                    key={option.id}
-                    compact
-                    allowFlipBack
-                    reportToHeroApi={false}
-                    data={{
-                      mode: "singleChoice",
-                      columns: 1,
-                      countsTowardScore: false,
-                      items: [
-                        {
-                          id: option.id,
-                          image: option.media,
-                          label: option.label,
-                          correct: option.correct,
-                          reveal: {
-                            text:
-                              option?.feedback?.tone === "income"
-                                ? "Ingreso"
-                                : option?.feedback?.tone === "expense"
-                                  ? "Gasto"
-                                  : option.correct
-                                    ? "Correcto"
-                                    : "Incorrecto",
-                            variant: option?.feedback?.variant ?? "subtitle1",
-                            align: option?.feedback?.align ?? "center",
-                            tone:
-                              option?.feedback?.tone ??
-                              (option.correct ? "success" : "error"),
-                            className:
-                              "font-black uppercase tracking-[0.08em] text-amber-200",
+            {useCardOptions ? (
+              <div className="mx-auto grid min-h-0 w-full max-w-[1020px] flex-1 grid-cols-2 grid-rows-1 items-stretch content-stretch gap-4 overflow-visible p-1 [--flip-card-content-reserve:82px] [--flip-card-media-max-height:min(280px,calc(var(--hero-height,100vh)*0.3))]">
+                {currentOptions.map((option) => {
+                  const selectedOptionId =
+                    pendingQuestionResult?.selectedOptionId ??
+                    currentQuestionResult?.selectedOptionId;
+                  const isSelectedOption = selectedOptionId === option.id;
+
+                  return (
+                    <FlipCard
+                      key={option.id}
+                      compact
+                      fillContainer
+                      allowFlipBack
+                      reportToHeroApi={false}
+                      data={{
+                        mode: "singleChoice",
+                        columns: 1,
+                        countsTowardScore: false,
+                        items: [
+                          {
+                            id: option.id,
+                            image: option.media,
+                            label: option.label,
+                            correct: option.correct,
+                            reveal: {
+                              text:
+                                option?.feedback?.tone === "income"
+                                  ? "Ingreso"
+                                  : option?.feedback?.tone === "expense"
+                                    ? "Gasto"
+                                    : option.correct
+                                      ? "Correcto"
+                                      : "Incorrecto",
+                              variant: option?.feedback?.variant ?? "subtitle1",
+                              align: option?.feedback?.align ?? "center",
+                              tone:
+                                option?.feedback?.tone ??
+                                (option.correct ? "success" : "error"),
+                              className:
+                                "font-black uppercase tracking-[0.08em] text-amber-200",
+                            },
                           },
-                        },
-                      ],
-                    }}
-                    containerClassName={cn(
-                      "w-full [--flip-card-height:min(300px,calc(var(--hero-height,100vh)*0.3))] [--card-media-max-height:min(205px,calc(var(--flip-card-height)*0.66))]",
-                      currentQuestionResult?.selectedOptionId === option.id
-                        ? "ring-2 ring-amber-300/60 ring-offset-0 rounded-2xl"
-                        : "",
-                    )}
-                    gridContainerClassName="grid-cols-1"
-                    onItemClick={() => answerCardQuestion(option)}
-                  />
-                ) : (
+                        ],
+                      }}
+                      selectedId={isSelectedOption ? option.id : null}
+                      containerClassName="h-full w-full"
+                      gridContainerClassName="grid-cols-1"
+                      onItemClick={() => answerCardQuestion(option)}
+                    />
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="grid min-h-0 flex-1 content-start gap-4 md:grid-cols-2">
+                {currentOptions.map((option) => (
                   <button
                     key={option.id}
                     type="button"
                     disabled={Boolean(currentQuestionResult)}
                     onClick={() => answerQuestion(option)}
                     className={cn(
-                      "rounded-xl border border-white/20 bg-black/10 px-4 py-3 text-left transition",
-                      "hover:bg-black/20 disabled:opacity-60",
+                      "cursor-pointer rounded-xl border border-white/20 bg-black/10 px-4 py-3 text-left transition",
+                      "hover:-translate-y-0.5 hover:bg-black/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 active:translate-y-0 disabled:cursor-not-allowed disabled:translate-y-0 disabled:opacity-60",
+                      pendingQuestionResult?.selectedOptionId === option.id
+                        ? option.correct
+                          ? "border-emerald-200/80 bg-emerald-500/20 shadow-[0_0_22px_rgba(52,211,153,0.28)] ring-2 ring-emerald-300/80"
+                          : "border-rose-200/80 bg-rose-500/20 shadow-[0_0_22px_rgba(244,63,94,0.28)] ring-2 ring-rose-300/80"
+                        : "",
                     )}
                   >
                     <Typography content={option.label} align="center" />
                   </button>
-                ),
-              )}
-            </div>
+                ))}
+              </div>
+            )}
 
-            <div className="shrink-0 flex flex-col gap-2">
-              <div className="min-h-[72px]">
+            <div className="grid min-h-[72px] shrink-0 grid-cols-[minmax(7rem,1fr)_minmax(0,2.6fr)_minmax(7rem,1fr)] items-center gap-3">
+              <div className="justify-self-start rounded-xl border border-white/15 bg-white/5 px-3 py-2">
+                <Typography
+                  content={{
+                    text: `Pregunta ${Math.min(currentIndex + 1, items.length)}/${items.length}`,
+                    variant: "label",
+                    align: "left",
+                  }}
+                  className="whitespace-nowrap font-bold"
+                />
+              </div>
+
+              <div className="min-w-0">
                 {feedbackMessage ? (
                   <div
                     className={cn(
@@ -373,33 +414,40 @@ export default function ChooseOne({
                 ) : null}
               </div>
 
-              <div className="flex min-h-[44px] items-center justify-center">
-                {canContinue ? (
+              <div className="justify-self-end">
+                {isCompleted ? (
+                  <div className="rounded-xl border border-emerald-300/30 bg-emerald-500/15 px-4 py-2.5">
+                    <Typography
+                      content={{
+                        text: "Completado",
+                        variant: "label",
+                        color: "success",
+                        align: "center",
+                      }}
+                      className="whitespace-nowrap font-bold"
+                    />
+                  </div>
+                ) : (
                   <Button
                     variant="primary"
-                    label={currentIndex < items.length - 1 ? "Continuar" : "Finalizar"}
-                    className="mx-auto"
+                    label="Continuar"
+                    disabled={!canAdvance}
+                    className={cn(
+                      "whitespace-nowrap",
+                      !canAdvance ? "invisible pointer-events-none" : "",
+                    )}
                     onClick={goToNextQuestion}
                   />
-                ) : null}
+                )}
               </div>
-
-              <Typography
-                content={{
-                  text: `Pregunta ${Math.min(currentIndex + 1, items.length)} de ${items.length}`,
-                  variant: "helper",
-                  align: "center",
-                }}
-              />
             </div>
-          </>
-        )}
+        </>
       </section>
     );
   }
 
   return (
-    <div className="flex h-full min-h-0 max-h-full w-full max-w-full flex-col gap-4 overflow-hidden">
+    <div className="flex min-h-full w-full max-w-full flex-col gap-4 overflow-visible md:h-full md:min-h-0 md:max-h-full md:overflow-hidden">
       {instruction ? (
         <div className="shrink-0 rounded-xl border border-white/15 p-4">
           <Typography
@@ -410,19 +458,19 @@ export default function ChooseOne({
         </div>
       ) : null}
 
-      <div className="grid min-h-0 flex-1 auto-rows-fr items-stretch content-stretch gap-4 md:grid-cols-2">
+      <div className="grid min-h-0 flex-1 w-full place-items-center content-start gap-4 overflow-visible p-1 md:grid-cols-2 [--card-media-max-height:min(310px,calc(var(--hero-height,100vh)*0.34))]">
         {items.map((item, index) => (
           <Card
             key={item?.id ?? index}
             as="button"
             onClick={() => selectCard(item)}
+            selected={selectedId === item?.id}
             className={cn(
-              // En procedimental la card debe aprovechar mejor su alto disponible.
-              // Por eso acercamos el detalle al titulo y dejamos crecer mas la media.
-              "h-full min-h-0 self-stretch [--card-media-max-height:min(100%,calc(var(--hero-height,100vh)*0.34))]",
-              selectedId === item?.id ? "border-emerald-300/50" : "",
+              "max-w-full",
+              selectedId === item?.id
+                ? "border-emerald-200/90 bg-emerald-500/15 shadow-[0_0_26px_rgba(52,211,153,0.32)] ring-4 ring-inset ring-emerald-300/80"
+                : "",
             )}
-            mediaClassName="min-h-0 flex-1"
             media={toHorizontalMedia(
               item?.media ?? item?.image ?? { src: item?.src, alt: item?.alt },
               item?.alt ?? item?.caption ?? "Opcion",

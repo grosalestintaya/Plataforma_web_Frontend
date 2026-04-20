@@ -251,9 +251,16 @@ export default function ModuleMenuActivityPanel({
           </Text>
 
           <button
+            type="button"
             disabled={!canPlay}
             onClick={onPlay}
-            className="w-full shrink-0 rounded-2xl border px-4 py-2 text-sm font-semibold transition xl:w-auto xl:px-5 xl:py-2.5"
+            className={[
+              "w-full shrink-0 rounded-2xl border px-4 py-2 text-sm font-semibold transition xl:w-auto xl:px-5 xl:py-2.5",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60",
+              canPlay
+                ? "cursor-pointer hover:-translate-y-0.5 hover:brightness-110 active:translate-y-0"
+                : "cursor-not-allowed",
+            ].join(" ")}
             style={{
               borderColor: canPlay
                 ? withAlpha("#ffffff", 0.18)

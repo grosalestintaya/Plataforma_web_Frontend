@@ -14,8 +14,8 @@ export default function HeroArea({ area, className, children }) {
         // El area ocupa toda su celda y centra su contenido por defecto.
         // Luego cada variante puede cambiarlo con `place-*`, `justify-*`, `items-*`, etc.
         // Tambien limita al hijo directo para que no desborde el slot.
-        "grid h-full w-full min-h-0 min-w-0 overflow-hidden place-items-center place-content-center p-2",
-        "[&>*]:min-h-0 [&>*]:min-w-0 [&>*]:max-h-full [&>*]:max-w-full",
+        "grid min-h-0 w-full min-w-0 overflow-visible place-items-center place-content-center p-2 md:h-full md:overflow-hidden",
+        "[&>*]:min-h-0 [&>*]:min-w-0 [&>*]:max-w-full md:[&>*]:max-h-full",
         className,
       )}
     >

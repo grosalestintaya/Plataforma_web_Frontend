@@ -27,7 +27,7 @@ export default function Modal({
           <button
             type="button"
             onClick={onClose}
-            className="rounded-md border border-white/20 px-2 py-1 text-xs hover:bg-white/10"
+            className="cursor-pointer rounded-md border border-white/20 px-2 py-1 text-xs transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 active:scale-95"
           >
             Cerrar
           </button>

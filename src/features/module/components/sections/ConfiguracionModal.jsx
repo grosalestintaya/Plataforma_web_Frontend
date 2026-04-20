@@ -186,7 +186,7 @@ export default function ConfiguracionModal({
               type="button"
               onClick={onRequestClose}
               aria-label="Cerrar"
-              className="absolute right-5 top-5 grid h-12 w-12 place-items-center rounded-2xl border-2 border-slate-900/20 bg-white/35 transition hover:bg-white/50 active:scale-95 sm:right-8 sm:top-8 sm:h-14 sm:w-14">
+              className="absolute right-5 top-5 grid h-12 w-12 cursor-pointer place-items-center rounded-2xl border-2 border-slate-900/20 bg-white/35 transition hover:bg-white/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/40 active:scale-95 sm:right-8 sm:top-8 sm:h-14 sm:w-14">
               <img
                 src={closeIcon}
                 alt=""
@@ -229,7 +229,7 @@ export default function ConfiguracionModal({
                 <button
                   type="button"
                   onClick={onRequestAbandon}
-                  className="w-full rounded-2xl border-2 border-red-950/20 bg-red-500 px-5 py-4 text-lg font-black text-white shadow-[0_5px_0_rgba(0,0,0,0.18)] transition hover:brightness-105 active:translate-y-[1px]">
+                  className="w-full cursor-pointer rounded-2xl border-2 border-red-950/20 bg-red-500 px-5 py-4 text-lg font-black text-white shadow-[0_5px_0_rgba(0,0,0,0.18)] transition hover:-translate-y-0.5 hover:brightness-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-950/40 active:translate-y-[1px]">
                   {abandonLabel}
                 </button>
               </div>
@@ -258,7 +258,7 @@ function SettingRow({
         onClick={onToggle}
         aria-label={isMuted ? `Activar ${label}` : `Silenciar ${label}`}
         aria-pressed={!isMuted}
-        className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border border-slate-900/15 bg-white/25 transition hover:bg-white/40 active:scale-95 sm:h-14 sm:w-14">
+        className="grid h-12 w-12 shrink-0 cursor-pointer place-items-center rounded-2xl border border-slate-900/15 bg-white/25 transition hover:bg-white/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/40 active:scale-95 sm:h-14 sm:w-14">
         <img
           src={icon}
           alt=""

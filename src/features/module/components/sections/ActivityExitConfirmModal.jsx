@@ -73,7 +73,7 @@ export default function ActivityExitConfirmModal({
           <button
             type="button"
             onClick={onRequestClose}
-            className="rounded-2xl bg-slate-800 px-5 py-4 text-base font-black text-white shadow-[0_5px_0_rgba(0,0,0,0.18)] transition hover:brightness-110 active:translate-y-[1px]"
+            className="cursor-pointer rounded-2xl bg-slate-800 px-5 py-4 text-base font-black text-white shadow-[0_5px_0_rgba(0,0,0,0.18)] transition hover:-translate-y-0.5 hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/40 active:translate-y-[1px]"
           >
             Cancelar
           </button>
@@ -81,7 +81,7 @@ export default function ActivityExitConfirmModal({
           <button
             type="button"
             onClick={onConfirmExit}
-            className="rounded-2xl border-2 border-red-950/20 bg-red-500 px-5 py-4 text-base font-black text-white shadow-[0_5px_0_rgba(0,0,0,0.18)] transition hover:brightness-105 active:translate-y-[1px]"
+            className="cursor-pointer rounded-2xl border-2 border-red-950/20 bg-red-500 px-5 py-4 text-base font-black text-white shadow-[0_5px_0_rgba(0,0,0,0.18)] transition hover:-translate-y-0.5 hover:brightness-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-950/40 active:translate-y-[1px]"
           >
             Salir
           </button>

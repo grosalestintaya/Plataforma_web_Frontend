@@ -24,8 +24,9 @@ export default function Button({
       onClick={onClick}
       disabled={disabled}
       className={[
-        "inline-flex items-center justify-center rounded-xl border px-4 py-2.5 text-sm font-medium transition",
-        "disabled:cursor-not-allowed disabled:opacity-60",
+        "inline-flex cursor-pointer items-center justify-center rounded-xl border px-4 py-2.5 text-sm font-medium transition",
+        "hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black/30",
+        "disabled:cursor-not-allowed disabled:translate-y-0 disabled:opacity-60",
         variantClass,
         className,
       ].join(" ")}

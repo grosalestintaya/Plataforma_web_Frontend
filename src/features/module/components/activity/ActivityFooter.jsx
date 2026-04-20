@@ -11,7 +11,7 @@ function getFooterButtonClass(disabled) {
     " text-white transition",
     disabled
       ? "cursor-not-allowed opacity-40"
-      : "hover:bg-white/15 active:scale-[0.98]",
+      : "cursor-pointer hover:-translate-y-0.5 hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 active:translate-y-0 active:scale-[0.98]",
   ].join(" ");
 }
 
@@ -83,6 +83,7 @@ function FooterNavButton({
 }) {
   return (
     <button
+      type="button"
       disabled={disabled}
       onClick={onClick}
       className={getFooterButtonClass(disabled)}
@@ -97,6 +98,31 @@ function FooterNavButton({
         <FooterIcon svgMarkup={iconSvg} color={iconColor} />
       ) : null}
     </button>
+  );
+}
+
+function FooterNavSlot({
+  visible = true,
+  label,
+  iconSvg,
+  iconColor,
+  iconPosition = "left",
+  disabled,
+  onClick,
+}) {
+  if (!visible) {
+    return <div className="h-12 min-w-[96px]" aria-hidden="true" />;
+  }
+
+  return (
+    <FooterNavButton
+      disabled={disabled}
+      onClick={onClick}
+      label={label}
+      iconSvg={iconSvg}
+      iconColor={iconColor}
+      iconPosition={iconPosition}
+    />
   );
 }
 
@@ -134,6 +160,7 @@ export default function ModuleFooter({ model, onUiClick, themeHex }) {
       <FooterShell>
         <div className="flex w-full items-center justify-center">
           <button
+            type="button"
             disabled={!model?.center?.enabled}
             onClick={wrapClick(model?.center?.onClick, model?.center?.enabled)}
             className={getFooterButtonClass(!model?.center?.enabled)}>
@@ -187,7 +214,8 @@ export default function ModuleFooter({ model, onUiClick, themeHex }) {
   return (
     <FooterShell>
       <div className="grid w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 text-sm">
-        <FooterNavButton
+        <FooterNavSlot
+          visible={model?.left?.visible !== false}
           disabled={!model?.left?.enabled}
           onClick={wrapClick(model?.left?.onClick, model?.left?.enabled)}
           label={model?.left?.label}

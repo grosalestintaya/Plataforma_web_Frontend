@@ -32,17 +32,18 @@ export function useActivityFooterModel({
       const canAdvance =
         Boolean(currentInteractiveState?.completed) &&
         (!activityId || hasBackendAttempt);
+      const centerText = canAdvance
+        ? model.centerText
+        : missionAttempt.status === "starting"
+          ? "Conectando..."
+          : currentView?.nav?.label ?? "Completa el minijuego";
 
       return {
         ...model,
+        centerText,
         right: {
           ...model.right,
           enabled: model.right.enabled && canAdvance,
-          label: canAdvance
-            ? model.right.label
-            : missionAttempt.status === "starting"
-              ? "Conectando..."
-              : "Completa el minijuego",
         },
       };
     }
@@ -54,14 +55,15 @@ export function useActivityFooterModel({
 
     return {
       ...model,
+      centerText: canFinish
+        ? model.centerText
+        : missionAttempt.status === "starting"
+          ? "Conectando..."
+          : "Presiona Empezar",
       right: {
         ...model.right,
         enabled: model.right.enabled && canFinish,
-        label: canFinish
-          ? "Finalizar"
-          : missionAttempt.status === "starting"
-            ? "Conectando..."
-            : "Presiona Empezar",
+        label: "Finalizar",
       },
     };
   }, [activityId, currentView, footerModel, interactiveState, missionAttempt]);

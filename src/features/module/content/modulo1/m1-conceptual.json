@@ -32,7 +32,7 @@
           "align": "left"
         },
         "media": {
-          "src": "/src/assets/activity/inicio-conceptual.jpeg",
+          "src": "1/1/inicio-conceptual.jpeg",
           "alt": "Inicio de la mision conceptual",
           "variant": "vertical"
         }
@@ -87,9 +87,9 @@
           "align": "center"
         },
         "media": {
-          "src": "/src/assets/activity/recibir-dinero.jpeg",
+          "src": "1/uso-dinero.png",
           "alt": "Estudiante usando dinero",
-          "variant": "square"
+          "variant": "horizontal"
         }
       },
       "elements": {
@@ -161,7 +161,7 @@
           "align": "left"
         },
         "media": {
-          "src": "/src/assets/activity/uso-del-dinero.png",
+          "src": "1/uso-del-dinero-2.png",
           "alt": "Uso diario del dinero",
           "variant": "horizontal"
         }
@@ -246,7 +246,7 @@
               {
                 "id": "income-card",
                 "media": {
-                  "src": "/src/assets/activity/recibir-dinero.jpeg",
+                  "src": "1/recibir-dinero.png",
                   "alt": "Ejemplo de ingreso",
                   "variant": "horizontal"
                 },
@@ -264,7 +264,7 @@
               {
                 "id": "expense-card",
                 "media": {
-                  "src": "",
+                  "src": "1/pagar-pasaje.png",
                   "alt": "Ejemplo de gasto",
                   "variant": "horizontal"
                 },
@@ -336,7 +336,7 @@
               {
                 "id": "card-1",
                 "renderAs": "flipCard",
-                "src": "",
+                "src": "1/recibir-dinero.png",
                 "caption": "Me dieron dinero para mi recreo",
                 "reveal": {
                   "text": "Ingreso: porque recibiste dinero.",
@@ -346,7 +346,7 @@
               {
                 "id": "card-2",
                 "renderAs": "flipCard",
-                "src": "",
+                "src": "1/pagar-pasaje.png",
                 "caption": "Pague mi pasaje",
                 "reveal": {
                   "text": "Gasto: porque pagaste.",
@@ -356,7 +356,7 @@
               {
                 "id": "card-3",
                 "renderAs": "flipCard",
-                "src": "",
+                "src": "1/comprar-comida.png",
                 "caption": "Compre una galleta y una bebida",
                 "reveal": {
                   "text": "Gasto: porque compraste.",
@@ -366,8 +366,8 @@
               {
                 "id": "card-4",
                 "renderAs": "flipCard",
-                "src": "",
-                "caption": "Vendi un juguete que no usaba",
+                "src": "1/ganar-dinero.png",
+                "caption": "Apoyar a hacer algo",
                 "reveal": {
                   "text": "Ingreso: porque te pagaron.",
                   "tone": "success"
@@ -443,7 +443,7 @@
                       "align": "center"
                     },
                     "media": {
-                      "src": "",
+                      "src": "1/recibir-dinero.png",
                       "alt": "Recibir dinero",
                       "variant": "horizontal"
                     },
@@ -464,7 +464,7 @@
                       "align": "center"
                     },
                     "media": {
-                      "src": "",
+                      "src": "1/pagar-pasaje.png",
                       "alt": "Pagar pasaje",
                       "variant": "horizontal"
                     },
@@ -495,7 +495,7 @@
                       "align": "center"
                     },
                     "media": {
-                      "src": "",
+                      "src": "1/ganar-dinero.png",
                       "alt": "Vender un juguete",
                       "variant": "horizontal"
                     },
@@ -516,7 +516,7 @@
                       "align": "center"
                     },
                     "media": {
-                      "src": "",
+                      "src": "1/comprar-comida.png",
                       "alt": "Comprar una galleta y una bebida",
                       "variant": "horizontal"
                     },
