@@ -5,13 +5,18 @@ import FinalModuleUnlockPanel from "./FinalModuleUnlockPanel";
 import ImperialRopeDefs from "./rope/ImperialRopeDefs";
 import MainRope from "./rope/MainRope";
 import SubRope from "./rope/SubRope";
+import DecorativeSubRope from "./rope/DecorativeSubRope";
+
 import {
   ANCHOR_POINTS,
   BRANCH_COLORS,
+  DECORATIVE_ANCHOR_POINTS,
+  DECORATIVE_SUBROPE_CURVE_VARIANTS,
   MAIN_ROPE_PATH,
   SUBROPE_CURVE_VARIANTS,
   getRopeDefsIds,
 } from "./rope/rope.variants";
+
 import { normalizeStatus } from "./rope/rope.utils";
 
 function buildModuleRoute(sortOrder) {
@@ -46,6 +51,15 @@ export default function ModulesRope({
     }).sortOrder;
   }, [visibleModules]);
 
+  const decorativePalette = useMemo(
+    () => ({
+      main: "#A56A3B",
+      dark: "#744520",
+      light: "#E6BF95",
+    }),
+    [],
+  );
+
   return (
     <section
       className={["w-full min-w-0 pb-1", className].filter(Boolean).join(" ")}>
@@ -59,10 +73,11 @@ export default function ModulesRope({
             <svg
               viewBox="50 0 720 470"
               preserveAspectRatio="xMidYMin meet"
-              className="mx-auto block h-auto w-full min-w-[760px] max-w-[990px] overflow-visible"
+              className="mx-auto block h-auto w-full min-w-[760px] max-w-[800px] overflow-visible"
               role="img"
               aria-label="Mapa de subcuerdas de módulos">
               <ImperialRopeDefs path={MAIN_ROPE_PATH} ids={defsIds} />
+
               <style>
                 {`
                   .subrope-button {
@@ -112,6 +127,26 @@ export default function ModulesRope({
                   }
                 `}
               </style>
+
+              {DECORATIVE_ANCHOR_POINTS.map((point, index) => {
+                const curveVariant =
+                  DECORATIVE_SUBROPE_CURVE_VARIANTS[
+                    index % DECORATIVE_SUBROPE_CURVE_VARIANTS.length
+                  ];
+
+                return (
+                  <DecorativeSubRope
+                    key={`decorative-subrope-${index}`}
+                    point={point}
+                    index={index}
+                    curveVariant={DECORATIVE_SUBROPE_CURVE_VARIANTS[index]}
+                    defsIds={defsIds}
+                    palette={decorativePalette}
+                    opacity={0.99}
+                  />
+                );
+              })}
+
               {visibleModules.map((module, index) => {
                 const status = normalizeStatus(module?.status);
                 const state = status === "locked" ? "locked" : "unlocked";
@@ -139,7 +174,6 @@ export default function ModulesRope({
                     palette={palette}
                     defsIds={defsIds}
                     state={state}
-                    visualVariant="imperial"
                     active={isHovered || (isCurrentTarget && !anyHovered)}
                     showLabel={showLabel}
                     animate={state === "unlocked"}
@@ -151,15 +185,15 @@ export default function ModulesRope({
                   />
                 );
               })}
+
               <MainRope
                 path={MAIN_ROPE_PATH}
                 ids={defsIds}
                 accent="#B092FF"
-                showEndCaps
+                showEndKnots
                 showPendants
-                strokeWidth="17"
-                sideOffset="1.75"
-              />{" "}
+                stampStep={10.9}
+              />
             </svg>
           </div>
         </div>
