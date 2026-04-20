@@ -1,5 +1,4 @@
 import React, { useId, useLayoutEffect, useRef, useState } from "react";
-import ImperialPendant from "./ImperialPendant";
 
 function useBraidStamps(
   pathRef,
@@ -298,13 +297,6 @@ export default function MainRope({
         <>
           <MainRopeEndKnot x={42} y={76} />
           <MainRopeEndKnot x={780} y={64} />
-        </>
-      )}
-
-      {showPendants && (
-        <>
-          <ImperialPendant x={64} y={88} side="left" themeHex={accent} />
-          <ImperialPendant x={756} y={76} side="right" themeHex={accent} />
         </>
       )}
     </>

@@ -53,21 +53,33 @@ function mixHex(hex, target = "#ffffff", amount = 0.5) {
   return `rgb(${r}, ${g}, ${b2})`;
 }
 
-function makePalette(themeHex) {
-  const base = themeHex || "#8B5CF6";
+function makeHeaderPalette(themeHex) {
+  const accent = themeHex || "#8B5CF6";
 
   return {
-    main: base,
-    dark: mixHex(base, "#1f140d", 0.48),
-    light: mixHex(base, "#ffffff", 0.52),
-    shadow: hexToRgba(mixHex(base, "#1f140d", 0.7), 0.26),
-    glowSoft: hexToRgba(base, 0.18),
+    ropeBase: "#C1814B",
+    ropeDark: "#4A2812",
+    ropeSupport: "#7A4A28",
+    ropeMid: "#B87744",
+    knotFill: "#8D5A32",
+    knotStroke: "#D8A96D",
+    knotGlow: "#F4D4A9",
+    lightSoft: "rgba(255,236,206,0.28)",
+    lightEdge: "rgba(255,247,231,0.16)",
+    lightLine: "rgba(255,243,225,0.11)",
+    shadowMain: "rgba(82,46,22,0.32)",
+    shadowInner: "rgba(70,39,19,0.13)",
+    shadowGlobal: "rgba(20,11,5,0.14)",
+    accent,
+    accentGlow: hexToRgba(accent, 0.16),
+    accentStroke: hexToRgba(accent, 0.08),
+    accentLight: hexToRgba(mixHex(accent, "#ffffff", 0.5), 0.34),
   };
 }
 
 function useBraidStamps(
   pathRef,
-  { step = 13, trimStart = 12, trimEnd = 12, sideOffset = 2.15 } = {},
+  { step = 10.9, trimStart = 8, trimEnd = 8, sideOffset = 2.35 } = {},
 ) {
   const [items, setItems] = useState([]);
 
@@ -86,14 +98,15 @@ function useBraidStamps(
         let i = 0;
         for (let d = trimStart; d <= end; d += step) {
           const p = pathNode.getPointAtLength(d);
-          const prev = pathNode.getPointAtLength(Math.max(0, d - 1.6));
-          const next = pathNode.getPointAtLength(Math.min(total, d + 1.6));
+          const prev = pathNode.getPointAtLength(Math.max(0, d - 1.9));
+          const next = pathNode.getPointAtLength(Math.min(total, d + 1.9));
 
           const dx = next.x - prev.x;
           const dy = next.y - prev.y;
           const len = Math.hypot(dx, dy) || 1;
 
           const angle = (Math.atan2(dy, dx) * 180) / Math.PI;
+
           const nx = -dy / len;
           const ny = dx / len;
 
@@ -105,8 +118,8 @@ function useBraidStamps(
             y: p.y + ny * offset,
             angle,
             flip: sign,
-            scaleX: i % 2 === 0 ? 1.06 : 1,
-            scaleY: i % 2 === 0 ? 1.03 : 0.99,
+            scaleX: i % 2 === 0 ? 1.11 : 1.05,
+            scaleY: i % 2 === 0 ? 1.09 : 1.03,
             opacity: i % 2 === 0 ? 1 : 0.95,
           });
 
@@ -126,38 +139,38 @@ function useBraidStamps(
   return items;
 }
 
-function EndKnot({ x, y, palette, flip = 1 }) {
+function HeaderEndKnot({ x, y, flip = 1, palette }) {
   return (
     <g transform={`translate(${x} ${y}) scale(${flip} 1)`}>
-      <ellipse cx="0" cy="0" rx="13.8" ry="9.6" fill="rgba(0,0,0,0.14)" />
+      <ellipse cx="0" cy="0" rx="13.4" ry="9.8" fill="rgba(0,0,0,0.14)" />
 
       <ellipse
         cx="0"
         cy="0"
-        rx="11.4"
-        ry="7.9"
-        fill={palette.dark}
-        stroke={hexToRgba(palette.light, 0.65)}
-        strokeWidth="1.2"
+        rx="10.8"
+        ry="7.6"
+        fill={palette.knotFill}
+        stroke={palette.knotStroke}
+        strokeWidth="1.15"
       />
 
       <path
-        d="M -5.8 -2.7 Q 0 -0.9 5.8 -2.7"
+        d="M -5.8 -3.9 Q 0 -1.15 5.8 -3.9"
         fill="none"
-        stroke={hexToRgba(palette.light, 0.8)}
-        strokeWidth="0.9"
+        stroke="rgba(255,236,204,0.88)"
+        strokeWidth="0.92"
         strokeLinecap="round"
       />
 
       <path
-        d="
-          M 11.2 0
-          C 17.4 -2.1, 23.4 -2.1, 27.5 0
-          C 23.7 2.1, 17.6 2.1, 11.2 0
-        "
-        fill={palette.dark}
-        opacity="0.95"
+        d="M -5.8 3.9 Q 0 1.15 5.8 3.9"
+        fill="none"
+        stroke="rgba(92,49,22,0.22)"
+        strokeWidth="0.82"
+        strokeLinecap="round"
       />
+
+      <circle cx="0" cy="0" r="1.25" fill={palette.knotGlow} />
     </g>
   );
 }
@@ -165,10 +178,11 @@ function EndKnot({ x, y, palette, flip = 1 }) {
 export default function HeaderRopeSvg({
   themeHex = "#7C3AED",
   className = "",
+  showEndKnots = true,
 }) {
   const guideRef = useRef(null);
   const uid = useId().replace(/:/g, "");
-  const palette = useMemo(() => makePalette(themeHex), [themeHex]);
+  const palette = useMemo(() => makeHeaderPalette(themeHex), [themeHex]);
 
   const path = useMemo(
     () => `
@@ -182,16 +196,16 @@ export default function HeaderRopeSvg({
   );
 
   const stamps = useBraidStamps(guideRef, {
-    step: 13,
-    trimStart: 14,
-    trimEnd: 14,
-    sideOffset: 2.15,
+    step: 10.9,
+    trimStart: 8,
+    trimEnd: 8,
+    sideOffset: 2.35,
   });
 
-  const braidCellId = `header-rope-braid-${uid}`;
-  const maskId = `header-rope-mask-${uid}`;
-  const glowId = `header-rope-glow-${uid}`;
+  const braidCellId = `header-braid-cell-${uid}`;
+  const maskId = `header-braid-mask-${uid}`;
   const shadowId = `header-rope-shadow-${uid}`;
+  const glowId = `header-rope-glow-${uid}`;
 
   return (
     <svg
@@ -204,24 +218,24 @@ export default function HeaderRopeSvg({
         <filter
           id={shadowId}
           x="-10%"
-          y="-120%"
+          y="-140%"
           width="120%"
-          height="300%"
+          height="340%"
           colorInterpolationFilters="sRGB">
           <feDropShadow
             dx="0"
-            dy="5"
-            stdDeviation="5"
-            floodColor={hexToRgba("#000000", 0.22)}
+            dy="4.6"
+            stdDeviation="4.4"
+            floodColor="rgba(0,0,0,0.22)"
           />
         </filter>
 
         <filter
           id={glowId}
           x="-10%"
-          y="-150%"
+          y="-180%"
           width="120%"
-          height="400%"
+          height="430%"
           colorInterpolationFilters="sRGB">
           <feGaussianBlur stdDeviation="4.8" result="blur" />
           <feMerge>
@@ -233,57 +247,78 @@ export default function HeaderRopeSvg({
         <g id={braidCellId}>
           <path
             d="
-              M -16.5 0
-              C -13.4 -5.8, -7.9 -9.7, -0.4 -9.9
-              C 7.2 -10.1, 12.8 -5.8, 16.2 0
-              C 12.8 5.8, 7.2 10.1, -0.4 9.9
-              C -7.9 9.7, -13.4 5.8, -16.5 0
+              M -20.6 0
+              C -17.4 -7.4, -10.2 -12.2, -0.6 -12.5
+              C 8.9 -12.7, 16.1 -7.4, 20.3 0
+              C 16.2 7.4, 8.9 12.7, -0.6 12.5
+              C -10.2 12.2, -17.4 7.4, -20.6 0
               Z
             "
-            fill={"#C1814B"}
-            stroke={"#3e352b"}
-            strokeWidth="1.26"
+            fill={palette.ropeBase}
+            stroke={palette.ropeDark}
+            strokeWidth="1.5"
             strokeLinejoin="round"
           />
 
           <path
-            d="M -10.6 6.3 C -6.6 3.5, -2.1 0.5, 9.3 -7"
+            d="
+              M -13.2 8.1
+              C -8.2 4.6, -2.7 0.7, 11.4 -8.7
+            "
             fill="none"
-            stroke={hexToRgba(palette.dark, 0.32)}
-            strokeWidth="2.2"
+            stroke={palette.shadowMain}
+            strokeWidth="2.55"
             strokeLinecap="round"
           />
 
           <path
-            d="M -9.6 -5 C -5.2 -7.3, 0.2 -6.7, 8.9 -2.4"
+            d="
+              M -12 -6.3
+              C -6.4 -9.3, 0.1 -8.5, 10.9 -3.2
+            "
             fill="none"
-            stroke={hexToRgba(palette.light, 0.3)}
-            strokeWidth="1.18"
+            stroke={palette.lightSoft}
+            strokeWidth="1.55"
             strokeLinecap="round"
           />
 
           <path
-            d="M -11.6 -1.4 C -5.2 -4.1, 2.1 -3.3, 10.8 2.9"
+            d="
+              M -14.5 -1.8
+              C -6.2 -5.1, 2.7 -4.3, 13.8 3.4
+            "
             fill="none"
-            stroke={hexToRgba(palette.dark, 0.14)}
-            strokeWidth="0.86"
+            stroke={palette.shadowInner}
+            strokeWidth="1"
+            strokeLinecap="round"
+          />
+
+          <path
+            d="
+              M 1.5 11
+              C 7.3 9.2, 12.4 5.1, 16.2 0.2
+            "
+            fill="none"
+            stroke={palette.lightEdge}
+            strokeWidth="0.95"
             strokeLinecap="round"
           />
         </g>
 
         <mask id={maskId}>
-          <rect x="-120" y="-70" width="1500" height="240" fill="black" />
+          <rect x="-120" y="-80" width="1500" height="260" fill="black" />
           <path
             d={path}
             fill="none"
             stroke="white"
-            strokeWidth="36"
+            strokeWidth="31"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
         </mask>
       </defs>
 
+      {/* guía invisible */}
       <path
         ref={guideRef}
         d={path}
@@ -293,33 +328,36 @@ export default function HeaderRopeSvg({
         pointerEvents="none"
       />
 
+      {/* sombra global */}
       <path
         d={path}
         fill="none"
-        stroke={palette.shadow}
-        strokeWidth="9"
+        stroke={palette.shadowGlobal}
+        strokeWidth="33.5"
         strokeLinecap="round"
         filter={`url(#${shadowId})`}
       />
 
+      {/* base de soporte */}
       <path
         d={path}
         fill="none"
-        stroke={hexToRgba(palette.dark, 0.09)}
-        strokeWidth="25"
+        stroke={palette.ropeSupport}
+        strokeWidth="22"
         strokeLinecap="round"
-        opacity="0.76"
+        opacity="0.56"
       />
 
       <path
         d={path}
         fill="none"
-        stroke={hexToRgba(palette.main, 0.55)}
-        strokeWidth="15"
+        stroke={palette.ropeMid}
+        strokeWidth="13.6"
         strokeLinecap="round"
-        opacity="0.86"
+        opacity="0.24"
       />
 
+      {/* trenzado principal */}
       <g mask={`url(#${maskId})`}>
         {stamps.map((item, i) => (
           <use
@@ -335,27 +373,44 @@ export default function HeaderRopeSvg({
         ))}
       </g>
 
+      {/* brillo superior mínimo */}
       <path
         d={path}
         fill="none"
-        stroke={hexToRgba(palette.light, 0.18)}
-        strokeWidth="1.3"
+        stroke={palette.lightLine}
+        strokeWidth="1.05"
         strokeLinecap="round"
         transform="translate(0,-0.9)"
       />
 
+      {/* acento del theme, muy sutil */}
       <path
         d={path}
         fill="none"
-        stroke={palette.glowSoft}
-        strokeWidth="1.9"
+        stroke={palette.accentStroke}
+        strokeWidth="1"
+        strokeLinecap="round"
+        opacity="0.9"
+        filter={`url(#${glowId})`}
+      />
+
+      {/* brillo de color del theme, casi ambiente */}
+      <path
+        d={path}
+        fill="none"
+        stroke={palette.accentGlow}
+        strokeWidth="2"
         strokeLinecap="round"
         filter={`url(#${glowId})`}
         opacity="0.7"
       />
 
-      <EndKnot x="24" y="46" palette={palette} flip={1} />
-      <EndKnot x="1178" y="43.5" palette={palette} flip={-1} />
+      {showEndKnots && (
+        <>
+          <HeaderEndKnot x="24" y="46" flip={1} palette={palette} />
+          <HeaderEndKnot x="1178" y="43.5" flip={-1} palette={palette} />
+        </>
+      )}
     </svg>
   );
 }

@@ -8,7 +8,7 @@
       "title": "Modulo 1",
       "name": "Modulo 1",
       "theme": {
-        "tone": "blue",
+        "tone": "green",
         "color": "#00c853",
         "accent": "#f5b400"
       },
@@ -97,7 +97,7 @@
       "name": "Ahorro y metas",
       "theme": {
         "tone": "orange",
-        "color": "#0000FF",
+        "color": "#FFA500",
         "accent": "#fb7185"
       },
       "missions": {

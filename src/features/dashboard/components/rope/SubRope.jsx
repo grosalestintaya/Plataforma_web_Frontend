@@ -65,7 +65,6 @@ function useBraidStamps(
           const len = Math.hypot(dx, dy) || 1;
 
           const angle = (Math.atan2(dy, dx) * 180) / Math.PI;
-
           const nx = -dy / len;
           const ny = dx / len;
 
@@ -98,7 +97,7 @@ function useBraidStamps(
   return items;
 }
 
-function TopBindKnot({ x, y, locked = false, palette }) {
+function TopBindKnot({ x, y, locked = false, palette, scale = 1 }) {
   const fill = locked ? "#6F7B8C" : palette.dark;
   const stroke = locked
     ? "rgba(255,255,255,0.16)"
@@ -108,7 +107,7 @@ function TopBindKnot({ x, y, locked = false, palette }) {
     : hexToRgba(palette.light, 0.86);
 
   return (
-    <g transform={`translate(${x} ${y})`}>
+    <g transform={`translate(${x} ${y}) scale(${scale})`}>
       <ellipse cx="0" cy="0" rx="8.8" ry="6.5" fill="rgba(0,0,0,0.15)" />
       <ellipse
         cx="0"
@@ -137,7 +136,7 @@ function TopBindKnot({ x, y, locked = false, palette }) {
   );
 }
 
-function TailKnot({ x, y, angle = 0, locked = false, palette }) {
+function TailKnot({ x, y, angle = 0, locked = false, palette, scale = 1 }) {
   const fill = locked ? "#6F7B8C" : palette.dark;
   const stroke = locked
     ? "rgba(255,255,255,0.14)"
@@ -147,7 +146,7 @@ function TailKnot({ x, y, angle = 0, locked = false, palette }) {
     : hexToRgba(palette.light, 0.8);
 
   return (
-    <g transform={`translate(${x} ${y}) rotate(${angle})`}>
+    <g transform={`translate(${x} ${y}) rotate(${angle}) scale(${scale})`}>
       <ellipse cx="0" cy="0" rx="7.8" ry="5.8" fill="rgba(0,0,0,0.13)" />
       <ellipse
         cx="0"
@@ -167,6 +166,52 @@ function TailKnot({ x, y, angle = 0, locked = false, palette }) {
       />
     </g>
   );
+}
+
+function MiddleKnot({ x, y, angle = 0, locked = false, palette, scale = 1 }) {
+  const fill = locked ? "#728092" : palette.dark;
+  const stroke = locked
+    ? "rgba(255,255,255,0.14)"
+    : hexToRgba(palette.light, 0.6);
+  const shine = locked
+    ? "rgba(255,255,255,0.12)"
+    : hexToRgba(palette.light, 0.76);
+
+  return (
+    <g transform={`translate(${x} ${y}) rotate(${angle}) scale(${scale})`}>
+      <ellipse cx="0" cy="0" rx="6.2" ry="4.5" fill="rgba(0,0,0,0.12)" />
+      <ellipse
+        cx="0"
+        cy="0"
+        rx="4.9"
+        ry="3.6"
+        fill={fill}
+        stroke={stroke}
+        strokeWidth="0.86"
+      />
+      <path
+        d="M -2.5 -1.3 Q 0 -0.28 2.5 -1.3"
+        fill="none"
+        stroke={shine}
+        strokeWidth="0.56"
+        strokeLinecap="round"
+      />
+      <path
+        d="M -2.2 1.15 Q 0 0.25 2.2 1.15"
+        fill="none"
+        stroke={locked ? "rgba(0,0,0,0.10)" : hexToRgba(palette.dark, 0.18)}
+        strokeWidth="0.44"
+        strokeLinecap="round"
+      />
+    </g>
+  );
+}
+
+function getMiddleRatios(count) {
+  if (count <= 1) return [0.5];
+  if (count === 2) return [0.34, 0.58];
+  if (count === 3) return [0.28, 0.48, 0.68];
+  return [0.24, 0.4, 0.56, 0.72];
 }
 
 export default function SubRope({
@@ -197,17 +242,24 @@ export default function SubRope({
 
   const path = useMemo(() => curveToPath(curve), [curve]);
 
+  const widthScale = curveVariant?.widthScale ?? 1;
+  const stampStep = curveVariant?.stampStep ?? 9.6;
+  const topKnotScale = curveVariant?.topKnotScale ?? 1;
+  const tailKnotScale = curveVariant?.tailKnotScale ?? 1;
+  const middleKnotCount = curveVariant?.middleKnotCount ?? 2;
+  const middleKnotScale = curveVariant?.middleKnotScale ?? [0.9, 1];
+
   const maskId = `subrope-mask-${uid}`;
   const braidCellId = `subrope-braid-cell-${uid}`;
 
   const stamps = useBraidStamps(guideRef, {
-    step: 9.6,
+    step: stampStep,
     trimStart: 5,
     trimEnd: 5,
-    sideOffset: 1.65,
+    sideOffset: 1.65 * clamp(widthScale, 0.75, 1.14),
   });
 
-  const titleText = getModuleLabelTitle(module?.title, module?.sortOrder);
+  const titleText = getModuleLabelTitle(module?.shortorder, module?.sortOrder);
   const labelLines = wrapLabelText(titleText, 17, 2);
 
   const estimatedLabelWidth = clamp(
@@ -222,6 +274,20 @@ export default function SubRope({
   const tailAnchor = getCurvePointAtLengthRatio(curve, 0.94);
   const tailAngle = tangentAngleDeg(tailAnchor.tangent);
 
+  const middleKnots = useMemo(() => {
+    const ratios = getMiddleRatios(middleKnotCount);
+
+    return ratios.map((ratio, i) => {
+      const anchor = getCurvePointAtLengthRatio(curve, ratio);
+      return {
+        x: anchor.point.x,
+        y: anchor.point.y,
+        angle: tangentAngleDeg(anchor.tangent),
+        scale: middleKnotScale[i] ?? 0.92,
+      };
+    });
+  }, [curve, middleKnotCount, middleKnotScale]);
+
   const interactive = !locked;
   const glowOn = interactive && active;
 
@@ -233,16 +299,11 @@ export default function SubRope({
   const tones = locked
     ? {
         patternFill: "#8692A1",
-        patternStroke: "#4B5665",
         crossShadow: "rgba(46,55,69,0.34)",
         hi: "rgba(255,255,255,0.16)",
         inner: "rgba(255,255,255,0.08)",
-        shadow: "rgba(18,24,33,0.12)",
         support1: "#5E6A7A",
         support2: "#8A97A8",
-        support1Opacity: 0.5,
-        support2Opacity: 0.18,
-        topLight: "rgba(255,255,255,0.08)",
         glowSoft: "rgba(255,255,255,0)",
         glowStrong: "rgba(255,255,255,0)",
         glowLine: "rgba(255,255,255,0)",
@@ -253,19 +314,14 @@ export default function SubRope({
       }
     : {
         patternFill: palette.main,
-        patternStroke: palette.dark,
         crossShadow: hexToRgba(palette.dark, 0.34),
         hi: hexToRgba(palette.light, 0.3),
         inner: hexToRgba(palette.dark, 0.16),
-        shadow: hexToRgba(palette.dark, 0.16),
         support1: hexToRgba(palette.dark, 0.92),
         support2: hexToRgba(palette.main, 0.56),
-        support1Opacity: 0.82,
-        support2Opacity: 0.62,
-        topLight: hexToRgba(palette.light, 0.16),
-        glowSoft: hexToRgba(palette.main, 0.3),
-        glowStrong: hexToRgba(palette.main, 0.52),
-        glowLine: hexToRgba(palette.light, 0.55),
+        glowSoft: hexToRgba(palette.main, 0.28),
+        glowStrong: hexToRgba(palette.main, 0.48),
+        glowLine: hexToRgba(palette.light, 0.56),
         knotPalette: {
           dark: palette.dark,
           light: palette.light,
@@ -299,7 +355,7 @@ export default function SubRope({
       tabIndex={interactive ? 0 : -1}
       aria-label={locked ? `${titleText} bloqueado` : `Abrir ${titleText}`}>
       <defs>
-        <g id={braidCellId}>
+        <g id={braidCellId} transform={`scale(${widthScale} ${widthScale})`}>
           <path
             d="
               M -14.8 0
@@ -310,7 +366,7 @@ export default function SubRope({
               Z
             "
             fill={tones.patternFill}
-            stroke={"#4A2812"}
+            stroke="#4A2812"
             strokeWidth="1.18"
             strokeLinejoin="round"
           />
@@ -344,7 +400,7 @@ export default function SubRope({
             "
             fill="none"
             stroke={tones.inner}
-            strokeWidth="0.82"
+            strokeWidth="1"
             strokeLinecap="round"
           />
         </g>
@@ -355,7 +411,7 @@ export default function SubRope({
             d={path}
             fill="none"
             stroke="white"
-            strokeWidth="22"
+            strokeWidth={22 * widthScale}
             strokeLinecap="round"
             strokeLinejoin="round"
           />
@@ -375,7 +431,7 @@ export default function SubRope({
         d={path}
         fill="none"
         stroke={locked ? "rgba(18,24,33,0.12)" : hexToRgba(palette.dark, 0.16)}
-        strokeWidth="24.5"
+        strokeWidth={24.5 * widthScale}
         strokeLinecap="round"
         filter={
           defsIds?.ropeShadowImperial
@@ -388,7 +444,7 @@ export default function SubRope({
         d={path}
         fill="none"
         stroke={tones.support1}
-        strokeWidth="15.5"
+        strokeWidth={15.5 * widthScale}
         strokeLinecap="round"
         opacity={locked ? 0.5 : 0.72}
       />
@@ -397,7 +453,7 @@ export default function SubRope({
         d={path}
         fill="none"
         stroke={tones.support2}
-        strokeWidth="8.9"
+        strokeWidth={8.9 * widthScale}
         strokeLinecap="round"
         opacity={locked ? 0.18 : 0.52}
       />
@@ -417,27 +473,50 @@ export default function SubRope({
         ))}
       </g>
 
+      {middleKnots.map((knot, i) => (
+        <MiddleKnot
+          key={`middle-knot-${i}`}
+          x={knot.x}
+          y={knot.y}
+          angle={knot.angle}
+          locked={locked}
+          palette={tones.knotPalette}
+          scale={knot.scale}
+        />
+      ))}
+
       <path
         d={path}
         fill="none"
         stroke={
           locked ? "rgba(255,255,255,0.08)" : hexToRgba(palette.light, 0.16)
         }
-        strokeWidth="0.9"
+        strokeWidth={0.9 * widthScale}
         strokeLinecap="round"
         transform="translate(0,-0.7)"
       />
 
       {glowOn && (
-        <path
-          d={path}
-          fill="none"
-          stroke={tones.glow}
-          strokeWidth="1.2"
-          strokeLinecap="round"
-          opacity="0.22"
-          filter={defsIds?.ropeGlow ? `url(#${defsIds.ropeGlow})` : undefined}
-        />
+        <>
+          <path
+            d={path}
+            fill="none"
+            stroke={tones.glowSoft}
+            strokeWidth={9.5 * widthScale}
+            strokeLinecap="round"
+            opacity="0.16"
+            filter={defsIds?.ropeGlow ? `url(#${defsIds.ropeGlow})` : undefined}
+          />
+          <path
+            d={path}
+            fill="none"
+            stroke={tones.glowLine}
+            strokeWidth={1.2 * widthScale}
+            strokeLinecap="round"
+            opacity="0.26"
+            filter={defsIds?.ropeGlow ? `url(#${defsIds.ropeGlow})` : undefined}
+          />
+        </>
       )}
 
       <TopBindKnot
@@ -445,6 +524,7 @@ export default function SubRope({
         y={curve.start.y + 1}
         locked={locked}
         palette={tones.knotPalette}
+        scale={topKnotScale}
       />
 
       <TailKnot
@@ -453,6 +533,7 @@ export default function SubRope({
         angle={tailAngle}
         locked={locked}
         palette={tones.knotPalette}
+        scale={tailKnotScale}
       />
 
       {showLabel && !locked && (
