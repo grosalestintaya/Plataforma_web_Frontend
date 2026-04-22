@@ -19,10 +19,85 @@ const MEDIA_VALUE_TO_VARIANT = {
   "3 / 2": "horizontal",
 };
 
-/**
- * Normaliza una variante visual de media a un valor canonico.
- * Soporta alias por nombre (`horizontal`) y por ratio (`3:2`).
- */
+const ACTIVITY_IMAGE_MODULES = import.meta.glob(
+  "../../../../../assets/activity/**/*.{png,jpg,jpeg,webp,avif,gif,svg}",
+  {
+    eager: true,
+    import: "default",
+  },
+);
+
+const IMAGE_FRAME_BASE_CLASS = "items-center justify-center overflow-hidden";
+
+const IMAGE_SLOT_FRAME_CLASS = `inline-flex max-w-full ${IMAGE_FRAME_BASE_CLASS}`;
+const IMAGE_RATIO_FRAME_CLASS = `flex w-full max-w-full ${IMAGE_FRAME_BASE_CLASS}`;
+const IMAGE_INTRINSIC_FRAME_CLASS = `inline-flex max-w-full ${IMAGE_FRAME_BASE_CLASS}`;
+
+const IMAGE_SLOT_CLASS =
+  "block h-auto w-auto max-h-full max-w-full object-contain";
+
+const IMAGE_RATIO_CLASS =
+  "block h-full w-full max-h-full max-w-full object-contain";
+
+const IMAGE_INTRINSIC_CLASS =
+  "block h-auto w-auto max-h-full max-w-full object-contain";
+
+function normalizeAssetPath(value) {
+  return String(value ?? "")
+    .trim()
+    .replace(/\\/g, "/")
+    .replace(/^\.?\//, "")
+    .replace(/^src\/assets\/activity\//, "")
+    .replace(/^assets\/activity\//, "")
+    .replace(/^activity\//, "")
+    .replace(/^assets\//, "");
+}
+
+const ACTIVITY_IMAGE_URLS = Object.entries(ACTIVITY_IMAGE_MODULES).reduce(
+  (acc, [key, value]) => {
+    const normalizedKey = normalizeAssetPath(
+      key.replace(/^.*assets\/activity\//, ""),
+    );
+    const fileName = normalizedKey.split("/").pop();
+
+    acc[normalizedKey] = value;
+
+    if (fileName && !(fileName in acc)) {
+      acc[fileName] = value;
+    }
+
+    return acc;
+  },
+  {},
+);
+
+function resolveActivityImageSrc(src) {
+  if (!src) return activityImage001;
+
+  const raw = String(src).trim();
+  if (!raw) return activityImage001;
+
+  if (
+    raw.startsWith("http://") ||
+    raw.startsWith("https://") ||
+    raw.startsWith("data:") ||
+    raw.startsWith("blob:")
+  ) {
+    return raw;
+  }
+
+  if (raw.startsWith("/")) {
+    return raw;
+  }
+
+  const normalizedSrc = normalizeAssetPath(raw);
+  return (
+    ACTIVITY_IMAGE_URLS[normalizedSrc] ??
+    ACTIVITY_IMAGE_URLS[normalizedSrc.split("/").pop()] ??
+    activityImage001
+  );
+}
+
 export function normalizeMediaVariant(value) {
   if (!value) return null;
 
@@ -30,9 +105,6 @@ export function normalizeMediaVariant(value) {
   return MEDIA_VALUE_TO_VARIANT[normalized] ?? null;
 }
 
-/**
- * Lee la variante declarada desde un valor simple o desde el objeto media.
- */
 export function getMediaVariant(value) {
   if (!value) return null;
 
@@ -45,63 +117,90 @@ export function getMediaVariant(value) {
   return normalizeMediaVariant(value);
 }
 
-/**
- * Devuelve el aspect-ratio CSS listo para aplicarse en el render.
- */
 export function getMediaAspectRatio(value) {
   const variant = getMediaVariant(value);
   return variant ? MEDIA_VARIANT_TO_RATIO[variant] : null;
 }
 
+function resolveAspectRatio(value) {
+  if (!value) return null;
+
+  const mediaAspectRatio = getMediaAspectRatio(value);
+  if (mediaAspectRatio) return mediaAspectRatio;
+
+  const raw = String(value).trim().toLowerCase();
+
+  if (/^\d+\s*\/\s*\d+$/.test(raw)) {
+    const [w, h] = raw.split("/").map((part) => part.trim());
+    return `${w} / ${h}`;
+  }
+
+  return null;
+}
+
 /**
  * Image:
- * - Renderiza una imagen simple del sistema.
- * - Si no existe `src`, usa una imagen base para evitar huecos visuales.
- * - Siempre respeta el espacio que el bloque padre ya le asigno.
+ * - auto: si recibe variant/ratio, crea una caja proporcional; si no, usa tamaño natural.
+ * - slot: el padre ya define el espacio.
+ * - ratio: Image define su propia caja proporcional.
+ * - intrinsic: comportamiento natural.
  */
 export default function Image({
   src,
   alt = "Imagen",
   className = "",
   imgClassName = "",
+  imgStyle,
   placeholderLabel = "Imagen",
   variant = null,
   ratio = null,
-  fitToContent = false,
+  mode = "auto",
   style,
 }) {
-  const urlBase = "../../../../src/assets/activity/";
-  const resolvedSrc = urlBase + src || activityImage001;
+  const resolvedSrc = resolveActivityImageSrc(src);
   const resolvedAlt = alt || placeholderLabel || "Imagen";
-  const aspectRatio = getMediaAspectRatio(variant ?? ratio);
-  const aspectStyle = !fitToContent && aspectRatio ? { aspectRatio } : null;
+
+  const aspectHint = variant ?? ratio;
+  const hasAspectHint = Boolean(aspectHint);
+
+  const resolvedMode =
+    mode === "auto"
+      ? hasAspectHint
+        ? "ratio"
+        : "intrinsic"
+      : mode;
+
+  const shouldApplyAspectRatio = resolvedMode === "ratio";
+  const aspectRatio = shouldApplyAspectRatio
+    ? resolveAspectRatio(aspectHint)
+    : null;
+
   const resolvedStyle =
-    aspectStyle || style
-      ? { ...(aspectStyle ?? {}), ...(style ?? {}) }
+    aspectRatio || style
+      ? { ...(aspectRatio ? { aspectRatio } : {}), ...(style ?? {}) }
       : undefined;
 
+  const frameClassName =
+    resolvedMode === "slot"
+      ? IMAGE_SLOT_FRAME_CLASS
+      : resolvedMode === "ratio"
+        ? IMAGE_RATIO_FRAME_CLASS
+        : IMAGE_INTRINSIC_FRAME_CLASS;
+
+  const imageClassName =
+    resolvedMode === "slot"
+      ? IMAGE_SLOT_CLASS
+      : resolvedMode === "ratio"
+        ? IMAGE_RATIO_CLASS
+        : IMAGE_INTRINSIC_CLASS;
+
   return (
-    <div
-      className={cn(
-        fitToContent
-          ? "inline-flex w-fit max-w-full items-center justify-center overflow-hidden"
-          : "flex w-full items-center justify-center overflow-hidden",
-        className,
-      )}
-      style={resolvedStyle}>
+    <div className={cn(frameClassName, className)} style={resolvedStyle}>
       <img
         src={resolvedSrc}
         alt={resolvedAlt}
-        className={cn(
-          // La imagen se adapta solo al espacio disponible del contenedor.
-          // Nunca define por si sola el tamano del layout.
-          fitToContent
-            ? "block h-auto max-h-[var(--card-media-max-height,min(340px,calc(var(--hero-height,100vh)*0.36)))] w-auto max-w-full object-contain"
-            : aspectRatio
-              ? "h-full w-full max-h-full max-w-full object-contain"
-              : "h-auto max-w-full object-contain",
-          imgClassName,
-        )}
+        className={cn(imageClassName, imgClassName)}
+        style={imgStyle}
       />
     </div>
   );

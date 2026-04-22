@@ -1,17 +1,77 @@
 import Typography from "../../base/Typography";
-import Image, { getMediaVariant } from "../../base/Media/Image";
+import Image, { getMediaAspectRatio } from "../../base/Media/Image";
 import { cn } from "@/shared/libs/utils";
+
+const CARD_BASE_CLASS =
+  "relative flex min-h-0 max-w-full flex-col overflow-visible rounded-2xl border border-white/15 text-left transition disabled:cursor-not-allowed disabled:opacity-60";
+
+const CARD_INTERACTIVE_CLASS =
+  "cursor-pointer hover:-translate-y-0.5 hover:border-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 active:translate-y-0";
+
+const CARD_MEDIA_WRAPPER_CLASS =
+  "inline-flex w-fit max-w-full items-center justify-center self-center overflow-hidden rounded-xl border border-white/12";
+
+const CARD_CONTENT_STACK_CLASS =
+  "flex min-h-0 min-w-0 w-full max-w-full flex-col items-center";
+
+const CARD_CONTENT_ROW_CLASS =
+  "flex min-w-0 w-full max-w-full justify-center";
+
+const CARD_DENSITY_CLASS = {
+  normal: {
+    root: "gap-1.5 p-3",
+    media: "p-1 md:p-1.5",
+    content: "gap-1.5",
+  },
+  compact: {
+    root: "gap-0.5 p-1.5 md:gap-1 md:p-2",
+    media: "p-1",
+    content: "gap-0.5",
+  },
+};
+
+const CARD_SLOT_MAX_HEIGHT =
+  "var(--card-slot-height, var(--choose-one-card-slot-height, var(--flip-card-slot-height, none)))";
+
+const CARD_MEDIA_MAX_HEIGHT =
+  "var(--card-media-max-height, var(--choose-one-card-media-max-height, var(--flip-card-media-max-height, none)))";
+
+const CARD_CONTENT_RESERVE =
+  "var(--card-content-reserve, var(--choose-one-card-content-reserve, var(--flip-card-content-reserve, auto)))";
+
+function normalizeTypographyContent(content, fallbackVariant) {
+  if (!content) return null;
+
+  if (typeof content === "object") {
+    return {
+      ...content,
+      variant: content.variant ?? fallbackVariant,
+      align: content.align ?? "center",
+    };
+  }
+
+  return {
+    text: content,
+    variant: fallbackVariant,
+    align: "center",
+  };
+}
 
 /**
  * Card:
- * - Superficie simple para titulo, media y texto corto.
- * - Sirve como base de agrupadores como showCard, CompareCard y CollageCard.
+ * - Usa horizontal por defecto.
+ * - Respeta media.variant si viene.
+ * - El slot de media lo controla Card.
+ * - La imagen se muestra completa con object-contain.
+ * - `density="compact"` sirve para grids densos.
  */
 export default function Card({
+  ass,
   as,
   title,
   text,
   media,
+  mediaVariant,
   footer,
   className = "",
   mediaClassName = "",
@@ -19,14 +79,29 @@ export default function Card({
   style,
   onClick,
   disabled = false,
-  fitToMedia = false,
   selected = false,
   children,
+  density = "normal",
 }) {
-  const Component = as ?? (onClick ? "button" : "article");
-  const mediaVariant = getMediaVariant(media);
+  const Component = as ?? ass ?? (onClick ? "button" : "article");
+  const hasMedia = Boolean(media);
+
+  const resolvedDensity =
+    CARD_DENSITY_CLASS[density] ?? CARD_DENSITY_CLASS.normal;
+
   const hasContent = Boolean(title || text || children || footer);
-  const shouldFitToMedia = fitToMedia || Boolean(media);
+  const resolvedTitle = normalizeTypographyContent(
+    title,
+    hasMedia ? "label" : "h3",
+  );
+  const resolvedText = normalizeTypographyContent(
+    text,
+    hasMedia ? "label" : "bodySm",
+  );
+  const resolvedStyle = {
+    ...(hasMedia ? { maxHeight: CARD_SLOT_MAX_HEIGHT } : {}),
+    ...(style ?? {}),
+  };
 
   return (
     <Component
@@ -34,68 +109,81 @@ export default function Card({
       onClick={onClick}
       disabled={Component === "button" ? disabled : undefined}
       aria-pressed={Component === "button" ? selected : undefined}
-      style={style}
+      style={resolvedStyle}
       className={cn(
-        "relative flex min-h-0 max-h-full max-w-full flex-col items-center gap-2 overflow-hidden rounded-2xl border border-white/15 p-3 text-left",
-        shouldFitToMedia ? "mx-auto h-fit w-fit" : "h-full w-full",
-        "transition disabled:cursor-not-allowed disabled:opacity-60",
-        onClick
-          ? "cursor-pointer hover:-translate-y-0.5 hover:border-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 active:translate-y-0"
-          : "",
+        CARD_BASE_CLASS,
+        hasMedia ? "w-fit h-fit" : "w-full",
+        resolvedDensity.root,
+        onClick ? CARD_INTERACTIVE_CLASS : "",
         className,
       )}
     >
       {media ? (
-        <Image
-          src={media?.src ?? media?.img}
-          alt={media?.alt ?? "Imagen"}
+        <div
           className={cn(
-            "flex min-h-0 max-w-full items-center justify-center rounded-xl border border-white/12 p-1.5",
-            shouldFitToMedia ? "w-fit shrink" : "w-full shrink",
-            hasContent ? "max-h-full" : "h-full max-h-full",
+            CARD_MEDIA_WRAPPER_CLASS,
+            resolvedDensity.media,
             mediaClassName,
           )}
-          variant={mediaVariant}
-          ratio={media?.ratio}
-          fitToContent={shouldFitToMedia}
-          imgClassName={cn(
-            "rounded-md object-contain",
-            shouldFitToMedia ? "h-auto w-auto max-w-full" : "",
-          )}
-        />
+          style={{
+            aspectRatio:
+              getMediaAspectRatio(mediaVariant) ??
+              getMediaAspectRatio(media) ??
+              undefined,
+          }}
+        >
+          <Image
+            src={media?.src ?? media?.img}
+            alt={media?.alt ?? "Imagen"}
+            mode="intrinsic"
+            className="w-fit max-w-full"
+            imgClassName="block h-auto w-auto max-w-full object-contain"
+            imgStyle={{
+              maxHeight: CARD_MEDIA_MAX_HEIGHT,
+            }}
+          />
+        </div>
       ) : null}
 
       {hasContent ? (
-        <div className="flex min-h-0 min-w-0 w-full shrink-0 flex-col items-center gap-1.5">
-          {title ? (
-            <div className={cn("flex min-w-0 w-full shrink-0 items-center justify-center", contentClassName)}>
+        <div
+          className={cn(
+            CARD_CONTENT_STACK_CLASS,
+            resolvedDensity.content,
+            media ? "pt-1" : "",
+            contentClassName,
+          )}
+          style={{ minHeight: CARD_CONTENT_RESERVE }}
+        >
+          {resolvedTitle ? (
+            <div className={cn(CARD_CONTENT_ROW_CLASS, "items-center")}>
               <Typography
-                content={title}
-                variant={title?.variant ?? "h3"}
-                align={title?.align ?? "center"}
-                className={title?.className}
+                content={resolvedTitle}
+                variant={resolvedTitle?.variant}
+                align={resolvedTitle?.align}
+                className={resolvedTitle?.className}
               />
             </div>
           ) : null}
 
-          {text ? (
-            <div className={cn("flex min-h-0 min-w-0 w-full shrink-0 items-start justify-center", contentClassName)}>
+          {resolvedText ? (
+            <div className={cn(CARD_CONTENT_ROW_CLASS, "items-start")}>
               <Typography
-                content={text}
-                variant={text?.variant ?? "bodySm"}
-                align={text?.align ?? "center"}
-                className={text?.className}
+                content={resolvedText}
+                variant={resolvedText?.variant}
+                align={resolvedText?.align}
+                className={resolvedText?.className}
               />
             </div>
           ) : null}
 
           {children ? (
-            <div className={cn("flex min-h-0 min-w-0 flex-col gap-1.5", contentClassName)}>
+            <div className="flex min-h-0 min-w-0 w-full max-w-full flex-col gap-1">
               {children}
             </div>
           ) : null}
 
-          {footer ? <div className="mt-auto">{footer}</div> : null}
+          {footer ? <div className="mt-auto w-full">{footer}</div> : null}
         </div>
       ) : null}
     </Component>

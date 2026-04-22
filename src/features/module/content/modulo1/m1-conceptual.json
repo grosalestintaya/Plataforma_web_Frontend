@@ -300,7 +300,7 @@
       "variant": "explanation",
       "slots": {
         "title": {
-          "text": "Ejemplos de ingresos y gastos",
+          "text": "Ejemplos practicos",
           "variant": "h1",
           "align": "center"
         },
@@ -337,7 +337,7 @@
                 "id": "card-1",
                 "renderAs": "flipCard",
                 "src": "1/recibir-dinero.png",
-                "caption": "Me dieron dinero para mi recreo",
+                "caption": "Propina para el recreo",
                 "reveal": {
                   "text": "Ingreso: porque recibiste dinero.",
                   "tone": "success"
@@ -357,7 +357,7 @@
                 "id": "card-3",
                 "renderAs": "flipCard",
                 "src": "1/comprar-comida.png",
-                "caption": "Compre una galleta y una bebida",
+                "caption": "Comprar alimentos",
                 "reveal": {
                   "text": "Gasto: porque compraste.",
                   "tone": "error"
@@ -401,7 +401,7 @@
         },
         "subtitle": {
           "text": "Toca la imagen correcta. Si fallas, aun tendras una segunda oportunidad.",
-          "variant": "h3",
+          "variant": "body",
           "align": "center"
         }
       },
@@ -431,7 +431,7 @@
                 "id": "q1",
                 "prompt": {
                   "text": "¿Cual de las 2 imagenes es un GASTO?",
-                  "variant": "body1",
+                  "variant": "h3",
                   "align": "center"
                 },
                 "options": [
@@ -450,7 +450,6 @@
                     "correct": false,
                     "score": 100,
                     "feedback": {
-                      "text": "Ingreso: recibiste dinero para usarlo.",
                       "variant": "helper",
                       "align": "center",
                       "tone": "income"
@@ -471,7 +470,6 @@
                     "correct": true,
                     "score": 60,
                     "feedback": {
-                      "text": "Gasto: tu dinero salio al pagar el pasaje.",
                       "variant": "helper",
                       "align": "center",
                       "tone": "expense"
@@ -483,14 +481,14 @@
                 "id": "q2",
                 "prompt": {
                   "text": "¿Cual de las 2 imagenes es un INGRESO?",
-                  "variant": "body1",
+                  "variant": "h3",
                   "align": "center"
                 },
                 "options": [
                   {
                     "id": "q2-income",
                     "label": {
-                      "text": "Vendi un juguete que no usaba",
+                      "text": "Ayude a recoletar manzanasdsdsds",
                       "variant": "label",
                       "align": "center"
                     },
@@ -502,7 +500,6 @@
                     "correct": true,
                     "score": 60,
                     "feedback": {
-                      "text": "Ingreso: te pagaron por algo que vendiste.",
                       "variant": "helper",
                       "align": "center",
                       "tone": "income"
@@ -535,7 +532,7 @@
                 "id": "q3",
                 "prompt": {
                   "text": "¿Cual de las 2 imagenes es un GASTO?",
-                  "variant": "body1",
+                  "variant": "h3",
                   "align": "center"
                 },
                 "options": [
@@ -554,7 +551,6 @@
                     "correct": false,
                     "score": 60,
                     "feedback": {
-                      "text": "Ingreso: te dieron dinero por reciclar.",
                       "variant": "helper",
                       "align": "center",
                       "tone": "income"
@@ -575,7 +571,6 @@
                     "correct": true,
                     "score": 100,
                     "feedback": {
-                      "text": "Gasto: usaste tu dinero para comprar.",
                       "variant": "helper",
                       "align": "center",
                       "tone": "expense"
@@ -587,7 +582,7 @@
                 "id": "q4",
                 "prompt": {
                   "text": "¿Cual de las 2 imagenes es un INGRESO?",
-                  "variant": "body1",
+                  "variant": "h3",
                   "align": "center"
                 },
                 "options": [
@@ -606,7 +601,6 @@
                     "correct": true,
                     "score": 100,
                     "feedback": {
-                      "text": "Ingreso: recibiste dinero por tu ayuda.",
                       "variant": "helper",
                       "align": "center",
                       "tone": "income"
@@ -627,7 +621,6 @@
                     "correct": false,
                     "score": 60,
                     "feedback": {
-                      "text": "Gasto: el dinero salio al pagar la recarga.",
                       "variant": "helper",
                       "align": "center",
                       "tone": "expense"

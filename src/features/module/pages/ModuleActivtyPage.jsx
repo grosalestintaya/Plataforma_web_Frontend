@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Header from "../components/activity/ActivityHeader";
 import Hero from "../components/activity/ActivityHero";
@@ -18,17 +18,53 @@ import {
 import useGameAudio from "@/features/audio/useGameAudio";
 import { getModuleMusicSrc } from "../utils/moduleAudio";
 
+const ACTIVITY_BACKGROUND_PROPS = {
+  vignetteStrength: 0.16,
+  topGlow: 0.07,
+  bottomShade: 0.61,
+  patternSize: 320,
+  patternOpacity: 0.41,
+  ambientOpacity: 0.85,
+  className: "overflow-hidden",
+};
+
+const ACTIVITY_GRID_STYLE = {
+  gridTemplateRows:
+    "var(--activity-header-height, auto) minmax(0, 1fr) var(--activity-footer-height, auto)",
+};
+
+const ACTIVITY_GRID_CLASS = "grid h-full min-h-0 w-full overflow-hidden";
+const MISSING_CONTENT_CLASS =
+  "grid min-h-dvh place-items-center bg-slate-950 px-6 text-center text-white";
+
 /**
  * ModuleActivityPage:
  * - Controla header, hero y footer de la actividad.
  * - Maneja intentos, salida voluntaria y advertencias al salir/recargar.
  */
 export default function ModuleActivtyPage() {
-  const navigate = useNavigate();
   const { moduleCode, missionKey: missionKeyParam } = useParams();
-
   const moduleData = MODULE_CONTENT_MAP[moduleCode];
-  if (!moduleData) return <div>No existe contenido para {moduleCode}</div>;
+
+  if (!moduleData) {
+    return (
+      <div className={MISSING_CONTENT_CLASS}>
+        No existe contenido para {moduleCode}
+      </div>
+    );
+  }
+
+  return (
+    <ModuleActivityShell
+      moduleCode={moduleCode}
+      missionKeyParam={missionKeyParam}
+      moduleData={moduleData}
+    />
+  );
+}
+
+function ModuleActivityShell({ moduleCode, missionKeyParam, moduleData }) {
+  const navigate = useNavigate();
 
   const missionKeys = Object.keys(moduleData.missions ?? {});
   const safeMissionKey = moduleData.missions?.[missionKeyParam]
@@ -38,15 +74,22 @@ export default function ModuleActivtyPage() {
   const moduleMenuPath = `/modules/${moduleCode}`;
   const missionAttempt = useMissionAttempt(activityId, { mode: "manual" });
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const {
+    attemptId,
+    completeMission,
+    start: startAttempt,
+    track,
+  } = missionAttempt;
 
   const audio = useGameAudio({
     musicSrc: getModuleMusicSrc(moduleCode),
     musicScopeKey: moduleCode,
   });
+  const { music, playMusic, playSfx, setMusic, setSfx, sfx } = audio;
 
   useEffect(() => {
-    audio.playMusic();
-  }, [audio.playMusic]);
+    playMusic();
+  }, [playMusic]);
 
   const {
     interactiveState,
@@ -59,45 +102,46 @@ export default function ModuleActivtyPage() {
   } = useActivityInteractiveState({
     missionKey: safeMissionKey,
     moduleData,
-    missionAttemptTrack: missionAttempt.track,
+    missionAttemptTrack: track,
   });
 
   const { missionCompletion, nextMissionKey, registerMissionCompletion } =
     useActivityMissionCompletion(moduleData, safeMissionKey);
 
-  const actions = useMemo(
-    () => ({
-      startMissionAttempt: async () => {
-        if (!activityId) return { next: true };
+  const beginMissionAttempt = useCallback(async () => {
+    if (!activityId) return { next: true };
 
-        await missionAttempt.start();
-        return { next: true };
-      },
-      /**
-       * El CTA de postGame regresa al menu y deja la siguiente mision seleccionada.
-       */
-      goToNextMissionMenu: async ({ missionKey }) => {
-        const preferredMissionKey = nextMissionKey ?? missionKey;
+    await startAttempt();
+    return { next: true };
+  }, [activityId, startAttempt]);
 
-        navigate(moduleMenuPath, {
-          state: {
-            selectedActivityType: preferredMissionKey,
-          },
-        });
+  const goToNextMissionMenu = useCallback(
+    async ({ missionKey }) => {
+      const preferredMissionKey = nextMissionKey ?? missionKey;
 
-        return { next: false };
-      },
-    }),
-    [activityId, missionAttempt, moduleMenuPath, navigate, nextMissionKey],
+      navigate(moduleMenuPath, {
+        state: {
+          selectedActivityType: preferredMissionKey,
+        },
+      });
+
+      return { next: false };
+    },
+    [moduleMenuPath, navigate, nextMissionKey],
   );
 
-  const player = useModulePlayer(moduleData, {
-    initialMissionKey: safeMissionKey,
-    actions,
-    isViewAvailable,
-    onFinishMission: async ({ missionKey, nextView, phase }) => {
-      if (activityId && missionAttempt.attemptId) {
-        const completionResult = await missionAttempt.completeMission({
+  const actions = useMemo(
+    () => ({
+      startMissionAttempt: beginMissionAttempt,
+      goToNextMissionMenu,
+    }),
+    [beginMissionAttempt, goToNextMissionMenu],
+  );
+
+  const handleFinishMission = useCallback(
+    async ({ missionKey, nextView, phase }) => {
+      if (activityId && attemptId) {
+        const completionResult = await completeMission({
           score: missionScore,
           extraPayload: {
             moduleCode,
@@ -122,24 +166,51 @@ export default function ModuleActivtyPage() {
           : undefined,
       });
     },
+    [
+      activityId,
+      attemptId,
+      buildInteractiveResponsesPayload,
+      completeMission,
+      missionScore,
+      moduleCode,
+      moduleMenuPath,
+      navigate,
+      nextMissionKey,
+      registerMissionCompletion,
+    ],
+  );
+
+  const player = useModulePlayer(moduleData, {
+    initialMissionKey: safeMissionKey,
+    actions,
+    isViewAvailable,
+    onFinishMission: handleFinishMission,
   });
+  const {
+    footerModel: playerFooterModel,
+    heroApi: playerHeroApi,
+    missionKey: currentMissionKey,
+    setMission,
+    view: currentView,
+    viewIndex: currentViewIndex,
+  } = player;
 
   useEffect(() => {
-    if (player.missionKey !== safeMissionKey) player.setMission(safeMissionKey);
-  }, [player.missionKey, player.setMission, safeMissionKey]);
+    if (currentMissionKey !== safeMissionKey) setMission(safeMissionKey);
+  }, [currentMissionKey, safeMissionKey, setMission]);
 
   const footerModel = useActivityFooterModel({
     activityId,
     missionAttempt,
-    footerModel: player.footerModel,
-    currentView: player.view,
+    footerModel: playerFooterModel,
+    currentView,
     interactiveState,
   });
 
   const heroApi = useMemo(
     () => ({
-      ...player.heroApi,
-      track: missionAttempt.track,
+      ...playerHeroApi,
+      track,
       setInteractiveState: setInteractiveViewState,
       getInteractiveState,
       /**
@@ -147,7 +218,7 @@ export default function ModuleActivtyPage() {
        * puedan heredar datos dinamicos (por ejemplo, el saldo acumulado).
        */
       getMissionViews: () =>
-        moduleData.missions?.[player.missionKey]?.views ?? [],
+        moduleData.missions?.[currentMissionKey]?.views ?? [],
       resolveNextViewId,
       // Expone el resumen final para que Lobby postGame lea XP/coins reales.
       getMissionCompletion: () => missionCompletion,
@@ -157,12 +228,12 @@ export default function ModuleActivtyPage() {
       getInteractiveState,
       moduleData.missions,
       missionCompletion,
-      missionAttempt.track,
       nextMissionKey,
-      player.heroApi,
-      player.missionKey,
+      playerHeroApi,
+      currentMissionKey,
       resolveNextViewId,
       setInteractiveViewState,
+      track,
     ],
   );
 
@@ -176,43 +247,40 @@ export default function ModuleActivtyPage() {
     missionAttempt,
     missionScore,
     moduleCode,
-    missionKey: player.missionKey,
+    missionKey: currentMissionKey,
     moduleMenuPath,
     navigate,
-    currentTemplate: player.view?.template,
+    currentTemplate: currentView?.template,
     getInteractiveResponses: buildInteractiveResponsesPayload,
   });
 
-  function handleOpenSettings() {
+  const handleOpenSettings = useCallback(() => {
     setIsSettingsOpen(true);
-  }
+  }, []);
 
-  function handleCloseSettings() {
+  const handleCloseSettings = useCallback(() => {
     setIsSettingsOpen(false);
-    audio.playSfx?.("closeModal");
-  }
+    playSfx?.("closeModal");
+  }, [playSfx]);
+
+  const handleAbandonFromSettings = useCallback(() => {
+    setIsSettingsOpen(false);
+    handleExitToMenu();
+  }, [handleExitToMenu]);
+
+  const handleFooterUiClick = useCallback(() => {
+    playSfx?.("click");
+  }, [playSfx]);
 
   return (
     <>
       <ContentBackground
-        vignetteStrength={0.16}
-        topGlow={0.07}
-        bottomShade={0.61}
-        patternSize={320}
-        patternOpacity={0.41}
-        ambientOpacity={0.85}
         moduleCode={moduleCode}
-        className="overflow-hidden">
-        <div
-          className="grid h-full min-h-0 w-full overflow-hidden"
-          style={{
-            // La pagina reparte header, hero y footer con alturas controladas.
-            gridTemplateRows:
-              "var(--activity-header-height, auto) minmax(0, 1fr) var(--activity-footer-height, auto)",
-          }}>
+        {...ACTIVITY_BACKGROUND_PROPS}>
+        <div className={ACTIVITY_GRID_CLASS} style={ACTIVITY_GRID_STYLE}>
           <Header
             moduleData={moduleData}
-            missionKey={player.missionKey}
+            missionKey={currentMissionKey}
             themeHex={moduleData?.theme?.color}
             audioState={audio}
             onExitActivity={handleExitToMenu}
@@ -220,14 +288,14 @@ export default function ModuleActivtyPage() {
           />
           <Hero
             moduleData={moduleData}
-            missionKey={player.missionKey}
-            viewIndex={player.viewIndex}
+            missionKey={currentMissionKey}
+            viewIndex={currentViewIndex}
             heroApi={heroApi}
           />
 
           <Footer
             model={footerModel}
-            onUiClick={() => audio.playSfx?.("click")}
+            onUiClick={handleFooterUiClick}
             themeHex={moduleData?.theme?.color}
           />
         </div>
@@ -236,14 +304,11 @@ export default function ModuleActivtyPage() {
       <ConfiguracionModal
         open={isSettingsOpen}
         onRequestClose={handleCloseSettings}
-        onRequestAbandon={() => {
-          setIsSettingsOpen(false);
-          handleExitToMenu();
-        }}
-        sfx={audio.sfx}
-        music={audio.music}
-        onChangeSfx={audio.setSfx}
-        onChangeMusic={audio.setMusic}
+        onRequestAbandon={handleAbandonFromSettings}
+        sfx={sfx}
+        music={music}
+        onChangeSfx={setSfx}
+        onChangeMusic={setMusic}
         title="Opciones"
         description="Saldras de la actividad actual y volveras al menu del modulo."
         abandonLabel="Salir de la actividad"

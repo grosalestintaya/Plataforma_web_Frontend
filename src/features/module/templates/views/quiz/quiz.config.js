@@ -101,7 +101,7 @@ export const QUIZ_CONFIG = {
       },
       {
         area: "media",
-        when: (payload) => Boolean(payload?.media),
+        when: (payload) => Boolean(payload?.media?.src),
         block: "Image",
         className: "rounded-2xl  p-5",
         props: (payload) => ({

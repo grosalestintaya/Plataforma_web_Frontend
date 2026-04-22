@@ -11,7 +11,7 @@ import coinIcon from "@/assets/dashboard/coin.png";
  * Se construye aqui porque solo postGame necesita inyectarlo en la media.
  */
 const XP_ICON_DATA_URI = `data:image/svg+xml;utf8,${encodeURIComponent(`
-  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg width="76" height="82" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <circle cx="12" cy="9" r="6" stroke="#facc15" stroke-width="1.8" />
     <path d="M8.2 4.8c1 .6 2 .6 3 0 1-.6 2-.6 3 0 1 .6 2 .6 3 0" stroke="#facc15" stroke-width="1" opacity="0.35" stroke-linecap="round" />
     <path d="M9 15v4" stroke="#facc15" stroke-width="1.6" stroke-linecap="round" />
@@ -196,7 +196,7 @@ export const LOBBY_CONFIG = {
       }),
       {
         area: "media",
-        when: (payload) => Boolean(payload?.media),
+        when: (payload) => Boolean(payload?.media?.src),
         block: "Image",
         className: "rounded-2xl  p-5",
         props: (payload) => ({
@@ -237,7 +237,7 @@ export const LOBBY_CONFIG = {
       }),
       {
         area: "media",
-        when: (payload) => Boolean(payload?.media),
+        when: (payload) => Boolean(payload?.media?.src),
         block: "Image",
         className: "rounded-2xl  p-5",
         props: (payload) => ({

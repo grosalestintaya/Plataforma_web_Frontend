@@ -1,5 +1,22 @@
+import { useMemo } from "react";
+
 import navigateBeforeIcon from "@/shared/icons/icon-navigate-before.svg?raw";
 import navigateNextIcon from "@/shared/icons/icon-navigate-next.svg?raw";
+
+const FOOTER_BUTTON_BASE_CLASS =
+  "inline-flex h-12 min-w-[96px] items-center justify-center gap-2 rounded-xl px-3 text-sm font-medium text-white transition";
+const FOOTER_BUTTON_ENABLED_CLASS =
+  "cursor-pointer hover:-translate-y-0.5 hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 active:translate-y-0 active:scale-[0.98]";
+const FOOTER_BUTTON_DISABLED_CLASS = "cursor-not-allowed opacity-40";
+const FOOTER_ICON_CLASS = "h-5 w-5 shrink-0";
+const FOOTER_SLOT_PLACEHOLDER_CLASS = "h-12 min-w-[96px]";
+const FOOTER_SHELL_CLASS = "border-t border-white/10";
+const FOOTER_SHELL_INNER_CLASS =
+  "flex h-full min-h-[var(--activity-footer-height,64px)] items-center px-[var(--activity-shell-gutter)] text-white/80";
+const FOOTER_CENTER_CLASS = "flex w-full items-center justify-center";
+const FOOTER_NAV_GRID_CLASS =
+  "grid w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 text-sm";
+const FOOTER_TEXT_CLASS = "truncate text-center text-xs sm:text-sm";
 
 /**
  * Reutiliza el estilo de acciones del footer.
@@ -7,11 +24,8 @@ import navigateNextIcon from "@/shared/icons/icon-navigate-next.svg?raw";
  */
 function getFooterButtonClass(disabled) {
   return [
-    "inline-flex h-12 min-w-[96px] items-center justify-center gap-2 rounded-xl px-3 text-sm font-medium",
-    " text-white transition",
-    disabled
-      ? "cursor-not-allowed opacity-40"
-      : "cursor-pointer hover:-translate-y-0.5 hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 active:translate-y-0 active:scale-[0.98]",
+    FOOTER_BUTTON_BASE_CLASS,
+    disabled ? FOOTER_BUTTON_DISABLED_CLASS : FOOTER_BUTTON_ENABLED_CLASS,
   ].join(" ");
 }
 
@@ -54,15 +68,19 @@ function getFooterIconColor(themeHex) {
  * Asi el color cae solo sobre el icono y no sobre una caja completa.
  */
 function FooterIcon({ svgMarkup, color }) {
-  const normalizedSvg = svgMarkup.replace(
-    "<svg ",
-    '<svg width="100%" height="100%" preserveAspectRatio="xMidYMid meet" ',
+  const normalizedSvg = useMemo(
+    () =>
+      svgMarkup.replace(
+        "<svg ",
+        '<svg width="100%" height="100%" preserveAspectRatio="xMidYMid meet" ',
+      ),
+    [svgMarkup],
   );
 
   return (
     <span
       aria-hidden="true"
-      className="h-5 w-5 shrink-0"
+      className={FOOTER_ICON_CLASS}
       style={{ color }}
       dangerouslySetInnerHTML={{ __html: normalizedSvg }}
     />
@@ -111,7 +129,7 @@ function FooterNavSlot({
   onClick,
 }) {
   if (!visible) {
-    return <div className="h-12 min-w-[96px]" aria-hidden="true" />;
+    return <div className={FOOTER_SLOT_PLACEHOLDER_CLASS} aria-hidden="true" />;
   }
 
   return (
@@ -134,11 +152,11 @@ function FooterNavSlot({
 function FooterShell({ children }) {
   return (
     <footer
-      className="border-t "
+      className={FOOTER_SHELL_CLASS}
       style={{
         minHeight: "var(--activity-footer-height, 64px)",
       }}>
-      <div className="flex h-full min-h-[var(--activity-footer-height,64px)] items-center px-[var(--activity-shell-gutter)] text-white/80">
+      <div className={FOOTER_SHELL_INNER_CLASS}>
         {children}
       </div>
     </footer>
@@ -158,7 +176,7 @@ export default function ModuleFooter({ model, onUiClick, themeHex }) {
   if (model?.type === "cta") {
     return (
       <FooterShell>
-        <div className="flex w-full items-center justify-center">
+        <div className={FOOTER_CENTER_CLASS}>
           <button
             type="button"
             disabled={!model?.center?.enabled}
@@ -174,8 +192,8 @@ export default function ModuleFooter({ model, onUiClick, themeHex }) {
   if (model?.type === "status") {
     return (
       <FooterShell>
-        <div className="flex w-full items-center justify-center">
-          <span className="truncate text-center text-xs sm:text-sm">
+        <div className={FOOTER_CENTER_CLASS}>
+          <span className={FOOTER_TEXT_CLASS}>
             {model?.centerText ?? "Quipu Yachay"}
           </span>
         </div>
@@ -186,7 +204,7 @@ export default function ModuleFooter({ model, onUiClick, themeHex }) {
   if (model?.type === "locked") {
     return (
       <FooterShell>
-        <div className="grid w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 text-sm">
+        <div className={FOOTER_NAV_GRID_CLASS}>
           <FooterNavButton
             disabled
             label={model?.left?.label}
@@ -195,7 +213,7 @@ export default function ModuleFooter({ model, onUiClick, themeHex }) {
             iconPosition="left"
           />
 
-          <span className="truncate text-center text-xs sm:text-sm">
+          <span className={FOOTER_TEXT_CLASS}>
             {model?.centerText}
           </span>
 
@@ -213,7 +231,7 @@ export default function ModuleFooter({ model, onUiClick, themeHex }) {
 
   return (
     <FooterShell>
-      <div className="grid w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 text-sm">
+      <div className={FOOTER_NAV_GRID_CLASS}>
         <FooterNavSlot
           visible={model?.left?.visible !== false}
           disabled={!model?.left?.enabled}
@@ -224,7 +242,7 @@ export default function ModuleFooter({ model, onUiClick, themeHex }) {
           iconPosition="left"
         />
 
-        <span className="truncate text-center text-xs sm:text-sm">
+        <span className={FOOTER_TEXT_CLASS}>
           {model?.centerText ?? "Quipu Yachay"}
         </span>
 

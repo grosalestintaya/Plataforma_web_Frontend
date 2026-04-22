@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Typography from "../../base/Typography";
 import Input from "../../base/Action/Input";
 
@@ -34,10 +34,8 @@ export default function Form({ data, heroApi, view }) {
   const hasPromptInput = Boolean(data?.prompt || data?.placeholder);
   // Cuando la explicacion es obligatoria usamos el minimo configurado.
   const minReasonLength = Number(data?.minReasonLength ?? 8);
-  const selectedOption = useMemo(
-    () => (data?.options ?? []).find((item) => item.id === selectedId) ?? null,
-    [data?.options, selectedId],
-  );
+  const selectedOption =
+    (data?.options ?? []).find((item) => item.id === selectedId) ?? null;
   const selectedOptionLabel =
     typeof selectedOption?.label === "string" || typeof selectedOption?.label === "number"
       ? String(selectedOption?.label)
@@ -72,7 +70,7 @@ export default function Form({ data, heroApi, view }) {
   if (!data) return null;
 
   return (
-    <div className="space-y-3 rounded-2xl  p-4">
+    <div className="space-y-3 rounded-2xl p-4">
       {data?.question ? (
         <Typography
           content={data.question}
