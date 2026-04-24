@@ -15,20 +15,20 @@ export default function SubRopeLabel({
   const width = clamp(maxLineLength * 8.6 + 44, 132, 240);
   const height = lines.length === 1 ? 38 : 56;
 
-  const desiredCenterX = x + (side === "left" ? -112 : 112);
-  const desiredCenterY = y - 4;
+  // Centrado horizontalmente sobre x, flotando arriba de y
+  const boxX = clamp(x - width / 2, 10, 810 - width);
+  const boxY = clamp(y - height - 28, 14, 470 - height - 12);
 
-  const boxX = clamp(desiredCenterX - width / 2, 10, 810 - width);
-  const boxY = clamp(desiredCenterY - height / 2, 14, 470 - height - 12);
-
-  const ropeEdgeX = side === "left" ? x - 12 : x + 12;
-  const labelEdgeX = side === "left" ? boxX + width : boxX;
-  const labelEdgeY = boxY + height / 2;
+  // Línea conectora: desde el punto de la cuerda hacia el borde inferior del label
+  const connectorX = x;
+  const connectorTopY = boxY + height;
+  const connectorBottomY = y;
 
   return (
     <g className="side-branch-label">
+      {/* línea vertical centrada */}
       <path
-        d={`M ${ropeEdgeX} ${y} Q ${(ropeEdgeX + labelEdgeX) / 2} ${y - 10} ${labelEdgeX} ${labelEdgeY}`}
+        d={`M ${connectorX} ${connectorBottomY} Q ${connectorX} ${(connectorTopY + connectorBottomY) / 2} ${connectorX} ${connectorTopY}`}
         fill="none"
         stroke={locked ? "rgba(205,214,230,0.18)" : palette.main}
         strokeWidth={active ? "2.15" : "1.35"}

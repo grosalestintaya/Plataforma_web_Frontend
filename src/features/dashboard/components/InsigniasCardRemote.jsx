@@ -71,7 +71,6 @@ export default function InsigniasCard() {
       const res = await fetch(API, {
         headers: { Authorization: `Bearer ${token}` },
       });
-
       const json = await res.json();
       setRaw(Array.isArray(json?.insignias) ? json.insignias : []);
     } catch (error) {
@@ -89,35 +88,28 @@ export default function InsigniasCard() {
 
   const ownedMap = useMemo(() => {
     const map = new Map();
-
     raw.forEach((row) => {
       const name = normalize(row?.insignia?.name);
       if (!name) return;
-
       const base = getBaseName(name);
       const entry = map.get(base) || {};
-
       if (isPerfectName(name)) {
         entry.perfect = true;
       } else {
         entry.normal = true;
       }
-
       map.set(base, entry);
     });
-
     return map;
   }, [raw]);
 
   const exactByName = useMemo(() => {
     const map = new Map();
-
     raw.forEach((row) => {
       const name = normalize(row?.insignia?.name);
       if (!name) return;
       map.set(name, row);
     });
-
     return map;
   }, [raw]);
 
@@ -129,13 +121,10 @@ export default function InsigniasCard() {
     return MODULE_SLOTS.flatMap((slot) => {
       const normalName = slot.baseName;
       const perfectName = `${slot.baseName} Perfecto`;
-
       const normalRow = exactByName.get(normalName);
       const perfectRow = exactByName.get(perfectName);
-
       const normalIns = normalRow?.insignia ?? {};
       const perfectIns = perfectRow?.insignia ?? {};
-
       return [
         {
           key: `${slot.baseName}-normal`,
@@ -187,7 +176,6 @@ export default function InsigniasCard() {
       setSelectedKey(null);
       return;
     }
-
     const exists = collectionItems.some((item) => item.key === selectedKey);
     if (!exists) {
       const firstUnlocked =
@@ -198,11 +186,9 @@ export default function InsigniasCard() {
 
   useEffect(() => {
     if (!open) return;
-
     const onKey = (e) => {
       if (e.key === "Escape") setOpen(false);
     };
-
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
@@ -210,13 +196,15 @@ export default function InsigniasCard() {
   return (
     <>
       <div
-        className="w-full min-w-0 rounded-2xl border px-6 py-2 shadow-sm backdrop-blur"
+        // ANTES
+        className="w-full min-w-0 rounded-2xl border px-6 py-0 shadow-sm backdrop-blur"
+        // DESPUÉS — py-2 ya estaba bien, pero reducimos mb-3 del título
         style={{
-          background: "color-mix(in srgb, var(--accent) 80%, transparent)",
+          background: "color-mix(in srgb, var(--accent) 30%, transparent)",
           borderColor: "var(--usercard-border)",
         }}>
         <h3
-          className="mb-3 text-center text-[15px] font-extrabold"
+          className="mb-1 text-center text-[15px] font-extrabold"
           style={{ color: "var(--background)" }}>
           Insignias
         </h3>
@@ -237,13 +225,23 @@ export default function InsigniasCard() {
 
               return (
                 <React.Fragment key={slot.baseName}>
-                  <div className="group relative flex shrink-0 flex-col items-center">
+                  {/* 👇 onClick añadido, botón "Ver todas" eliminado */}
+                  <div
+                    className="group relative flex shrink-0 flex-col items-center"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => {
+                      setSelectedKey(`${slot.baseName}-normal`);
+                      setOpen(true);
+                    }}>
                     <div
                       className="relative flex items-center justify-center rounded-full transition"
                       style={{
-                        width: "clamp(2.4rem, 3.2vw, 3rem)",
-                        height: "clamp(2.4rem, 3.2vw, 3rem)",
-                        background: unlocked ? "#fff" : "rgba(0,0,0,0.08)",
+                        // 👇 Tamaño del contenedor aumentado
+                        width: "clamp(3.2rem, 4.2vw, 4rem)",
+                        height: "clamp(3.2rem, 4.2vw, 4rem)",
+                        background: unlocked
+                          ? "var(--primary)/90"
+                          : "var(--usercard-border)",
                         boxShadow: perfect
                           ? `0 0 14px var(--accent)`
                           : unlocked
@@ -254,15 +252,13 @@ export default function InsigniasCard() {
                         src={resolveImg(img)}
                         alt={slot.baseName}
                         draggable={false}
-                        className={`object-contain ${
-                          unlocked ? "" : "grayscale opacity-30"
-                        }`}
+                        className={`object-contain ${unlocked ? "" : "grayscale opacity-40"}`}
                         style={{
-                          width: "clamp(1.4rem, 2vw, 2rem)",
-                          height: "clamp(1.4rem, 2vw, 2rem)",
+                          // 👇 Tamaño de imagen aumentado
+                          width: "clamp(6rem, 3vw, 3.8rem)",
+                          height: "clamp(6rem, 3vw, 3.8rem)",
                         }}
                       />
-
                       {!unlocked && (
                         <div className="absolute inset-0 flex items-center justify-center">
                           <Lock className="h-3.5 w-3.5 text-black/50" />
@@ -284,22 +280,11 @@ export default function InsigniasCard() {
                   </div>
 
                   {idx !== MODULE_SLOTS.length - 1 && (
-                    <div className="h-px min-w-[20px] flex-1 bg-white/80 sm:min-w-[26px] lg:min-w-[32px]" />
+                    <div className="h-px  min-w-[20px] flex-1 bg-white/80 sm:min-w-[26px] lg:min-w-[32px]" />
                   )}
                 </React.Fragment>
               );
             })}
-
-            <button
-              onClick={() => setOpen(true)}
-              className="ml-2 shrink-0 rounded-xl border px-3 py-1.5 text-[11px] font-semibold transition hover:bg-black/5"
-              style={{
-                borderColor: "var(--usercard-border)",
-                background: "var(--usercard-accent)",
-                color: "var(--chip-bg)",
-              }}>
-              Ver todas
-            </button>
           </div>
         </div>
       </div>
@@ -338,7 +323,7 @@ export default function InsigniasCard() {
 
               <button
                 onClick={() => setOpen(false)}
-                className="rounded-xl border px-3 py-2 text-sm font-semibold transition hover:bg-black/5"
+                className="rounded-xl border px-3 py-2 text-sm font-semibold transition"
                 style={{
                   borderColor: "var(--usercard-border)",
                   color: "var(--dash-title-text)",
@@ -374,7 +359,7 @@ export default function InsigniasCard() {
                           key={item.key}
                           type="button"
                           onClick={() => setSelectedKey(item.key)}
-                          className="flex w-full items-center gap-3 rounded-2xl border p-3 text-left transition"
+                          className="flex w-full items-center gap-2 rounded-2xl border p-1 text-left transition"
                           style={{
                             borderColor: active
                               ? "color-mix(in srgb, var(--primary) 62%, white)"
@@ -417,12 +402,6 @@ export default function InsigniasCard() {
                               className="truncate text-sm font-extrabold"
                               style={{ color: "var(--dash-title-text)" }}>
                               {item.name}
-                            </div>
-
-                            <div
-                              className="mt-1 line-clamp-2 text-[11px] leading-snug"
-                              style={{ color: "rgba(100,116,139,0.95)" }}>
-                              {item.description || "Sin descripción"}
                             </div>
 
                             <div className="mt-2 flex flex-wrap items-center gap-2">

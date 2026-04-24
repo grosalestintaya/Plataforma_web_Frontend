@@ -186,26 +186,79 @@ export const LOBBY_CONFIG = {
   },
   variants: {
     preGame: [
-      createTypographySlot("title", "title", "h1", {
-        className: "rounded-2xl  p-5 text-center",
-        containerClassName: "mx-auto max-w-[760px]",
-      }),
-      createTypographySlot("body", "body", "body", {
-        when: (payload) => Boolean(payload?.body),
-        className: "rounded-2xl  p-5",
-      }),
+      // 🖼️ Media primero y dominante
       {
         area: "media",
-        when: (payload) => Boolean(payload?.media?.src),
+
+        when: (payload) =>
+          Boolean(payload?.equippedAvatarName || payload?.media?.src),
+
         block: "Image",
-        className: "rounded-2xl  p-5",
-        props: (payload) => ({
-          src: payload?.media?.src,
-          alt: payload?.media?.alt ?? "Imagen",
-          variant: payload?.media?.variant ?? payload?.media?.ratio,
-          className: "min-h-[220px] w-full",
-        }),
+
+        className: [
+          "relative overflow-hidden",
+          "rounded-t-2xl rounded-b-none",
+          "border-2 border-yellow-600/70",
+          "shadow-[0_0_32px_rgba(202,138,4,0.35)]",
+          "p-0",
+        ].join(" "),
+
+        props: (payload) => {
+          /**
+           * recibido desde LobbyTemplate
+           * → getLobbyRuntime
+           * → getPayload
+           */
+          const equippedAvatarName = payload?.equippedAvatarName;
+
+          /**
+           * fallback seguro:
+           * si no existe avatar,
+           * usa media original
+           */
+          const resolvedSrc = equippedAvatarName
+            ? `/${equippedAvatarName}.png`
+            : payload?.media?.src;
+
+          const resolvedAlt = equippedAvatarName
+            ? `Avatar de ${equippedAvatarName}`
+            : (payload?.media?.alt ?? "Imagen");
+
+          return {
+            src: resolvedSrc,
+
+            alt: resolvedAlt,
+
+            variant: payload?.media?.variant ?? payload?.media?.ratio,
+
+            className: "min-h-[300px] w-full object-cover",
+          };
+        },
       },
+
+      // 📜 Título tipo pergamino/épico debajo de la imagen
+      createTypographySlot("title", "title", "h1", {
+        className: [
+          "rounded-b-2xl rounded-t-none", // continúa desde la imagen
+          "px-6 py-0 text-center",
+          "text-yellow-300 font-black tracking-widest uppercase",
+          "text-shadow-[0_2px_12px_rgba(202,138,4,0.6)]",
+        ].join(" "),
+        containerClassName: "mx-auto max-w-[760px]",
+      }),
+
+      // 📖 Body opcional, estilo lore/descripción
+      createTypographySlot("body", "body", "body", {
+        when: (payload) => Boolean(payload?.body),
+        className: [
+          "mx-auto max-w-[760px]",
+          "mt-3 rounded-2xl",
+          "border border-yellow-700/40",
+          "bg-stone-900/60 backdrop-blur-sm",
+          "px-6 py-1",
+          "text-2xl ",
+        ].join(" "),
+      }),
     ],
     postGame: [
       createTypographySlot("title", "title", "h1", {
@@ -267,10 +320,11 @@ function resolveVariant(variant, view) {
 /**
  * Estandariza el payload para que Lobby lea una sola forma.
  */
-function getPayload(data = {}, view, heroApi) {
+function getPayload(data = {}, view, heroApi, equippedAvatarName) {
   const rewards = getMissionRewards(heroApi);
 
   return {
+    avatar: equippedAvatarName,
     title: view?.slots?.title ?? data?.title,
     body: view?.slots?.body ?? data?.body ?? data?.text,
     media: view?.slots?.media ?? data?.media ?? data?.image,

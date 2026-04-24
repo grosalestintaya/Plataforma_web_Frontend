@@ -23,19 +23,19 @@ function Store() {
   return (
     <div className="w-full h-full min-h-0 overflow-hidden">
       <div
-        className="flex h-full min-h-0 flex-col overflow-hidden rounded-2xl border p-4 shadow-sm md:p-5 xl:p-6"
+        className="flex h-full min-h-0 flex-col overflow-hidden rounded-2xl border p-0 shadow-sm md:p-5 xl:p-1"
         style={{
           backgroundColor: "var(--chip-bg)",
           borderColor: "var(--card-border)",
         }}>
-        <div className="shrink-0">
+        <div className="shrink-0 -pb-5">
           <StoreTopBar
             wallet={wallet}
             equippedAvatarName={equippedAvatarName}
           />
         </div>
 
-        <div className="mt-4 shrink-0">
+        <div className="-mt-2 shrink-0">
           <StoreFilters filter={filter} onChange={setFilter} />
         </div>
 

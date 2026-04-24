@@ -4,40 +4,47 @@ import AvatarCard from "./AvatarCard";
 function StoreSkeletonCard() {
   return (
     <div
-      className="rounded-[24px] border p-4 shadow-sm"
+      className="rounded-[16px] border"
       style={{
+        aspectRatio: "1 / 1",
         backgroundColor: "var(--chip-bg)",
         borderColor: "var(--card-border)",
+        overflow: "hidden",
       }}>
-      <div
-        className="h-6 w-28 animate-pulse rounded"
-        style={{ backgroundColor: "var(--progress-track)" }}
-      />
-
-      <div
-        className="mt-4 h-52 animate-pulse rounded-2xl"
-        style={{ backgroundColor: "var(--progress-track)" }}
-      />
-
-      <div
-        className="mt-4 h-5 w-44 animate-pulse rounded"
-        style={{ backgroundColor: "var(--progress-track)" }}
-      />
-
-      <div
-        className="mt-3 h-4 w-full animate-pulse rounded"
-        style={{ backgroundColor: "var(--progress-track)" }}
-      />
-
-      <div
-        className="mt-2 h-4 w-4/5 animate-pulse rounded"
-        style={{ backgroundColor: "var(--progress-track)" }}
-      />
-
-      <div
-        className="mt-4 h-12 animate-pulse rounded-2xl"
-        style={{ backgroundColor: "var(--progress-track)" }}
-      />
+      <div className="flex h-full w-full">
+        <div
+          className="h-full animate-pulse shrink-0"
+          style={{ width: "50%", backgroundColor: "var(--progress-track)" }}
+        />
+        <div
+          className="flex flex-col justify-between p-2"
+          style={{ width: "50%" }}>
+          <div className="flex flex-col gap-1.5">
+            <div
+              className="h-3 w-14 animate-pulse rounded-full"
+              style={{ backgroundColor: "var(--progress-track)" }}
+            />
+            <div
+              className="h-3 w-10 animate-pulse rounded-full"
+              style={{ backgroundColor: "var(--progress-track)" }}
+            />
+          </div>
+          <div className="flex flex-col gap-1">
+            <div
+              className="h-2.5 w-full animate-pulse rounded"
+              style={{ backgroundColor: "var(--progress-track)" }}
+            />
+            <div
+              className="h-2.5 w-4/5 animate-pulse rounded"
+              style={{ backgroundColor: "var(--progress-track)" }}
+            />
+          </div>
+          <div
+            className="h-6 w-full animate-pulse rounded-xl"
+            style={{ backgroundColor: "var(--progress-track)" }}
+          />
+        </div>
+      </div>
     </div>
   );
 }
@@ -50,17 +57,20 @@ export default function StoreGrid({
   onPurchase,
   onEquip,
 }) {
+  const gridClass =
+    "grid gap-2 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5";
+
   return (
     <div className="h-full min-h-0 overflow-y-auto pr-1 pt-1">
       {loading ? (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-          {Array.from({ length: 8 }).map((_, index) => (
-            <StoreSkeletonCard key={index} />
+        <div className={gridClass}>
+          {Array.from({ length: 10 }).map((_, i) => (
+            <StoreSkeletonCard key={i} />
           ))}
         </div>
       ) : !avatars.length ? (
         <div
-          className="rounded-2xl border px-6 py-10 text-center shadow-sm"
+          className="rounded-2xl border px-6 py-10 text-center"
           style={{
             backgroundColor: "var(--chip-bg)",
             borderColor: "var(--card-border)",
@@ -70,13 +80,12 @@ export default function StoreGrid({
             style={{ color: "var(--card-text)" }}>
             No hay avatares para mostrar.
           </p>
-
           <p className="mt-2 text-sm" style={{ color: "var(--card-muted)" }}>
             Cambia el filtro para ver más opciones.
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+        <div className={gridClass}>
           {avatars.map((avatar) => (
             <AvatarCard
               key={avatar.id_avatar}

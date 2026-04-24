@@ -9,7 +9,7 @@ import XpQuipuIcon from "../../../shared/icons/XpQuipuIcon";
 
 export default function RankingRow({ participant }) {
   return (
-    <div className="group flex items-center gap-4 rounded-full border border-border bg-secondary/50 py-3 pl-4 pr-0 transition-all hover:border-primary/50 hover:bg-secondary hover:shadow-md">
+    <div className="group flex items-center gap-4 rounded-full border border-border bg-secondary/50 py-2 px-2 pl-4 pr-3 transition-all hover:border-primary/50 hover:bg-secondary hover:shadow-md">
       <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/20 font-bold text-primary">
         #{participant.rank}
       </div>
@@ -39,7 +39,7 @@ export default function RankingRow({ participant }) {
         </span>
 
         {/* Badge XP */}
-        <span className="grid h-9 w-9 place-items-center rounded-full bg-accent/15 ring-1 ring-accent/25">
+        <span className="grid pr-0.5 h-9 w-9 place-items-center rounded-full bg-accent/15 ring-1 ring-accent/25">
           <XpQuipuIcon className="h-10 w-10 text-accent" />
         </span>
       </div>

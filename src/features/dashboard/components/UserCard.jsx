@@ -73,24 +73,6 @@ const CompactChip = ({ color, icon: Icon, children }) => (
       }}
     />
 
-    <span
-      className="relative flex h-5 w-5 shrink-0 items-center justify-center rounded-md"
-      style={{
-        background: "rgba(255,255,255,0.10)",
-        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08)",
-      }}>
-      {Icon ? (
-        <Icon
-          size={13}
-          strokeWidth={2.2}
-          style={{
-            color,
-            filter: `drop-shadow(0 0 6px ${color})`,
-          }}
-        />
-      ) : null}
-    </span>
-
     <span className="truncate text-xs font-semibold tracking-[0.01em]">
       {children}
     </span>
@@ -299,24 +281,25 @@ const UserCard = ({ user, isFirst = false }) => {
                 }}
               />
               <div
-                className="relative rounded-xl border p-[2px]"
+                className="relative rounded-[70px] border  p-[2px]"
                 style={{
+                  borderColor: "rgba(255,255,255,0.18)",
                   background: `
                     linear-gradient(
                       135deg,
                       rgba(255,255,255,0.95) 0%,
-                      var(--usercard-accent) 45%,
-                      var(--usercard-accent-2) 100%
+                      gold 45%,
+                      var(--sidebar) 100%
                     )
                   `,
-                  borderColor: "rgba(255,255,255,0.18)",
+                  borderColor: "var(--primary)",
                   boxShadow:
                     "0 0 0 1px rgba(255,255,255,0.08), 0 8px 18px rgba(0,0,0,0.20)",
                 }}>
                 <img
                   src={resolveAvatar(user?.foto)}
                   alt={`Perfil de ${user?.nombre || "usuario"}`}
-                  className="h-14 w-14 rounded-[10px] object-cover xl:h-20 xl:w-20"
+                  className="h-16 w-16 rounded-[10px] object-cover xl:h-20 xl:w-20"
                   onError={(e) => {
                     e.currentTarget.onerror = null;
                     e.currentTarget.src = resolveAvatar("default");
@@ -352,17 +335,17 @@ const UserCard = ({ user, isFirst = false }) => {
                   <CompactChip
                     color="var(--usercard-accent-2)"
                     icon={Building2}>
-                    {user?.institucion || "Sin sección"}
+                    {"🏫 " + user?.institucion || "Sin sección"}
                   </CompactChip>
 
-                  <CompactChip color="var(--usercard-accent-)" icon={Users}>
-                    {user?.seccion || "Sin grade"}
+                  <CompactChip color="var(--usercard-accent-2)" icon={Users}>
+                    👨🏼‍🎓{user?.seccion || "Sin grade"}
                   </CompactChip>
 
                   <CompactChip
                     color="var( --usercard-accent-2)"
                     icon={Sparkles}>
-                    Lv. {user?.nivel ?? "-"}
+                    🔮 Lv. {user?.nivel ?? "-"}
                   </CompactChip>
                 </div>
               </div>

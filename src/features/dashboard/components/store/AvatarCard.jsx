@@ -7,24 +7,20 @@ function getAvatarImageSrc(imgKey) {
 
 function StatusBadge({ avatar }) {
   const status = useMemo(() => {
-    if (avatar.equipped) {
+    if (avatar.equipped)
       return {
         label: "Equipado",
         bg: "var(--accent)",
         color: "var(--accent-foreground)",
         borderColor: "var(--accent)",
       };
-    }
-
-    if (avatar.owned) {
+    if (avatar.owned)
       return {
         label: "Comprado",
         bg: "var(--dash-title-bg)",
         color: "var(--dash-title-text)",
         borderColor: "var(--usercard-border)",
       };
-    }
-
     return {
       label: "Disponible",
       bg: "var(--usercard-bg)",
@@ -35,12 +31,12 @@ function StatusBadge({ avatar }) {
 
   return (
     <span
-      className="inline-flex items-center rounded-full border px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.18em] sm:text-[11px]"
+      className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-[0.16em]"
       style={{
         backgroundColor: status.bg,
         color: status.color,
         borderColor: status.borderColor,
-        boxShadow: "0 6px 18px rgba(0,0,0,0.08)",
+        boxShadow: "0 4px 10px rgba(0,0,0,0.08)",
       }}>
       {status.label}
     </span>
@@ -53,31 +49,34 @@ function AvatarPreview({ avatar }) {
 
   return (
     <div
-      className="relative flex h-40 items-center justify-center overflow-hidden rounded-[22px] border p-3 sm:h-44 md:h-48 xl:h-44 2xl:h-48"
+      className="relative flex items-center justify-center overflow-hidden border p-2"
       style={{
+        height: "200px",
+        width: "200px",
+        borderRadius: "50%", // 👈 círculo perfecto (antes rounded-[86px])
+        alignSelf: "center", // 👈 centrado horizontal en el flex column del card
         background:
           "radial-gradient(circle at top, var(--usercard-bg) 0%, var(--app-bg) 58%, var(--chip-bg) 100%)",
         borderColor: "var(--card-border)",
       }}>
       <div
-        className="pointer-events-none absolute inset-x-[18%] top-4 h-20 rounded-full blur-2xl"
-        style={{
-          backgroundColor: "var(--sidebar)",
-          opacity: 0.16,
-        }}
+        className="pointer-events-none absolute inset-x-[18%] top-3 h-10 rounded-full blur-2xl"
+        style={{ backgroundColor: "var(--primary)", opacity: 1 }}
       />
 
       {!imageError && src ? (
         <img
           src={src}
           alt={avatar.name}
-          className="relative z-10 h-full max-h-full w-auto object-contain drop-shadow-[0_12px_22px_rgba(0,0,0,0.22)] transition duration-200 hover:scale-[1.03]"
+          className="relative z-10 h-full max-h-full w-auto object-contain drop-shadow-[0_10px_18px_rgba(0,0,0,0.22)] transition duration-200 hover:scale-[1.06]"
+          style={{ borderRadius: "50%" }} // 👈 imagen también circular
           onError={() => setImageError(true)}
         />
       ) : (
         <div
-          className="relative z-10 flex h-full w-full items-center justify-center rounded-xl border px-4 text-center text-sm font-semibold"
+          className="relative z-10 flex h-full w-full items-center justify-center px-3 text-center text-xs font-semibold"
           style={{
+            borderRadius: "50%", // 👈 fallback también circular
             backgroundColor: "var(--chip-bg)",
             color: "var(--card-muted)",
             borderColor: "var(--card-border)",
@@ -87,28 +86,25 @@ function AvatarPreview({ avatar }) {
       )}
 
       <div
-        className="pointer-events-none absolute inset-x-4 bottom-3 h-5 rounded-full blur-xl"
-        style={{
-          backgroundColor: "rgba(0,0,0,0.18)",
-        }}
+        className="pointer-events-none absolute inset-x-4 bottom-2 h-4 rounded-full blur-xl"
+        style={{ backgroundColor: "rgba(0,0,0,0.16)" }}
       />
     </div>
   );
 }
 
 function PriceChip({ price }) {
-  const label = Number(price) === 0 ? "Gratis" : `${price} monedas`;
-
+  const isFree = Number(price) === 0;
   return (
     <div
-      className="inline-flex items-center rounded-full border px-3 py-1.5 text-xs font-extrabold sm:text-sm"
+      className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-[10px] font-extrabold"
       style={{
         backgroundColor: "var(--usercard-bg)",
         color: "var(--sidebar)",
         borderColor: "var(--usercard-border)",
         boxShadow: "inset 0 1px 0 rgba(255,255,255,0.18)",
       }}>
-      {label}
+      {isFree ? "Gratis" : `🪙 ${price}`}
     </div>
   );
 }
@@ -118,71 +114,70 @@ function ActionButton({ avatar, currentCoins, busy, onPurchase, onEquip }) {
   const canAfford = currentCoins >= price;
   const isFree = price === 0;
 
+  const base =
+    "w-full rounded-xl border px-3 py-2 text-[11px] font-extrabold uppercase tracking-[0.15em] transition duration-150";
+
   if (avatar.equipped) {
     return (
       <button
         type="button"
         disabled
-        className="w-full rounded-2xl border px-4 py-3 text-sm font-extrabold uppercase tracking-[0.16em] opacity-90"
+        className={`${base} opacity-90`}
         style={{
           background:
             "linear-gradient(180deg, var(--accent) 0%, color-mix(in srgb, var(--accent) 82%, black) 100%)",
           color: "var(--accent-foreground)",
           borderColor: "var(--accent)",
-          boxShadow: "0 10px 24px rgba(0,0,0,0.12)",
         }}>
-        Equipado
+        ✓ Equipado
       </button>
     );
   }
-
   if (avatar.owned) {
     return (
       <button
         type="button"
         onClick={() => onEquip(avatar)}
         disabled={busy}
-        className="w-full rounded-2xl border px-4 py-3 text-sm font-extrabold uppercase tracking-[0.16em] transition duration-150 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-70"
+        className={`${base} hover:-translate-y-0.5 disabled:opacity-70`}
         style={{
           background:
             "linear-gradient(180deg, var(--accent) 0%, color-mix(in srgb, var(--accent) 82%, black) 100%)",
           color: "var(--accent-foreground)",
           borderColor: "var(--accent)",
-          boxShadow: "0 10px 24px rgba(0,0,0,0.12)",
+          boxShadow: "0 8px 18px rgba(0,0,0,0.12)",
         }}>
         {busy ? "Equipando..." : "Equipar"}
       </button>
     );
   }
-
   if (!isFree && !canAfford) {
     return (
       <button
         type="button"
         disabled
-        className="w-full cursor-not-allowed rounded-2xl border px-4 py-3 text-sm font-extrabold uppercase tracking-[0.16em] opacity-80"
+        className={`${base} cursor-not-allowed opacity-70`}
         style={{
           backgroundColor: "var(--progress-track)",
           color: "var(--card-muted)",
           borderColor: "var(--card-border)",
         }}>
-        Monedas insuficientes
+        Sin monedas
       </button>
     );
   }
-
   return (
     <button
       type="button"
       onClick={() => onPurchase(avatar)}
       disabled={busy}
-      className="w-full rounded-2xl border px-4 py-3 text-sm font-extrabold uppercase tracking-[0.16em] transition duration-150 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-70"
+      className={`${base} hover:-translate-y-0.5 disabled:opacity-70`}
       style={{
         background:
           "linear-gradient(180deg, var(--primary) 0%, color-mix(in srgb, var(--primary) 82%, black) 100%)",
         color: "var(--primary-foreground)",
         borderColor: "var(--primary)",
-        boxShadow: "0 10px 24px rgba(0,0,0,0.12)",
+        boxShadow: "0 8px 18px rgba(0,0,0,0.12)",
       }}>
       {busy ? "Comprando..." : "Comprar"}
     </button>
@@ -200,7 +195,7 @@ export default function AvatarCard({
 
   return (
     <article
-      className="group flex h-full min-h-[360px] flex-col overflow-hidden rounded-[26px] border p-3 shadow-sm transition duration-200 hover:-translate-y-1 sm:min-h-[390px] sm:p-4"
+      className="group flex flex-col overflow-hidden rounded-[20px] border p-3 transition duration-200 hover:-translate-y-0.5"
       style={{
         background:
           "linear-gradient(180deg, var(--chip-bg) 0%, color-mix(in srgb, var(--chip-bg) 90%, black) 100%)",
@@ -210,40 +205,36 @@ export default function AvatarCard({
             ? "var(--primary)"
             : "var(--card-border)",
         boxShadow: isHighlighted
-          ? "0 16px 34px rgba(0,0,0,0.12)"
-          : "0 10px 24px rgba(0,0,0,0.08)",
+          ? "0 14px 28px rgba(0,0,0,0.12)"
+          : "0 8px 20px rgba(0,0,0,0.08)",
       }}>
-      <div className="flex items-start justify-between gap-2 sm:gap-3">
+      <div className="flex items-center justify-between gap-2 mb-2.5">
         <StatusBadge avatar={avatar} />
         <PriceChip price={avatar.price_coins} />
       </div>
 
-      <div className="mt-3 sm:mt-4">
-        <AvatarPreview avatar={avatar} />
-      </div>
+      <AvatarPreview avatar={avatar} />
 
-      <div className="mt-3 flex flex-1 flex-col sm:mt-4">
+      <div className="mt-2.5 flex flex-1 flex-col gap-2">
         <h3
-          className="line-clamp-2 text-base font-extrabold leading-tight sm:text-lg"
+          className="line-clamp-1 text-sm font-extrabold leading-tight"
           style={{ color: "var(--card-text)" }}>
           {avatar.name}
         </h3>
 
         <p
-          className="mt-2 line-clamp-3 flex-1 text-sm leading-relaxed"
+          className="line-clamp-2 flex-1 text-[11px] leading-relaxed"
           style={{ color: "var(--card-muted)" }}>
           {avatar.description}
         </p>
 
-        <div className="mt-4">
-          <ActionButton
-            avatar={avatar}
-            currentCoins={currentCoins}
-            busy={busy}
-            onPurchase={onPurchase}
-            onEquip={onEquip}
-          />
-        </div>
+        <ActionButton
+          avatar={avatar}
+          currentCoins={currentCoins}
+          busy={busy}
+          onPurchase={onPurchase}
+          onEquip={onEquip}
+        />
       </div>
     </article>
   );
