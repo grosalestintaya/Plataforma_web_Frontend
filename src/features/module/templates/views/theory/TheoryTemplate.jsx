@@ -26,7 +26,7 @@ export default function TheoryTemplate({
   const slots = runtime?.slots ?? [];
   const payload = runtime?.payload ?? {};
 
-  const pruebis = ["explanation", "assessment"].includes(view?.variant)
+  const LAYOUT_PRINCIPAL = ["explanation", "assessment"].includes(view?.variant)
     ? "h-full min-h-0 w-full rounded-lg bg-black/20 backdrop-blur-sm"
     : "h-full min-h-0 w-full";
 
@@ -37,7 +37,7 @@ export default function TheoryTemplate({
   }
 
   return (
-    <HeroGrid layout={layout} className={pruebis}>
+    <HeroGrid layout={layout} className={LAYOUT_PRINCIPAL}>
       {slots.map((slot, index) => {
         // Solo crea el area del grid cuando el slot realmente renderiza algo.
         const renderedSlot = renderSlot(slot, payload, Blocks, {

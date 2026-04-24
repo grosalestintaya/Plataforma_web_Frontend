@@ -654,16 +654,16 @@ export default function DailySpendingTemplate({
               <Image
                 src={media?.src}
                 alt={media?.alt ?? "Situacion"}
-                variant={media?.variant ?? media?.ratio}
+                mode="slot"
                 // La imagen lateral debe ocupar su slot sin salirse,
                 // priorizando verse completa antes que recortarse.
                 className={cn(
-                  "h-full w-full",
+                  "flex h-full w-full items-center justify-center",
                   shouldUseCompactDecisionMedia
                     ? ""
                     : "max-h-[240px] md:max-h-full",
                 )}
-                imgClassName="h-full w-full max-h-full max-w-full object-contain"
+                imgClassName="h-auto w-auto max-h-full max-w-full object-contain"
                 zoomable={media?.zoomable !== false}
               />
             </div>

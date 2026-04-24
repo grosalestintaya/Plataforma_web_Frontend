@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef, useState } from "react";
 import { templates } from "@/features/module/templates";
 
 const HERO_VIEWPORT_CLASS =
-  "h-full min-h-0 w-full overflow-x-hidden overflow-y-auto px-10";
+  "h-full min-h-0 w-full overflow-x-hidden overflow-y-auto px-10 py-4";
 const HERO_CANVAS_CLASS = "min-h-full w-full will-change-transform md:h-full";
 const HERO_MESSAGE_CLASS =
   "flex h-full w-full items-center justify-center px-6 text-center text-white/80";

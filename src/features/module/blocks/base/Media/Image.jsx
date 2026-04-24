@@ -13,10 +13,12 @@ const IMAGE_SLOT_CLASS =
   "block h-auto w-auto max-h-full max-w-full object-contain";
 
 const IMAGE_RATIO_CLASS =
-  "block h-full w-full max-h-full max-w-full object-contain";
+  "block h-full w-auto max-w-full object-contain";
 
 const IMAGE_INTRINSIC_CLASS =
   "block h-auto w-auto max-h-full max-w-full object-contain";
+
+const IMAGE_SURFACE_CLASS = "rounded-xl border border-white/15";
 
 function normalizeAssetPath(value) {
   return String(value ?? "")
@@ -132,27 +134,36 @@ export default function Image({
         ? IMAGE_RATIO_CLASS
         : IMAGE_INTRINSIC_CLASS;
 
+  const triggerClassName =
+    resolvedMode === "ratio"
+      ? "inline-flex h-full shrink-0 items-center justify-center max-w-full"
+      : "inline-flex shrink-0 items-center justify-center max-h-full max-w-full";
+
   return (
-    <ZoomableFrame
-      enabled={zoomable}
-      label={zoomLabel ?? `Ampliar ${resolvedAlt}`}
-      triggerClassName={cn(frameClassName, className)}
-      triggerStyle={resolvedStyle}
-      modalClassName="rounded-2xl"
-      modalChildren={
+    <div className={cn(frameClassName, className)} style={resolvedStyle}>
+      <ZoomableFrame
+        enabled={zoomable}
+        label={zoomLabel ?? `Ampliar ${resolvedAlt}`}
+        triggerClassName={triggerClassName}
+        modalClassName="rounded-2xl"
+        modalChildren={
+          <img
+            src={resolvedSrc}
+            alt={resolvedAlt}
+            className={cn(
+              "block max-h-[86vh] max-w-[88vw] rounded-2xl object-contain shadow-2xl",
+              IMAGE_SURFACE_CLASS,
+            )}
+          />
+        }
+      >
         <img
           src={resolvedSrc}
           alt={resolvedAlt}
-          className="block max-h-[86vh] max-w-[88vw] rounded-2xl object-contain shadow-2xl"
+          className={cn(imageClassName, IMAGE_SURFACE_CLASS, imgClassName)}
+          style={imgStyle}
         />
-      }
-    >
-      <img
-        src={resolvedSrc}
-        alt={resolvedAlt}
-        className={cn(imageClassName, imgClassName)}
-        style={imgStyle}
-      />
-    </ZoomableFrame>
+      </ZoomableFrame>
+    </div>
   );
 }

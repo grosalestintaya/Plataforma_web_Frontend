@@ -3,6 +3,12 @@ import Typography from "../../base/Typography";
 import Input from "../../base/Action/Input";
 import { cn } from "@/shared/libs/utils";
 
+function resolveOptionClass(value, option, index, isSelected) {
+  return typeof value === "function"
+    ? value({ option, index, isSelected })
+    : value;
+}
+
 function normalizeOptionLabel(option, index) {
   const rawLabel = option?.label ?? option?.text ?? `Opcion ${index + 1}`;
 
@@ -29,6 +35,13 @@ export default function Form({
   showQuestion = true,
   instructionContent = null,
   optionColumns,
+  panelClassName = "",
+  questionClassName = "",
+  instructionClassName = "",
+  optionsWrapClassName = "",
+  optionClassName = "",
+  optionSelectedClassName = "",
+  optionIdleClassName = "",
 }) {
   const viewId = view?.id ?? view?.viewId;
   const formKey = `${viewId ?? "form"}:${data?.question?.text ?? ""}`;
@@ -147,9 +160,19 @@ export default function Form({
                 : "grid-cols-1";
 
     return (
-      <section className="flex min-h-0 w-full flex-1 flex-col gap-2 rounded-xl border border-white/15 bg-black/10 p-3 md:gap-3 md:p-4">
+      <section
+        className={cn(
+          "flex min-h-0 w-full flex-1 flex-col gap-2 rounded-xl border border-white/15 bg-black/10 p-3 md:gap-3 md:p-4",
+          panelClassName,
+        )}
+      >
         {showQuestion && data?.question ? (
-          <div className="rounded-lg border border-white/15 bg-white/5 px-4 py-3 text-center">
+          <div
+            className={cn(
+              "rounded-lg border border-white/15 bg-white/5 px-4 py-3 text-center",
+              questionClassName,
+            )}
+          >
             <Typography
               content={data.question}
               variant={data?.question?.variant ?? "body"}
@@ -160,7 +183,12 @@ export default function Form({
         ) : null}
 
         {instructionContent ? (
-          <div className="rounded-lg border border-white/15 bg-white/5 px-4 py-2 text-center">
+          <div
+            className={cn(
+              "rounded-lg border border-white/15 bg-white/5 px-4 py-2 text-center",
+              instructionClassName,
+            )}
+          >
             <Typography
               content={instructionContent}
               variant={instructionContent?.variant ?? "helper"}
@@ -172,14 +200,33 @@ export default function Form({
 
         <div
           className={cn(
-            "grid min-h-0 flex-1 grid-cols-1 items-stretch gap-3 rounded-lg border border-white/15 bg-white/5 p-3 auto-rows-fr",
+            "grid min-h-0 grid-cols-1 items-stretch gap-3 rounded-lg border border-white/15 bg-white/5 p-3 auto-rows-[minmax(80px,1fr)] md:auto-rows-[minmax(96px,1fr)]",
             gridColsClass,
+            optionsWrapClassName,
           )}
         >
           {options.map((option, index) => {
             const optionId = option?.id ?? `option-${index + 1}`;
             const isSelected = String(selectedId) === String(optionId);
             const optionLabel = normalizeOptionLabel(option, index);
+            const resolvedOptionClass = resolveOptionClass(
+              optionClassName,
+              option,
+              index,
+              isSelected,
+            );
+            const resolvedSelectedClass = resolveOptionClass(
+              optionSelectedClassName,
+              option,
+              index,
+              isSelected,
+            );
+            const resolvedIdleClass = resolveOptionClass(
+              optionIdleClassName,
+              option,
+              index,
+              isSelected,
+            );
 
             return (
               <button
@@ -187,10 +234,12 @@ export default function Form({
                 type="button"
                 onClick={() => updateSelected(optionId)}
                 className={cn(
-                  "flex min-h-[96px] h-full items-center justify-center rounded-md border px-4 py-3 text-center transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 md:min-h-[112px]",
+                  "flex min-h-[80px] h-full items-center justify-center rounded-md border px-4 py-3 text-center transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 md:min-h-[96px]",
                   isSelected
                     ? "border-cyan-200/90 bg-cyan-300/15 shadow-[0_0_0_2px_rgba(255,255,255,0.14),0_10px_24px_rgba(34,211,238,0.14)]"
                     : "border-white/15 bg-white/5 hover:border-white/30 hover:bg-white/10",
+                  isSelected ? resolvedSelectedClass : resolvedIdleClass,
+                  resolvedOptionClass,
                 )}
               >
                 <Typography
