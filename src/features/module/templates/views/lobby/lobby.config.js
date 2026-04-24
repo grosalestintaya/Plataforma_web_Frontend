@@ -186,26 +186,49 @@ export const LOBBY_CONFIG = {
   },
   variants: {
     preGame: [
-      createTypographySlot("title", "title", "h1", {
-        className: "rounded-2xl  p-5 text-center",
-        containerClassName: "mx-auto max-w-[760px]",
-      }),
-      createTypographySlot("body", "body", "body", {
-        when: (payload) => Boolean(payload?.body),
-        className: "rounded-2xl  p-5",
-      }),
+      // 🖼️ Media primero y dominante
       {
         area: "media",
         when: (payload) => Boolean(payload?.media?.src),
         block: "Image",
-        className: "rounded-2xl  p-5",
+        className: [
+          "relative overflow-hidden",
+          "rounded-t-2xl rounded-b-none", // se une visualmente al título
+          "border-2 border-yellow-600/70", // borde dorado
+          "shadow-[0_0_32px_rgba(202,138,4,0.35)]", // glow ámbar
+          "p-0", // sin padding: imagen edge-to-edge
+        ].join(" "),
         props: (payload) => ({
           src: payload?.media?.src,
           alt: payload?.media?.alt ?? "Imagen",
           variant: payload?.media?.variant ?? payload?.media?.ratio,
-          className: "min-h-[220px] w-full",
+          className: "min-h-[300px] w-full object-cover",
         }),
       },
+
+      // 📜 Título tipo pergamino/épico debajo de la imagen
+      createTypographySlot("title", "title", "h1", {
+        className: [
+          "rounded-b-2xl rounded-t-none", // continúa desde la imagen
+          "px-6 py-0 text-center",
+          "text-yellow-300 font-black tracking-widest uppercase",
+          "text-shadow-[0_2px_12px_rgba(202,138,4,0.6)]",
+        ].join(" "),
+        containerClassName: "mx-auto max-w-[760px]",
+      }),
+
+      // 📖 Body opcional, estilo lore/descripción
+      createTypographySlot("body", "body", "body", {
+        when: (payload) => Boolean(payload?.body),
+        className: [
+          "mx-auto max-w-[760px]",
+          "mt-3 rounded-2xl",
+          "border border-yellow-700/40",
+          "bg-stone-900/60 backdrop-blur-sm",
+          "px-6 py-4",
+          "text-stone-300 text-sm leading-relaxed italic",
+        ].join(" "),
+      }),
     ],
     postGame: [
       createTypographySlot("title", "title", "h1", {

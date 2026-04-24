@@ -73,24 +73,6 @@ const CompactChip = ({ color, icon: Icon, children }) => (
       }}
     />
 
-    <span
-      className="relative flex h-5 w-5 shrink-0 items-center justify-center rounded-md"
-      style={{
-        background: "rgba(255,255,255,0.10)",
-        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08)",
-      }}>
-      {Icon ? (
-        <Icon
-          size={13}
-          strokeWidth={2.2}
-          style={{
-            color,
-            filter: `drop-shadow(0 0 6px ${color})`,
-          }}
-        />
-      ) : null}
-    </span>
-
     <span className="truncate text-xs font-semibold tracking-[0.01em]">
       {children}
     </span>
@@ -352,17 +334,17 @@ const UserCard = ({ user, isFirst = false }) => {
                   <CompactChip
                     color="var(--usercard-accent-2)"
                     icon={Building2}>
-                    {user?.institucion || "Sin sección"}
+                    {"🏫 " + user?.institucion || "Sin sección"}
                   </CompactChip>
 
-                  <CompactChip color="var(--usercard-accent-)" icon={Users}>
-                    {user?.seccion || "Sin grade"}
+                  <CompactChip color="var(--usercard-accent-2)" icon={Users}>
+                    👨🏼‍🎓{user?.seccion || "Sin grade"}
                   </CompactChip>
 
                   <CompactChip
                     color="var( --usercard-accent-2)"
                     icon={Sparkles}>
-                    Lv. {user?.nivel ?? "-"}
+                    🔮 Lv. {user?.nivel ?? "-"}
                   </CompactChip>
                 </div>
               </div>

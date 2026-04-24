@@ -29,8 +29,6 @@ function useBraidStamps(
           const len = Math.hypot(dx, dy) || 1;
 
           const angle = (Math.atan2(dy, dx) * 180) / Math.PI;
-
-          // normal al path para abrir el trenzado lateralmente
           const nx = -dy / len;
           const ny = dx / len;
 
@@ -61,6 +59,30 @@ function useBraidStamps(
   }, [pathRef, step, trimStart, trimEnd, sideOffset]);
 
   return items;
+}
+
+// Obtiene el punto central del path SVG
+function useMidPoint(pathRef) {
+  const [mid, setMid] = useState(null);
+
+  useLayoutEffect(() => {
+    const node = pathRef.current;
+    if (!node) return;
+
+    let frame = requestAnimationFrame(() => {
+      try {
+        const total = node.getTotalLength();
+        const p = node.getPointAtLength(total / 2);
+        setMid({ x: p.x, y: p.y });
+      } catch {
+        setMid(null);
+      }
+    });
+
+    return () => cancelAnimationFrame(frame);
+  }, [pathRef]);
+
+  return mid;
 }
 
 function MainRopeEndKnot({ x, y, scale = 1 }) {
@@ -95,6 +117,71 @@ function MainRopeEndKnot({ x, y, scale = 1 }) {
   );
 }
 
+function RopeTitle({ mid, title }) {
+  if (!mid || !title) return null;
+
+  const padX = 18;
+  const padY = 9;
+  const fontSize = 13;
+  // estimación del ancho del texto
+  const estWidth = title.length * 7.8 + padX * 2;
+  const boxH = fontSize + padY * 2;
+  const boxW = estWidth;
+  const bx = mid.x - boxW / 2;
+  const by = mid.y - 52 - boxH; // flota encima de la cuerda
+
+  return (
+    <g>
+      {/* línea conectora vertical */}
+      <line
+        x1={mid.x}
+        y1={mid.y - 18}
+        x2={mid.x}
+        y2={by + boxH}
+        stroke="rgba(255,236,204,0.30)"
+        strokeWidth="1.2"
+        strokeDasharray="3 3"
+        strokeLinecap="round"
+      />
+
+      {/* cápsula de fondo */}
+      <rect
+        x={bx}
+        y={by}
+        width={boxW}
+        height={boxH}
+        rx={boxH / 2}
+        fill="rgba(30,18,8,0.78)"
+        stroke="rgba(255,210,140,0.28)"
+        strokeWidth="1.2"
+      />
+
+      {/* brillo superior */}
+      <rect
+        x={bx + 8}
+        y={by + 1}
+        width={boxW - 16}
+        height={2}
+        rx="1"
+        fill="rgba(255,243,210,0.14)"
+      />
+
+      {/* texto */}
+      <text
+        x={mid.x}
+        y={by + padY + fontSize - 1}
+        textAnchor="middle"
+        fontSize={fontSize}
+        fontWeight="800"
+        letterSpacing="0.6"
+        fill="rgba(255,225,160,0.92)"
+        style={{ userSelect: "none" }}>
+        {title}
+      </text>
+    </g>
+  );
+}
+
 export default function MainRope({
   path,
   ids,
@@ -102,6 +189,7 @@ export default function MainRope({
   showPendants = true,
   showEndKnots = true,
   stampStep = 10.9,
+  title, // ← prop para el título
 }) {
   const guideRef = useRef(null);
   const uid = useId().replace(/:/g, "");
@@ -115,11 +203,11 @@ export default function MainRope({
     sideOffset: 2.35,
   });
 
+  const mid = useMidPoint(guideRef);
+
   return (
     <>
       <defs>
-        {/* Módulo principal del trenzado:
-            más estrecho en puntas y más lleno en el vientre */}
         <g id={braidCellId}>
           <path
             d="
@@ -135,49 +223,29 @@ export default function MainRope({
             strokeWidth="1.5"
             strokeLinejoin="round"
           />
-
-          {/* Sombra principal del cruce */}
           <path
-            d="
-              M -13.2 8.1
-              C -8.2 4.6, -2.7 0.7, 11.4 -8.7
-            "
+            d="M -13.2 8.1 C -8.2 4.6, -2.7 0.7, 11.4 -8.7"
             fill="none"
             stroke="rgba(82,46,22,0.32)"
             strokeWidth="2.55"
             strokeLinecap="round"
           />
-
-          {/* Brillo superior */}
           <path
-            d="
-              M -12 -6.3
-              C -6.4 -9.3, 0.1 -8.5, 10.9 -3.2
-            "
+            d="M -12 -6.3 C -6.4 -9.3, 0.1 -8.5, 10.9 -3.2"
             fill="none"
             stroke="rgba(255,236,206,0.28)"
             strokeWidth="1.55"
             strokeLinecap="round"
           />
-
-          {/* Sombra interior leve */}
           <path
-            d="
-              M -14.5 -1.8
-              C -6.2 -5.1, 2.7 -4.3, 13.8 3.4
-            "
+            d="M -14.5 -1.8 C -6.2 -5.1, 2.7 -4.3, 13.8 3.4"
             fill="none"
             stroke="rgba(70,39,19,0.13)"
             strokeWidth="1"
             strokeLinecap="round"
           />
-
-          {/* Brillo de borde corto para cortar el plano */}
           <path
-            d="
-              M 1.5 11
-              C 7.3 9.2, 12.4 5.1, 16.2 0.2
-            "
+            d="M 1.5 11 C 7.3 9.2, 12.4 5.1, 16.2 0.2"
             fill="none"
             stroke="rgba(255,247,231,0.16)"
             strokeWidth="0.95"
@@ -198,7 +266,6 @@ export default function MainRope({
         </mask>
       </defs>
 
-      {/* guía invisible */}
       <path
         ref={guideRef}
         d={path}
@@ -208,7 +275,6 @@ export default function MainRope({
         pointerEvents="none"
       />
 
-      {/* sombra global */}
       <path
         d={path}
         fill="none"
@@ -221,8 +287,6 @@ export default function MainRope({
             : undefined
         }
       />
-
-      {/* base solo de soporte */}
       <path
         d={path}
         fill="none"
@@ -231,7 +295,6 @@ export default function MainRope({
         strokeLinecap="round"
         opacity="0.56"
       />
-
       <path
         d={path}
         fill="none"
@@ -241,23 +304,21 @@ export default function MainRope({
         opacity="0.24"
       />
 
-      {/* patrón que define la cuerda */}
       <g mask={`url(#${ropeMaskId})`}>
         {stamps.map((item, i) => (
           <use
             key={i}
             href={`#${braidCellId}`}
             transform={`
-  translate(${item.x} ${item.y})
-  rotate(${item.angle + item.flip * 168})
-  scale(${item.scaleX} ${item.flip * item.scaleY})
-`}
+              translate(${item.x} ${item.y})
+              rotate(${item.angle + item.flip * 168})
+              scale(${item.scaleX} ${item.flip * item.scaleY})
+            `}
             opacity={item.opacity}
           />
         ))}
       </g>
 
-      {/* luz superior mínima */}
       <path
         d={path}
         fill="none"
@@ -266,8 +327,6 @@ export default function MainRope({
         strokeLinecap="round"
         transform="translate(0,-0.9)"
       />
-
-      {/* acento imperial casi invisible */}
       <path
         d={path}
         fill="none"
@@ -280,7 +339,6 @@ export default function MainRope({
         }
       />
 
-      {/* cuentas */}
       {[
         [180, 84],
         [360, 112],
@@ -299,6 +357,9 @@ export default function MainRope({
           <MainRopeEndKnot x={780} y={64} />
         </>
       )}
+
+      {/* título flotante centrado encima de la cuerda */}
+      <RopeTitle mid={mid} title={title} />
     </>
   );
 }

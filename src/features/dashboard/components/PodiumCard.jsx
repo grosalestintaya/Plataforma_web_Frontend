@@ -106,8 +106,6 @@ export default function PodiumCard({ participant, rank }) {
   return (
     <div
       className={`flex flex-col items-center gap-4 ${isFirst ? "scale-110" : ""}`}>
-      <ChakanaBadge rank={rank} isFirst={isFirst} />
-
       <div className="relative">
         <div
           className={`absolute inset-0 rounded-full bg-gradient-to-br ${style.ring} opacity-30 blur-md ${
@@ -134,10 +132,10 @@ export default function PodiumCard({ participant, rank }) {
         </div>
 
         <div className="absolute -left-8 top-1/2 -translate-y-1/2 text-2xl opacity-50">
-          🌿
+          𓆰
         </div>
         <div className="absolute -right-8 top-1/2 -translate-y-1/2 scale-x-[-1] text-2xl opacity-50">
-          🌿
+          𓆰
         </div>
       </div>
 

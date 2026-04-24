@@ -72,13 +72,13 @@ export default function Ranking() {
     <div className="w-full h-[calc(100dvh-30px)] overflow-hidden px-0">
       <div className="flex h-full min-h-0 flex-col overflow-hidden">
         {error && (
-          <div className="mb-4 shrink-0 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+          <div className="mb-1 shrink-0 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
             <div className="font-bold">No se pudo cargar</div>
             <div className="mt-1 opacity-90">{error}</div>
           </div>
         )}
 
-        <div className="grid flex-1 min-h-0 w-full gap-6 overflow-hidden lg:grid-cols-[minmax(0,1fr)_450px]">
+        <div className="grid flex-1 min-h-0 w-full gap-6 overflow-hidden lg:grid-cols-[minmax(0,1fr)_550px]">
           {/* Panel izquierdo */}
           <div className="min-h-0 w-full overflow-hidden">
             <BoardCard
