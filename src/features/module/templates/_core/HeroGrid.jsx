@@ -16,7 +16,7 @@ export default function HeroGrid({ layout, className, children }) {
   return (
     <section
       className={cn(
-        "grid min-h-full w-full overflow-visible px-4 py-4 sm:px-8 md:h-full md:min-h-0 md:overflow-hidden md:px-15",
+        "grid min-h-full w-full overflow-visible px-4 sm:px-8 md:h-full md:min-h-0 md:overflow-hidden md:px-15",
         "gap-2 grid-cols-(--cols) grid-rows-(--rows) [grid-template-areas:var(--areas)]",
         layout.md?.cols ? "md:grid-cols-(--cols-md)" : "",
         layout.md?.rows ? "md:grid-rows-(--rows-md)" : "",

@@ -81,7 +81,8 @@ export default function QuizTemplate({ variant, data, heroApi, view }) {
     view,
   });
 
-  const layout = normalizeLayout(runtime?.layoutDef);
+  const outerLayout = normalizeLayout(runtime?.outerLayoutDef);
+  const contentLayout = normalizeLayout(runtime?.contentLayoutDef);
   const slots = runtime?.slots ?? [];
   const payload = runtime?.payload ?? {};
 
@@ -216,7 +217,7 @@ export default function QuizTemplate({ variant, data, heroApi, view }) {
     viewId,
   ]);
 
-  if (!layout || !slots.length) {
+  if (!outerLayout || !contentLayout || !slots.length) {
     return (
       <div className="text-white/80">Config invalida para QuizTemplate</div>
     );
@@ -252,10 +253,12 @@ export default function QuizTemplate({ variant, data, heroApi, view }) {
     advanceLabel: heroApi?.advanceLabel ?? "Continuar",
   };
 
-  const QuizBlocks = {
-    ...Blocks,
-    QuizProgressHeader,
-  };
+  const outerSlots = slots.filter((slot) =>
+    ["navigation", "leftNav", "rightNav"].includes(slot.area),
+  );
+  const contentSlots = slots.filter(
+    (slot) => !["navigation", "leftNav", "rightNav"].includes(slot.area),
+  );
 
   return (
     <>

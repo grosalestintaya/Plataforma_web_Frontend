@@ -1,9 +1,9 @@
 {
   "missionId": "m1.1",
-  "missionName": "Mision 1.1. - Conceptual",
-  "missionLabel": "Mision 1.1. - Conceptual",
-  "headerTitle": "Mision 1.1. - Conceptual",
-  "missionTitle": "Mision 1.1. - Conceptual",
+  "missionName": "Misión 1.1 – Conceptual",
+  "missionLabel": "Misión 1.1 – Conceptual",
+  "headerTitle": "Misión 1.1 – Conceptual",
+  "missionTitle": "Misión 1.1 – Conceptual",
   "activityId": "01",
   "activityKey": "m01-conceptual",
   "views": [
@@ -12,7 +12,7 @@
       "order": 1,
       "name": "VISTA 1 - Inicio: Antes de empezar",
       "viewType": "Inicio",
-      "objective": "Presentar el tema de dinero, ingresos y gastos antes de iniciar la experiencia.",
+      "objective": "Presentar el tema (dinero, ingresos y gastos) antes de iniciar la experiencia.",
       "template": "preGameLobby",
       "variant": "preGame",
       "slots": {
@@ -23,10 +23,10 @@
         },
         "body": {
           "paragraphs": [
-            "Esta mision se enfoca en el dinero, los ingresos y los gastos.",
-            "Encontraras informacion e imagenes relacionadas al tema.",
-            "Tambien habra recursos interactivos clickeables.",
-            "Finalmente habra una mini prueba sobre el tema."
+            "En esta misión aprenderás qué es el dinero y cómo se relaciona con los ingresos y los gastos en tu vida diaria.",
+            "Verás explicaciones con imágenes y ejemplos cercanos a tu realidad como estudiante.",
+            "También encontrarás actividades interactivas (solo debes hacer clic) para practicar lo aprendido.",
+            "Al final, harás una mini prueba para comprobar tus conocimientos."
           ],
           "variant": "body1",
           "align": "left"
@@ -45,7 +45,12 @@
             "area": "title",
             "order": 10
           },
-          { "component": "text", "slot": "body", "area": "body", "order": 20 },
+          {
+            "component": "text",
+            "slot": "body",
+            "area": "body",
+            "order": 20
+          },
           {
             "component": "image",
             "slot": "media",
@@ -67,28 +72,29 @@
     {
       "viewId": "m1_1_v2",
       "order": 2,
-      "name": "VISTA 2 - Teoria: ¿Que es el dinero?",
+      "name": "VISTA 2 - Teoría: ¿Qué es el dinero?",
       "viewType": "Teoria",
-      "objective": "Explicar que es el dinero y para que sirve en la vida diaria.",
+      "objective": "Explicar qué es el dinero y por qué es útil en la vida diaria.",
       "template": "simpleTheory",
       "variant": "simple",
       "slots": {
         "title": {
-          "text": "¿Que es el dinero?",
+          "text": "¿Qué es el dinero?",
           "variant": "h1",
           "align": "center"
         },
         "body": {
           "paragraphs": [
-            "El dinero es un medio de pago que usamos para obtener bienes y servicios. Los bienes son cosas que compramos, como comida, cuadernos o ropa. Los servicios son acciones por las que pagamos, como el pasaje, una recarga o una impresión. En otras palabras: el dinero nos permite pagar y así conseguir lo que necesitamos en la vida diaria.",
-            "El dinero facilita el intercambio. Si no existiera, tendríamos que cambiar cosas por cosas (por ejemplo, cambiar un cuaderno por una bebida). Eso no siempre funciona, porque la otra persona puede no querer lo que tú ofreces. Por eso el dinero es útil: porque es un medio aceptado por todos para comprar de forma más rápida y ordenada."
+            "El dinero es un medio de pago que usamos para obtener bienes y servicios. Los bienes son cosas que compramos (como comida, cuadernos o ropa). Los servicios son acciones por las que pagamos (como el pasaje, una recarga o una impresión). En pocas palabras: el dinero nos permite pagar y conseguir lo que necesitamos o queremos.",
+            "El dinero facilita el intercambio. Si no existiera, tendríamos que cambiar cosas por cosas (por ejemplo, cambiar un cuaderno por una bebida), y eso no siempre funciona porque la otra persona puede no necesitar lo que tú ofreces. Por eso usamos dinero: porque es un medio aceptado por todos para comprar de forma más rápida y ordenada.",
+            "Idea clave: el dinero es limitado. Si lo gastas en una cosa, te queda menos para otra; por eso conviene usarlo con cuidado."
           ],
           "variant": "body1",
           "align": "center"
         },
         "media": {
           "src": "1/uso-dinero.png",
-          "alt": "Estudiante usando dinero",
+          "alt": "Estudiante recibiendo dinero en un contexto escolar",
           "variant": "horizontal"
         }
       },
@@ -125,36 +131,36 @@
     {
       "viewId": "m1_1_v3",
       "order": 3,
-      "name": "VISTA 3 - Teoria: Como se usa el dinero en nuestro dia a dia?",
+      "name": "VISTA 3 - Teoría: ¿Cómo se usa el dinero en nuestro día a día?",
       "viewType": "Teoria",
       "objective": "Relacionar el uso del dinero con situaciones cercanas del contexto escolar.",
       "template": "splitTheory",
       "variant": "split",
       "slots": {
         "title": {
-          "text": "¿Como se usa el dinero en nuestro dia?",
+          "text": "¿Cómo se usa el dinero en nuestro día?",
           "variant": "h1",
           "align": "center"
         },
         "body": {
           "paragraphs": [
-            "En el día a día usamos dinero para pagar cosas que necesitamos como estudiantes: movernos, alimentarnos, estudiar y comunicarnos.",
-            "Cada vez que pagas algo, estás tomando una decisión: eliges en qué se va tu dinero. Por eso es importante reconocer en qué cosas gastas más.",
-            "Recuerda: aunque un gasto sea pequeño, si se repite varias veces, al final suma bastante."
+            "En el día a día usamos dinero para cubrir necesidades y también para darnos algunos gustos. Como estudiantes, lo usamos para movernos, alimentarnos, estudiar y comunicarnos.",
+            "Cada vez que pagas algo, estás tomando una decisión: eliges en qué se va tu dinero. Por eso es importante reconocer en qué cosas gastas con más frecuencia.",
+            "Recuerda: un gasto pequeño, si se repite varias veces, al final suma bastante. Por ejemplo, si gastas S/2 en el recreo durante 5 días, habrás gastado S/10 en una semana."
           ],
           "variant": "body1",
           "align": "center"
         },
         "feedback": {
           "title": {
-            "text": "Usos tipicos",
+            "text": "Usos típicos",
             "variant": "label",
             "align": "left"
           },
           "items": [
             "Transporte: pasaje de ida y vuelta al colegio.",
             "Recreo: comida o bebida en el kiosko.",
-            "Útiles: cuaderno, lapicero, fotocopias o materiales para trabajos.",
+            "Estudio: útiles, fotocopias o materiales para trabajos.",
             "Recargas: saldo o datos para comunicarse o para tareas."
           ],
           "variant": "bodySm",
@@ -162,7 +168,7 @@
         },
         "media": {
           "src": "1/uso-del-dinero-2.png",
-          "alt": "Uso diario del dinero",
+          "alt": "Situaciones cotidianas donde se usa dinero",
           "variant": "horizontal"
         }
       },
@@ -174,7 +180,12 @@
             "area": "title",
             "order": 10
           },
-          { "component": "text", "slot": "body", "area": "body", "order": 20 },
+          {
+            "component": "text",
+            "slot": "body",
+            "area": "body",
+            "order": 20
+          },
           {
             "component": "text",
             "slot": "feedback",
@@ -200,22 +211,22 @@
     {
       "viewId": "m1_1_v4",
       "order": 4,
-      "name": "VISTA 4 - Teoria: Que son ingresos y gastos?",
+      "name": "VISTA 4 - Teoría: ¿Qué son ingresos y gastos?",
       "viewType": "Teoria",
-      "objective": "Diferenciar el dinero que entra del dinero que sale.",
+      "objective": "Comprender la diferencia entre ingreso (recibir dinero) y gasto (usar dinero para pagar).",
       "template": "simpleTheory",
       "variant": "simple",
       "slots": {
         "title": {
-          "text": "¿Que son ingresos y gastos?",
+          "text": "¿Qué son ingresos y gastos?",
           "variant": "h1",
           "align": "center"
         },
         "body": {
           "paragraphs": [
-            "A lo largo del día, el dinero no se queda quieto: a veces llega a ti y otras veces se va. A ese movimiento del dinero lo llamamos ingresos y gastos.",
-            "Un ingreso ocurre cuando el dinero entra a tu mano o a tu cuenta. Es decir, cuando recibes dinero por alguna razón. En los ingresos, la idea clave es: “me llegó dinero”.",
-            "Un gasto ocurre cuando el dinero sale porque pagas algo o compras algo. En los gastos, la idea clave es: “yo pagué”."
+            "A lo largo del día, a veces recibimos dinero y otras veces lo usamos para pagar. A ese movimiento del dinero lo llamamos ingresos y gastos.",
+            "Un ingreso ocurre cuando recibes dinero por alguna razón (por ejemplo, te dan dinero para la semana, recibes una propina o vendes algo que ya no usas). La idea clave es: “recibí dinero”.",
+            "Un gasto ocurre cuando usas dinero para pagar o comprar algo (por ejemplo, pagar pasaje, comprar en el kiosko o recargar saldo). La idea clave es: “yo pagué”."
           ],
           "variant": "body1",
           "align": "center"
@@ -247,7 +258,7 @@
                 "id": "income-card",
                 "media": {
                   "src": "1/recibir-dinero.png",
-                  "alt": "Ejemplo de ingreso",
+                  "alt": "Ejemplo de ingreso: recibir dinero",
                   "variant": "horizontal"
                 },
                 "title": {
@@ -256,7 +267,7 @@
                   "align": "center"
                 },
                 "text": {
-                  "text": "Cuando te llega o recibes dinero",
+                  "text": "Cuando recibes dinero.",
                   "variant": "bodySm",
                   "align": "center"
                 }
@@ -265,7 +276,7 @@
                 "id": "expense-card",
                 "media": {
                   "src": "1/pagar-pasaje.png",
-                  "alt": "Ejemplo de gasto",
+                  "alt": "Ejemplo de gasto: pagar pasaje",
                   "variant": "horizontal"
                 },
                 "title": {
@@ -274,7 +285,7 @@
                   "align": "center"
                 },
                 "text": {
-                  "text": "Cuando usas dinero para pagar o comprar",
+                  "text": "Cuando usas dinero para pagar o comprar.",
                   "variant": "bodySm",
                   "align": "center"
                 }
@@ -293,19 +304,19 @@
     {
       "viewId": "m1_1_v5",
       "order": 5,
-      "name": "VISTA 5 - Interaccion: Ejemplos de ingresos y gastos",
+      "name": "VISTA 5 - Interacción: Ejemplos de ingresos y gastos",
       "viewType": "Interaccion",
       "objective": "Reconocer ejemplos cotidianos de ingreso y gasto mediante tarjetas.",
       "template": "explanationTheory",
       "variant": "explanation",
       "slots": {
         "title": {
-          "text": "Ejemplos practicos",
+          "text": "Ejemplos prácticos",
           "variant": "h1",
           "align": "center"
         },
         "subtitle": {
-          "text": "Toca cada tarjeta para ver si es ingreso o gasto.",
+          "text": "Toca cada tarjeta para descubrir si se trata de un ingreso o de un gasto.",
           "variant": "body1",
           "align": "center"
         }
@@ -332,15 +343,15 @@
             "category": "grouper",
             "area": "interaction",
             "columns": 4,
-            "rows":2,
+            "rows": 2,
             "items": [
               {
                 "id": "card-1",
                 "renderAs": "flipCard",
                 "src": "1/recibir-dinero.png",
-                "caption": "Propina",
+                "caption": "Recibir una propina",
                 "reveal": {
-                  "text": "Ingreso: porque recibiste dinero.",
+                  "text": "Ingreso",
                   "tone": "success"
                 }
               },
@@ -348,59 +359,59 @@
                 "id": "card-2",
                 "renderAs": "flipCard",
                 "src": "1/pagar-pasaje.png",
-                "caption": "Pague mi pasaje",
+                "caption": "Pagar pasaje",
                 "reveal": {
-                  "text": "Gasto: porque pagaste.",
+                  "text": "Gasto",
                   "tone": "error"
                 }
               },
               {
                 "id": "card-3",
                 "renderAs": "flipCard",
-                "src": "1/comprar-comida.png",
-                "caption": "Comprar alimentos",
+                "src": "1/ganar-dinero.png",
+                "caption": "Ganar dinero por ayudar",
                 "reveal": {
-                  "text": "Gasto: porque compraste.",
-                  "tone": "error"
+                  "text": "Ingreso",
+                  "tone": "success"
                 }
               },
               {
                 "id": "card-4",
                 "renderAs": "flipCard",
-                "src": "1/ganar-dinero.png",
-                "caption": "Apoyar a hacer algo",
+                "src": "1/comprar-comida.png",
+                "caption": "Comprar alimentos",
                 "reveal": {
-                  "text": "Ingreso: porque te pagaron.",
-                  "tone": "success"
+                  "text": "Gasto",
+                  "tone": "error"
                 }
               },
               {
                 "id": "card-5",
                 "renderAs": "flipCard",
-                "src": "1/recibir-dinero.png",
-                "caption": "Propina",
+                "src": "1/pagar-pasaje.png",
+                "caption": "Pagar el pasaje de vuelta",
                 "reveal": {
-                  "text": "Ingreso: porque recibiste dinero.",
-                  "tone": "success"
+                  "text": "Gasto",
+                  "tone": "error"
                 }
               },
               {
                 "id": "card-6",
                 "renderAs": "flipCard",
-                "src": "1/pagar-pasaje.png",
-                "caption": "Pague mi pasaje",
+                "src": "1/recibir-dinero.png",
+                "caption": "Vender algo que ya no usas",
                 "reveal": {
-                  "text": "Gasto: porque pagaste.",
-                  "tone": "error"
+                  "text": "Ingreso",
+                  "tone": "success"
                 }
               },
               {
                 "id": "card-7",
                 "renderAs": "flipCard",
                 "src": "1/comprar-comida.png",
-                "caption": "Comprar alimentos",
+                "caption": "Comprar ropa",
                 "reveal": {
-                  "text": "Gasto: porque compraste.",
+                  "text": "Gasto",
                   "tone": "error"
                 }
               },
@@ -408,9 +419,9 @@
                 "id": "card-8",
                 "renderAs": "flipCard",
                 "src": "1/ganar-dinero.png",
-                "caption": "Apoyar a hacer algo",
+                "caption": "Recompensa por reciclar",
                 "reveal": {
-                  "text": "Ingreso: porque te pagaron.",
+                  "text": "Ingreso",
                   "tone": "success"
                 }
               }
@@ -429,19 +440,19 @@
     {
       "viewId": "m1_1_v6",
       "order": 6,
-      "name": "VISTA 6 - Mini-Evaluacion: Reconociendo ingresos y gastos",
+      "name": "VISTA 6 - Mini-evaluación: Reconociendo ingresos y gastos",
       "viewType": "Mini-Evaluacion",
-      "objective": "Evaluar si el estudiante puede distinguir ejemplos de ingreso y gasto.",
+      "objective": "Verificar si el estudiante puede distinguir ejemplos de ingreso y gasto.",
       "template": "assessmentTheory",
       "variant": "assessment",
       "slots": {
         "title": {
-          "text": " Hora de Practicar",
+          "text": "Hora de practicar",
           "variant": "h1",
           "align": "center"
         },
         "subtitle": {
-          "text": "Toca la imagen correcta. Si fallas, aun tendras una segunda oportunidad.",
+          "text": "Elige la opción correcta. Si te equivocas, podrás intentarlo una vez más.",
           "variant": "body",
           "align": "center"
         }
@@ -471,7 +482,7 @@
               {
                 "id": "q1",
                 "prompt": {
-                  "text": "¿Cual de las 2 imagenes es un GASTO?",
+                  "text": "¿Cuál de estas dos imágenes representa un GASTO?",
                   "variant": "h3",
                   "align": "center"
                 },
@@ -479,7 +490,7 @@
                   {
                     "id": "q1-income",
                     "label": {
-                      "text": "Me dieron S/ 5 para el recreo",
+                      "text": "Me dieron S/5 para el recreo",
                       "variant": "label",
                       "align": "center"
                     },
@@ -493,13 +504,14 @@
                     "feedback": {
                       "variant": "helper",
                       "align": "center",
-                      "tone": "income"
+                      "tone": "income",
+                      "text": "Casi. Esta opción es un ingreso porque recibiste dinero, pero la pregunta pedía un gasto."
                     }
                   },
                   {
                     "id": "q1-expense",
                     "label": {
-                      "text": "Pague mi pasaje",
+                      "text": "Pagué mi pasaje",
                       "variant": "label",
                       "align": "center"
                     },
@@ -513,7 +525,8 @@
                     "feedback": {
                       "variant": "helper",
                       "align": "center",
-                      "tone": "expense"
+                      "tone": "expense",
+                      "text": "Correcto. Es un gasto porque pagaste por algo."
                     }
                   }
                 ]
@@ -521,7 +534,7 @@
               {
                 "id": "q2",
                 "prompt": {
-                  "text": "¿Cual de las 2 imagenes es un INGRESO?",
+                  "text": "¿Cuál de estas dos imágenes representa un INGRESO?",
                   "variant": "h3",
                   "align": "center"
                 },
@@ -529,7 +542,7 @@
                   {
                     "id": "q2-income",
                     "label": {
-                      "text": "Ayude a recoletar manzanasdsdsds",
+                      "text": "Vendí un juguete que ya no usaba",
                       "variant": "label",
                       "align": "center"
                     },
@@ -543,13 +556,14 @@
                     "feedback": {
                       "variant": "helper",
                       "align": "center",
-                      "tone": "income"
+                      "tone": "income",
+                      "text": "Correcto. Es un ingreso porque recibiste dinero."
                     }
                   },
                   {
                     "id": "q2-expense",
                     "label": {
-                      "text": "Compre una galleta y una bebida",
+                      "text": "Compré una galleta y una bebida",
                       "variant": "label",
                       "align": "center"
                     },
@@ -561,7 +575,7 @@
                     "correct": false,
                     "score": 100,
                     "feedback": {
-                      "text": "Gasto: pagaste por una compra.",
+                      "text": "Casi. Esta opción es un gasto porque pagaste por algo, pero la pregunta pedía un ingreso.",
                       "variant": "helper",
                       "align": "center",
                       "tone": "expense"
@@ -572,7 +586,7 @@
               {
                 "id": "q3",
                 "prompt": {
-                  "text": "¿Cual de las 2 imagenes es un GASTO?",
+                  "text": "¿Cuál de estas dos imágenes representa un GASTO?",
                   "variant": "h3",
                   "align": "center"
                 },
@@ -580,7 +594,7 @@
                   {
                     "id": "q3-income",
                     "label": {
-                      "text": "Recicle una botella y me dieron S/ 0.50",
+                      "text": "Reciclé una botella y me dieron S/0.50",
                       "variant": "label",
                       "align": "center"
                     },
@@ -594,13 +608,14 @@
                     "feedback": {
                       "variant": "helper",
                       "align": "center",
-                      "tone": "income"
+                      "tone": "income",
+                      "text": "Casi. Esta opción es un ingreso porque recibiste dinero, pero la pregunta pedía un gasto."
                     }
                   },
                   {
                     "id": "q3-expense",
                     "label": {
-                      "text": "Compre una bebida en el kiosko",
+                      "text": "Compré una bebida en el kiosko",
                       "variant": "label",
                       "align": "center"
                     },
@@ -614,7 +629,8 @@
                     "feedback": {
                       "variant": "helper",
                       "align": "center",
-                      "tone": "expense"
+                      "tone": "expense",
+                      "text": "Correcto. Es un gasto porque pagaste por algo."
                     }
                   }
                 ]
@@ -622,7 +638,7 @@
               {
                 "id": "q4",
                 "prompt": {
-                  "text": "¿Cual de las 2 imagenes es un INGRESO?",
+                  "text": "¿Cuál de estas dos imágenes representa un INGRESO?",
                   "variant": "h3",
                   "align": "center"
                 },
@@ -630,7 +646,7 @@
                   {
                     "id": "q4-income",
                     "label": {
-                      "text": "Recibi una propina por ayudar en casa",
+                      "text": "Recibí una propina por ayudar en casa",
                       "variant": "label",
                       "align": "center"
                     },
@@ -644,13 +660,14 @@
                     "feedback": {
                       "variant": "helper",
                       "align": "center",
-                      "tone": "income"
+                      "tone": "income",
+                      "text": "Correcto. Es un ingreso porque recibiste dinero."
                     }
                   },
                   {
                     "id": "q4-expense",
                     "label": {
-                      "text": "Pague una recarga de celular",
+                      "text": "Pagué una recarga de celular",
                       "variant": "label",
                       "align": "center"
                     },
@@ -664,7 +681,8 @@
                     "feedback": {
                       "variant": "helper",
                       "align": "center",
-                      "tone": "expense"
+                      "tone": "expense",
+                      "text": "Casi. Esta opción es un gasto porque pagaste por algo, pero la pregunta pedía un ingreso."
                     }
                   }
                 ]
@@ -684,19 +702,19 @@
     {
       "viewId": "m1_1_v7",
       "order": 7,
-      "name": "VISTA 7 - Final: Mision Completada",
+      "name": "VISTA 7 - Final: Misión completada",
       "viewType": "Final",
-      "objective": "Cerrar la mision y mostrar la recompensa final.",
+      "objective": "Cerrar la misión y mostrar la recompensa final.",
       "template": "postGameLobby",
       "variant": "postGame",
       "slots": {
         "title": {
-          "text": "Mision Cumplida",
+          "text": "Misión cumplida",
           "variant": "h1",
           "align": "center"
         },
         "feedback": {
-          "text": "Lograste una mision perfecta: +10 intis",
+          "text": "¡Excelente! Completaste la misión: +10 INTIS",
           "variant": "label",
           "align": "center",
           "color": "accent"

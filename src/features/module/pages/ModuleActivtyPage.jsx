@@ -206,6 +206,14 @@ function ModuleActivityShell({ moduleCode, missionKeyParam, moduleData }) {
     currentView,
     interactiveState,
   });
+  const isQuizTemplate = /quiz/i.test(String(currentView?.template ?? ""));
+  const resolvedFooterModel = isQuizTemplate
+    ? {
+        type: "status",
+        centerText:
+          "Lee la pregunta y escoge una de las alternativas. Para avanzar, usa las flechas de los costados.",
+      }
+    : footerModel;
 
   const heroApi = useMemo(
     () => ({
@@ -272,17 +280,10 @@ function ModuleActivityShell({ moduleCode, missionKeyParam, moduleData }) {
     playSfx?.("click");
   }, [playSfx]);
 
-  const shouldHideFooter = /quiz/i.test(String(currentView?.template ?? ""));
-  const activityGridStyle = shouldHideFooter
-    ? {
-        gridTemplateRows: "var(--activity-header-height, auto) minmax(0, 1fr)",
-      }
-    : ACTIVITY_GRID_STYLE;
-
   return (
     <>
       <ContentBackground moduleCode={moduleCode} {...ACTIVITY_BACKGROUND_PROPS}>
-        <div className={ACTIVITY_GRID_CLASS} style={activityGridStyle}>
+        <div className={ACTIVITY_GRID_CLASS} style={ACTIVITY_GRID_STYLE}>
           <Header
             moduleData={moduleData}
             missionKey={currentMissionKey}
@@ -297,14 +298,11 @@ function ModuleActivityShell({ moduleCode, missionKeyParam, moduleData }) {
             viewIndex={currentViewIndex}
             heroApi={heroApi}
           />
-
-          {!shouldHideFooter ? (
-            <Footer
-              model={footerModel}
-              onUiClick={handleFooterUiClick}
-              themeHex={moduleData?.theme?.color}
-            />
-          ) : null}
+          <Footer
+            model={resolvedFooterModel}
+            onUiClick={handleFooterUiClick}
+            themeHex={moduleData?.theme?.color}
+          />
         </div>
       </ContentBackground>
 
