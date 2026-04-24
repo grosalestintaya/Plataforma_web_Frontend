@@ -60,8 +60,11 @@ export function useModulePlayer(
     [isViewAvailable, views],
   );
 
-  const currentVisiblePosition = visibleIndices.findIndex((index) => index === safeIndex);
-  const safeVisiblePosition = currentVisiblePosition >= 0 ? currentVisiblePosition : 0;
+  const currentVisiblePosition = visibleIndices.findIndex(
+    (index) => index === safeIndex,
+  );
+  const safeVisiblePosition =
+    currentVisiblePosition >= 0 ? currentVisiblePosition : 0;
   const nextVisibleIndex =
     currentVisiblePosition >= 0
       ? visibleIndices[currentVisiblePosition + 1]
@@ -73,13 +76,16 @@ export function useModulePlayer(
   const nextVisibleView =
     typeof nextVisibleIndex === "number" ? views[nextVisibleIndex] : null;
   const previousVisibleView =
-    typeof previousVisibleIndex === "number" ? views[previousVisibleIndex] : null;
+    typeof previousVisibleIndex === "number"
+      ? views[previousVisibleIndex]
+      : null;
   const isFirst =
     visibleIndices.length === 0 ||
     visibleIndices[safeVisiblePosition] === visibleIndices[0];
   const isLast =
     visibleIndices.length === 0 ||
-    visibleIndices[safeVisiblePosition] === visibleIndices[visibleIndices.length - 1];
+    visibleIndices[safeVisiblePosition] ===
+      visibleIndices[visibleIndices.length - 1];
   // La vista previa al postGame es donde realmente cerramos el attempt.
   const isBeforePostGame = !isLast && isPostGameView(nextVisibleView);
   // La segunda vista del flujo no debe permitir volver a la intro.
@@ -93,7 +99,9 @@ export function useModulePlayer(
 
   const goToViewId = useCallback(
     (viewId) => {
-      const nextIndex = views.findIndex((item) => (item?.id ?? item?.viewId) === viewId);
+      const nextIndex = views.findIndex(
+        (item) => (item?.id ?? item?.viewId) === viewId,
+      );
       if (nextIndex < 0) return;
       goTo(nextIndex);
     },
@@ -128,7 +136,8 @@ export function useModulePlayer(
         // La accion puede saltar directo a una vista concreta.
         if (result?.goToViewId) return goToViewId(result.goToViewId);
         // La accion tambien puede resolver el indice por su cuenta.
-        if (typeof result?.goToIndex === "number") return goTo(result.goToIndex);
+        if (typeof result?.goToIndex === "number")
+          return goTo(result.goToIndex);
       }
 
       return fallbackNavigate();
@@ -207,10 +216,26 @@ export function useModulePlayer(
       ...heroApi,
       // Los templates embebidos leen la misma accion/etiqueta que el footer.
       advanceCurrentView,
+      goBackCurrentView: prev,
       advanceLabel: isBeforePostGame || isLast ? "Finalizar" : "Continuar",
       isBeforePostGame,
+      canGoBack:
+        !isBeforePostGame &&
+        !isFirst &&
+        !isImmediatelyAfterPreGame &&
+        !finishing,
+      canAdvance: !finishing,
     }),
-    [advanceCurrentView, heroApi, isBeforePostGame, isLast],
+    [
+      advanceCurrentView,
+      finishing,
+      heroApi,
+      isBeforePostGame,
+      isFirst,
+      isImmediatelyAfterPreGame,
+      isLast,
+      prev,
+    ],
   );
 
   const footerModel = useMemo(() => {

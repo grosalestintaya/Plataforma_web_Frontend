@@ -1,108 +1,158 @@
-import activityImage001 from "@/assets/activity/image001.png";
+import activityImage001 from "/activity/image001.png";
 import { cn } from "@/shared/libs/utils";
+import { getMediaAspectRatio } from "./mediaVariant";
+import ZoomableFrame from "./ZoomableFrame";
 
-const MEDIA_VARIANT_TO_RATIO = {
-  square: "1 / 1",
-  vertical: "2 / 3",
-  horizontal: "3 / 2",
-};
+const IMAGE_FRAME_BASE_CLASS = "items-center justify-center overflow-hidden";
 
-const MEDIA_VALUE_TO_VARIANT = {
-  square: "square",
-  "1:1": "square",
-  "1 / 1": "square",
-  vertical: "vertical",
-  "2:3": "vertical",
-  "2 / 3": "vertical",
-  horizontal: "horizontal",
-  "3:2": "horizontal",
-  "3 / 2": "horizontal",
-};
+const IMAGE_SLOT_FRAME_CLASS = `inline-flex max-w-full ${IMAGE_FRAME_BASE_CLASS}`;
+const IMAGE_RATIO_FRAME_CLASS = `flex w-full max-w-full ${IMAGE_FRAME_BASE_CLASS}`;
+const IMAGE_INTRINSIC_FRAME_CLASS = `inline-flex max-w-full ${IMAGE_FRAME_BASE_CLASS}`;
 
-/**
- * Normaliza una variante visual de media a un valor canonico.
- * Soporta alias por nombre (`horizontal`) y por ratio (`3:2`).
- */
-export function normalizeMediaVariant(value) {
-  if (!value) return null;
+const IMAGE_SLOT_CLASS =
+  "block h-auto w-auto max-h-full max-w-full object-contain";
 
-  const normalized = String(value).trim().toLowerCase();
-  return MEDIA_VALUE_TO_VARIANT[normalized] ?? null;
+const IMAGE_RATIO_CLASS =
+  "block h-full w-full max-h-full max-w-full object-contain";
+
+const IMAGE_INTRINSIC_CLASS =
+  "block h-auto w-auto max-h-full max-w-full object-contain";
+
+function normalizeAssetPath(value) {
+  return String(value ?? "")
+    .trim()
+    .replace(/\\/g, "/")
+    .replace(/^\.?\//, "")
+    .replace(/^src\/assets\/activity\//, "")
+    .replace(/^assets\/activity\//, "")
+    .replace(/^activity\//, "")
+    .replace(/^assets\//, "");
 }
 
-/**
- * Lee la variante declarada desde un valor simple o desde el objeto media.
- */
-export function getMediaVariant(value) {
-  if (!value) return null;
+function resolveActivityImageSrc(src) {
+  if (!src) return activityImage001;
 
-  if (typeof value === "object") {
-    return normalizeMediaVariant(
-      value.variant ?? value.orientation ?? value.layout ?? value.ratio,
-    );
+  const raw = String(src).trim();
+  if (!raw) return activityImage001;
+
+  if (
+    raw.startsWith("http://") ||
+    raw.startsWith("https://") ||
+    raw.startsWith("data:") ||
+    raw.startsWith("blob:")
+  ) {
+    return raw;
   }
 
-  return normalizeMediaVariant(value);
+  if (raw.startsWith("/activity/")) {
+    return raw;
+  }
+
+  if (raw.startsWith("/")) {
+    return raw;
+  }
+
+  const normalizedSrc = normalizeAssetPath(raw);
+  return normalizedSrc ? `/activity/${normalizedSrc}` : activityImage001;
 }
 
-/**
- * Devuelve el aspect-ratio CSS listo para aplicarse en el render.
- */
-export function getMediaAspectRatio(value) {
-  const variant = getMediaVariant(value);
-  return variant ? MEDIA_VARIANT_TO_RATIO[variant] : null;
+function resolveAspectRatio(value) {
+  if (!value) return null;
+
+  const mediaAspectRatio = getMediaAspectRatio(value);
+  if (mediaAspectRatio) return mediaAspectRatio;
+
+  const raw = String(value).trim().toLowerCase();
+
+  if (/^\d+\s*\/\s*\d+$/.test(raw)) {
+    const [w, h] = raw.split("/").map((part) => part.trim());
+    return `${w} / ${h}`;
+  }
+
+  return null;
 }
 
 /**
  * Image:
- * - Renderiza una imagen simple del sistema.
- * - Si no existe `src`, usa una imagen base para evitar huecos visuales.
- * - Siempre respeta el espacio que el bloque padre ya le asigno.
+ * - auto: si recibe variant/ratio, crea una caja proporcional; si no, usa tamaño natural.
+ * - slot: el padre ya define el espacio.
+ * - ratio: Image define su propia caja proporcional.
+ * - intrinsic: comportamiento natural.
  */
 export default function Image({
   src,
   alt = "Imagen",
   className = "",
   imgClassName = "",
+  imgStyle,
   placeholderLabel = "Imagen",
   variant = null,
   ratio = null,
+  mode = "auto",
   fitToContent = false,
+  zoomable = false,
+  zoomLabel,
   style,
 }) {
-  const urlBase = "../../../../src/assets/activity/";
-  const resolvedSrc = urlBase + src || activityImage001;
+  const resolvedSrc = resolveActivityImageSrc(src);
   const resolvedAlt = alt || placeholderLabel || "Imagen";
-  const aspectRatio = getMediaAspectRatio(variant ?? ratio);
-  const aspectStyle = !fitToContent && aspectRatio ? { aspectRatio } : null;
+
+  const aspectHint = variant ?? ratio;
+  const hasAspectHint = Boolean(aspectHint);
+
+  const resolvedMode = fitToContent
+    ? "intrinsic"
+    : mode === "auto"
+      ? hasAspectHint
+        ? "ratio"
+        : "intrinsic"
+      : mode;
+
+  const shouldApplyAspectRatio = resolvedMode === "ratio";
+  const aspectRatio = shouldApplyAspectRatio
+    ? resolveAspectRatio(aspectHint)
+    : null;
+
   const resolvedStyle =
-    aspectStyle || style
-      ? { ...(aspectStyle ?? {}), ...(style ?? {}) }
+    aspectRatio || style
+      ? { ...(aspectRatio ? { aspectRatio } : {}), ...(style ?? {}) }
       : undefined;
 
+  const frameClassName =
+    resolvedMode === "slot"
+      ? IMAGE_SLOT_FRAME_CLASS
+      : resolvedMode === "ratio"
+        ? IMAGE_RATIO_FRAME_CLASS
+        : IMAGE_INTRINSIC_FRAME_CLASS;
+
+  const imageClassName =
+    resolvedMode === "slot"
+      ? IMAGE_SLOT_CLASS
+      : resolvedMode === "ratio"
+        ? IMAGE_RATIO_CLASS
+        : IMAGE_INTRINSIC_CLASS;
+
   return (
-    <div
-      className={cn(
-        fitToContent
-          ? "inline-flex w-fit max-w-full items-center justify-center overflow-hidden"
-          : "flex w-full items-center justify-center overflow-hidden",
-        className,
-      )}
-      style={resolvedStyle}>
+    <ZoomableFrame
+      enabled={zoomable}
+      label={zoomLabel ?? `Ampliar ${resolvedAlt}`}
+      triggerClassName={cn(frameClassName, className)}
+      triggerStyle={resolvedStyle}
+      modalClassName="rounded-2xl"
+      modalChildren={
+        <img
+          src={resolvedSrc}
+          alt={resolvedAlt}
+          className="block max-h-[86vh] max-w-[88vw] rounded-2xl object-contain shadow-2xl"
+        />
+      }
+    >
       <img
         src={resolvedSrc}
         alt={resolvedAlt}
-        className={cn(
-          // La imagen se adapta solo al espacio disponible del contenedor.
-          // Nunca define por si sola el tamano del layout.
-          fitToContent
-            ? "block h-auto max-h-[var(--card-media-max-height,min(340px,calc(var(--hero-height,100vh)*0.36)))] w-auto max-w-full object-contain"
-            : aspectRatio
-              ? "h-full w-full max-h-full max-w-full object-contain"
-              : "h-auto max-w-full object-contain",
-          imgClassName,
-        )}
+        className={cn(imageClassName, imgClassName)}
+        style={imgStyle}
       />
-    </div>
+    </ZoomableFrame>
   );
 }

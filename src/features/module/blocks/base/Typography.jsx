@@ -4,16 +4,16 @@
  */
 export const TYPOGRAPHY = {
   scale: {
-    eyebrow: "text-xs md:text-sm font-semibold uppercase tracking-[0.12em] leading-5",
+    eyebrow: "text-sm md:text-base font-semibold uppercase tracking-[0.12em] leading-5",
     h1: "text-4xl md:text-7xl font-extrabold leading-tight",
-    h2: "text-2xl md:text-3xl font-bold leading-snug",
-    h3: "text-xl md:text-2xl font-semibold leading-snug",
+    h2: "text-3xl md:text-5xl font-extrabold leading-tight",
+    h3: "text-2xl md:text-4xl font-bold leading-snug",
 
-    body: "text-base md:text-lg font-medium leading-7",
-    bodySm: "text-sm md:text-base font-normal leading-6",
-    caption: "text-xs md:text-sm font-normal leading-5",
-    label: "text-sm font-medium leading-5",
-    helper: "text-xs md:text-sm font-normal leading-5",
+    body: "text-lg md:text-xl font-medium leading-8",
+    bodySm: "text-base md:text-lg font-medium leading-7",
+    label: "text-base md:text-lg font-bold leading-6",
+    helper: "text-sm md:text-base font-medium leading-6",
+    caption: "text-xs md:text-sm font-medium leading-5",
   },
   tone: {
     primary: "text-white",
@@ -95,18 +95,17 @@ export function Heading({
   className = "",
   children,
 }) {
+  const resolvedVariant = normalizeVariant(variant);
   const defaultTag =
-    variant === "eyebrow"
+    resolvedVariant === "eyebrow"
       ? "p"
-      : variant === "h1"
-        ? "h1"
-        : variant === "h2"
-          ? "h2"
-          : "h3";
+      : /^h[1-6]$/.test(resolvedVariant)
+        ? resolvedVariant
+        : "h3";
 
   return renderTextTag({
     as: as || defaultTag,
-    variant,
+    variant: resolvedVariant,
     tone,
     width,
     align,
@@ -127,9 +126,11 @@ export function Text({
   className = "",
   children,
 }) {
+  const resolvedVariant = normalizeVariant(variant);
+
   return renderTextTag({
     as,
-    variant,
+    variant: resolvedVariant,
     tone,
     width,
     align,
@@ -192,7 +193,8 @@ function normalizeVariant(variant) {
     overline: "eyebrow",
   };
 
-  return map[variant] ?? variant ?? "body";
+  const resolvedVariant = map[variant] ?? variant ?? "body";
+  return TYPOGRAPHY.scale[resolvedVariant] ? resolvedVariant : "body";
 }
 
 /**
@@ -236,28 +238,28 @@ export default function Typography({
 
   if (Array.isArray(content?.paragraphs)) {
     return (
-        <TextParagraphs
-          text={content.paragraphs.join("\n\n")}
-          variant={resolvedVariant}
-          tone={resolvedTone}
-          align={resolvedAlign}
-          width="full"
-          className={className}
-        />
+      <TextParagraphs
+        text={content.paragraphs.join("\n\n")}
+        variant={resolvedVariant}
+        tone={resolvedTone}
+        align={resolvedAlign}
+        width="full"
+        className={className}
+      />
     );
   }
 
   return (
-      <Tag
-        className={getTypographyClassName({
-          variant: resolvedVariant,
-          tone: resolvedTone,
-          align: resolvedAlign,
-          width: "full",
-          className,
-        })}
-      >
-        {text}
-      </Tag>
+    <Tag
+      className={getTypographyClassName({
+        variant: resolvedVariant,
+        tone: resolvedTone,
+        align: resolvedAlign,
+        width: "full",
+        className,
+      })}
+    >
+      {text}
+    </Tag>
   );
 }

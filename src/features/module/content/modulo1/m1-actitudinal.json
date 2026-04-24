@@ -38,9 +38,19 @@
       },
       "elements": {
         "base": [
-          { "component": "heading", "slot": "title", "area": "title", "order": 10 },
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
           { "component": "text", "slot": "body", "area": "body", "order": 20 },
-          { "component": "image", "slot": "media", "area": "media", "order": 30 }
+          {
+            "component": "image",
+            "slot": "media",
+            "area": "media",
+            "order": 30
+          }
         ],
         "compound": []
       },
@@ -66,11 +76,27 @@
           "text": "Situacion 1",
           "variant": "h1",
           "align": "center"
+        },
+        "media": {
+          "src": "1/ir-en-combi.png",
+          "alt": "Producto del kiosko para la situacion 1",
+          "variant": "horizontal"
         }
       },
       "elements": {
         "base": [
-          { "component": "heading", "slot": "title", "area": "title", "order": 10 }
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "image",
+            "slot": "media",
+            "area": "media",
+            "order": 20
+          }
         ],
         "compound": [
           {
@@ -86,17 +112,31 @@
             "options": [
               {
                 "id": "spend_all",
-                "label": { "text": "a) Lo gasto todo en dulces", "variant": "body2" },
+                "label": {
+                  "text": "a) Lo gasto todo en dulces",
+                  "variant": "body2"
+                },
                 "score": 60
               },
               {
                 "id": "save_part",
-                "label": { "text": "b) Guardo una parte para algo importante", "variant": "body2" },
+                "label": {
+                  "text": "b) Guardo una parte para algo importante",
+                  "variant": "body2"
+                },
                 "score": 100
+              },
+              {
+                "id": "split_money",
+                "label": {
+                  "text": "c) Compro algo pequeno y guardo el resto",
+                  "variant": "body2"
+                },
+                "score": 85
               }
             ],
             "prompt": {
-              "text": "Si quieres, explica por que tomarias esa decision. (Opcional)",
+              "text": "Explica por que tomarias esa decision. (Opcional)",
               "variant": "helper"
             },
             "placeholder": "Escribe aqui tu razon...",
@@ -128,15 +168,25 @@
           "align": "center"
         },
         "media": {
-          "src": "",
+          "src": "1/canjear-botella.png",
           "alt": "Situacion de ahorro frente al kiosko",
           "variant": "vertical"
         }
       },
       "elements": {
         "base": [
-          { "component": "heading", "slot": "title", "area": "title", "order": 10 },
-          { "component": "image", "slot": "media", "area": "media", "order": 20 }
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "image",
+            "slot": "media",
+            "area": "media",
+            "order": 20
+          }
         ],
         "compound": [
           {
@@ -152,12 +202,18 @@
             "options": [
               {
                 "id": "use_savings",
-                "label": { "text": "a) Uso mi ahorro para acompanar al grupo", "variant": "body2" },
+                "label": {
+                  "text": "a) Uso mi ahorro para acompanar al grupo",
+                  "variant": "body2"
+                },
                 "score": 60
               },
               {
                 "id": "keep_savings",
-                "label": { "text": "b) Cuido mi ahorro para el pasaje", "variant": "body2" },
+                "label": {
+                  "text": "b) Cuido mi ahorro para el pasaje",
+                  "variant": "body2"
+                },
                 "score": 100
               }
             ],
@@ -192,11 +248,27 @@
           "text": "Situacion 3",
           "variant": "h1",
           "align": "center"
+        },
+        "media": {
+          "src": "/activity/1/caramelo.png",
+          "alt": "Dinero sobrante del recreo en la situacion 3",
+          "variant": "square"
         }
       },
       "elements": {
         "base": [
-          { "component": "heading", "slot": "title", "area": "title", "order": 10 }
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "image",
+            "slot": "media",
+            "area": "media",
+            "order": 20
+          }
         ],
         "compound": [
           {
@@ -212,13 +284,27 @@
             "options": [
               {
                 "id": "quick_spend",
-                "label": { "text": "a) Lo gasto rapido en golosinas", "variant": "body2" },
+                "label": {
+                  "text": "a) Lo gasto rapido en golosinas",
+                  "variant": "body2"
+                },
                 "score": 60
               },
               {
                 "id": "save_or_plan",
-                "label": { "text": "b) Guardo una parte o la uso en algo necesario", "variant": "body2" },
+                "label": {
+                  "text": "b) Guardo una parte o la uso en algo necesario",
+                  "variant": "body2"
+                },
                 "score": 100
+              },
+              {
+                "id": "compare_before_spending",
+                "label": {
+                  "text": "c) Espero un poco y decido despues si vale la pena gastarlo",
+                  "variant": "body2"
+                },
+                "score": 85
               }
             ],
             "prompt": {
@@ -261,8 +347,18 @@
       },
       "elements": {
         "base": [
-          { "component": "heading", "slot": "title", "area": "title", "order": 10 },
-          { "component": "image", "slot": "media", "area": "media", "order": 20 }
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "image",
+            "slot": "media",
+            "area": "media",
+            "order": 20
+          }
         ],
         "compound": [
           {
@@ -278,12 +374,18 @@
             "options": [
               {
                 "id": "borrow_impulse",
-                "label": { "text": "a) Pido prestado para comprarlo por impulso", "variant": "body2" },
+                "label": {
+                  "text": "a) Pido prestado para comprarlo por impulso",
+                  "variant": "body2"
+                },
                 "score": 60
               },
               {
                 "id": "wait_and_plan",
-                "label": { "text": "b) No compro y espero otra ocasion o ahorro", "variant": "body2" },
+                "label": {
+                  "text": "b) No compro y espero otra ocasion o ahorro",
+                  "variant": "body2"
+                },
                 "score": 100
               }
             ],
@@ -328,8 +430,18 @@
       },
       "elements": {
         "base": [
-          { "component": "heading", "slot": "title", "area": "title", "order": 10 },
-          { "component": "text", "slot": "feedback", "area": "feedback", "order": 20 }
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "text",
+            "slot": "feedback",
+            "area": "feedback",
+            "order": 20
+          }
         ],
         "compound": [
           {
@@ -341,14 +453,30 @@
               {
                 "id": "reward-xp",
                 "title": { "text": "XP", "variant": "label" },
-                "text": { "text": "+10", "variant": "body1", "color": "secondary" },
-                "media": { "src": "", "alt": "Recompensa de XP", "variant": "square" }
+                "text": {
+                  "text": "+10",
+                  "variant": "body1",
+                  "color": "secondary"
+                },
+                "media": {
+                  "src": "",
+                  "alt": "Recompensa de XP",
+                  "variant": "square"
+                }
               },
               {
                 "id": "reward-intis",
                 "title": { "text": "INTIS", "variant": "label" },
-                "text": { "text": "+10", "variant": "body1", "color": "secondary" },
-                "media": { "src": "", "alt": "Recompensa de Intis", "variant": "square" }
+                "text": {
+                  "text": "+10",
+                  "variant": "body1",
+                  "color": "secondary"
+                },
+                "media": {
+                  "src": "",
+                  "alt": "Recompensa de Intis",
+                  "variant": "square"
+                }
               }
             ]
           }

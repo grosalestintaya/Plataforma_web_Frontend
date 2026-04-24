@@ -39,14 +39,18 @@ function createTypographySlot(area, contentKey, fallbackVariant, extra = {}) {
  */
 function findCompound(compounds, targetType) {
   if (!Array.isArray(compounds)) return null;
-  return compounds.find((item) => (item?.component ?? item?.type) === targetType) ?? null;
+  return (
+    compounds.find((item) => (item?.component ?? item?.type) === targetType) ??
+    null
+  );
 }
 
 /**
  * Convierte una lista del documento en contenido tipografico con vietas.
  */
 function toListContent(listData) {
-  if (!Array.isArray(listData?.items) || listData.items.length === 0) return null;
+  if (!Array.isArray(listData?.items) || listData.items.length === 0)
+    return null;
 
   return {
     paragraphs: listData.items.map((item) => `* ${item}`),
@@ -89,7 +93,8 @@ function normalizeShowCardItems(items = []) {
 
   return items.map((item) => ({
     ...item,
-    text: item?.text ?? item?.description ?? item?.subtitle ?? item?.label ?? null,
+    text:
+      item?.text ?? item?.description ?? item?.subtitle ?? item?.label ?? null,
   }));
 }
 
@@ -97,13 +102,17 @@ function normalizeShowCardItems(items = []) {
  * Construye el payload unico que consumen las variantes.
  */
 function getPayload(view = {}) {
-  const compounds = Array.isArray(view?.elements?.compound) ? view.elements.compound : [];
+  const compounds = Array.isArray(view?.elements?.compound)
+    ? view.elements.compound
+    : [];
   const showCard = findCompound(compounds, "showCard");
   const flipCard = findCompound(compounds, "flipCard");
   const collageCard = findCompound(compounds, "collageCard");
   const chooseOne = findCompound(compounds, "chooseOne");
   const memoryPairs = findCompound(compounds, "memoryPairs");
-  const { feedbackText, supportList } = normalizeFeedback(view?.slots?.feedback);
+  const { feedbackText, supportList } = normalizeFeedback(
+    view?.slots?.feedback,
+  );
 
   return {
     title: view?.slots?.title,
@@ -170,8 +179,7 @@ export const THEORY_CONFIG = {
       {
         area: "body1",
         when: (payload) =>
-          Boolean(payload?.body) ||
-          Boolean(payload?.supportListContent),
+          Boolean(payload?.body) || Boolean(payload?.supportListContent),
         className: "rounded-2xl",
         stackClassName: "gap-10",
         items: [
@@ -196,7 +204,8 @@ export const THEORY_CONFIG = {
         items: [
           {
             area: "media",
-            when: (payload) => Array.isArray(payload?.rowItems) && payload.rowItems.length > 0,
+            when: (payload) =>
+              Array.isArray(payload?.rowItems) && payload.rowItems.length > 0,
             // Usa el compuesto real exportado por blocks/index.
             // Aqui no se crea nada extra: solo se entregan items con media,
             // titulo y texto para que ShowCard construya Cards normales.
@@ -212,6 +221,7 @@ export const THEORY_CONFIG = {
               alt: payload?.media?.alt ?? "Imagen de apoyo",
               variant: payload?.media?.variant ?? payload?.media?.ratio,
               className: "min-h-[220px] w-full",
+              zoomable: payload?.media?.zoomable !== false,
             }),
           },
         ],
@@ -219,9 +229,12 @@ export const THEORY_CONFIG = {
       {
         area: "feedback",
         reserveSpace: true,
-        reserveWhen: (payload) => Boolean(payload?.feedbackText?.hiddenUntilAction),
+        reserveWhen: (payload) =>
+          Boolean(payload?.feedbackText?.hiddenUntilAction),
         placeholderClassName: "min-h-[72px]",
-        when: (payload) => Boolean(payload?.feedbackText) && !payload?.feedbackText?.hiddenUntilAction,
+        when: (payload) =>
+          Boolean(payload?.feedbackText) &&
+          !payload?.feedbackText?.hiddenUntilAction,
         block: "Typography",
         props: (payload) => ({
           content: payload?.feedbackText,
@@ -247,7 +260,8 @@ export const THEORY_CONFIG = {
         // El area visual principal ocupa el espacio disponible del hero.
         className:
           "h-full min-h-0 rounded-2xl place-items-stretch place-content-stretch",
-        stackClassName: "h-full min-h-0 justify-start gap-4 px-0 sm:px-6 xl:px-20",
+        stackClassName:
+          "h-full min-h-0 justify-start gap-4 px-0 sm:px-6 xl:px-20",
         items: [
           {
             area: "media",
@@ -256,6 +270,7 @@ export const THEORY_CONFIG = {
             props: (payload, ctx) => ({
               items: payload?.collageCardData?.items ?? [],
               columns: payload?.collageCardData?.columns ?? 2,
+              rows: payload?.collageCardData?.rows,
               heroApi: ctx?.heroApi,
               view: ctx?.view,
               className: "h-full",
@@ -284,6 +299,7 @@ export const THEORY_CONFIG = {
               alt: payload?.media?.alt ?? "Imagen de apoyo",
               variant: payload?.media?.variant ?? payload?.media?.ratio,
               className: "min-h-[220px] w-full",
+              zoomable: payload?.media?.zoomable !== false,
             }),
           },
         ],
@@ -301,7 +317,8 @@ export const THEORY_CONFIG = {
       {
         area: "body2",
         when: (payload) =>
-          Boolean(payload?.supportListTitle) || Boolean(payload?.supportListContent),
+          Boolean(payload?.supportListTitle) ||
+          Boolean(payload?.supportListContent),
         className: "self-start rounded-2xl text-left",
         stackClassName: "gap-3",
         items: [
@@ -323,6 +340,7 @@ export const THEORY_CONFIG = {
           alt: payload?.media?.alt ?? "Imagen de apoyo",
           variant: payload?.media?.variant ?? payload?.media?.ratio,
           className: "min-h-[220px] w-full",
+          zoomable: payload?.media?.zoomable !== false,
         }),
       },
     ],
@@ -337,7 +355,8 @@ export const THEORY_CONFIG = {
       }),
       {
         area: "assessment",
-        className: "h-full min-h-0 rounded-2xl place-items-stretch place-content-stretch",
+        className:
+          "h-full min-h-0 rounded-2xl place-items-stretch place-content-stretch",
         stackClassName: "h-full min-h-0 justify-start gap-4",
         items: [
           {
@@ -427,7 +446,10 @@ function resolveLayoutDef(variant, baseLayout, payload) {
     });
   }
 
-  if (variant === "split" && (payload?.supportListTitle || payload?.supportListContent)) {
+  if (
+    variant === "split" &&
+    (payload?.supportListTitle || payload?.supportListContent)
+  ) {
     const next = insertLayoutRow(baseLayout, {
       // En mobile body2 va antes de media; en desktop comparte la fila con media.
       index: 2,
@@ -437,7 +459,9 @@ function resolveLayoutDef(variant, baseLayout, payload) {
     });
 
     if (next?.md?.areas?.length) {
-      next.md.areas = next.md.areas.filter((row, index) => !(index === 3 && row === "media media"));
+      next.md.areas = next.md.areas.filter(
+        (row, index) => !(index === 3 && row === "media media"),
+      );
       next.md.rows = String(next.md.rows)
         .trim()
         .split(/\s+/)
@@ -467,7 +491,8 @@ function resolveLayoutDef(variant, baseLayout, payload) {
 function resolveVariant(variant, view) {
   if (variant && THEORY_CONFIG.variants[variant]) return variant;
   const mappedVariant = THEORY_VARIANT_BY_TEMPLATE[view?.template];
-  if (mappedVariant && THEORY_CONFIG.variants[mappedVariant]) return mappedVariant;
+  if (mappedVariant && THEORY_CONFIG.variants[mappedVariant])
+    return mappedVariant;
   return THEORY_CONFIG.fallbackVariant;
 }
 

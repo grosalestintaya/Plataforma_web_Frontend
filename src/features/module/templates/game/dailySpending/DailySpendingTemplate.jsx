@@ -6,6 +6,7 @@ import Card from "@/features/module/blocks/compounds/container/Card";
 import ChooseOne from "@/features/module/blocks/compounds/Iterative/ChooseOne";
 import CollageCard from "@/features/module/blocks/compounds/grouper/CollageCard";
 import Calculator from "@/features/module/blocks/compounds/Iterative/Calculator";
+import { cn } from "@/shared/libs/utils";
 
 const VARIANT_BY_TEMPLATE = {
   decisionDailySpending: "decision",
@@ -25,8 +26,13 @@ const ENGINE_TO_VARIANT = {
  * Busca un compuesto por nombre dentro de la vista.
  */
 function findCompound(view, targetType) {
-  const compounds = Array.isArray(view?.elements?.compound) ? view.elements.compound : [];
-  return compounds.find((item) => (item?.component ?? item?.type) === targetType) ?? null;
+  const compounds = Array.isArray(view?.elements?.compound)
+    ? view.elements.compound
+    : [];
+  return (
+    compounds.find((item) => (item?.component ?? item?.type) === targetType) ??
+    null
+  );
 }
 
 /**
@@ -81,7 +87,8 @@ function getInheritedBalance(heroApi, viewId, fallbackBalance) {
   if (currentIndex <= 0) return fallbackBalance;
 
   for (let index = currentIndex - 1; index >= 0; index -= 1) {
-    const candidateViewId = missionViews[index]?.id ?? missionViews[index]?.viewId;
+    const candidateViewId =
+      missionViews[index]?.id ?? missionViews[index]?.viewId;
     if (!candidateViewId) continue;
 
     const candidateState = heroApi?.getInteractiveState?.(candidateViewId);
@@ -131,8 +138,12 @@ function normalizeChoiceItem(option, index) {
   return {
     id: option?.id ?? `choice-${index + 1}`,
     title: normalizeTextNode(option?.title ?? option?.label, "label"),
-    detail: typeof amountValue === "string" ? { text: amountValue, variant: "label" } : amountValue,
-    media: option?.media ?? option?.image ?? { src: option?.src, alt: option?.alt ?? "Opcion" },
+    detail:
+      typeof amountValue === "string"
+        ? { text: amountValue, variant: "label" }
+        : amountValue,
+    media: option?.media ??
+      option?.image ?? { src: option?.src, alt: option?.alt ?? "Opcion" },
     feedback:
       option?.feedback ??
       (option?.reveal?.text
@@ -159,7 +170,9 @@ function resolveShopNextViewId(heroApi, currentViewId, selectedIds) {
 
   if (currentIndex < 0) return null;
 
-  const hasPlasticBottle = selectedIds.some((item) => item === "gaseosa" || item === "agua");
+  const hasPlasticBottle = selectedIds.some(
+    (item) => item === "gaseosa" || item === "agua",
+  );
 
   for (let index = currentIndex + 1; index < missionViews.length; index += 1) {
     const candidate = missionViews[index];
@@ -211,12 +224,17 @@ function getShopItems(view, legacyElement) {
 
   return Array.isArray(legacyElement?.products)
     ? legacyElement.products.map((item, index) => ({
-      id: item?.id ?? `product-${index + 1}`,
-      title: { text: item?.name, variant: "label", align: "center" },
-      text: { text: formatMoney(item?.price), variant: "label", align: "center" },
-      media: item?.media ?? item?.image ?? { src: item?.src, alt: item?.alt ?? item?.name },
-      price: Number(item?.price ?? 0),
-    }))
+        id: item?.id ?? `product-${index + 1}`,
+        title: { text: item?.name, variant: "label", align: "center" },
+        text: {
+          text: formatMoney(item?.price),
+          variant: "label",
+          align: "center",
+        },
+        media: item?.media ??
+          item?.image ?? { src: item?.src, alt: item?.alt ?? item?.name },
+        price: Number(item?.price ?? 0),
+      }))
     : [];
 }
 
@@ -249,18 +267,29 @@ function navigateAfterStateCommit(navigate) {
 /**
  * Cabecera reutilizable del template: titulo a la izquierda y saldo a la derecha.
  */
-function DailyHeader({ title, amount }) {
+function DailyHeader({ title, subtitle, amount }) {
   return (
     <div className="grid gap-3 md:grid-cols-[1fr_auto]">
       <div className="rounded-2xl content-center p-3">
-        {title ? (
-          <Typography
-            content={{
-              ...title,
-              variant: title?.variant ?? "h3",
-            }}
-          />
-        ) : null}
+        <div className="flex flex-col gap-3">
+          {title ? (
+            <Typography
+              content={{
+                ...title,
+                variant: title?.variant ?? "h3",
+              }}
+            />
+          ) : null}
+
+          {subtitle ? (
+            <Typography
+              content={{
+                ...subtitle,
+                variant: subtitle?.variant ?? "h3",
+              }}
+            />
+          ) : null}
+        </div>
       </div>
 
       <div className="md:min-w-[190px]">
@@ -336,7 +365,11 @@ function DailyShopHeader({ title, situation, amount }) {
  * - Replica la accion verde definida en las variantes del documento.
  * - El avance queda dentro del template en vistas procedimentales.
  */
-function DailyAdvanceButton({ label = "Continuar", onClick, disabled = false }) {
+function DailyAdvanceButton({
+  label = "Continuar",
+  onClick,
+  disabled = false,
+}) {
   return (
     <div className="flex justify-center">
       <Button
@@ -353,13 +386,19 @@ function DailyAdvanceButton({ label = "Continuar", onClick, disabled = false }) 
 /**
  * Template DailySpending alineado al documento de variantes.
  */
-export default function DailySpendingTemplate({ view, data, heroApi, variant }) {
+export default function DailySpendingTemplate({
+  view,
+  data,
+  heroApi,
+  variant,
+}) {
   const legacyElement = getLegacyDailyElement(view, data);
   const resolvedVariant = resolveVariant(view, variant, legacyElement);
   const viewId = view?.id ?? view?.viewId;
 
   const title = view?.slots?.title ?? data?.title;
-  const amount = view?.slots?.amount ?? data?.amount ?? { label: "Saldo", value: legacyElement?.balance ?? 0 };
+  const amount = view?.slots?.amount ??
+    data?.amount ?? { label: "Saldo", value: legacyElement?.balance ?? 0 };
   const assessment = view?.slots?.assessment ?? data?.assessment;
   const situation = view?.slots?.situation ?? data?.situation ?? assessment;
   const feedback = view?.slots?.feedback ?? data?.feedback;
@@ -367,7 +406,8 @@ export default function DailySpendingTemplate({ view, data, heroApi, variant }) 
 
   const choiceItems = getChoiceItems(view, legacyElement);
   const shopItems = getShopItems(view, legacyElement);
-  const calculatorData = findCompound(view, "calculator") ?? data?.calculator ?? {};
+  const calculatorData =
+    findCompound(view, "calculator") ?? data?.calculator ?? {};
 
   const [selectedDecision, setSelectedDecision] = useState(null);
   const [selectedProductIds, setSelectedProductIds] = useState([]);
@@ -388,18 +428,19 @@ export default function DailySpendingTemplate({ view, data, heroApi, variant }) 
     [selectedProductIds, shopItems],
   );
 
-  const totalProducts = selectedProducts.reduce((sum, item) => sum + Number(item?.price ?? 0), 0);
+  const totalProducts = selectedProducts.reduce(
+    (sum, item) => sum + Number(item?.price ?? 0),
+    0,
+  );
   const nextBalance = currentBalance - totalProducts;
   const decisionBalance = selectedDecision
-    ? selectedDecision?.nextBalance ??
+    ? (selectedDecision?.nextBalance ??
       (selectedDecision?.cost !== undefined
         ? currentBalance - Number(selectedDecision.cost)
-        : currentBalance + Number(selectedDecision?.reward ?? 0))
+        : currentBalance + Number(selectedDecision?.reward ?? 0)))
     : currentBalance;
   const displayedBalance =
-    resolvedVariant === "shop"
-      ? nextBalance
-      : decisionBalance;
+    resolvedVariant === "shop" ? nextBalance : decisionBalance;
   const displayedAmount = {
     ...(amount ?? {}),
     value: displayedBalance,
@@ -448,8 +489,19 @@ export default function DailySpendingTemplate({ view, data, heroApi, variant }) 
     if (!item?.id) return;
 
     setSelectedProductIds((prev) =>
-      prev.includes(item.id) ? prev.filter((id) => id !== item.id) : [...prev, item.id],
+      prev.includes(item.id)
+        ? prev.filter((id) => id !== item.id)
+        : [...prev, item.id],
     );
+  }
+
+  /**
+   * Quita un producto desde el resumen de compra.
+   */
+  function removeSelectedProduct(item) {
+    if (!item?.id) return;
+
+    setSelectedProductIds((prev) => prev.filter((id) => id !== item.id));
   }
 
   /**
@@ -466,7 +518,11 @@ export default function DailySpendingTemplate({ view, data, heroApi, variant }) 
     emitDailyResult(heroApi, view, resultPayload);
 
     // La situacion extra solo aparece si se compro una botella plastica.
-    const nextViewId = resolveShopNextViewId(heroApi, viewId, selectedProductIds);
+    const nextViewId = resolveShopNextViewId(
+      heroApi,
+      viewId,
+      selectedProductIds,
+    );
 
     if (heroApi?.isBeforePostGame) {
       navigateAfterStateCommit(() => {
@@ -506,11 +562,13 @@ export default function DailySpendingTemplate({ view, data, heroApi, variant }) 
                 onSelect={toggleProduct}
                 columns={3}
                 rows={2}
-                className="h-full content-center gap-3"
+                className="h-full content-start gap-3"
                 style={{
-                  // En shop aprovechamos mas el slot para que las cards crezcan
-                  // sin sobrepasar el area asignada.
-                  "--card-media-max-height": "min(158px, calc(var(--hero-height, 100vh) * 0.18))",
+                  "--card-slot-height":
+                    "min(300px, calc(var(--hero-height, 100vh) * 0.33))",
+                  "--card-media-max-height":
+                    "min(190px, calc(var(--hero-height, 100vh) * 0.21))",
+                  "--card-content-reserve": "108px",
                 }}
               />
             </div>
@@ -522,6 +580,7 @@ export default function DailySpendingTemplate({ view, data, heroApi, variant }) 
                 total={totalProducts}
                 balance={nextBalance}
                 onSubmit={confirmShopSelection}
+                onRemoveItem={removeSelectedProduct}
                 disabled={selectedProducts.length === 0}
               />
             </div>
@@ -530,7 +589,10 @@ export default function DailySpendingTemplate({ view, data, heroApi, variant }) 
           <div className="shrink-0">
             {feedback ? (
               <div className="flex min-h-[56px] items-center rounded-2xl border border-white/15 p-3">
-                <Typography content={feedback} variant={feedback?.variant ?? "helper"} />
+                <Typography
+                  content={feedback}
+                  variant={feedback?.variant ?? "helper"}
+                />
               </div>
             ) : shouldReserveFeedback ? (
               <div className="min-h-[56px]" aria-hidden="true" />
@@ -544,46 +606,65 @@ export default function DailySpendingTemplate({ view, data, heroApi, variant }) 
   const decisionContent = (
     <ChooseOne
       data={{
-        instruction: situation
-          ? {
-              ...situation,
-              variant: situation?.variant ?? "h2",
-            }
-          : null,
+        instruction: null,
         items: choiceItems,
       }}
       onSelection={handleDecisionSelection}
     />
   );
+  const hasDecisionMedia = Boolean(media);
+  const shouldUseCompactDecisionMedia =
+    hasDecisionMedia && choiceItems.length <= 2;
+  const decisionGridClass = shouldUseCompactDecisionMedia
+    ? "grid min-h-0 flex-1 grid-cols-[minmax(0,1fr)_5.5rem] gap-2 md:grid-cols-[1.2fr_0.8fr] md:gap-3"
+    : hasDecisionMedia
+      ? "grid min-h-0 flex-1 gap-3 lg:grid-cols-[1.2fr_0.8fr]"
+      : "grid min-h-0 flex-1 gap-3";
 
   return (
-    <section className="mx-auto flex h-full min-h-0 w-full max-w-6xl flex-col gap-3 overflow-hidden px-5 py-4 text-white">
-      <DailyHeader title={title} amount={displayedAmount} />
+    <section className="mx-auto flex h-full min-h-0 w-full max-w-6xl flex-col gap-2 overflow-hidden px-4 py-2 text-white md:gap-3 md:px-5 md:py-4">
+      <DailyHeader
+        title={title}
+        subtitle={situation}
+        amount={displayedAmount}
+      />
 
       <div className="flex min-h-0 flex-1 flex-col gap-3">
-        <div
-          className={
-            resolvedVariant === "event" || media
-              ? "grid min-h-0 flex-1 gap-3 lg:grid-cols-[1.2fr_0.8fr]"
-              : "grid min-h-0 flex-1 gap-3"
-          }
-        >
+        <div className={decisionGridClass}>
           <div
-            className="min-h-0 rounded-2xl p-3 [--card-media-max-height:min(320px,calc(var(--hero-height,100vh)*0.34))]"
+            className={cn(
+              "min-h-0 overflow-hidden rounded-2xl px-3 py-1",
+              hasDecisionMedia
+                ? "[--card-slot-height:min(334px,calc(var(--hero-height,100vh)*0.38))] [--card-media-max-height:min(250px,calc(var(--hero-height,100vh)*0.28))]"
+                : "[--card-slot-height:min(430px,calc(var(--hero-height,100vh)*0.48))] [--card-media-max-height:min(350px,calc(var(--hero-height,100vh)*0.38))]",
+            )}
           >
             {decisionContent}
           </div>
 
-          {media ? (
-            <div className="rounded-2xl  p-3">
+          {hasDecisionMedia ? (
+            <div
+              className={cn(
+                "flex min-h-0 items-center justify-center overflow-hidden rounded-2xl",
+                shouldUseCompactDecisionMedia
+                  ? "p-1.5 md:p-3"
+                  : "max-h-[260px] p-2 md:max-h-none md:p-3",
+              )}
+            >
               <Image
                 src={media?.src}
                 alt={media?.alt ?? "Situacion"}
                 variant={media?.variant ?? media?.ratio}
-                // Esta media lateral se controla por la altura del hero
-                // para no empujar el resto de la vista fuera del canvas.
-                className="w-full"
-                imgClassName="max-h-[min(260px,calc(var(--hero-height,100vh)*0.34))] max-w-full object-contain"
+                // La imagen lateral debe ocupar su slot sin salirse,
+                // priorizando verse completa antes que recortarse.
+                className={cn(
+                  "h-full w-full",
+                  shouldUseCompactDecisionMedia
+                    ? ""
+                    : "max-h-[240px] md:max-h-full",
+                )}
+                imgClassName="h-full w-full max-h-full max-w-full object-contain"
+                zoomable={media?.zoomable !== false}
               />
             </div>
           ) : null}
@@ -598,7 +679,7 @@ export default function DailySpendingTemplate({ view, data, heroApi, variant }) 
               />
             </div>
           ) : shouldReserveFeedback ? (
-            <div className="min-h-[56px]" aria-hidden="true" />
+            <div className="hidden min-h-[56px] md:block" aria-hidden="true" />
           ) : null}
         </div>
 

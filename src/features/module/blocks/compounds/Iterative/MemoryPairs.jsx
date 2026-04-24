@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { cn } from "@/shared/libs/utils";
-import Image, { getMediaVariant } from "../../base/Media/Image";
+// import Image, { getMediaVariant } from "../../base/Media/Image";
 import Typography from "../../base/Typography";
 
 /**
@@ -72,10 +72,10 @@ export default function MemoryPairs(props) {
   const isComplete = matched.size === totalPairs && totalPairs > 0;
   const isPreviewActive = previewRemainingMs > 0;
   const previewSecondsLeft = Math.ceil(previewRemainingMs / 1000);
-  const score = useMemo(() => {
-    if (!totalPairs || !turns) return 0;
-    return Math.max(0, Math.min(100, Math.round((totalPairs / turns) * 100)));
-  }, [totalPairs, turns]);
+  const score =
+    totalPairs && turns
+      ? Math.max(0, Math.min(100, Math.round((totalPairs / turns) * 100)))
+      : 0;
 
   useEffect(() => {
     if (!isComplete) return;
@@ -185,7 +185,7 @@ export default function MemoryPairs(props) {
           const media = card?.media ?? card?.image ?? null;
           const imageSrc = media?.src ?? card.img ?? "";
           const imageAlt = media?.alt ?? card.alt ?? `Par ${card.pairId}`;
-          const imageVariant = getMediaVariant(media);
+          // const imageVariant = getMediaVariant(media);
 
           return (
             <button

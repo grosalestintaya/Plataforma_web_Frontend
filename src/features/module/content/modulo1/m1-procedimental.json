@@ -62,12 +62,12 @@
       "template": "decisionDailySpending",
       "variant": "decision",
       "slots": {
-        "title": { "text": "Situacion 1", "variant": "h2" },
+        "title": { "text": "Situacion 1", "variant": "eyebrow" },
         "amount": { "label": "Monto", "value": 5 },
         "assessment": {
-          "text": "Debes ir al colegio y necesitas decidir como llegar.",
-          "variant": "h2",
-          "align": "center"
+          "text": "Debes ir al colegio pero ya se te hizo algo.",
+          "variant": "h3",
+          "align": "left"
         }
       },
       "elements": {
@@ -87,7 +87,7 @@
                 "id": "go-by-combi",
                 "title": { "text": "Ir en combi", "variant": "label", "align": "center" },
                 "detail": { "text": "S/ 0.50", "variant": "label", "align": "center" },
-                "media": { "src": "/src/assets/activity/ir-en-combi.png", "alt": "Ir en combi", "variant": "horizontal" },
+                "media": { "src": "1/ir-en-combi.png", "alt": "Ir en combi", "variant": "horizontal" },
                 "score": 100,
                 "cost": 0.5,
                 "nextBalance": 4.5,
@@ -101,7 +101,7 @@
                 "id": "go-walking",
                 "title": { "text": "Ir caminando", "variant": "label", "align": "center" },
                 "detail": { "text": "S/ 0.00", "variant": "label", "align": "center" },
-                "media": { "src": "/src/assets/activity/ir-caminando.png", "alt": "Ir caminando", "variant": "horizontal" },
+                "media": { "src": "1/ir-caminando.png", "alt": "Ir caminando", "variant": "horizontal" },
                 "score": 60,
                 "cost": 0,
                 "nextBalance": 5,
@@ -133,16 +133,11 @@
       "template": "shopDailySpending",
       "variant": "shop",
       "slots": {
-        "title": { "text": "Situacion 2", "variant": "h3" },
-        "amount": { "text": "Monto", "variant": "h2" },
+        "title": { "text": "Situacion 2", "variant": "eyebrow" },
+        "amount": { "text": "Monto", "variant": "h3" },
         "situation": {
-          "text": "Ya estas en el recreo. Tienes hambre y debes decidir que hacer con tu dinero.",
-          "variant": "h2",
-          "align": "left"
-        },
-        "feedback": {
-          "text": "Selecciona uno o varios productos y paga para continuar.",
-          "variant": "helper",
+          "text": "Hora del recreo, te dio mucha hambre. Escoge que comprar con el dinero que tienes.",
+          "variant": "h3",
           "align": "left"
         }
       },
@@ -162,30 +157,30 @@
             "items": [
               {
                 "id": "gaseosa",
-                "title": { "text": "Gaseosa", "variant": "label", "align": "center" },
-                "text": { "text": "S/ 1.50", "variant": "label", "align": "center" },
-                "media": { "src": "/src/assets/activity/gaseosa.png", "alt": "Gaseosa", "variant": "square" },
+                "title": { "text": "Gaseosa", "variant": "helper", "align": "center" },
+                "text": { "text": "S/ 1.50", "variant": "caption", "align": "center" },
+                "media": { "src": "1/gaseosa.png", "alt": "Gaseosa", "variant": "square" },
                 "price": 1.5
               },
               {
                 "id": "galleta",
-                "title": { "text": "Galleta", "variant": "label", "align": "center" },
-                "text": { "text": "S/ 1.00", "variant": "label", "align": "center" },
-                "media": { "src": "/src/assets/activity/galleta.png", "alt": "Galleta", "variant": "square" },
+                "title": { "text": "Galleta", "variant": "helper", "align": "center" },
+                "text": { "text": "S/ 1.00", "variant": "caption", "align": "center" },
+                "media": { "src": "1/galleta.png", "alt": "Galleta", "variant": "square" },
                 "price": 1
               },
               {
                 "id": "agua",
-                "title": { "text": "Agua", "variant": "label", "align": "center" },
-                "text": { "text": "S/ 1.00", "variant": "label", "align": "center" },
-                "media": { "src": "/src/assets/activity/agua.png", "alt": "Agua", "variant": "square" },
+                "title": { "text": "Agua", "variant": "helper", "align": "center" },
+                "text": { "text": "S/ 1.00", "variant": "caption", "align": "center" },
+                "media": { "src": "1/agua.png", "alt": "Agua", "variant": "square" },
                 "price": 1
               },
               {
                 "id": "caramelo",
-                "title": { "text": "Caramelo", "variant": "label", "align": "center" },
-                "text": { "text": "S/ 0.50", "variant": "label", "align": "center" },
-                "media": { "src": "/src/assets/activity/caramelo.png", "alt": "Caramelo", "variant": "square" },
+                "title": { "text": "Caramelo", "variant": "helper", "align": "center" },
+                "text": { "text": "S/ 0.50", "variant": "caption", "align": "center" },
+                "media": { "src": "1/caramelo.png", "alt": "Caramelo", "variant": "square" },
                 "price": 0.5
               }
             ]
@@ -207,7 +202,7 @@
       },
       "navigation": {
         "mode": "embedded",
-        "label": "Usa el boton verde para continuar"
+        "label": "Selecciona uno o varios productos y paga para continuar."
       },
       "completionCriteria": {
         "type": "interaction",
@@ -223,14 +218,14 @@
       "template": "decisionDailySpending",
       "variant": "decision",
       "slots": {
-        "title": { "text": "Situacion extra", "variant": "h2" },
+        "title": { "text": "Situacion extra", "variant": "eyebrow" },
         "amount": { "label": "Monto" },
         "assessment": {
           "text": "Tienes una botella de plastico, puedes canjearla.",
-          "variant": "h2",
-          "align": "center"
+          "variant": "h3",
+          "align": "left"
         },
-        "media": { "src": "/src/assets/activity/extra-canje.png", "alt": "Botella para canje", "variant": "vertical" }
+        "media": { "src": "1/extra-canje.png", "alt": "Botella para canje", "variant": "vertical" }
       },
       "elements": {
         "base": [
@@ -250,7 +245,7 @@
                 "id": "recycle-bottle",
                 "title": { "text": "Canjear botella", "variant": "label", "align": "center" },
                 "detail": { "text": "+ S/ 0.50", "variant": "label", "align": "center" },
-                "media": { "src": "/src/assets/activity/canjear-botella.png", "alt": "Canjear botella", "variant": "horizontal" },
+                "media": { "src": "1/canjear-botella.png", "alt": "Canjear botella", "variant": "horizontal" },
                 "score": 100,
                 "reward": 0.5,
                 "feedback": {
@@ -263,7 +258,7 @@
                 "id": "skip-bottle",
                 "title": { "text": "No canjear botella", "variant": "label", "align": "center" },
                 "detail": { "text": "S/ 0.00", "variant": "label", "align": "center" },
-                "media": { "src": "/src/assets/activity/no-canjear-botella.png", "alt": "No canjear botella", "variant": "horizontal" },
+                "media": { "src": "1/no-canjear-botella.png", "alt": "No canjear botella", "variant": "horizontal" },
                 "score": 60,
                 "reward": 0,
                 "feedback": {
@@ -301,12 +296,12 @@
       "template": "decisionDailySpending",
       "variant": "decision",
       "slots": {
-        "title": { "text": "Situacion 3", "variant": "h2" },
+        "title": { "text": "Situacion 3", "variant": "eyebrow" },
         "amount": { "label": "Monto" },
         "assessment": {
           "text": "Termino el dia escolar y debes decidir como volver a casa.",
-          "variant": "h2",
-          "align": "center"
+          "variant": "h3",
+          "align": "left"
         }
       },
       "elements": {
@@ -326,7 +321,7 @@
                 "id": "return-combi",
                 "title": { "text": "Regresar en combi", "variant": "label", "align": "center" },
                 "detail": { "text": "S/ 0.50", "variant": "label", "align": "center" },
-                "media": { "src": "/src/assets/activity/regresar-combi.png", "alt": "Regresar en combi", "variant": "horizontal" },
+                "media": { "src": "1/regresar-combi.png", "alt": "Regresar en combi", "variant": "horizontal" },
                 "score": 80,
                 "cost": 0.5,
                 "feedback": {
@@ -339,7 +334,7 @@
                 "id": "return-walking",
                 "title": { "text": "Regresar caminando", "variant": "label", "align": "center" },
                 "detail": { "text": "S/ 0.00", "variant": "label", "align": "center" },
-                "media": { "src": "/src/assets/activity/regresar-caminando.png", "alt": "Regresar caminando", "variant": "horizontal" },
+                "media": { "src": "1/regresar-caminando.png", "alt": "Regresar caminando", "variant": "horizontal" },
                 "score": 100,
                 "cost": 0,
                 "feedback": {
