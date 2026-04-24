@@ -1,31 +1,7 @@
-import activityImage001 from "@/assets/activity/image001.png";
+import activityImage001 from "/activity/image001.png";
 import { cn } from "@/shared/libs/utils";
-
-const MEDIA_VARIANT_TO_RATIO = {
-  square: "1 / 1",
-  vertical: "2 / 3",
-  horizontal: "3 / 2",
-};
-
-const MEDIA_VALUE_TO_VARIANT = {
-  square: "square",
-  "1:1": "square",
-  "1 / 1": "square",
-  vertical: "vertical",
-  "2:3": "vertical",
-  "2 / 3": "vertical",
-  horizontal: "horizontal",
-  "3:2": "horizontal",
-  "3 / 2": "horizontal",
-};
-
-const ACTIVITY_IMAGE_MODULES = import.meta.glob(
-  "../../../../../assets/activity/**/*.{png,jpg,jpeg,webp,avif,gif,svg}",
-  {
-    eager: true,
-    import: "default",
-  },
-);
+import { getMediaAspectRatio } from "./mediaVariant";
+import ZoomableFrame from "./ZoomableFrame";
 
 const IMAGE_FRAME_BASE_CLASS = "items-center justify-center overflow-hidden";
 
@@ -53,24 +29,6 @@ function normalizeAssetPath(value) {
     .replace(/^assets\//, "");
 }
 
-const ACTIVITY_IMAGE_URLS = Object.entries(ACTIVITY_IMAGE_MODULES).reduce(
-  (acc, [key, value]) => {
-    const normalizedKey = normalizeAssetPath(
-      key.replace(/^.*assets\/activity\//, ""),
-    );
-    const fileName = normalizedKey.split("/").pop();
-
-    acc[normalizedKey] = value;
-
-    if (fileName && !(fileName in acc)) {
-      acc[fileName] = value;
-    }
-
-    return acc;
-  },
-  {},
-);
-
 function resolveActivityImageSrc(src) {
   if (!src) return activityImage001;
 
@@ -86,40 +44,16 @@ function resolveActivityImageSrc(src) {
     return raw;
   }
 
+  if (raw.startsWith("/activity/")) {
+    return raw;
+  }
+
   if (raw.startsWith("/")) {
     return raw;
   }
 
   const normalizedSrc = normalizeAssetPath(raw);
-  return (
-    ACTIVITY_IMAGE_URLS[normalizedSrc] ??
-    ACTIVITY_IMAGE_URLS[normalizedSrc.split("/").pop()] ??
-    activityImage001
-  );
-}
-
-export function normalizeMediaVariant(value) {
-  if (!value) return null;
-
-  const normalized = String(value).trim().toLowerCase();
-  return MEDIA_VALUE_TO_VARIANT[normalized] ?? null;
-}
-
-export function getMediaVariant(value) {
-  if (!value) return null;
-
-  if (typeof value === "object") {
-    return normalizeMediaVariant(
-      value.variant ?? value.orientation ?? value.layout ?? value.ratio,
-    );
-  }
-
-  return normalizeMediaVariant(value);
-}
-
-export function getMediaAspectRatio(value) {
-  const variant = getMediaVariant(value);
-  return variant ? MEDIA_VARIANT_TO_RATIO[variant] : null;
+  return normalizedSrc ? `/activity/${normalizedSrc}` : activityImage001;
 }
 
 function resolveAspectRatio(value) {
@@ -155,6 +89,9 @@ export default function Image({
   variant = null,
   ratio = null,
   mode = "auto",
+  fitToContent = false,
+  zoomable = false,
+  zoomLabel,
   style,
 }) {
   const resolvedSrc = resolveActivityImageSrc(src);
@@ -163,8 +100,9 @@ export default function Image({
   const aspectHint = variant ?? ratio;
   const hasAspectHint = Boolean(aspectHint);
 
-  const resolvedMode =
-    mode === "auto"
+  const resolvedMode = fitToContent
+    ? "intrinsic"
+    : mode === "auto"
       ? hasAspectHint
         ? "ratio"
         : "intrinsic"
@@ -195,13 +133,26 @@ export default function Image({
         : IMAGE_INTRINSIC_CLASS;
 
   return (
-    <div className={cn(frameClassName, className)} style={resolvedStyle}>
+    <ZoomableFrame
+      enabled={zoomable}
+      label={zoomLabel ?? `Ampliar ${resolvedAlt}`}
+      triggerClassName={cn(frameClassName, className)}
+      triggerStyle={resolvedStyle}
+      modalClassName="rounded-2xl"
+      modalChildren={
+        <img
+          src={resolvedSrc}
+          alt={resolvedAlt}
+          className="block max-h-[86vh] max-w-[88vw] rounded-2xl object-contain shadow-2xl"
+        />
+      }
+    >
       <img
         src={resolvedSrc}
         alt={resolvedAlt}
         className={cn(imageClassName, imgClassName)}
         style={imgStyle}
       />
-    </div>
+    </ZoomableFrame>
   );
 }

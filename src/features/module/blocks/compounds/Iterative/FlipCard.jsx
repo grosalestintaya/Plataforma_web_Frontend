@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { cn } from "@/shared/libs/utils";
 import Typography from "../../base/Typography";
-import { getMediaVariant } from "../../base/Media/Image";
+import { getMediaVariant } from "../../base/Media/mediaVariant";
 import Card from "../container/Card";
 
 const FLIP_BUTTON_BASE_CLASS =
@@ -48,7 +48,11 @@ function getRevealTone(reveal) {
   return "border border-white/15 bg-white/15 text-white rounded-xl";
 }
 
-function normalizeFlipMedia(media, fallbackAlt = "Carta", variantSource = null) {
+function normalizeFlipMedia(
+  media,
+  fallbackAlt = "Carta",
+  variantSource = null,
+) {
   return {
     ...(media ?? {}),
     alt: media?.alt ?? fallbackAlt,
@@ -111,6 +115,7 @@ export default function FlipCard(props) {
     style,
     allowFlipBack = true,
     reportToHeroApi = true,
+    fillContainer = false,
     selectedId: controlledSelectedId,
     onItemClick,
     onComplete,
@@ -131,16 +136,19 @@ export default function FlipCard(props) {
 
   const revealedCount = Object.values(revealedMap).filter(Boolean).length;
 
-  function emitComplete(result) {
-    if (reportToHeroApi) {
-      heroApi?.setInteractiveState?.(viewId, {
-        ...result,
-        type: "flipCard",
-        countsTowardScore,
-      });
-    }
-    onComplete?.(result);
-  }
+  const emitComplete = useCallback(
+    (result) => {
+      if (reportToHeroApi) {
+        heroApi?.setInteractiveState?.(viewId, {
+          ...result,
+          type: "flipCard",
+          countsTowardScore,
+        });
+      }
+      onComplete?.(result);
+    },
+    [countsTowardScore, heroApi, onComplete, reportToHeroApi, viewId],
+  );
 
   useEffect(() => {
     if (mode !== "revealGrid") return;
@@ -153,7 +161,7 @@ export default function FlipCard(props) {
       revealedCount,
       score: countsTowardScore ? 100 : null,
     });
-  }, [countsTowardScore, items.length, mode, revealedCount]);
+  }, [countsTowardScore, emitComplete, items.length, mode, revealedCount]);
 
   function revealGridCard(cardId) {
     if (locked) return;
@@ -213,7 +221,11 @@ export default function FlipCard(props) {
     const media = getFlipMedia(item);
 
     return {
-      media: normalizeFlipMedia(media, item.alt ?? item.caption ?? "Carta", item),
+      media: normalizeFlipMedia(
+        media,
+        item.alt ?? item.caption ?? "Carta",
+        item,
+      ),
       title: normalizeFrontTitle(item),
     };
   }
@@ -262,6 +274,7 @@ export default function FlipCard(props) {
   function renderFlipButton(item, { inline = false } = {}) {
     const isFlipped = Boolean(flippedMap[item.id]);
     const isSelected = (controlledSelectedId ?? selectedId) === item.id;
+    const shouldFillInline = inline && fillContainer;
     const selectionClassName = getSelectionClass(item, isSelected);
 
     const reveal = item.reveal ?? {
@@ -282,11 +295,20 @@ export default function FlipCard(props) {
           }
           onItemClick?.(item);
         }}
-        className={cn(FLIP_BUTTON_BASE_CLASS, containerClassName)}
+        className={cn(
+          FLIP_BUTTON_BASE_CLASS,
+          shouldFillInline
+            ? "max-h-full max-w-full items-center justify-center p-1"
+            : "",
+          containerClassName,
+        )}
         style={style}
       >
         <div
-          className={FLIP_CARD_INNER_CLASS}
+          className={cn(
+            FLIP_CARD_INNER_CLASS,
+            shouldFillInline ? "h-fit max-h-full w-fit max-w-full" : "",
+          )}
           style={{
             transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
           }}
@@ -295,22 +317,31 @@ export default function FlipCard(props) {
             as="div"
             density="compact"
             {...getFrontCardProps(item)}
+            fitToMedia={inline}
+            fillContainer={shouldFillInline}
             selected={isSelected && item.correct}
-            className={cn(FLIP_FACE_CLASS, selectionClassName, frontCardClassName)}
+            className={cn(
+              FLIP_FACE_CLASS,
+              shouldFillInline ? "max-h-full max-w-full" : "",
+              selectionClassName,
+              frontCardClassName,
+            )}
             contentClassName="gap-0.5 px-1 pt-1"
           />
 
-          {renderBackCard(
-            reveal,
-            cn(FLIP_BACK_FACE_CLASS, selectionClassName),
-          )}
+          {renderBackCard(reveal, cn(FLIP_BACK_FACE_CLASS, selectionClassName))}
         </div>
       </button>
     );
 
     if (inline) {
       return (
-        <div className="flex min-h-0 min-w-0 w-fit max-w-full items-start justify-center">
+        <div
+          className={cn(
+            "flex min-h-0 min-w-0 max-w-full items-center justify-center overflow-hidden",
+            fillContainer ? "h-full w-full" : "w-fit",
+          )}
+        >
           {button}
         </div>
       );

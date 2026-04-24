@@ -222,6 +222,7 @@ export const LOBBY_CONFIG = {
         className: "rounded-2xl  p-5",
         props: (payload) => ({
           items: payload?.rowItems ?? [],
+          zoomable: false,
         }),
       },
       createTypographySlot("feedback", "feedback", "label", {

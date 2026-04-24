@@ -331,13 +331,14 @@
             "component": "collageCard",
             "category": "grouper",
             "area": "interaction",
-            "columns": 2,
+            "columns": 4,
+            "rows":2,
             "items": [
               {
                 "id": "card-1",
                 "renderAs": "flipCard",
                 "src": "1/recibir-dinero.png",
-                "caption": "Propina para el recreo",
+                "caption": "Propina",
                 "reveal": {
                   "text": "Ingreso: porque recibiste dinero.",
                   "tone": "success"
@@ -365,6 +366,46 @@
               },
               {
                 "id": "card-4",
+                "renderAs": "flipCard",
+                "src": "1/ganar-dinero.png",
+                "caption": "Apoyar a hacer algo",
+                "reveal": {
+                  "text": "Ingreso: porque te pagaron.",
+                  "tone": "success"
+                }
+              },
+              {
+                "id": "card-5",
+                "renderAs": "flipCard",
+                "src": "1/recibir-dinero.png",
+                "caption": "Propina",
+                "reveal": {
+                  "text": "Ingreso: porque recibiste dinero.",
+                  "tone": "success"
+                }
+              },
+              {
+                "id": "card-6",
+                "renderAs": "flipCard",
+                "src": "1/pagar-pasaje.png",
+                "caption": "Pague mi pasaje",
+                "reveal": {
+                  "text": "Gasto: porque pagaste.",
+                  "tone": "error"
+                }
+              },
+              {
+                "id": "card-7",
+                "renderAs": "flipCard",
+                "src": "1/comprar-comida.png",
+                "caption": "Comprar alimentos",
+                "reveal": {
+                  "text": "Gasto: porque compraste.",
+                  "tone": "error"
+                }
+              },
+              {
+                "id": "card-8",
                 "renderAs": "flipCard",
                 "src": "1/ganar-dinero.png",
                 "caption": "Apoyar a hacer algo",

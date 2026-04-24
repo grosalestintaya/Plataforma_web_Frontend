@@ -139,11 +139,6 @@
           "text": "Hora del recreo, te dio mucha hambre. Escoge que comprar con el dinero que tienes.",
           "variant": "h3",
           "align": "left"
-        },
-        "feedback": {
-          "text": "Selecciona uno o varios productos y paga para continuar.",
-          "variant": "helper",
-          "align": "left"
         }
       },
       "elements": {
@@ -207,7 +202,7 @@
       },
       "navigation": {
         "mode": "embedded",
-        "label": "Usa el boton verde para continuar"
+        "label": "Selecciona uno o varios productos y paga para continuar."
       },
       "completionCriteria": {
         "type": "interaction",
@@ -324,7 +319,7 @@
             "items": [
               {
                 "id": "return-combi",
-                "title": { "text": "Regresar en fdfdfgdfsdgf sdfsdfsdfsd vsgfsdfsd sgvsfgvs", "variant": "label", "align": "center" },
+                "title": { "text": "Regresar en combi", "variant": "label", "align": "center" },
                 "detail": { "text": "S/ 0.50", "variant": "label", "align": "center" },
                 "media": { "src": "1/regresar-combi.png", "alt": "Regresar en combi", "variant": "horizontal" },
                 "score": 80,

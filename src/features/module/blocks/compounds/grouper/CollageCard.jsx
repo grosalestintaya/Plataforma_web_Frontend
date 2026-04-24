@@ -1,32 +1,17 @@
 import { useEffect, useState } from "react";
 import Typography from "../../base/Typography";
-import { getMediaVariant } from "../../base/Media/Image";
+import { getMediaVariant } from "../../base/Media/mediaVariant";
 import Card from "../container/Card";
 import FlipCard from "../Iterative/FlipCard";
 import { cn } from "@/shared/libs/utils";
 
-const GRID_COLUMNS_CLASS = {
-  1: "grid-cols-[auto]",
-  2: "grid-cols-[auto_auto]",
-  3: "grid-cols-[auto_auto_auto]",
-  4: "grid-cols-[auto_auto_auto_auto]",
-};
-
-const GRID_ROWS_CLASS = {
-  1: "grid-rows-[auto]",
-  2: "grid-rows-[auto_auto]",
-  3: "grid-rows-[auto_auto_auto]",
-  4: "grid-rows-[auto_auto_auto_auto]",
-};
-
 const COLLAGE_ROOT_CLASS =
-  "flex h-full min-h-0 w-full items-center justify-center overflow-visible";
+  "flex h-full min-h-0 w-full items-center justify-center overflow-hidden";
 
 const COLLAGE_GRID_CLASS =
-  "grid h-fit min-h-0 w-fit max-w-full place-items-center content-center justify-center gap-3 overflow-visible";
+  "grid h-full min-h-0 w-full max-w-full place-items-center content-center justify-center gap-3 overflow-hidden";
 
-const COLLAGE_ITEM_SLOT_CLASS =
-  "flex min-h-0 min-w-0 w-fit max-w-full items-start justify-center overflow-visible";
+const COLLAGE_ITEM_SLOT_CLASS = "module-card-grid-slot";
 
 const SELECTED_CARD_CLASS =
   "border-emerald-200/90 bg-emerald-500/15 shadow-[0_0_26px_rgba(52,211,153,0.32)] ring-4 ring-inset ring-emerald-300/80";
@@ -43,9 +28,10 @@ function getItemId(item, index) {
   return item?.id ?? `collage-item-${index + 1}`;
 }
 
-function clampGridAxisSize(value) {
-  if (!Number.isFinite(value)) return 1;
-  return Math.max(1, Math.min(4, Math.round(value)));
+function getGridAxisSize(value) {
+  const numericValue = Number(value);
+  if (!Number.isFinite(numericValue) || numericValue <= 0) return null;
+  return Math.max(1, Math.min(6, Math.round(numericValue)));
 }
 
 function getGridLayout(requestedColumns, requestedRows, itemCount) {
@@ -53,15 +39,13 @@ function getGridLayout(requestedColumns, requestedRows, itemCount) {
     return { columns: 1, rows: 1 };
   }
 
+  const explicitColumns = getGridAxisSize(requestedColumns);
   const resolvedColumns =
-    Number.isFinite(requestedColumns) && requestedColumns > 0
-      ? clampGridAxisSize(requestedColumns)
-      : clampGridAxisSize(Math.sqrt(itemCount));
+    explicitColumns ?? getGridAxisSize(Math.sqrt(itemCount));
 
+  const explicitRows = getGridAxisSize(requestedRows);
   const resolvedRows =
-    Number.isFinite(requestedRows) && requestedRows > 0
-      ? clampGridAxisSize(requestedRows)
-      : clampGridAxisSize(Math.ceil(itemCount / resolvedColumns));
+    explicitRows ?? getGridAxisSize(Math.ceil(itemCount / resolvedColumns));
 
   return { columns: resolvedColumns, rows: resolvedRows };
 }
@@ -95,10 +79,6 @@ export default function CollageCard({
   const [revealedIds, setRevealedIds] = useState([]);
   const hasItems = Array.isArray(items) && items.length > 0;
   const gridLayout = getGridLayout(columns, rows, hasItems ? items.length : 0);
-  const gridColumnsClassName =
-    GRID_COLUMNS_CLASS[gridLayout.columns] ?? GRID_COLUMNS_CLASS[1];
-  const gridRowsClassName =
-    GRID_ROWS_CLASS[gridLayout.rows] ?? GRID_ROWS_CLASS[1];
   const interactiveViewId = view?.id ?? view?.viewId;
 
   useEffect(() => {
@@ -129,11 +109,11 @@ export default function CollageCard({
   return (
     <div className={cn(COLLAGE_ROOT_CLASS, className)} style={style}>
       <div
-        className={cn(
-          COLLAGE_GRID_CLASS,
-          gridColumnsClassName,
-          gridRowsClassName,
-        )}
+        className={COLLAGE_GRID_CLASS}
+        style={{
+          gridTemplateColumns: `repeat(${gridLayout.columns}, minmax(0, 1fr))`,
+          gridTemplateRows: `repeat(${gridLayout.rows}, minmax(0, 1fr))`,
+        }}
       >
         {items.map((item, index) => {
           const isFlip = isFlipItem(item);
@@ -146,6 +126,7 @@ export default function CollageCard({
               <div key={itemId} className={COLLAGE_ITEM_SLOT_CLASS}>
                 <FlipCard
                   compact
+                  fillContainer
                   data={{
                     mode: item?.mode ?? "revealGrid",
                     columns: 1,
@@ -157,8 +138,7 @@ export default function CollageCard({
                         label: item?.title ?? item?.label,
                         caption: item?.caption,
                         correct: item?.correct,
-                        reveal:
-                          item?.reveal ??
+                        reveal: item?.reveal ??
                           item?.back ?? {
                             text: "Sin contenido",
                             variant: "bodySm",
@@ -168,6 +148,7 @@ export default function CollageCard({
                     ],
                   }}
                   selectedId={isSelected ? itemId : null}
+                  containerClassName="max-w-full"
                   gridContainerClassName="grid-cols-1"
                   onComplete={() => handleFlipComplete(itemId)}
                 />
@@ -180,10 +161,11 @@ export default function CollageCard({
               <Card
                 as={selectable ? "button" : "article"}
                 density="compact"
+                fillContainer
                 onClick={selectable ? () => onSelect?.(item, index) : undefined}
                 selected={selectable && isSelected}
                 className={cn(
-                  "max-w-full",
+                  "max-h-full max-w-full",
                   selectable && isSelected ? SELECTED_CARD_CLASS : "",
                 )}
                 media={media}
@@ -198,7 +180,8 @@ export default function CollageCard({
                     />
                   ) : null
                 }
-                contentClassName="gap-0.5"
+                contentClassName="gap-0"
+                zoomable={!selectable && item?.zoomable !== false}
               />
             </div>
           );

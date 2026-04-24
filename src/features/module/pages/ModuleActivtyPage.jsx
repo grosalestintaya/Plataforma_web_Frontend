@@ -272,12 +272,17 @@ function ModuleActivityShell({ moduleCode, missionKeyParam, moduleData }) {
     playSfx?.("click");
   }, [playSfx]);
 
+  const shouldHideFooter = /quiz/i.test(String(currentView?.template ?? ""));
+  const activityGridStyle = shouldHideFooter
+    ? {
+        gridTemplateRows: "var(--activity-header-height, auto) minmax(0, 1fr)",
+      }
+    : ACTIVITY_GRID_STYLE;
+
   return (
     <>
-      <ContentBackground
-        moduleCode={moduleCode}
-        {...ACTIVITY_BACKGROUND_PROPS}>
-        <div className={ACTIVITY_GRID_CLASS} style={ACTIVITY_GRID_STYLE}>
+      <ContentBackground moduleCode={moduleCode} {...ACTIVITY_BACKGROUND_PROPS}>
+        <div className={ACTIVITY_GRID_CLASS} style={activityGridStyle}>
           <Header
             moduleData={moduleData}
             missionKey={currentMissionKey}
@@ -293,11 +298,13 @@ function ModuleActivityShell({ moduleCode, missionKeyParam, moduleData }) {
             heroApi={heroApi}
           />
 
-          <Footer
-            model={footerModel}
-            onUiClick={handleFooterUiClick}
-            themeHex={moduleData?.theme?.color}
-          />
+          {!shouldHideFooter ? (
+            <Footer
+              model={footerModel}
+              onUiClick={handleFooterUiClick}
+              themeHex={moduleData?.theme?.color}
+            />
+          ) : null}
         </div>
       </ContentBackground>
 

@@ -3,14 +3,19 @@ import Typography from "../../base/Typography";
 import Button from "../../base/Action/Button";
 import Card from "../container/Card";
 import FlipCard from "./FlipCard";
-import { getMediaVariant } from "../../base/Media/Image";
+import { getMediaVariant } from "../../base/Media/mediaVariant";
 import { cn } from "@/shared/libs/utils";
 
-function normalizeOptionMedia(media, fallbackAlt = "Opcion", variantSource = null) {
+function normalizeOptionMedia(
+  media,
+  fallbackAlt = "Opcion",
+  variantSource = null,
+) {
   return {
     ...(media ?? {}),
     alt: media?.alt ?? fallbackAlt,
-    variant: getMediaVariant(media) ?? getMediaVariant(variantSource) ?? "horizontal",
+    variant:
+      getMediaVariant(media) ?? getMediaVariant(variantSource) ?? "horizontal",
   };
 }
 
@@ -29,11 +34,10 @@ function getChoiceMediaVariant(itemOrOption) {
   );
 }
 
-const OPTION_SLOT_CLASS =
-  "flex min-h-0 min-w-0 w-fit max-w-full items-start justify-center overflow-visible";
+const OPTION_SLOT_CLASS = "module-card-grid-slot";
 
 const CARD_OPTION_CLASS =
-  "min-h-0 min-w-0 w-fit max-w-full gap-1 p-2 md:gap-1.5 md:p-2";
+  "min-h-0 min-w-0 max-h-full max-w-full gap-1 p-2 md:gap-1.5 md:p-2";
 
 function normalizeQuestionOption(option, index) {
   const rawLabel = option?.label ?? option?.text ?? `Opcion ${index + 1}`;
@@ -291,6 +295,10 @@ export default function ChooseOne({ data, heroApi, view, onSelection }) {
     const canAdvance = canContinue && !isLastQuestion;
     const isCompleted =
       isLastQuestion && Boolean(currentQuestionResult?.correct);
+    const optionGridRowsClass =
+      currentOptions.length > 2
+        ? "grid-rows-[repeat(2,minmax(0,1fr))]"
+        : "grid-rows-1";
 
     return (
       <section
@@ -306,7 +314,12 @@ export default function ChooseOne({ data, heroApi, view, onSelection }) {
         </div>
 
         {useCardOptions ? (
-          <div className="mx-auto grid min-h-0 w-full max-w-[1020px] flex-1 grid-cols-2 items-start justify-items-center gap-4 overflow-visible p-1">
+          <div
+            className={cn(
+              "mx-auto grid min-h-0 w-full max-w-[1020px] flex-1 grid-cols-2 items-stretch justify-items-stretch gap-4 overflow-hidden p-1",
+              optionGridRowsClass,
+            )}
+          >
             {currentOptions.map((option) => {
               const selectedOptionId =
                 pendingQuestionResult?.selectedOptionId ??
@@ -314,12 +327,10 @@ export default function ChooseOne({ data, heroApi, view, onSelection }) {
               const isSelectedOption = selectedOptionId === option.id;
 
               return (
-                <div
-                  key={option.id}
-                  className={OPTION_SLOT_CLASS}
-                >
+                <div key={option.id} className={OPTION_SLOT_CLASS}>
                   <FlipCard
                     compact
+                    fillContainer
                     allowFlipBack
                     reportToHeroApi={false}
                     data={{
@@ -356,7 +367,7 @@ export default function ChooseOne({ data, heroApi, view, onSelection }) {
                       ],
                     }}
                     selectedId={isSelectedOption ? option.id : null}
-                    containerClassName="w-fit max-w-full"
+                    containerClassName="max-h-full max-w-full"
                     gridContainerClassName="grid-cols-1"
                     onItemClick={() => answerCardQuestion(option)}
                   />
@@ -365,7 +376,12 @@ export default function ChooseOne({ data, heroApi, view, onSelection }) {
             })}
           </div>
         ) : (
-          <div className="grid min-h-0 flex-1 content-start gap-4 md:grid-cols-2">
+          <div
+            className={cn(
+              "grid min-h-0 flex-1 gap-4 overflow-hidden md:grid-cols-2",
+              optionGridRowsClass,
+            )}
+          >
             {currentOptions.map((option) => (
               <div key={option.id} className={OPTION_SLOT_CLASS}>
                 <button
@@ -447,6 +463,9 @@ export default function ChooseOne({ data, heroApi, view, onSelection }) {
     );
   }
 
+  const choiceGridRowsClass =
+    items.length > 2 ? "grid-rows-[repeat(2,minmax(0,1fr))]" : "grid-rows-1";
+
   return (
     <div className="flex h-full min-h-0 w-full flex-col gap-3 md:gap-2">
       {cardInstruction ? (
@@ -459,13 +478,19 @@ export default function ChooseOne({ data, heroApi, view, onSelection }) {
         </div>
       ) : null}
 
-      <div className="grid min-h-0 min-w-0 w-full flex-1 grid-cols-2 items-start justify-items-center gap-3 overflow-visible p-1">
+      <div
+        className={cn(
+          "grid min-h-0 min-w-0 w-full flex-1 grid-cols-2 items-stretch justify-items-stretch gap-3 overflow-hidden p-1",
+          choiceGridRowsClass,
+        )}
+      >
         {items.map((item, index) => (
           <div key={item?.id ?? index} className={OPTION_SLOT_CLASS}>
-              <Card
-                as="button"
-                onClick={() => selectCard(item)}
-                selected={selectedId === item?.id}
+            <Card
+              as="button"
+              fillContainer
+              onClick={() => selectCard(item)}
+              selected={selectedId === item?.id}
               className={cn(
                 CARD_OPTION_CLASS,
                 selectedId === item?.id
@@ -501,9 +526,9 @@ export default function ChooseOne({ data, heroApi, view, onSelection }) {
                   />
                 ) : null
               }
-              />
-            </div>
-          ))}
+            />
+          </div>
+        ))}
       </div>
     </div>
   );
