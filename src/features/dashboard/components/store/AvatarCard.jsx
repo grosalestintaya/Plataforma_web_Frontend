@@ -61,7 +61,7 @@ function AvatarPreview({ avatar }) {
       }}>
       <div
         className="pointer-events-none absolute inset-x-[18%] top-3 h-10 rounded-full blur-2xl"
-        style={{ backgroundColor: "var(--sidebar)", opacity: 0.15 }}
+        style={{ backgroundColor: "var(--primary)", opacity: 1 }}
       />
 
       {!imageError && src ? (

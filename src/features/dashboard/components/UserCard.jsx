@@ -281,24 +281,25 @@ const UserCard = ({ user, isFirst = false }) => {
                 }}
               />
               <div
-                className="relative rounded-xl border p-[2px]"
+                className="relative rounded-[70px] border  p-[2px]"
                 style={{
+                  borderColor: "rgba(255,255,255,0.18)",
                   background: `
                     linear-gradient(
                       135deg,
                       rgba(255,255,255,0.95) 0%,
-                      var(--usercard-accent) 45%,
-                      var(--usercard-accent-2) 100%
+                      gold 45%,
+                      var(--sidebar) 100%
                     )
                   `,
-                  borderColor: "rgba(255,255,255,0.18)",
+                  borderColor: "var(--primary)",
                   boxShadow:
                     "0 0 0 1px rgba(255,255,255,0.08), 0 8px 18px rgba(0,0,0,0.20)",
                 }}>
                 <img
                   src={resolveAvatar(user?.foto)}
                   alt={`Perfil de ${user?.nombre || "usuario"}`}
-                  className="h-14 w-14 rounded-[10px] object-cover xl:h-20 xl:w-20"
+                  className="h-16 w-16 rounded-[10px] object-cover xl:h-20 xl:w-20"
                   onError={(e) => {
                     e.currentTarget.onerror = null;
                     e.currentTarget.src = resolveAvatar("default");
