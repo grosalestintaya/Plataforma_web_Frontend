@@ -10,38 +10,6 @@ import { getQuizRuntime } from "./quiz.config";
 
 import * as Blocks from "@/features/module/blocks";
 
-/**
- * =========================================================
- * Progress Header
- * =========================================================
- */
-
-function QuizProgressHeader({ progress }) {
-  const current = Math.max(1, Number(progress?.current ?? 1));
-  const total = Math.max(current, Number(progress?.total ?? 1));
-  const percent = Math.max(0, Math.min(100, (current / total) * 100));
-
-  return (
-    <section className="mx-auto w-full rounded-md border border-white/25 bg-black/15 p-2">
-      <div className="relative h-8 overflow-hidden rounded-sm bg-[linear-gradient(90deg,rgba(139,92,246,0.24),rgba(124,58,237,0.52),rgba(168,85,247,0.28))]">
-        <div
-          className="absolute inset-y-0 left-0 rounded-sm bg-[linear-gradient(90deg,rgba(255,255,255,0.12),rgba(255,255,255,0.28),rgba(255,255,255,0.12))] transition-[width] duration-300"
-          style={{ width: `${percent}%` }}
-        />
-
-        <div className="absolute inset-0 flex items-center px-4">
-          <div className="h-1 w-full rounded-full bg-white/10">
-            <div
-              className="h-full rounded-full bg-[repeating-linear-gradient(90deg,rgba(255,255,255,0.96)_0_30px,transparent_30px_38px)]"
-              style={{ width: `${percent}%` }}
-            />
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function getFormKey(viewId, formQuestion) {
   return `${viewId ?? "quiz"}:${formQuestion?.question?.text ?? ""}`;
 }
@@ -260,6 +228,27 @@ export default function QuizTemplate({ variant, data, heroApi, view }) {
     (slot) => !["navigation", "leftNav", "rightNav"].includes(slot.area),
   );
 
+  const renderQuizSlot = (slot, index) => {
+    const renderedSlot = renderSlot(slot, payload, Blocks, {
+      heroApi,
+      view,
+      quizState,
+    });
+
+    if (!renderedSlot) {
+      return null;
+    }
+
+    return (
+      <HeroArea
+        key={`${slot.area}-${index}`}
+        area={slot.area}
+        className={slot.className}>
+        {renderedSlot}
+      </HeroArea>
+    );
+  };
+
   return (
     <>
       {showConfetti && (
@@ -271,27 +260,16 @@ export default function QuizTemplate({ variant, data, heroApi, view }) {
         />
       )}
 
-      <HeroGrid layout={layout} className="h-full min-h-full w-full">
-        {slots.map((slot, index) => {
-          const renderedSlot = renderSlot(slot, payload, QuizBlocks, {
-            heroApi,
-            view,
-            quizState,
-          });
+      <HeroGrid layout={outerLayout} className="h-full min-h-full w-full">
+        {outerSlots.map(renderQuizSlot)}
 
-          if (!renderedSlot) {
-            return null;
-          }
-
-          return (
-            <HeroArea
-              key={`${slot.area}-${index}`}
-              area={slot.area}
-              className={slot.className}>
-              {renderedSlot}
-            </HeroArea>
-          );
-        })}
+        <HeroArea area="content" className="w-full p-0">
+          <HeroGrid
+            layout={contentLayout}
+            className="h-full min-h-0 w-full px-0 md:px-0">
+            {contentSlots.map(renderQuizSlot)}
+          </HeroGrid>
+        </HeroArea>
       </HeroGrid>
     </>
   );
