@@ -189,21 +189,51 @@ export const LOBBY_CONFIG = {
       // 🖼️ Media primero y dominante
       {
         area: "media",
-        when: (payload) => Boolean(payload?.media?.src),
+
+        when: (payload) =>
+          Boolean(payload?.equippedAvatarName || payload?.media?.src),
+
         block: "Image",
+
         className: [
           "relative overflow-hidden",
-          "rounded-t-2xl rounded-b-none", // se une visualmente al título
-          "border-2 border-yellow-600/70", // borde dorado
-          "shadow-[0_0_32px_rgba(202,138,4,0.35)]", // glow ámbar
-          "p-0", // sin padding: imagen edge-to-edge
+          "rounded-t-2xl rounded-b-none",
+          "border-2 border-yellow-600/70",
+          "shadow-[0_0_32px_rgba(202,138,4,0.35)]",
+          "p-0",
         ].join(" "),
-        props: (payload) => ({
-          src: payload?.media?.src,
-          alt: payload?.media?.alt ?? "Imagen",
-          variant: payload?.media?.variant ?? payload?.media?.ratio,
-          className: "min-h-[300px] w-full object-cover",
-        }),
+
+        props: (payload) => {
+          /**
+           * recibido desde LobbyTemplate
+           * → getLobbyRuntime
+           * → getPayload
+           */
+          const equippedAvatarName = payload?.equippedAvatarName;
+
+          /**
+           * fallback seguro:
+           * si no existe avatar,
+           * usa media original
+           */
+          const resolvedSrc = equippedAvatarName
+            ? `/${equippedAvatarName}.png`
+            : payload?.media?.src;
+
+          const resolvedAlt = equippedAvatarName
+            ? `Avatar de ${equippedAvatarName}`
+            : (payload?.media?.alt ?? "Imagen");
+
+          return {
+            src: resolvedSrc,
+
+            alt: resolvedAlt,
+
+            variant: payload?.media?.variant ?? payload?.media?.ratio,
+
+            className: "min-h-[300px] w-full object-cover",
+          };
+        },
       },
 
       // 📜 Título tipo pergamino/épico debajo de la imagen
@@ -225,8 +255,8 @@ export const LOBBY_CONFIG = {
           "mt-3 rounded-2xl",
           "border border-yellow-700/40",
           "bg-stone-900/60 backdrop-blur-sm",
-          "px-6 py-4",
-          "text-stone-300 text-sm leading-relaxed italic",
+          "px-6 py-1",
+          "text-2xl ",
         ].join(" "),
       }),
     ],
@@ -290,10 +320,11 @@ function resolveVariant(variant, view) {
 /**
  * Estandariza el payload para que Lobby lea una sola forma.
  */
-function getPayload(data = {}, view, heroApi) {
+function getPayload(data = {}, view, heroApi, equippedAvatarName) {
   const rewards = getMissionRewards(heroApi);
 
   return {
+    avatar: equippedAvatarName,
     title: view?.slots?.title ?? data?.title,
     body: view?.slots?.body ?? data?.body ?? data?.text,
     media: view?.slots?.media ?? data?.media ?? data?.image,
