@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Typography from "../../base/Typography";
 import { getMediaVariant } from "../../base/Media/mediaVariant";
 import Card from "../container/Card";
 import FlipCard from "../Iterative/FlipCard";
@@ -164,22 +163,13 @@ export default function CollageCard({
                 fillContainer
                 onClick={selectable ? () => onSelect?.(item, index) : undefined}
                 selected={selectable && isSelected}
-                className={cn(
+              className={cn(
                   "max-h-full max-w-full",
                   selectable && isSelected ? SELECTED_CARD_CLASS : "",
                 )}
                 media={media}
                 title={item?.title ?? item?.label}
-                text={item?.text}
-                footer={
-                  item?.footer ? (
-                    <Typography
-                      content={item.footer}
-                      variant="label"
-                      align="center"
-                    />
-                  ) : null
-                }
+                text={item?.text ?? null}
                 contentClassName="gap-0"
                 zoomable={!selectable && item?.zoomable !== false}
               />
