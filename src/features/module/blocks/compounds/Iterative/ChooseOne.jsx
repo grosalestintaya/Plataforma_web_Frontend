@@ -109,6 +109,48 @@ function summarizeAnswers(answers) {
   return { correctCount, totalScore };
 }
 
+function buildCardTextContent(primaryText, secondaryText) {
+  if (!primaryText) return secondaryText ?? null;
+  if (!secondaryText) return primaryText;
+
+  const normalizeParagraphs = (content) => {
+    if (!content) return [];
+    if (typeof content === "string") return [content];
+    if (Array.isArray(content?.paragraphs)) return content.paragraphs;
+    if (content?.text) return [content.text];
+    return [];
+  };
+
+  const paragraphs = [
+    ...normalizeParagraphs(primaryText),
+    ...normalizeParagraphs(secondaryText),
+  ].filter(Boolean);
+
+  if (paragraphs.length === 0) return null;
+
+  if (typeof primaryText === "object") {
+    return {
+      ...primaryText,
+      paragraphs,
+      text: undefined,
+    };
+  }
+
+  if (typeof secondaryText === "object") {
+    return {
+      ...secondaryText,
+      paragraphs,
+      text: undefined,
+    };
+  }
+
+  return {
+    paragraphs,
+    variant: "label",
+    align: "center",
+  };
+}
+
 export default function ChooseOne({ data, heroApi, view, onSelection }) {
   const items = Array.isArray(data?.items) ? data.items : [];
   const isQuestionSequence = items.every((item) =>
@@ -507,24 +549,18 @@ export default function ChooseOne({ data, heroApi, view, onSelection }) {
                 item?.label ?? { text: item?.caption, variant: "label" }
               }
               text={
-                item?.text ??
-                (!item?.text && item?.detail
-                  ? typeof item.detail === "string"
-                    ? { text: item.detail, variant: "label", align: "center" }
-                    : item.detail
-                  : null)
-              }
-              footer={
-                item?.detail && item?.text ? (
-                  <Typography
-                    content={
-                      typeof item.detail === "string"
-                        ? { text: item.detail, variant: "label" }
-                        : item.detail
-                    }
-                    align="center"
-                  />
-                ) : null
+                buildCardTextContent(
+                  item?.text ?? null,
+                  item?.detail
+                    ? typeof item.detail === "string"
+                      ? {
+                          text: item.detail,
+                          variant: "label",
+                          align: "center",
+                        }
+                      : item.detail
+                    : null,
+                )
               }
             />
           </div>

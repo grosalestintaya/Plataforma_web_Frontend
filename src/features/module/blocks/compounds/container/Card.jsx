@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import Typography from "../../base/Typography";
 import Image from "../../base/Media/Image";
 import ZoomableFrame from "../../base/Media/ZoomableFrame";
@@ -98,6 +99,65 @@ function getZoomLabel(title, media) {
   return `Ampliar ${text}`;
 }
 
+function getElementContentHeight(element) {
+  if (!element) return 0;
+
+  const target = element.firstElementChild ?? element;
+  const height = target.getBoundingClientRect().height;
+
+  if (!Number.isFinite(height) || height <= 0) {
+    return 0;
+  }
+
+  return Math.ceil(height);
+}
+
+function getCardSlotElement(element) {
+  if (!element) return null;
+
+  return (
+    element.closest?.(".module-card-grid-slot") ??
+    element.parentElement ??
+    null
+  );
+}
+
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value));
+}
+
+function getAutoContentVars({
+  hasTitle,
+  hasText,
+  titleHeight,
+  textHeight,
+  slotHeight,
+}) {
+  if (!hasTitle && !hasText) return null;
+
+  let contentReserve = 0;
+
+  if (hasTitle && hasText) {
+    contentReserve = clamp(titleHeight + textHeight + 4, 64, 132);
+  } else if (hasTitle) {
+    contentReserve = clamp(titleHeight + 4, 52, 92);
+  } else {
+    contentReserve = clamp(textHeight + 4, 48, 104);
+  }
+
+  const nextVars = {
+    "--card-content-reserve": `${contentReserve}px`,
+    "--card-chrome-height": "16px",
+  };
+
+  if (Number.isFinite(slotHeight) && slotHeight > 0) {
+    const mediaMaxHeight = clamp(slotHeight - contentReserve - 16, 160, 320);
+    nextVars["--card-media-max-height"] = `${mediaMaxHeight}px`;
+  }
+
+  return nextVars;
+}
+
 /**
  * Card:
  * - Usa horizontal por defecto.
@@ -112,10 +172,12 @@ export default function Card({
   text,
   media,
   mediaVariant,
-  footer,
   className = "",
   mediaClassName = "",
   contentClassName = "",
+  titleRowClassName = "",
+  textRowClassName = "",
+  autoContentLayout = false,
   style,
   onClick,
   disabled = false,
@@ -138,8 +200,12 @@ export default function Card({
 
   const resolvedDensity =
     CARD_DENSITY_CLASS[density] ?? CARD_DENSITY_CLASS.normal;
+  const shellRef = useRef(null);
+  const titleRowRef = useRef(null);
+  const textRowRef = useRef(null);
+  const [autoContentVars, setAutoContentVars] = useState(null);
 
-  const hasContent = Boolean(title || text || children || footer);
+  const hasContent = Boolean(title || text || children);
   const resolvedTitle = normalizeTypographyContent(
     title,
     hasMedia ? "label" : "h3",
@@ -148,7 +214,7 @@ export default function Card({
     text,
     hasMedia ? "label" : "bodySm",
   );
-  const resolvedStyle = {
+  const baseStyle = {
     ...(hasMedia && !fillContainer ? { maxHeight: CARD_SLOT_MAX_HEIGHT } : {}),
     ...(hasMedia
       ? {
@@ -169,6 +235,10 @@ export default function Card({
             : {}),
         }
       : {}),
+  };
+  const resolvedStyle = {
+    ...baseStyle,
+    ...(autoContentVars ?? {}),
     ...(style ?? {}),
   };
   const sizeClass = fillContainer
@@ -176,6 +246,58 @@ export default function Card({
     : shouldFitToMedia
       ? "module-card--fit"
       : "module-card--full";
+
+  useEffect(() => {
+    if (
+      !autoContentLayout ||
+      typeof window === "undefined" ||
+      !hasMedia ||
+      !hasContent
+    ) {
+      setAutoContentVars(null);
+      return undefined;
+    }
+
+    const updateLayout = () => {
+      const slotElement = getCardSlotElement(shellRef.current);
+      const nextVars = getAutoContentVars({
+        hasTitle: Boolean(resolvedTitle),
+        hasText: Boolean(resolvedText),
+        titleHeight: getElementContentHeight(titleRowRef.current),
+        textHeight: getElementContentHeight(textRowRef.current),
+        slotHeight: Math.ceil(slotElement?.getBoundingClientRect?.().height ?? 0),
+      });
+
+      setAutoContentVars((previous) => {
+        const previousKey = JSON.stringify(previous ?? {});
+        const nextKey = JSON.stringify(nextVars ?? {});
+        return previousKey === nextKey ? previous : nextVars;
+      });
+    };
+
+    updateLayout();
+
+    const resizeObserver = new window.ResizeObserver(() => {
+      updateLayout();
+    });
+
+    const slotElement = getCardSlotElement(shellRef.current);
+
+    if (shellRef.current) resizeObserver.observe(shellRef.current);
+    if (slotElement) resizeObserver.observe(slotElement);
+    if (titleRowRef.current) resizeObserver.observe(titleRowRef.current);
+    if (textRowRef.current) resizeObserver.observe(textRowRef.current);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [
+    autoContentLayout,
+    hasContent,
+    hasMedia,
+    resolvedText,
+    resolvedTitle,
+  ]);
 
   function renderCardShell({ modal = false } = {}) {
     const shellStyle = modal
@@ -189,6 +311,7 @@ export default function Card({
 
     return (
       <Component
+        ref={modal ? null : shellRef}
         type={Component === "button" ? "button" : undefined}
         onClick={onClick}
         disabled={Component === "button" ? disabled : undefined}
@@ -234,9 +357,11 @@ export default function Card({
           >
             {resolvedTitle ? (
               <div
+                ref={modal ? null : titleRowRef}
                 className={cn(
                   CARD_CONTENT_ROW_CLASS,
                   "module-card__row--title",
+                  titleRowClassName,
                 )}
               >
                 <Typography
@@ -253,7 +378,12 @@ export default function Card({
 
             {resolvedText ? (
               <div
-                className={cn(CARD_CONTENT_ROW_CLASS, "module-card__row--text")}
+                ref={modal ? null : textRowRef}
+                className={cn(
+                  CARD_CONTENT_ROW_CLASS,
+                  "module-card__row--text",
+                  textRowClassName,
+                )}
               >
                 <Typography
                   content={resolvedText}
@@ -269,10 +399,6 @@ export default function Card({
 
             {children ? (
               <div className="module-card__children">{children}</div>
-            ) : null}
-
-            {footer ? (
-              <div className="module-card__footer">{footer}</div>
             ) : null}
           </div>
         ) : null}

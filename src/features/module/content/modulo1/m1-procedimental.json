@@ -65,7 +65,7 @@
         "title": { "text": "Situacion 1", "variant": "eyebrow" },
         "amount": { "label": "Monto", "value": 5 },
         "assessment": {
-          "text": "Debes ir al colegio pero ya se te hizo algo.",
+          "text": "Debes ir al colegio pero ya se te hizo algo tarde.",
           "variant": "h3",
           "align": "left"
         }
@@ -299,7 +299,7 @@
         "title": { "text": "Situacion 3", "variant": "eyebrow" },
         "amount": { "label": "Monto" },
         "assessment": {
-          "text": "Termino el dia escolar y debes decidir como volver a casa.",
+          "text": "Saliste del cole, debes de regresar a tu casa.",
           "variant": "h3",
           "align": "left"
         }

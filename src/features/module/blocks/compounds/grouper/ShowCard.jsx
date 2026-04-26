@@ -1,5 +1,6 @@
 import Card from "../container/Card";
 import { getMediaVariant } from "../../base/Media/mediaVariant";
+import { cn } from "@/shared/libs/utils";
 
 function getShowCardMedia(item) {
   const media = item?.media ?? item?.image ?? {};
@@ -24,30 +25,28 @@ export default function ShowCard({ items = [], zoomable = true }) {
   if (!Array.isArray(items) || items.length === 0) return null;
 
   const isPair = items.length === 2;
-  const cardMediaStyle = {
-    "--card-media-max-height":
-      "min(270px, calc(var(--hero-height, 100vh) * 0.29))",
-  };
+  const isFourUp = items.length === 4;
 
   return (
     <div className="flex h-full min-h-0 w-full items-center justify-center overflow-hidden">
       <div
         className={
           isPair
-            ? "mx-auto grid h-full min-h-0 w-full max-w-[920px] grid-cols-1 place-items-center gap-4 overflow-hidden p-1 md:grid-cols-2"
-            : "grid h-full min-h-0 w-full grid-cols-1 place-items-center gap-4 overflow-hidden p-1 sm:grid-cols-2 lg:grid-cols-3"
+            ? "mx-auto grid h-full min-h-0 w-full max-w-[920px] grid-cols-1 place-items-center gap-4 overflow-hidden p-1 md:auto-rows-fr md:grid-cols-2"
+            : isFourUp
+              ? "grid h-full min-h-0 w-full grid-cols-1 place-items-center gap-4 overflow-hidden p-1 sm:grid-cols-2 md:auto-rows-fr lg:grid-cols-4"
+              : "grid h-full min-h-0 w-full grid-cols-1 place-items-center gap-4 overflow-hidden p-1 sm:grid-cols-2 md:auto-rows-fr lg:grid-cols-3"
         }
-        style={cardMediaStyle}
       >
         {items.map((item, index) => (
           <div
             key={item?.id ?? index}
-            className="flex h-full min-h-0 min-w-0 w-full max-w-full items-center justify-center overflow-hidden"
+            className="module-card-grid-slot w-full"
           >
             <Card
               density="compact"
               media={getShowCardMedia(item)}
-              title={item?.title}
+              title={item?.title ?? null}
               text={
                 item?.text ??
                 item?.description ??
@@ -55,8 +54,11 @@ export default function ShowCard({ items = [], zoomable = true }) {
                 item?.label ??
                 null
               }
-              className="max-w-full"
-              contentClassName="gap-0"
+              className={cn("max-w-full", item?.cardClassName)}
+              mediaClassName={item?.mediaClassName}
+              contentClassName={cn("gap-0", item?.contentClassName)}
+              titleRowClassName={item?.titleRowClassName}
+              autoContentLayout
               zoomable={zoomable && item?.zoomable !== false}
             />
           </div>

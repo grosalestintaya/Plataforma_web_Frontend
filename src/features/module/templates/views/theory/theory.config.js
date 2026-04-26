@@ -199,8 +199,9 @@ export const THEORY_CONFIG = {
         when: (payload) =>
           Boolean(payload?.media) ||
           (Array.isArray(payload?.rowItems) && payload.rowItems.length > 0),
-        className: "rounded-2xl place-items-stretch content-start",
-        stackClassName: "w-full gap-4",
+        className:
+          "h-full min-h-0 rounded-2xl place-items-stretch place-content-stretch [&>*]:h-full [&>*]:w-full",
+        stackClassName: "h-full min-h-0 w-full justify-start gap-4",
         items: [
           {
             area: "media",

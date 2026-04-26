@@ -460,12 +460,6 @@
     gap: 0.25rem;
   }
 
-  .module-card__footer {
-    width: 100%;
-    margin-top: auto;
-    text-align: center;
-  }
-
   .module-card-grid-slot {
     display: flex;
     width: 100%;
