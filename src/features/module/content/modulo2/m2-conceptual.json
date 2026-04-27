@@ -176,15 +176,15 @@
                 "contentClassName": "w-full pt-2",
                 "titleRowClassName": "border border-black/70 bg-transparent px-3 py-2"
               },
-                            {
-                "id": "need-fdsdds",
+              {
+                "id": "need-fare",
                 "media": {
-                  "src": "1/ir-en-combi.png",
-                  "alt": "Transporte como ejemplo de necesidad",
+                  "src": "1/pagar-pasaje.png",
+                  "alt": "Pasaje como ejemplo de necesidad",
                   "variant": "square"
                 },
                 "title": {
-                  "text": "Transporte",
+                  "text": "Pasaje",
                   "variant": "label",
                   "align": "center"
                 },
@@ -215,7 +215,7 @@
       "slots": {
         "title": {
           "text": "Que es un deseo?",
-          "variant": "h4",
+          "variant": "h1",
           "align": "center",
           "containerClassName": "mx-auto max-w-[680px] rounded-xl border border-white/20 bg-white/15 px-6 py-4"
         },
@@ -315,14 +315,14 @@
                 "titleRowClassName": "border border-black/70 bg-transparent px-3 py-2"
               },
               {
-                "id": "desire-dddds",
+                "id": "desire-sweetdrink",
                 "media": {
-                  "src": "1/caramelo.png",
-                  "alt": "Caramelo como ejemplo de deseo",
+                  "src": "1/gaseosa.png",
+                  "alt": "Bebida dulce como ejemplo de deseo",
                   "variant": "horizontal"
                 },
                 "title": {
-                  "text": "Caramelo",
+                  "text": "Bebida dulce",
                   "variant": "label",
                   "align": "center"
                 },
@@ -353,7 +353,7 @@
       "slots": {
         "title": {
           "text": "Necesidad VS Deseo",
-          "variant": "h4",
+          "variant": "h1",
           "align": "center",
           "containerClassName": "mx-auto max-w-[720px] rounded-xl border border-white/20 bg-white/15 px-6 py-4"
         },
@@ -453,7 +453,7 @@
       "slots": {
         "title": {
           "text": "Consumo responsable",
-          "variant": "h4",
+          "variant": "h1",
           "align": "center",
           "containerClassName": "mx-auto max-w-[720px] rounded-xl border border-white/20 bg-white/15 px-6 py-4"
         },
@@ -561,7 +561,7 @@
           "text": "Hora de practicar",
           "variant": "h1",
           "align": "center",
-          "containerClassName": "mx-auto max-w-[720px] rounded-xl border border-white/20 bg-white/15 px-6 py-4"
+          "containerClassName": "mx-auto max-w-[980px] border border-black/70 bg-transparent px-6 py-4"
         }
       },
       "elements": {
@@ -571,12 +571,6 @@
             "slot": "title",
             "area": "title",
             "order": 10
-          },
-          {
-            "component": "heading",
-            "slot": "subtitle",
-            "area": "subtitle",
-            "order": 20
           }
         ],
         "compound": [
@@ -585,150 +579,379 @@
             "component": "memoryPairs",
             "category": "interactive",
             "area": "assessment",
-            "grid": {
-              "cols": 4,
-              "rows": 3
+            "title": {
+              "text": "Encuentra las parejas",
+              "variant": "h4",
+              "align": "center"
             },
             "previewSeconds": 5,
-            "finishLabel": "Listo",
-            "cards": [
+            "restartLimit": 1,
+            "sectionAdvanceDelayMs": 1500,
+            "showFinishButton": false,
+            "sections": [
               {
-                "id": "m2-memory-01",
-                "pairId": "pair-food",
-                "media": {
-                  "src": "1/comprar-comida.png",
-                  "alt": "Comida",
-                  "variant": "square"
+                "id": "memory-needs",
+                "sectionTitle": {
+                  "text": "Necesidades",
+                  "variant": "body1",
+                  "align": "center"
                 },
-                "label": {
-                  "text": "Comida",
-                  "variant": "subtitle2",
-                  "align": "center"
-                }
-              },
-              {
-                "id": "m2-memory-02",
-                "pairId": "pair-food",
-                "label": {
-                  "text": "Necesidad",
-                  "variant": "subtitle2",
-                  "align": "center"
-                }
-              },
-              {
-                "id": "m2-memory-03",
-                "pairId": "pair-water",
-                "media": {
-                  "src": "1/agua.png",
-                  "alt": "Agua",
-                  "variant": "square"
+                "grid": {
+                  "cols": 4,
+                  "rows": 3
                 },
-                "label": {
-                  "text": "Agua",
-                  "variant": "subtitle2",
-                  "align": "center"
-                }
+                "cards": [
+                  {
+                    "id": "m2-memory-01",
+                    "pairId": "pair-food",
+                    "media": {
+                      "src": "1/comprar-comida.png",
+                      "alt": "Comida",
+                      "variant": "square"
+                    },
+                    "label": {
+                      "text": "Comida",
+                      "variant": "subtitle2",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m2-memory-02",
+                    "pairId": "pair-food",
+                    "media": {
+                      "src": "1/comprar-comida.png",
+                      "alt": "Comida",
+                      "variant": "square"
+                    },
+                    "label": {
+                      "text": "Comida",
+                      "variant": "subtitle2",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m2-memory-03",
+                    "pairId": "pair-water",
+                    "media": {
+                      "src": "1/agua.png",
+                      "alt": "Agua",
+                      "variant": "square"
+                    },
+                    "label": {
+                      "text": "Agua",
+                      "variant": "subtitle2",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m2-memory-04",
+                    "pairId": "pair-water",
+                    "media": {
+                      "src": "1/agua.png",
+                      "alt": "Agua",
+                      "variant": "square"
+                    },
+                    "label": {
+                      "text": "Agua",
+                      "variant": "subtitle2",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m2-memory-05",
+                    "pairId": "pair-transport",
+                    "media": {
+                      "src": "1/ir-en-combi.png",
+                      "alt": "Transporte",
+                      "variant": "square"
+                    },
+                    "label": {
+                      "text": "Transporte",
+                      "variant": "subtitle2",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m2-memory-06",
+                    "pairId": "pair-transport",
+                    "media": {
+                      "src": "1/ir-en-combi.png",
+                      "alt": "Transporte",
+                      "variant": "square"
+                    },
+                    "label": {
+                      "text": "Transporte",
+                      "variant": "subtitle2",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m2-memory-13",
+                    "pairId": "pair-fare",
+                    "media": {
+                      "src": "1/pagar-pasaje.png",
+                      "alt": "Pasaje",
+                      "variant": "square"
+                    },
+                    "label": {
+                      "text": "Pasaje",
+                      "variant": "subtitle2",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m2-memory-14",
+                    "pairId": "pair-fare",
+                    "media": {
+                      "src": "1/pagar-pasaje.png",
+                      "alt": "Pasaje",
+                      "variant": "square"
+                    },
+                    "label": {
+                      "text": "Pasaje",
+                      "variant": "subtitle2",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m2-memory-15",
+                    "pairId": "pair-walk",
+                    "media": {
+                      "src": "1/ir-caminando.png",
+                      "alt": "Llegar al colegio",
+                      "variant": "square"
+                    },
+                    "label": {
+                      "text": "Llegar al colegio",
+                      "variant": "subtitle2",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m2-memory-16",
+                    "pairId": "pair-walk",
+                    "media": {
+                      "src": "1/ir-caminando.png",
+                      "alt": "Llegar al colegio",
+                      "variant": "square"
+                    },
+                    "label": {
+                      "text": "Llegar al colegio",
+                      "variant": "subtitle2",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m2-memory-17",
+                    "pairId": "pair-return",
+                    "media": {
+                      "src": "1/regresar-combi.png",
+                      "alt": "Volver a casa",
+                      "variant": "square"
+                    },
+                    "label": {
+                      "text": "Volver a casa",
+                      "variant": "subtitle2",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m2-memory-18",
+                    "pairId": "pair-return",
+                    "media": {
+                      "src": "1/regresar-combi.png",
+                      "alt": "Volver a casa",
+                      "variant": "square"
+                    },
+                    "label": {
+                      "text": "Volver a casa",
+                      "variant": "subtitle2",
+                      "align": "center"
+                    }
+                  }
+                ]
               },
               {
-                "id": "m2-memory-04",
-                "pairId": "pair-water",
-                "label": {
-                  "text": "Necesidad",
-                  "variant": "subtitle2",
+                "id": "memory-desires",
+                "sectionTitle": {
+                  "text": "Deseos",
+                  "variant": "body1",
                   "align": "center"
-                }
-              },
-              {
-                "id": "m2-memory-05",
-                "pairId": "pair-transport",
-                "media": {
-                  "src": "1/ir-en-combi.png",
-                  "alt": "Transporte",
-                  "variant": "square"
                 },
-                "label": {
-                  "text": "Transporte",
-                  "variant": "subtitle2",
-                  "align": "center"
-                }
-              },
-              {
-                "id": "m2-memory-06",
-                "pairId": "pair-transport",
-                "label": {
-                  "text": "Necesidad",
-                  "variant": "subtitle2",
-                  "align": "center"
-                }
-              },
-              {
-                "id": "m2-memory-07",
-                "pairId": "pair-soda",
-                "media": {
-                  "src": "1/botella-gaseosa.jpeg",
-                  "alt": "Gaseosa",
-                  "variant": "square"
+                "grid": {
+                  "cols": 4,
+                  "rows": 3
                 },
-                "label": {
-                  "text": "Gaseosa",
-                  "variant": "subtitle2",
-                  "align": "center"
-                }
-              },
-              {
-                "id": "m2-memory-08",
-                "pairId": "pair-soda",
-                "label": {
-                  "text": "Deseo",
-                  "variant": "subtitle2",
-                  "align": "center"
-                }
-              },
-              {
-                "id": "m2-memory-09",
-                "pairId": "pair-cookie",
-                "media": {
-                  "src": "1/galleta.png",
-                  "alt": "Galleta",
-                  "variant": "square"
-                },
-                "label": {
-                  "text": "Galleta",
-                  "variant": "subtitle2",
-                  "align": "center"
-                }
-              },
-              {
-                "id": "m2-memory-10",
-                "pairId": "pair-cookie",
-                "label": {
-                  "text": "Deseo",
-                  "variant": "subtitle2",
-                  "align": "center"
-                }
-              },
-              {
-                "id": "m2-memory-11",
-                "pairId": "pair-candy",
-                "media": {
-                  "src": "1/caramelo.png",
-                  "alt": "Caramelo",
-                  "variant": "square"
-                },
-                "label": {
-                  "text": "Caramelo",
-                  "variant": "subtitle2",
-                  "align": "center"
-                }
-              },
-              {
-                "id": "m2-memory-12",
-                "pairId": "pair-candy",
-                "label": {
-                  "text": "Deseo",
-                  "variant": "subtitle2",
-                  "align": "center"
-                }
+                "cards": [
+                  {
+                    "id": "m2-memory-07",
+                    "pairId": "pair-soda",
+                    "media": {
+                      "src": "1/botella-gaseosa.jpeg",
+                      "alt": "Gaseosa",
+                      "variant": "square"
+                    },
+                    "label": {
+                      "text": "Gaseosa",
+                      "variant": "subtitle2",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m2-memory-08",
+                    "pairId": "pair-soda",
+                    "media": {
+                      "src": "1/botella-gaseosa.jpeg",
+                      "alt": "Gaseosa",
+                      "variant": "square"
+                    },
+                    "label": {
+                      "text": "Gaseosa",
+                      "variant": "subtitle2",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m2-memory-09",
+                    "pairId": "pair-cookie",
+                    "media": {
+                      "src": "1/galleta.png",
+                      "alt": "Galleta",
+                      "variant": "square"
+                    },
+                    "label": {
+                      "text": "Galleta",
+                      "variant": "subtitle2",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m2-memory-10",
+                    "pairId": "pair-cookie",
+                    "media": {
+                      "src": "1/galleta.png",
+                      "alt": "Galleta",
+                      "variant": "square"
+                    },
+                    "label": {
+                      "text": "Galleta",
+                      "variant": "subtitle2",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m2-memory-11",
+                    "pairId": "pair-candy",
+                    "media": {
+                      "src": "1/caramelo.png",
+                      "alt": "Caramelo",
+                      "variant": "square"
+                    },
+                    "label": {
+                      "text": "Caramelo",
+                      "variant": "subtitle2",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m2-memory-12",
+                    "pairId": "pair-candy",
+                    "media": {
+                      "src": "1/caramelo.png",
+                      "alt": "Caramelo",
+                      "variant": "square"
+                    },
+                    "label": {
+                      "text": "Caramelo",
+                      "variant": "subtitle2",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m2-memory-19",
+                    "pairId": "pair-sweetdrink",
+                    "media": {
+                      "src": "1/gaseosa.png",
+                      "alt": "Bebida dulce",
+                      "variant": "square"
+                    },
+                    "label": {
+                      "text": "Bebida dulce",
+                      "variant": "subtitle2",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m2-memory-20",
+                    "pairId": "pair-sweetdrink",
+                    "media": {
+                      "src": "1/gaseosa.png",
+                      "alt": "Bebida dulce",
+                      "variant": "square"
+                    },
+                    "label": {
+                      "text": "Bebida dulce",
+                      "variant": "subtitle2",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m2-memory-21",
+                    "pairId": "pair-snackextra",
+                    "media": {
+                      "src": "1/extra-canje.png",
+                      "alt": "Snack extra",
+                      "variant": "square"
+                    },
+                    "label": {
+                      "text": "Snack extra",
+                      "variant": "subtitle2",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m2-memory-22",
+                    "pairId": "pair-snackextra",
+                    "media": {
+                      "src": "1/extra-canje.png",
+                      "alt": "Snack extra",
+                      "variant": "square"
+                    },
+                    "label": {
+                      "text": "Snack extra",
+                      "variant": "subtitle2",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m2-memory-23",
+                    "pairId": "pair-prize",
+                    "media": {
+                      "src": "1/canjear-botella.png",
+                      "alt": "Premio pequeño",
+                      "variant": "square"
+                    },
+                    "label": {
+                      "text": "Premio pequeño",
+                      "variant": "subtitle2",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m2-memory-24",
+                    "pairId": "pair-prize",
+                    "media": {
+                      "src": "1/canjear-botella.png",
+                      "alt": "Premio pequeno",
+                      "variant": "square"
+                    },
+                    "label": {
+                      "text": "Premio pequeno",
+                      "variant": "subtitle2",
+                      "align": "center"
+                    }
+                  }
+                ]
               }
             ]
           }
