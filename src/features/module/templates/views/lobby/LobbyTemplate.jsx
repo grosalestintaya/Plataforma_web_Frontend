@@ -245,7 +245,7 @@ const LOBBY = {
         containerClassName: "mx-auto max-w-[760px]",
       }),
       //cambiar
-      typographySlot("card", "body", "body", {
+      typographySlot("body", "body", "body", {
         when: (p) => Boolean(p?.body),
         className: `${UI.card} ${UI.shine} ${UI.body}`,
       }),
