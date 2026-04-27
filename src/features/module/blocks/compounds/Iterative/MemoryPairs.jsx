@@ -4,6 +4,8 @@ import Image from "../../base/Media/Image";
 import { getMediaVariant } from "../../base/Media/mediaVariant";
 import Typography from "../../base/Typography";
 
+const DEFAULT_GRID = { cols: 4, rows: 3 };
+
 function shuffle(items) {
   const next = [...items];
 
@@ -25,16 +27,23 @@ function getBoardMetrics(width, height, cols, rows, gap) {
 
   const availableWidth = Math.max(width - gap * (cols - 1), 0);
   const availableHeight = Math.max(height - gap * (rows - 1), 0);
-  const cellSize = Math.floor(
-    Math.min(availableWidth / cols, availableHeight / rows),
-  );
+  const cellWidth = Math.floor(availableWidth / cols);
+  const cellHeight = Math.floor(availableHeight / rows);
 
-  if (!Number.isFinite(cellSize) || cellSize <= 0) return null;
+  if (
+    !Number.isFinite(cellWidth) ||
+    !Number.isFinite(cellHeight) ||
+    cellWidth <= 0 ||
+    cellHeight <= 0
+  ) {
+    return null;
+  }
 
   return {
-    cellSize,
-    boardWidth: cellSize * cols + gap * (cols - 1),
-    boardHeight: cellSize * rows + gap * (rows - 1),
+    cellWidth,
+    cellHeight,
+    boardWidth: cellWidth * cols + gap * (cols - 1),
+    boardHeight: cellHeight * rows + gap * (rows - 1),
   };
 }
 
@@ -61,87 +70,152 @@ function getCardLabelContent(card) {
   };
 }
 
-export default function MemoryPairs(props) {
-  const {
-    data,
-    heroApi,
-    view,
-    cards: rawCards = [],
-    grid: rawGrid = { cols: 4, rows: 3 },
-    title: rawTitle,
-    instruction: rawInstruction,
-    finishLabel: rawFinishLabel = "Fin",
-    previewSeconds: rawPreviewSeconds = 4,
-    previewDurationMs: rawPreviewDurationMs,
-    onComplete,
-    onFinish,
-  } = props;
+function getDisplayText(content, fallback = "") {
+  if (!content) return fallback;
 
-  const cards = data?.cards ?? rawCards;
-  const grid = data?.grid ?? rawGrid;
-  const title = data?.title ?? rawTitle;
-  const instruction = data?.instruction ?? rawInstruction;
-  const finishLabel =
-    data?.finishLabel ?? rawFinishLabel ?? view?.nav?.finishLabel ?? "Fin";
+  if (typeof content === "string" || typeof content === "number") {
+    return String(content);
+  }
+
+  if (typeof content?.text === "string" || typeof content?.text === "number") {
+    return String(content.text);
+  }
+
+  return fallback;
+}
+
+function buildSections({
+  cards,
+  grid,
+  sectionTitle,
+  sections,
+}) {
+  if (Array.isArray(sections) && sections.length > 0) {
+    return sections.map((section) => ({
+      sectionTitle: section?.sectionTitle ?? sectionTitle ?? null,
+      cards: Array.isArray(section?.cards) ? section.cards : [],
+      grid: section?.grid ?? grid,
+    }));
+  }
+
+  return [
+    {
+      sectionTitle: sectionTitle ?? null,
+      cards: Array.isArray(cards) ? cards : [],
+      grid,
+    },
+  ];
+}
+
+export default function MemoryPairs({
+  data = {},
+  heroApi,
+  view,
+  onComplete,
+  onFinish,
+}) {
+  const cards = data?.cards ?? [];
+  const grid = data?.grid ?? DEFAULT_GRID;
+  const title = data?.title ?? null;
+  const instruction = data?.instruction ?? null;
+  const sectionTitle = data?.sectionTitle ?? null;
+  const finishLabel = data?.finishLabel ?? view?.nav?.finishLabel ?? "Fin";
   const previewSeconds = normalizePositiveNumber(
-    data?.previewSeconds ?? rawPreviewSeconds,
+    data?.previewSeconds,
     4,
   );
   const previewDurationMs = normalizePositiveNumber(
-    data?.previewDurationMs ?? rawPreviewDurationMs,
+    data?.previewDurationMs,
     previewSeconds * 1000,
   );
+  const restartLimit = normalizePositiveNumber(data?.restartLimit, 1);
+  const sectionAdvanceDelayMs = normalizePositiveNumber(
+    data?.sectionAdvanceDelayMs,
+    1400,
+  );
+  const showFinishButton = Boolean(data?.showFinishButton);
   const viewId = view?.id ?? view?.viewId;
+  const normalizedGrid = useMemo(
+    () => ({
+      cols: Math.max(1, normalizePositiveNumber(grid?.cols, 4)),
+      rows: Math.max(1, normalizePositiveNumber(grid?.rows, 3)),
+    }),
+    [grid?.cols, grid?.rows],
+  );
+  const sectionsConfigKey = JSON.stringify({
+    cards,
+    grid: normalizedGrid,
+    sectionTitle,
+    sections: data?.sections ?? null,
+  });
 
-  const deck = useMemo(() => shuffle(cards), [cards]);
-  const totalPairs = useMemo(
-    () => new Set(deck.map((card) => card.pairId)).size,
-    [deck],
+  const sections = useMemo(
+    () =>
+      buildSections({
+        cards,
+        grid: normalizedGrid,
+        sectionTitle,
+        sections: data?.sections,
+      }),
+    [sectionsConfigKey],
   );
 
+  const [activeSectionIndex, setActiveSectionIndex] = useState(0);
+  const [shuffleVersion, setShuffleVersion] = useState(0);
   const [open, setOpen] = useState([]);
   const [matched, setMatched] = useState(() => new Set());
   const [turns, setTurns] = useState(0);
   const [previewRemainingMs, setPreviewRemainingMs] =
     useState(previewDurationMs);
+  const [restartRemaining, setRestartRemaining] = useState(restartLimit);
   const boardViewportRef = useRef(null);
   const [boardViewportSize, setBoardViewportSize] = useState({
     width: 0,
     height: 0,
   });
 
+  const activeSection =
+    sections[activeSectionIndex] ?? {
+      sectionTitle: null,
+      cards: [],
+      grid: normalizedGrid,
+    };
+
+  const sectionGrid = activeSection?.grid ?? normalizedGrid;
+  const deck = useMemo(
+    () => shuffle(activeSection?.cards ?? []),
+    [activeSection?.cards, shuffleVersion],
+  );
+  const totalPairs = useMemo(
+    () => new Set(deck.map((card) => card.pairId)).size,
+    [deck],
+  );
   const isComplete = matched.size === totalPairs && totalPairs > 0;
   const isPreviewActive = previewRemainingMs > 0;
   const previewSecondsLeft = Math.ceil(previewRemainingMs / 1000);
+  const isLastSection = activeSectionIndex >= sections.length - 1;
   const score =
     totalPairs && turns
       ? Math.max(0, Math.min(100, Math.round((totalPairs / turns) * 100)))
       : 0;
 
   useEffect(() => {
-    if (!isComplete) return;
-
-    const result = {
-      completed: true,
-      totalPairs,
-      matchedPairs: matched.size,
-      turns,
-      score,
-    };
-
-    heroApi?.setInteractiveState?.(viewId, {
-      ...result,
-      type: "memoryGame",
-    });
-    onComplete?.(result);
-  }, [heroApi, isComplete, matched.size, onComplete, score, totalPairs, turns, viewId]);
+    setActiveSectionIndex(0);
+    setShuffleVersion(0);
+    setOpen([]);
+    setMatched(new Set());
+    setTurns(0);
+    setPreviewRemainingMs(previewDurationMs);
+    setRestartRemaining(restartLimit);
+  }, [previewDurationMs, restartLimit, sectionsConfigKey]);
 
   useEffect(() => {
     setOpen([]);
     setMatched(new Set());
     setTurns(0);
     setPreviewRemainingMs(previewDurationMs);
-  }, [deck, previewDurationMs]);
+    setRestartRemaining(restartLimit);
+  }, [activeSectionIndex, previewDurationMs, restartLimit]);
 
   useEffect(() => {
     if (!previewDurationMs) return;
@@ -161,7 +235,53 @@ export default function MemoryPairs(props) {
     }, 100);
 
     return () => window.clearInterval(intervalId);
-  }, [deck, previewDurationMs]);
+  }, [activeSectionIndex, previewDurationMs, shuffleVersion]);
+
+  useEffect(() => {
+    if (!isComplete) return undefined;
+
+    if (!isLastSection) {
+      const timeoutId = window.setTimeout(() => {
+        setActiveSectionIndex((prev) =>
+          Math.min(prev + 1, sections.length - 1),
+        );
+        setShuffleVersion(0);
+      }, sectionAdvanceDelayMs);
+
+      return () => window.clearTimeout(timeoutId);
+    }
+
+    const result = {
+      completed: true,
+      totalPairs,
+      matchedPairs: matched.size,
+      turns,
+      score,
+      sectionIndex: activeSectionIndex,
+      sectionCount: sections.length,
+    };
+
+    heroApi?.setInteractiveState?.(viewId, {
+      ...result,
+      type: "memoryGame",
+    });
+    onComplete?.(result);
+
+    return undefined;
+  }, [
+    activeSectionIndex,
+    heroApi,
+    isComplete,
+    isLastSection,
+    matched.size,
+    onComplete,
+    score,
+    sectionAdvanceDelayMs,
+    sections.length,
+    totalPairs,
+    turns,
+    viewId,
+  ]);
 
   useEffect(() => {
     if (typeof window === "undefined" || !boardViewportRef.current) {
@@ -185,29 +305,38 @@ export default function MemoryPairs(props) {
 
     resizeObserver.observe(boardViewportRef.current);
 
-    return () => {
-      resizeObserver.disconnect();
-    };
+    return () => resizeObserver.disconnect();
   }, []);
 
-  const boardGap = 12;
+  const boardGap = 4;
   const boardMetrics = useMemo(
     () =>
       getBoardMetrics(
         boardViewportSize.width,
         boardViewportSize.height,
-        grid.cols,
-        grid.rows,
+        sectionGrid.cols,
+        sectionGrid.rows,
         boardGap,
       ),
     [
       boardViewportSize.height,
       boardViewportSize.width,
       boardGap,
-      grid.cols,
-      grid.rows,
+      sectionGrid.cols,
+      sectionGrid.rows,
     ],
   );
+
+  function restartBoard() {
+    if (restartRemaining <= 0) return;
+
+    setRestartRemaining((prev) => Math.max(prev - 1, 0));
+    setOpen([]);
+    setMatched(new Set());
+    setTurns(0);
+    setPreviewRemainingMs(previewDurationMs);
+    setShuffleVersion((prev) => prev + 1);
+  }
 
   function pick(index) {
     if (isPreviewActive) return;
@@ -242,115 +371,164 @@ export default function MemoryPairs(props) {
     }
   }
 
-  return (
-    <section className="mx-auto flex h-full min-h-0 w-full max-w-5xl flex-col gap-1 overflow-hidden">
-      <div className="shrink-0 space-y-2">
-        {title ? (
-          <Typography
-            content={title}
-            variant={title?.variant ?? "h2"}
-            component={title?.component ?? "h2"}
-          />
-        ) : null}
+  const titleText = getDisplayText(title, "Encuentra las parejas");
+  const sectionTitleText = getDisplayText(
+    activeSection?.sectionTitle,
+    getDisplayText(sectionTitle),
+  );
+  const statusText = isPreviewActive
+    ? `Empieza en ${previewSecondsLeft}s`
+    : `${activeSectionIndex + 1}/${sections.length}`;
 
-        {instruction ? (
+  return (
+    <section className="mx-auto flex h-full min-h-0 w-full max-w-[960px] flex-col overflow-hidden border border-black/70 bg-transparent p-1">
+      {instruction ? (
+        <div className="mb-1 shrink-0 px-1 text-center">
           <Typography
             content={instruction}
             variant={instruction?.variant ?? "body2"}
           />
-        ) : null}
-
-        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
-          <Typography
-            content={{
-              text: isPreviewActive
-                ? `Memoriza las cartas ${previewSecondsLeft}`
-                : "Encuentra los pares",
-              variant: "bodySm",
-            }}
-            className="text-left text-white/85"
-          />
-
-          <Typography
-            content={{
-              text: `Parejas encontradas: ${matched.size} / ${totalPairs} · Turnos: ${turns}`,
-              variant: "helper",
-            }}
-            className="text-left text-white/70"
-          />
         </div>
-      </div>
-      <div className="shrink-0 space-y-2">
-        <h3 className="text-lg md:text-xl font-medium leading-8 text-white/85 max-w-none text-center max-w-full break-words [overflow-wrap:anywhere] ">Necesidades</h3>
-      </div>
+      ) : null}
 
-      <div
-        ref={boardViewportRef}
-        className="flex min-h-0 flex-1 items-center justify-center overflow-hidden"
-      >
-        <div
-          className="grid place-content-center"
-          style={{
-            gap: `${boardGap}px`,
-            gridTemplateColumns: boardMetrics
-              ? `repeat(${grid.cols}, ${boardMetrics.cellSize}px)`
-              : `repeat(${grid.cols}, minmax(0, 1fr))`,
-            gridTemplateRows: boardMetrics
-              ? `repeat(${grid.rows}, ${boardMetrics.cellSize}px)`
-              : undefined,
-            width: boardMetrics ? `${boardMetrics.boardWidth}px` : "100%",
-            maxWidth: "100%",
-            maxHeight: "100%",
-          }}
+      <div className="grid shrink-0 grid-cols-[auto_1fr_auto] items-stretch gap-1">
+        <div className="flex min-w-[128px] items-center border border-black/70 px-2.5 py-1 text-white">
+          <span className="text-sm font-semibold md:text-base">
+            Parejas: {matched.size}/{totalPairs}
+          </span>
+        </div>
+
+        <div className="flex min-w-0 flex-col justify-center border border-black/70 px-2.5 py-1 text-white">
+          <div className="text-center text-xl font-black md:text-3xl">
+            {titleText}
+          </div>
+          {sectionTitleText ? (
+            <div className="mt-0.5 border border-black/60 px-2 py-0.5 text-center text-sm font-semibold md:text-base">
+              {sectionTitleText}
+            </div>
+          ) : null}
+        </div>
+
+        <button
+          type="button"
+          onClick={restartBoard}
+          disabled={restartRemaining <= 0 || isComplete}
+          className="flex min-w-[128px] items-center gap-2 border border-black/70 px-2.5 py-1 text-left text-white transition hover:bg-black/10 disabled:cursor-not-allowed disabled:opacity-45"
         >
-          {deck.map((card, index) => {
-            const isFaceUp =
-              isPreviewActive ||
-              open.includes(index) ||
-              matched.has(card.pairId);
-            const media = card?.media ?? card?.image ?? null;
-            const imageSrc = media?.src ?? card.img ?? "";
-            const imageAlt = media?.alt ?? card.alt ?? `Par ${card.pairId}`;
-            const imageVariant = getMediaVariant(media);
-            const labelContent = getCardLabelContent(card);
+          <span className="text-2xl leading-none">↻</span>
+          <div className="min-w-0">
+            <div className="text-sm font-semibold md:text-base">
+              Girar de nuevo:{restartRemaining}
+            </div>
+            <div className="text-xs text-white/70 md:text-sm">{statusText}</div>
+          </div>
+        </button>
+      </div>
 
-            return (
-              <button
-                key={card.id ?? index}
-                type="button"
-                disabled={isPreviewActive}
-                onClick={() => pick(index)}
-                className={cn(
-                  "h-full w-full rounded-sm border border-white/20 bg-black/10",
-                  "flex items-center justify-center overflow-hidden transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50",
-                  isPreviewActive
-                    ? "cursor-not-allowed"
-                    : "cursor-pointer hover:-translate-y-0.5 hover:bg-black/20 active:translate-y-0",
-                )}
-              >
-                {isFaceUp ? (
-                  imageSrc ? (
-                    <div className="flex h-full w-full flex-col items-center justify-center gap-2 p-2">
-                      <Image
-                        src={imageSrc}
-                        alt={imageAlt}
-                        variant={imageVariant}
-                        className="h-[64%] w-[64%]"
-                      />
-                      <Typography content={labelContent} className="px-2" />
-                    </div>
+      <div className="mt-1 flex min-h-0 flex-1 overflow-hidden border border-black/70 p-1">
+        <div
+          ref={boardViewportRef}
+          className="flex min-h-0 flex-1 items-center justify-center overflow-hidden"
+        >
+          <div
+            className="grid place-content-center"
+            style={{
+              gap: `${boardGap}px`,
+              gridTemplateColumns: boardMetrics
+                ? `repeat(${sectionGrid.cols}, ${boardMetrics.cellWidth}px)`
+                : `repeat(${sectionGrid.cols}, minmax(0, 1fr))`,
+              gridTemplateRows: boardMetrics
+                ? `repeat(${sectionGrid.rows}, ${boardMetrics.cellHeight}px)`
+                : undefined,
+              width: boardMetrics ? `${boardMetrics.boardWidth}px` : "100%",
+              maxWidth: "100%",
+              maxHeight: "100%",
+            }}
+          >
+            {deck.map((card, index) => {
+              const isFaceUp =
+                isPreviewActive ||
+                open.includes(index) ||
+                matched.has(card.pairId);
+              const media = card?.media ?? card?.image ?? null;
+              const imageSrc = media?.src ?? card.img ?? "";
+              const imageAlt = media?.alt ?? card.alt ?? `Par ${card.pairId}`;
+              const imageVariant = getMediaVariant(media);
+              const labelContent = getCardLabelContent(card);
+
+              return (
+                <button
+                  key={card.id ?? index}
+                  type="button"
+                  disabled={isPreviewActive}
+                  onClick={() => pick(index)}
+                  className={cn(
+                    "h-full w-full border border-black/70 bg-transparent p-0.5",
+                    "flex items-center justify-center overflow-hidden transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50",
+                    isPreviewActive
+                      ? "cursor-not-allowed"
+                      : "cursor-pointer hover:bg-black/10",
+                  )}
+                >
+                  {isFaceUp ? (
+                    media ? (
+                      <div className="flex h-full w-full flex-col gap-0.5">
+                        <div className="flex min-h-0 flex-1 items-center justify-center border border-black/60 p-0.5">
+                          <Image
+                            src={imageSrc}
+                            alt={imageAlt}
+                            variant={imageVariant}
+                            className="h-full w-full"
+                            imgClassName="block h-full w-full object-contain"
+                          />
+                        </div>
+                        <div className="border border-black/60 px-1 py-0.5">
+                          <Typography content={labelContent} className="text-center" />
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center border border-black/60 px-1.5 py-0.5">
+                        <Typography content={labelContent} className="text-center" />
+                      </div>
+                    )
                   ) : (
-                    <Typography content={labelContent} className="px-2" />
-                  )
-                ) : (
-                  <div className="text-xs text-white/40">?</div>
-                )}
-              </button>
-            );
-          })}
+                    <div className="text-xs text-white/55">?</div>
+                  )}
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
+      {showFinishButton ? (
+        <div className="mt-2 flex shrink-0 items-center justify-end gap-4">
+          <button
+            type="button"
+            disabled={!isComplete || !isLastSection}
+            onClick={() => {
+              const result = {
+                completed: isComplete && isLastSection,
+                totalPairs,
+                matchedPairs: matched.size,
+                turns,
+                score,
+                sectionIndex: activeSectionIndex,
+                sectionCount: sections.length,
+              };
+
+              heroApi?.setInteractiveState?.(viewId, {
+                ...result,
+                type: "memoryGame",
+              });
+              onFinish?.(result);
+            }}
+            className="h-9 cursor-pointer rounded border border-white/20 bg-black/20 px-5 font-semibold text-white transition hover:bg-black/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            {finishLabel}
+          </button>
+        </div>
+      ) : null}
     </section>
   );
 }
