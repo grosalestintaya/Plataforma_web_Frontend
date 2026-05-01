@@ -1,5 +1,8 @@
 import React from "react";
 import { cn } from "@/shared/libs/utils";
+import HeroGrid from "./HeroGrid";
+import HeroArea from "./HeroArea";
+import { normalizeLayout } from "./layouts.helpers";
 
 /**
  * renderSlot:
@@ -37,6 +40,33 @@ export function renderSlot(slotDef, data, Blocks, ctx = {}) {
           </React.Fragment>
         ))}
       </div>
+    );
+  }
+
+  const nestedLayoutDef =
+    typeof slotDef.layoutDef === "function"
+      ? slotDef.layoutDef(data, ctx)
+      : slotDef.layoutDef;
+  const nestedLayout = normalizeLayout(nestedLayoutDef);
+
+  if (nestedLayout && Array.isArray(slotDef.slots) && slotDef.slots.length > 0) {
+    return (
+      <HeroGrid layout={nestedLayout} className="h-full min-h-0 w-full">
+        {slotDef.slots.map((childSlot, index) => {
+          const renderedChild = renderSlot(childSlot, data, Blocks, ctx);
+          if (!renderedChild) return null;
+
+          return (
+            <HeroArea
+              key={`${childSlot.area}-${index}`}
+              area={childSlot.area}
+              className={childSlot.className}
+            >
+              {renderedChild}
+            </HeroArea>
+          );
+        })}
+      </HeroGrid>
     );
   }
 

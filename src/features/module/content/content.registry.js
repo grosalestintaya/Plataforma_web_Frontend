@@ -215,7 +215,7 @@ function inferDocCompoundCategory(component) {
   // - interactive: componentes con criterio de completitud
   // - grouper: agrupadores de tarjetas/listas
   // - container: superficies de contenido
-  if (["flipCard", "chooseOne", "formQuestion", "dailySpending", "calculator", "memoryPairs"].includes(component)) {
+  if (["flipCard", "chooseOne", "formQuestion", "dailySpending", "calculator", "memoryPairs", "objectClassification"].includes(component)) {
     return "interactive";
   }
 

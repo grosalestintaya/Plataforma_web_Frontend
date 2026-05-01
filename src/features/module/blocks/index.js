@@ -22,3 +22,4 @@ export { default as FlipCard } from "./compounds/Iterative/FlipCard";
 export { default as MemoryPairs } from "./compounds/Iterative/MemoryPairs";
 export { default as ChooseOne } from "./compounds/Iterative/ChooseOne";
 export { default as Calculator } from "./compounds/Iterative/Calculator";
+export { default as Shopping } from "./compounds/Iterative/Shopping";

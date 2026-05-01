@@ -163,6 +163,9 @@ export default function ChooseOne({ data, heroApi, view, onSelection }) {
     variant: "body",
     align: "center",
   };
+  const standaloneFeedback = !isQuestionSequence ? data?.feedback ?? null : null;
+  const shouldReserveStandaloneFeedback =
+    !isQuestionSequence && Boolean(data?.feedbackReserve);
 
   const [selectedId, setSelectedId] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -190,6 +193,7 @@ export default function ChooseOne({ data, heroApi, view, onSelection }) {
     isQuestionSequence && items.length > 0 && currentIndex === items.length - 1;
 
   const selectedCard = items.find((item) => item?.id === selectedId) ?? null;
+  const actionButton = data?.actionButton ?? null;
 
   useEffect(() => {
     if (!isQuestionSequence) return;
@@ -566,6 +570,44 @@ export default function ChooseOne({ data, heroApi, view, onSelection }) {
           </div>
         ))}
       </div>
+
+      {actionButton || standaloneFeedback || shouldReserveStandaloneFeedback ? (
+        <div className="grid shrink-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
+          <div className="min-w-0">
+            <div className="flex min-h-[56px] items-center rounded-xl border border-white/15 p-3">
+              {standaloneFeedback ? (
+                <Typography
+                  content={standaloneFeedback}
+                  variant={standaloneFeedback?.variant ?? "helper"}
+                  align={standaloneFeedback?.align ?? "center"}
+                />
+              ) : (
+                <div aria-hidden="true" className="w-full opacity-0">
+                  <Typography
+                    content={{
+                      text: "Reservado para feedback",
+                      variant: "helper",
+                      align: "center",
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="justify-self-end">
+            {actionButton ? (
+              <Button
+                variant={actionButton?.variant ?? "primary"}
+                label={actionButton?.label ?? "Continuar"}
+                onClick={actionButton?.onClick}
+                disabled={Boolean(actionButton?.disabled)}
+                className={cn("min-w-[180px]", actionButton?.className)}
+              />
+            ) : null}
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

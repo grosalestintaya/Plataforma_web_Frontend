@@ -53,6 +53,8 @@ export default function QuizTemplate({ variant, data, heroApi, view }) {
   const contentLayout = normalizeLayout(runtime?.contentLayoutDef);
   const slots = runtime?.slots ?? [];
   const payload = runtime?.payload ?? {};
+  const contentShellClassName =
+    runtime?.contentShellClassName ?? "h-full min-h-0 w-full px-0 md:px-0";
 
   const viewId = view?.id ?? view?.viewId;
   const formQuestion = payload?.formQuestion ?? null;
@@ -229,6 +231,15 @@ export default function QuizTemplate({ variant, data, heroApi, view }) {
   );
 
   const renderQuizSlot = (slot, index) => {
+    const slotClassName =
+      typeof slot?.className === "function"
+        ? slot.className(payload, {
+            heroApi,
+            view,
+            quizState,
+          })
+        : slot?.className;
+
     const renderedSlot = renderSlot(slot, payload, Blocks, {
       heroApi,
       view,
@@ -243,7 +254,7 @@ export default function QuizTemplate({ variant, data, heroApi, view }) {
       <HeroArea
         key={`${slot.area}-${index}`}
         area={slot.area}
-        className={slot.className}>
+        className={slotClassName}>
         {renderedSlot}
       </HeroArea>
     );
@@ -264,11 +275,11 @@ export default function QuizTemplate({ variant, data, heroApi, view }) {
         {outerSlots.map(renderQuizSlot)}
 
         <HeroArea area="content" className="w-full p-0">
-          <HeroGrid
-            layout={contentLayout}
-            className="h-full min-h-0 w-full px-0 md:px-0">
-            {contentSlots.map(renderQuizSlot)}
-          </HeroGrid>
+          <div className={contentShellClassName}>
+            <HeroGrid layout={contentLayout} className="h-full min-h-0 w-full">
+              {contentSlots.map(renderQuizSlot)}
+            </HeroGrid>
+          </div>
         </HeroArea>
       </HeroGrid>
     </>

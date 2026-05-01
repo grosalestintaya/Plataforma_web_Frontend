@@ -10,6 +10,7 @@ export default function TextField({
   variant = "stacked",
   containerClassName = "",
   labelClassName = "",
+  fieldWrapClassName = "",
   inputClassName = "",
 }) {
   if (!prompt) return null;
@@ -42,7 +43,12 @@ export default function TextField({
           className={prompt?.className}
         />
       </div>
-      <div className="flex min-h-0 rounded-md border border-white/30 p-2">
+      <div
+        className={cn(
+          "flex min-h-0 rounded-md border border-white/30 p-2",
+          fieldWrapClassName,
+        )}
+      >
         <Input
           variant="text"
           value={value}
