@@ -9,11 +9,11 @@ import openModalSfx from "@/assets/audios/sfxmenu/Cursor entrante.wav";
 import closeModalSfx from "@/assets/audios/sfxmenu/Cursor Saliente.wav";
 import mascotTapSfx from "@/assets/audios/sfxmenu/avatar.wav";
 import clickdot from "@/assets/audios/sfxmenu/Cursor sobre siguiente.wav";
-import llamita from "@/assets/audios/sfxmenu/LLama.wav";
-import condor from "@/assets/audios/sfxmenu/SonidoCondor.wav";
-import colibri from "@/assets/audios/sfxmenu/SonidoColibri.wav";
-import puma from "@/assets/audios/sfxmenu/sonidopuma2.wav";
-import snake from "@/assets/audios/sfxmenu/serpienteefecto.wav";
+import llamita from "@/assets/audios/sfxmenu/LLama.mp3";
+import condor from "@/assets/audios/sfxmenu/SonidoCondor.mp3";
+import colibri from "@/assets/audios/sfxmenu/SonidoColibri.mp3";
+import puma from "@/assets/audios/sfxmenu/sonidopuma2.mp3";
+import snake from "@/assets/audios/sfxmenu/serpienteefecto.mp3";
 function makeSfx(name, src, volume = 1) {
   return new Howl({
     src: [src],

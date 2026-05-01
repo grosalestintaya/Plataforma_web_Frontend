@@ -4,13 +4,13 @@ function getAudioUrl(filename) {
 }
 
 const MODULE_MUSIC_MAP = {
-  m01: getAudioUrl("module1.wav"),
-  m02: getAudioUrl("module2.wav"),
-  m03: getAudioUrl("module3.wav"),
-  m04: getAudioUrl("module4.wav"),
-  m05: getAudioUrl("module5.wav"),
+  m01: getAudioUrl("module1.mp3"),
+  m02: getAudioUrl("module2.mp3"),
+  m03: getAudioUrl("module3.mp3"),
+  m04: getAudioUrl("module4.mp3"),
+  m05: getAudioUrl("module5.mp3"),
 };
 
 export function getModuleMusicSrc(moduleCode) {
-  return MODULE_MUSIC_MAP[moduleCode] ?? getAudioUrl("module1.wav");
+  return MODULE_MUSIC_MAP[moduleCode] ?? getAudioUrl("module1.mp3");
 }
