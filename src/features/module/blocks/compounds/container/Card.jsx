@@ -242,7 +242,7 @@ export default function Card({
     ...(style ?? {}),
   };
   const sizeClass = fillContainer
-    ? "module-card--fit module-card--within-slot"
+    ? "module-card--full module-card--within-slot"
     : shouldFitToMedia
       ? "module-card--fit"
       : "module-card--full";

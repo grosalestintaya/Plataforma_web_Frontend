@@ -3,6 +3,868 @@
   "backendActivityId": null,
   "activityKey": "m02-procedimental",
   "headerTitle": "Procedimental",
-  "missionTitle": "Procedimental",
-  "views": []
+  "missionTitle": "Clasificacion y priorizacion de gastos",
+  "views": [
+    {
+      "viewId": "m2_2_v1",
+      "order": 1,
+      "name": "VISTA 1 - Inicio: Hora de practicar",
+      "viewType": "Inicio",
+      "objective": "Presentar la practica de clasificacion entre necesidades y deseos.",
+      "template": "preGameLobby",
+      "variant": "preGame",
+      "slots": {
+        "title": {
+          "text": "Hora de practicar",
+          "variant": "h1",
+          "align": "center"
+        },
+        "body": {
+          "paragraphs": [
+            "En esta practica clasificaras distintos objetos segun si son una necesidad o un deseo dentro de situaciones cotidianas.",
+            "Lee cada escenario con atencion y piensa que objetos son importantes para cumplir una meta o cubrir algo necesario.",
+            "Cuando presiones Iniciar comenzaras con la primera situacion."
+          ],
+          "variant": "body1",
+          "align": "left"
+        },
+        "media": {
+          "src": "1/inicio-conceptual.jpeg",
+          "alt": "Inicio de la practica de clasificacion",
+          "variant": "vertical"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "text",
+            "slot": "body",
+            "area": "body",
+            "order": 20
+          },
+          {
+            "component": "image",
+            "slot": "media",
+            "area": "media",
+            "order": 30
+          }
+        ],
+        "compound": []
+      },
+      "navigation": {
+        "mode": "cta",
+        "label": "Iniciar",
+        "action": "startMissionAttempt"
+      },
+      "completionCriteria": {
+        "type": "manualStart"
+      }
+    },
+    {
+      "viewId": "m2_2_v2",
+      "order": 2,
+      "name": "VISTA 2 - Practica: Situacion 1",
+      "viewType": "Practica",
+      "objective": "Clasificar compras escolares entre necesidad y deseo.",
+      "template": "objectClassification",
+      "variant": "simple",
+      "slots": {
+        "title": {
+          "text": "Situacion 1",
+          "variant": "eyebrow",
+          "align": "left"
+        },
+        "assessment": {
+          "text": "Vas a la tienda a comprar los utiles para iniciar las clases",
+          "variant": "h3",
+          "align": "center"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "text",
+            "slot": "assessment",
+            "area": "body",
+            "order": 20
+          }
+        ],
+        "compound": [
+          {
+            "type": "objectClassification",
+            "component": "objectClassification",
+            "category": "interactive",
+            "area": "interactive",
+            "layoutVariant": "bankLeft",
+            "panelTitle": "Clasifica los diferentes objetos",
+            "bankTitle": "Objetos",
+            "submitLabel": "Continuar",
+            "categories": [
+              {
+                "id": "need",
+                "title": {
+                  "text": "Necesidad",
+                  "variant": "body",
+                  "align": "center"
+                }
+              },
+              {
+                "id": "desire",
+                "title": {
+                  "text": "Deseo",
+                  "variant": "body",
+                  "align": "center"
+                }
+              }
+            ],
+            "items": [
+              {
+                "id": "s1-cuaderno",
+                "media": {
+                  "src": "image001.png",
+                  "alt": "Cuaderno",
+                  "variant": "square"
+                },
+                "title": {
+                  "text": "Cuaderno",
+                  "variant": "caption",
+                  "align": "center"
+                },
+                "correctCategoryId": "need"
+              },
+              {
+                "id": "s1-lapiz",
+                "media": {
+                  "src": "image001.png",
+                  "alt": "Lapiz",
+                  "variant": "square"
+                },
+                "title": {
+                  "text": "Lapiz",
+                  "variant": "caption",
+                  "align": "center"
+                },
+                "correctCategoryId": "need"
+              },
+              {
+                "id": "s1-borrador",
+                "media": {
+                  "src": "image001.png",
+                  "alt": "Borrador",
+                  "variant": "square"
+                },
+                "title": {
+                  "text": "Borrador",
+                  "variant": "caption",
+                  "align": "center"
+                },
+                "correctCategoryId": "need"
+              },
+              {
+                "id": "s1-regla",
+                "media": {
+                  "src": "image001.png",
+                  "alt": "Regla",
+                  "variant": "square"
+                },
+                "title": {
+                  "text": "Regla",
+                  "variant": "caption",
+                  "align": "center"
+                },
+                "correctCategoryId": "need"
+              },
+              {
+                "id": "s1-pegamento",
+                "media": {
+                  "src": "image001.png",
+                  "alt": "Pegamento",
+                  "variant": "square"
+                },
+                "title": {
+                  "text": "Pegamento",
+                  "variant": "caption",
+                  "align": "center"
+                },
+                "correctCategoryId": "need"
+              },
+              {
+                "id": "s1-stickers",
+                "media": {
+                  "src": "image001.png",
+                  "alt": "Stickers",
+                  "variant": "square"
+                },
+                "title": {
+                  "text": "Stickers",
+                  "variant": "caption",
+                  "align": "center"
+                },
+                "correctCategoryId": "desire"
+              },
+              {
+                "id": "s1-plumones",
+                "media": {
+                  "src": "image001.png",
+                  "alt": "Plumones",
+                  "variant": "square"
+                },
+                "title": {
+                  "text": "Plumones",
+                  "variant": "caption",
+                  "align": "center"
+                },
+                "correctCategoryId": "desire"
+              },
+              {
+                "id": "s1-juguete",
+                "media": {
+                  "src": "image001.png",
+                  "alt": "Juguete",
+                  "variant": "square"
+                },
+                "title": {
+                  "text": "Juguete",
+                  "variant": "caption",
+                  "align": "center"
+                },
+                "correctCategoryId": "desire"
+              }
+            ]
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "embedded",
+        "label": "Clasifica todos los objetos para continuar"
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "classifyAllObjects"
+      }
+    },
+    {
+      "viewId": "m2_2_v3",
+      "order": 3,
+      "name": "VISTA 3 - Practica: Situacion 2",
+      "viewType": "Practica",
+      "objective": "Clasificar compras del hogar entre necesidad y deseo.",
+      "template": "objectClassification",
+      "variant": "simple",
+      "slots": {
+        "title": {
+          "text": "Situacion 2",
+          "variant": "eyebrow",
+          "align": "left"
+        },
+        "assessment": {
+          "text": "Acompanas a comprar alimentos con tu mama.",
+          "variant": "h3",
+          "align": "center"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "text",
+            "slot": "assessment",
+            "area": "body",
+            "order": 20
+          }
+        ],
+        "compound": [
+          {
+            "type": "objectClassification",
+            "component": "objectClassification",
+            "category": "interactive",
+            "area": "interactive",
+            "layoutVariant": "bankTop",
+            "bankColumns": 6,
+            "bankRows": 1,
+            "panelTitle": "Clasifica los diferentes objetos",
+            "bankTitle": "Objetos",
+            "submitLabel": "Continuar",
+            "categories": [
+              {
+                "id": "need",
+                "title": {
+                  "text": "Necesidad",
+                  "variant": "body",
+                  "align": "center"
+                }
+              },
+              {
+                "id": "desire",
+                "title": {
+                  "text": "Deseo",
+                  "variant": "body",
+                  "align": "center"
+                }
+              }
+            ],
+            "items": [
+              {
+                "id": "s2-arroz",
+                "media": {
+                  "src": "image001.png",
+                  "alt": "Arroz",
+                  "variant": "square"
+                },
+                "title": {
+                  "text": "Arroz",
+                  "variant": "caption",
+                  "align": "center"
+                },
+                "correctCategoryId": "need"
+              },
+              {
+                "id": "s2-leche",
+                "media": {
+                  "src": "image001.png",
+                  "alt": "Leche",
+                  "variant": "square"
+                },
+                "title": {
+                  "text": "Leche",
+                  "variant": "caption",
+                  "align": "center"
+                },
+                "correctCategoryId": "need"
+              },
+              {
+                "id": "s2-aceite",
+                "media": {
+                  "src": "image001.png",
+                  "alt": "Aceite",
+                  "variant": "square"
+                },
+                "title": {
+                  "text": "Aceite",
+                  "variant": "caption",
+                  "align": "center"
+                },
+                "correctCategoryId": "need"
+              },
+              {
+                "id": "s2-galletas",
+                "media": {
+                  "src": "image001.png",
+                  "alt": "Galletas",
+                  "variant": "square"
+                },
+                "title": {
+                  "text": "Galletas",
+                  "variant": "caption",
+                  "align": "center"
+                },
+                "correctCategoryId": "desire"
+              },
+              {
+                "id": "s2-gaseosa",
+                "media": {
+                  "src": "image001.png",
+                  "alt": "Gaseosa",
+                  "variant": "square"
+                },
+                "title": {
+                  "text": "Gaseosa",
+                  "variant": "caption",
+                  "align": "center"
+                },
+                "correctCategoryId": "desire"
+              },
+              {
+                "id": "s2-chocolate",
+                "media": {
+                  "src": "image001.png",
+                  "alt": "Chocolate",
+                  "variant": "square"
+                },
+                "title": {
+                  "text": "Chocolate",
+                  "variant": "caption",
+                  "align": "center"
+                },
+                "correctCategoryId": "desire"
+              }
+            ]
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "embedded",
+        "label": "Clasifica todos los objetos para continuar"
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "classifyAllObjects"
+      }
+    },
+    {
+      "viewId": "m2_2_v4",
+      "order": 4,
+      "name": "VISTA 4 - Practica: Situacion 3",
+      "viewType": "Practica",
+      "objective": "Clasificar materiales para una maqueta entre necesidad y deseo.",
+      "template": "objectClassification",
+      "variant": "simple",
+      "slots": {
+        "title": {
+          "text": "Situacion 3",
+          "variant": "eyebrow",
+          "align": "left"
+        },
+        "assessment": {
+          "text": "Tienes que hacer una maqueta como la imagen.",
+          "variant": "h3",
+          "align": "center"
+        },
+        "media": {
+          "src": "1/uso-del-dinero-2.png",
+          "alt": "Referencia de maqueta escolar",
+          "variant": "horizontal"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "text",
+            "slot": "assessment",
+            "area": "body",
+            "order": 20
+          },
+          {
+            "component": "image",
+            "slot": "media",
+            "area": "media",
+            "order": 30
+          }
+        ],
+        "compound": [
+          {
+            "type": "objectClassification",
+            "component": "objectClassification",
+            "category": "interactive",
+            "area": "interactive",
+            "categoryColumns": 3,
+            "categoryRows": 2,
+            "bankTitle": "Objetos",
+            "submitLabel": "Continuar",
+            "categories": [
+              {
+                "id": "need",
+                "title": {
+                  "text": "Necesidad",
+                  "variant": "body",
+                  "align": "center"
+                }
+              },
+              {
+                "id": "desire",
+                "title": {
+                  "text": "Deseo",
+                  "variant": "body",
+                  "align": "center"
+                }
+              }
+            ],
+            "items": [
+              {
+                "id": "s3-cartulina",
+                "media": {
+                  "src": "image001.png",
+                  "alt": "Cartulina",
+                  "variant": "square"
+                },
+                "title": {
+                  "text": "Cartulina",
+                  "variant": "caption",
+                  "align": "center"
+                },
+                "correctCategoryId": "need"
+              },
+              {
+                "id": "s3-tijera",
+                "media": {
+                  "src": "image001.png",
+                  "alt": "Tijera",
+                  "variant": "square"
+                },
+                "title": {
+                  "text": "Tijera",
+                  "variant": "caption",
+                  "align": "center"
+                },
+                "correctCategoryId": "need"
+              },
+              {
+                "id": "s3-pegamento",
+                "media": {
+                  "src": "image001.png",
+                  "alt": "Pegamento",
+                  "variant": "square"
+                },
+                "title": {
+                  "text": "Pegamento",
+                  "variant": "caption",
+                  "align": "center"
+                },
+                "correctCategoryId": "need"
+              },
+              {
+                "id": "s3-regla",
+                "media": {
+                  "src": "image001.png",
+                  "alt": "Regla",
+                  "variant": "square"
+                },
+                "title": {
+                  "text": "Regla",
+                  "variant": "caption",
+                  "align": "center"
+                },
+                "correctCategoryId": "need"
+              },
+              {
+                "id": "s3-lapiz",
+                "media": {
+                  "src": "image001.png",
+                  "alt": "Lapiz",
+                  "variant": "square"
+                },
+                "title": {
+                  "text": "Lapiz",
+                  "variant": "caption",
+                  "align": "center"
+                },
+                "correctCategoryId": "need"
+              },
+              {
+                "id": "s3-escarcha",
+                "media": {
+                  "src": "image001.png",
+                  "alt": "Escarcha",
+                  "variant": "square"
+                },
+                "title": {
+                  "text": "Escarcha",
+                  "variant": "caption",
+                  "align": "center"
+                },
+                "correctCategoryId": "desire"
+              },
+              {
+                "id": "s3-stickers",
+                "media": {
+                  "src": "image001.png",
+                  "alt": "Stickers",
+                  "variant": "square"
+                },
+                "title": {
+                  "text": "Stickers",
+                  "variant": "caption",
+                  "align": "center"
+                },
+                "correctCategoryId": "desire"
+              },
+              {
+                "id": "s3-cinta",
+                "media": {
+                  "src": "image001.png",
+                  "alt": "Cinta",
+                  "variant": "square"
+                },
+                "title": {
+                  "text": "Cinta",
+                  "variant": "caption",
+                  "align": "center"
+                },
+                "correctCategoryId": "desire"
+              }
+            ]
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "embedded",
+        "label": "Clasifica todos los objetos para continuar"
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "classifyAllObjects"
+      }
+    },
+    {
+      "viewId": "m2_2_v5",
+      "order": 5,
+      "name": "VISTA 5 - Practica: Situacion 4",
+      "viewType": "Practica",
+      "objective": "Clasificar materiales para una presentacion entre necesidad y deseo.",
+      "template": "objectClassification",
+      "variant": "simple",
+      "slots": {
+        "title": {
+          "text": "Situacion 4",
+          "variant": "eyebrow",
+          "align": "left"
+        },
+        "assessment": {
+          "text": "Tienes que preparar una presentacion del colegio como la imagen",
+          "variant": "h3",
+          "align": "center"
+        },
+        "media": {
+          "src": "1/uso-dinero.png",
+          "alt": "Referencia de presentacion escolar",
+          "variant": "horizontal"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "text",
+            "slot": "assessment",
+            "area": "body",
+            "order": 20
+          },
+          {
+            "component": "image",
+            "slot": "media",
+            "area": "media",
+            "order": 30
+          }
+        ],
+        "compound": [
+          {
+            "type": "objectClassification",
+            "component": "objectClassification",
+            "category": "interactive",
+            "area": "interactive",
+            "bankTitle": "Objetos",
+            "submitLabel": "Continuar",
+            "categories": [
+              {
+                "id": "need",
+                "title": {
+                  "text": "Necesidad",
+                  "variant": "body",
+                  "align": "center"
+                }
+              },
+              {
+                "id": "desire",
+                "title": {
+                  "text": "Deseo",
+                  "variant": "body",
+                  "align": "center"
+                }
+              }
+            ],
+            "items": [
+              {
+                "id": "s4-folder",
+                "media": {
+                  "src": "image001.png",
+                  "alt": "Folder",
+                  "variant": "square"
+                },
+                "title": {
+                  "text": "Folder",
+                  "variant": "caption",
+                  "align": "center"
+                },
+                "correctCategoryId": "need"
+              },
+              {
+                "id": "s4-hojas",
+                "media": {
+                  "src": "image001.png",
+                  "alt": "Hojas",
+                  "variant": "square"
+                },
+                "title": {
+                  "text": "Hojas",
+                  "variant": "caption",
+                  "align": "center"
+                },
+                "correctCategoryId": "need"
+              },
+              {
+                "id": "s4-impresiones",
+                "media": {
+                  "src": "image001.png",
+                  "alt": "Impresiones",
+                  "variant": "square"
+                },
+                "title": {
+                  "text": "Impresiones",
+                  "variant": "caption",
+                  "align": "center"
+                },
+                "correctCategoryId": "need"
+              },
+              {
+                "id": "s4-cinta",
+                "media": {
+                  "src": "image001.png",
+                  "alt": "Cinta",
+                  "variant": "square"
+                },
+                "title": {
+                  "text": "Cinta",
+                  "variant": "caption",
+                  "align": "center"
+                },
+                "correctCategoryId": "need"
+              },
+              {
+                "id": "s4-carton",
+                "media": {
+                  "src": "image001.png",
+                  "alt": "Carton",
+                  "variant": "square"
+                },
+                "title": {
+                  "text": "Carton",
+                  "variant": "caption",
+                  "align": "center"
+                },
+                "correctCategoryId": "need"
+              },
+              {
+                "id": "s4-led",
+                "media": {
+                  "src": "image001.png",
+                  "alt": "Luces",
+                  "variant": "square"
+                },
+                "title": {
+                  "text": "Luces",
+                  "variant": "caption",
+                  "align": "center"
+                },
+                "correctCategoryId": "desire"
+              }
+            ]
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "embedded",
+        "label": "Clasifica todos los objetos para continuar"
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "classifyAllObjects"
+      }
+    },
+    {
+      "viewId": "m2_2_v6",
+      "order": 6,
+      "name": "VISTA 6 - Final: Mision cumplida",
+      "viewType": "Final",
+      "objective": "Cerrar la practica y mostrar el logro final.",
+      "template": "postGameLobby",
+      "variant": "postGame",
+      "slots": {
+        "title": {
+          "text": "Mision cumplida",
+          "variant": "h1",
+          "align": "center"
+        },
+        "feedback": {
+          "text": "Ahora ya puedes clasificar mejor tus gastos entre necesidades y deseos.",
+          "variant": "label",
+          "align": "center",
+          "color": "accent"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "text",
+            "slot": "feedback",
+            "area": "feedback",
+            "order": 20
+          }
+        ],
+        "compound": [
+          {
+            "type": "showCard",
+            "component": "showCard",
+            "category": "grouper",
+            "area": "rewards",
+            "items": [
+              {
+                "id": "reward-xp",
+                "title": {
+                  "text": "XP",
+                  "variant": "label"
+                },
+                "text": {
+                  "text": "+ 10",
+                  "variant": "bodySm"
+                }
+              },
+              {
+                "id": "reward-intis",
+                "title": {
+                  "text": "INTIS",
+                  "variant": "label"
+                },
+                "text": {
+                  "text": "+ 10",
+                  "variant": "bodySm"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "cta",
+        "label": "Continuar",
+        "action": "goToNextMissionMenu"
+      },
+      "completionCriteria": {
+        "type": "endOfMission"
+      }
+    }
+  ]
 }

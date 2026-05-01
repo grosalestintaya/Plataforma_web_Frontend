@@ -84,12 +84,7 @@ function getDisplayText(content, fallback = "") {
   return fallback;
 }
 
-function buildSections({
-  cards,
-  grid,
-  sectionTitle,
-  sections,
-}) {
+function buildSections({ cards, grid, sectionTitle, sections }) {
   if (Array.isArray(sections) && sections.length > 0) {
     return sections.map((section) => ({
       sectionTitle: section?.sectionTitle ?? sectionTitle ?? null,
@@ -120,10 +115,7 @@ export default function MemoryPairs({
   const instruction = data?.instruction ?? null;
   const sectionTitle = data?.sectionTitle ?? null;
   const finishLabel = data?.finishLabel ?? view?.nav?.finishLabel ?? "Fin";
-  const previewSeconds = normalizePositiveNumber(
-    data?.previewSeconds,
-    4,
-  );
+  const previewSeconds = normalizePositiveNumber(data?.previewSeconds, 4);
   const previewDurationMs = normalizePositiveNumber(
     data?.previewDurationMs,
     previewSeconds * 1000,
@@ -161,12 +153,12 @@ export default function MemoryPairs({
   );
 
   const [activeSectionIndex, setActiveSectionIndex] = useState(0);
-  const [shuffleVersion, setShuffleVersion] = useState(0);
   const [open, setOpen] = useState([]);
   const [matched, setMatched] = useState(() => new Set());
   const [turns, setTurns] = useState(0);
   const [previewRemainingMs, setPreviewRemainingMs] =
     useState(previewDurationMs);
+  const [previewCycle, setPreviewCycle] = useState(0);
   const [restartRemaining, setRestartRemaining] = useState(restartLimit);
   const boardViewportRef = useRef(null);
   const [boardViewportSize, setBoardViewportSize] = useState({
@@ -174,17 +166,16 @@ export default function MemoryPairs({
     height: 0,
   });
 
-  const activeSection =
-    sections[activeSectionIndex] ?? {
-      sectionTitle: null,
-      cards: [],
-      grid: normalizedGrid,
-    };
+  const activeSection = sections[activeSectionIndex] ?? {
+    sectionTitle: null,
+    cards: [],
+    grid: normalizedGrid,
+  };
 
   const sectionGrid = activeSection?.grid ?? normalizedGrid;
   const deck = useMemo(
     () => shuffle(activeSection?.cards ?? []),
-    [activeSection?.cards, shuffleVersion],
+    [activeSection?.cards],
   );
   const totalPairs = useMemo(
     () => new Set(deck.map((card) => card.pairId)).size,
@@ -201,11 +192,11 @@ export default function MemoryPairs({
 
   useEffect(() => {
     setActiveSectionIndex(0);
-    setShuffleVersion(0);
     setOpen([]);
     setMatched(new Set());
     setTurns(0);
     setPreviewRemainingMs(previewDurationMs);
+    setPreviewCycle((prev) => prev + 1);
     setRestartRemaining(restartLimit);
   }, [previewDurationMs, restartLimit, sectionsConfigKey]);
 
@@ -214,6 +205,7 @@ export default function MemoryPairs({
     setMatched(new Set());
     setTurns(0);
     setPreviewRemainingMs(previewDurationMs);
+    setPreviewCycle((prev) => prev + 1);
     setRestartRemaining(restartLimit);
   }, [activeSectionIndex, previewDurationMs, restartLimit]);
 
@@ -235,7 +227,7 @@ export default function MemoryPairs({
     }, 100);
 
     return () => window.clearInterval(intervalId);
-  }, [activeSectionIndex, previewDurationMs, shuffleVersion]);
+  }, [activeSectionIndex, previewDurationMs, previewCycle]);
 
   useEffect(() => {
     if (!isComplete) return undefined;
@@ -245,7 +237,6 @@ export default function MemoryPairs({
         setActiveSectionIndex((prev) =>
           Math.min(prev + 1, sections.length - 1),
         );
-        setShuffleVersion(0);
       }, sectionAdvanceDelayMs);
 
       return () => window.clearTimeout(timeoutId);
@@ -328,14 +319,12 @@ export default function MemoryPairs({
   );
 
   function restartBoard() {
-    if (restartRemaining <= 0) return;
+    if (restartRemaining <= 0 || isPreviewActive || isComplete) return;
 
     setRestartRemaining((prev) => Math.max(prev - 1, 0));
     setOpen([]);
-    setMatched(new Set());
-    setTurns(0);
     setPreviewRemainingMs(previewDurationMs);
-    setShuffleVersion((prev) => prev + 1);
+    setPreviewCycle((prev) => prev + 1);
   }
 
   function pick(index) {
@@ -412,7 +401,7 @@ export default function MemoryPairs({
         <button
           type="button"
           onClick={restartBoard}
-          disabled={restartRemaining <= 0 || isComplete}
+          disabled={restartRemaining <= 0 || isComplete || isPreviewActive}
           className="flex min-w-[128px] items-center gap-2 border border-black/70 px-2.5 py-1 text-left text-white transition hover:bg-black/10 disabled:cursor-not-allowed disabled:opacity-45"
         >
           <span className="text-2xl leading-none">↻</span>
@@ -483,16 +472,29 @@ export default function MemoryPairs({
                           />
                         </div>
                         <div className="border border-black/60 px-1 py-0.5">
-                          <Typography content={labelContent} className="text-center" />
+                          <Typography
+                            content={labelContent}
+                            className="text-center"
+                          />
                         </div>
                       </div>
                     ) : (
                       <div className="flex h-full w-full items-center justify-center border border-black/60 px-1.5 py-0.5">
-                        <Typography content={labelContent} className="text-center" />
+                        <Typography
+                          content={labelContent}
+                          className="text-center"
+                        />
                       </div>
                     )
                   ) : (
-                    <div className="text-xs text-white/55">?</div>
+                    <div className="text-xs text-white/55">
+                      <Image
+                        src="../public/iconcolor.png"
+                        alt="Quipu Yachay"
+                        className="h-full w-full"
+                        imgClassName="block h-full w-full object-contain"
+                      />
+                    </div>
                   )}
                 </button>
               );

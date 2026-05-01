@@ -136,7 +136,7 @@
         "title": { "text": "Situacion 2", "variant": "eyebrow" },
         "amount": { "text": "Monto", "variant": "h3" },
         "situation": {
-          "text": "Hora del recreo, te dio mucha hambre. Escoge que comprar con el dinero que tienes.",
+          "text": "Hora del recreo, escoge que comprar con el dinero que tienes.",
           "variant": "h3",
           "align": "left"
         }

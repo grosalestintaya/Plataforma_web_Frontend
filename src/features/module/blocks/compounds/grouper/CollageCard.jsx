@@ -5,10 +5,10 @@ import FlipCard from "../Iterative/FlipCard";
 import { cn } from "@/shared/libs/utils";
 
 const COLLAGE_ROOT_CLASS =
-  "flex h-full min-h-0 w-full items-center justify-center overflow-hidden";
+  "flex h-full min-h-0 w-full items-stretch justify-start overflow-hidden";
 
 const COLLAGE_GRID_CLASS =
-  "grid h-full min-h-0 w-full max-w-full place-items-center content-center justify-center gap-3 overflow-hidden";
+  "grid h-full min-h-0 w-full max-w-full place-items-stretch content-start justify-start gap-3 overflow-hidden";
 
 const COLLAGE_ITEM_SLOT_CLASS = "module-card-grid-slot";
 
@@ -70,18 +70,37 @@ export default function CollageCard({
   onSelect,
   columns = 2,
   rows,
+  slotCount,
+  rowMode = "fr",
   heroApi,
   view,
   className = "",
+  gridClassName = "",
+  itemSlotClassName = "",
+  emptyState = null,
+  renderItem = null,
+  renderEmptySlot = null,
+  trackProgress = true,
   style = undefined,
 }) {
   const [revealedIds, setRevealedIds] = useState([]);
   const hasItems = Array.isArray(items) && items.length > 0;
-  const gridLayout = getGridLayout(columns, rows, hasItems ? items.length : 0);
+  const effectiveSlotCount = Math.max(
+    hasItems ? items.length : 0,
+    Number.isFinite(Number(slotCount)) ? Number(slotCount) : 0,
+  );
+  const gridLayout = getGridLayout(
+    columns,
+    rows,
+    effectiveSlotCount > 0 ? effectiveSlotCount : 0,
+  );
   const interactiveViewId = view?.id ?? view?.viewId;
+  const slots = Array.from({ length: effectiveSlotCount }, (_, index) =>
+    hasItems ? items[index] ?? null : null,
+  );
 
   useEffect(() => {
-    if (!interactiveViewId || !hasItems) {
+    if (!trackProgress || !interactiveViewId || !hasItems) {
       return;
     }
 
@@ -96,7 +115,7 @@ export default function CollageCard({
     });
   }, [hasItems, heroApi, interactiveViewId, items, revealedIds]);
 
-  if (!hasItems) return null;
+  if (!hasItems && !emptyState) return null;
 
   function handleFlipComplete(itemId) {
     if (!itemId) return;
@@ -108,21 +127,59 @@ export default function CollageCard({
   return (
     <div className={cn(COLLAGE_ROOT_CLASS, className)} style={style}>
       <div
-        className={COLLAGE_GRID_CLASS}
+        className={cn(COLLAGE_GRID_CLASS, gridClassName)}
         style={{
           gridTemplateColumns: `repeat(${gridLayout.columns}, minmax(0, 1fr))`,
-          gridTemplateRows: `repeat(${gridLayout.rows}, minmax(0, 1fr))`,
+          gridTemplateRows:
+            rowMode === "auto"
+              ? `repeat(${gridLayout.rows}, minmax(0, auto))`
+              : `repeat(${gridLayout.rows}, minmax(0, 1fr))`,
         }}
       >
-        {items.map((item, index) => {
+        {!hasItems && emptyState ? (
+          <div className="relative z-10 col-span-full row-span-full h-full min-h-0 w-full min-w-0">
+            {emptyState}
+          </div>
+        ) : null}
+
+        {slots.map((item, index) => {
+          if (!item) {
+            return (
+              <div
+                key={`collage-empty-${index + 1}`}
+                className={cn(
+                  COLLAGE_ITEM_SLOT_CLASS,
+                  "pointer-events-none",
+                  itemSlotClassName,
+                )}
+              >
+                {renderEmptySlot ? renderEmptySlot({ index }) : null}
+              </div>
+            );
+          }
+
           const isFlip = isFlipItem(item);
           const itemId = getItemId(item, index);
           const isSelected = selectedIds.includes(itemId);
           const media = getItemMedia(item, item?.caption ?? "Tarjeta");
 
+          if (typeof renderItem === "function") {
+            return (
+              <div
+                key={itemId}
+                className={cn(COLLAGE_ITEM_SLOT_CLASS, itemSlotClassName)}
+              >
+                {renderItem({ item, index, itemId, isSelected, media })}
+              </div>
+            );
+          }
+
           if (isFlip) {
             return (
-              <div key={itemId} className={COLLAGE_ITEM_SLOT_CLASS}>
+              <div
+                key={itemId}
+                className={cn(COLLAGE_ITEM_SLOT_CLASS, itemSlotClassName)}
+              >
                 <FlipCard
                   compact
                   fillContainer
@@ -156,7 +213,10 @@ export default function CollageCard({
           }
 
           return (
-            <div key={itemId} className={COLLAGE_ITEM_SLOT_CLASS}>
+            <div
+              key={itemId}
+              className={cn(COLLAGE_ITEM_SLOT_CLASS, itemSlotClassName)}
+            >
               <Card
                 as={selectable ? "button" : "article"}
                 density="compact"
