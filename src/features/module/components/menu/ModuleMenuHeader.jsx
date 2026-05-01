@@ -3,6 +3,8 @@ import menuIcon from "@/shared/icons/icon-menu-pen.svg";
 import HeaderSettingsButton from "../ui/HeaderSettingsButton";
 import HeaderBackButton from "../ui/HeaderBackButton";
 import HeaderRopeSvg from "../HeaderRopeSvg";
+import CoinsPanel from "./coins";
+import XpPanel from "./xp";
 function hexToRgba(hex, a = 1) {
   const h = String(hex || "#000").replace("#", "");
   const full =
@@ -32,6 +34,7 @@ export default function ModuleMenuHeader({
   onOpenSettings,
   gearIconSrc = menuIcon,
   audioState,
+  wallet = { xp: 0, coins: 0 },
 }) {
   const playSfx = audioState?.playSfx;
 
@@ -46,7 +49,7 @@ export default function ModuleMenuHeader({
   }
 
   return (
-    <header className="relative w-full overflow-hidden">
+    <header className="relative w-full overflow-hidden gap-4">
       <div
         className="pointer-events-none absolute inset-0"
         style={{
@@ -59,9 +62,9 @@ export default function ModuleMenuHeader({
         }}
       />
 
-      <div className="relative px-3 py-0 pb-1 pt-2.5 sm:px-4 md:px-8 lg:px-1">
-        <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 sm:gap-3">
-          <div className="flex items-center">
+      <div className="relative px-0 py-0 pb-1 pt-2.5 sm:px-4 md:px-8 lg:px-1">
+        <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-9 ">
+          <div className="flex items-center pl-2 sm:pl-3">
             <HeaderBackButton
               onClick={handleBack}
               themeHex={themeHex}
@@ -70,12 +73,27 @@ export default function ModuleMenuHeader({
           </div>
 
           <div className="flex min-w-0 justify-center px-1 sm:px-2">
-            <h1 className="truncate text-center text-sm font-semibold tracking-tight text-white sm:text-lg md:text-2xl lg:text-3xl">
+            <h1
+              className="truncate text-center"
+              style={{
+                fontWeight: 700,
+                letterSpacing: "0.08em",
+                color: "#f5e9c8",
+                textShadow: [
+                  "0 2px 0 rgba(122,85,16,0.8)",
+                  "0 1px 0 rgba(201,162,39,0.6)",
+                  "0 0 18px rgba(232,200,64,0.35)",
+                  "0 4px 14px rgba(0,0,0,0.5)",
+                ].join(", "),
+                fontSize: "clamp(0.85rem, 2.5vw, 1.75rem)",
+              }}>
               {title}
             </h1>
           </div>
 
-          <div className="flex items-center justify-end">
+          <div className="flex items-center justify-end gap-3 sm:gap-4">
+            <XpPanel monedas={wallet?.xp ?? 0} themeHex={themeHex} />
+            <CoinsPanel monedas={wallet?.coins ?? 0} themeHex={themeHex} />
             <HeaderSettingsButton
               onClick={handleOpenSettings}
               themeHex={themeHex}

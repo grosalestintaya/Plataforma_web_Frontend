@@ -29,7 +29,7 @@
             "Al final, harás una mini prueba para comprobar tus conocimientos."
           ],
           "variant": "body1",
-          "align": "left"
+          "align": "justify"
         },
         "media": {
           "src": "1/inicio-conceptual.jpeg",
@@ -85,12 +85,11 @@
         },
         "body": {
           "paragraphs": [
-            "El dinero es un medio de pago que usamos para obtener bienes y servicios. Los bienes son cosas que compramos (como comida, cuadernos o ropa). Los servicios son acciones por las que pagamos (como el pasaje, una recarga o una impresión). En pocas palabras: el dinero nos permite pagar y conseguir lo que necesitamos o queremos.",
             "El dinero facilita el intercambio. Si no existiera, tendríamos que cambiar cosas por cosas (por ejemplo, cambiar un cuaderno por una bebida), y eso no siempre funciona porque la otra persona puede no necesitar lo que tú ofreces. Por eso usamos dinero: porque es un medio aceptado por todos para comprar de forma más rápida y ordenada.",
             "Idea clave: el dinero es limitado. Si lo gastas en una cosa, te queda menos para otra; por eso conviene usarlo con cuidado."
           ],
           "variant": "body1",
-          "align": "center"
+          "align": "justify"
         },
         "media": {
           "src": "1/uso-dinero.png",

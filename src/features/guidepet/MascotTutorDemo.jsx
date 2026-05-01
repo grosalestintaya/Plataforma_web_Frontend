@@ -1,21 +1,5 @@
 import React from "react";
-import grassPng from "@/assets/mascots/grass/base2.png";
-
-function hexToRgba(hex, a = 1) {
-  const h = String(hex || "#000").replace("#", "");
-  const full =
-    h.length === 3
-      ? h
-          .split("")
-          .map((c) => c + c)
-          .join("")
-      : h.padEnd(6, "0");
-  const num = parseInt(full, 16);
-  const r = (num >> 16) & 255;
-  const g = (num >> 8) & 255;
-  const b = num & 255;
-  return `rgba(${r},${g},${b},${a})`;
-}
+import grassPng from "@/assets/mascots/grass/base.png";
 
 export default function MascotTutorDemo({
   gifSrc = "/mascots/guide.gif",
@@ -23,63 +7,167 @@ export default function MascotTutorDemo({
   text = "Selecciona una actividad para empezar.",
   themeHex = "#7130F7",
 }) {
-  const bubbleStyle = {
-    borderColor: hexToRgba(themeHex, 0.35),
-    background: `linear-gradient(180deg,
-      ${hexToRgba(themeHex, 0.16)},
-      ${hexToRgba("#000000", 0.18)} 70%
-    )`,
-    color: "rgba(255,255,255,0.96)",
-    boxShadow: `0 18px 45px ${hexToRgba("#000000", 0.35)}`,
-  };
-
   return (
-    <div className="flex h-full w-full min-h-0 flex-col items-center justify-start">
-      {/* Burbuja */}
+    <>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Crimson+Text:ital,wght@0,400;1,400&display=swap"
+        rel="stylesheet"
+      />
+
       <div
-        className="relative max-w-[210px] rounded-3xl border px-3 py-2.5 backdrop-blur-sm shadow-xl sm:max-w-[230px] sm:px-4 sm:py-3 md:max-w-[250px] lg:max-w-[270px] xl:max-w-[280px] xl:px-5 xl:py-4"
-        style={bubbleStyle}>
-        <div className="mb-1 text-center text-[10px] text-white/60 sm:text-xs">{name}</div>
-        <div className="text-center text-[11px] leading-snug opacity-95 sm:text-xs md:text-sm md:leading-snug xl:leading-relaxed">
-          {text}
+        className="h-full w-full pt-30px"
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          width: "100%",
+          height: "100%",
+          minHeight: 0,
+          justifyContent: "flex-start",
+          
+        }}>
+        {/* ── Bubble ── */}
+        <div style={{ position: "relative", width: "100%", maxWidth: 260 }}>
+          <div
+            style={{
+              background: "linear-gradient(160deg, #f5e9c8, #e8d088)",
+              border: "1.5px solid #a07820",
+              borderRadius: 16,
+              padding: "10px 16px 12px",
+              boxShadow: "0 0 0 1px #c9a227, 0 4px 18px rgba(0,0,0,0.35)",
+              textAlign: "center",
+            }}>
+            <div
+              style={{
+                fontFamily: "'Cinzel', Georgia, serif",
+                fontSize: 9,
+                letterSpacing: "0.18em",
+                textTransform: "uppercase",
+                color: "#8b6914",
+                marginBottom: 5,
+              }}>
+              {name}
+            </div>
+
+            <p
+              style={{
+                fontFamily: "'Crimson Text', Georgia, serif",
+                fontSize: 13,
+                fontStyle: "italic",
+                color: "#2a1a06",
+                lineHeight: 1.5,
+                margin: 0,
+              }}>
+              {text}
+            </p>
+          </div>
+
+          {/* Tail outer (border) */}
+          <div
+            style={{
+              position: "absolute",
+              bottom: -12,
+              left: "50%",
+              transform: "translateX(-50%)",
+              width: 0,
+              height: 0,
+              borderLeft: "10px solid transparent",
+              borderRight: "10px solid transparent",
+              borderTop: "11px solid #a07820",
+            }}
+          />
+          {/* Tail inner (fill) */}
+          <div
+            style={{
+              position: "absolute",
+              bottom: -10,
+              left: "50%",
+              transform: "translateX(-50%)",
+              width: 0,
+              height: 0,
+              borderLeft: "9px solid transparent",
+              borderRight: "9px solid transparent",
+              borderTop: "10px solid #e8d088",
+            }}
+          />
         </div>
 
-        {/* Pico */}
+        {/* ── Mascot area ── */}
         <div
-          className="absolute -bottom-3 left-1/2 h-5 w-5 -translate-x-1/2 rotate-45 border-b border-l"
           style={{
-            background: hexToRgba(themeHex, 0.16),
-            borderColor: hexToRgba(themeHex, 0.35),
-          }}
-        />
+            position: "relative",
+            marginTop: 14,
+            flex: 1,
+            minHeight: 0,
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "flex-end",
+          }}>
+          {/* Ambient glow */}
+          <div
+            style={{
+              position: "absolute",
+              bottom: "20%",
+              left: "50%",
+              transform: "translateX(-50%)",
+              width: "70%",
+              aspectRatio: "1",
+              borderRadius: "50%",
+              background:
+                "radial-gradient(circle, rgba(201,162,39,0.15) 0%, transparent 70%)",
+              pointerEvents: "none",
+            }}
+          />
+          {/* Mascot gif */}
+          <img
+            className="pr-1.5"
+            src={gifSrc}
+            alt={name}
+            draggable={false}
+            style={{
+              position: "relative",
+              zIndex: 3,
+              maxHeight: "calc(100% - 40px)",
+              maxWidth: "80%",
+              objectFit: "contain",
+              filter:
+                "drop-shadow(0 6px 12px rgba(0,0,0,0.5)) contrast(1.05) saturate(1.1)",
+              marginBottom: 4,
+            }}
+          />
+          {/* Grass */}
+          <img
+            src={grassPng}
+            alt="Base de pasto"
+            draggable={false}
+            style={{
+              position: "absolute",
+              bottom: -10,
+              zIndex: 2,
+              xindex: 2,
+              width: "100%",
+              objectFit: "contain",
+              pointerEvents: "none",
+              userSelect: "none",
+            }}
+          />
+          {/* Golden pedestal */}+{/* Ground shadow */}
+          <div
+            style={{
+              width: "100%",
+              maxWidth: 220,
+              height: 8,
+              borderRadius: "50%",
+              background: "rgba(0,0,0,0.35)",
+              filter: "blur(4px)",
+              flexShrink: 0,
+              marginTop: 2,
+            }}
+          />
+        </div>
       </div>
-
-      {/* Mascota:
-          Reducimos la altura visual en sm/md/lg para que el bloque inferior
-          entre completo dentro del viewport antes de llegar a xl. */}
-      <div className="relative mt-2 flex h-[110px] w-[180px] flex-1 items-start justify-center sm:mt-3 sm:h-[135px] sm:w-[210px] md:h-[160px] md:w-[240px] lg:h-[190px] lg:w-[285px] xl:mt-6 xl:h-[270px] xl:w-[360px]">
-        {/* glow */}
-        <div
-          className="absolute inset-0 rounded-full blur-2xl"
-          style={{ background: hexToRgba(themeHex, 0.12) }}
-        />
-        {/* sombra base */}
-        <div className="absolute bottom-3 z-[1] h-[14px] w-[130px] rounded-full bg-black/35 blur-md sm:h-[16px] sm:w-[150px] md:w-[165px] lg:bottom-4 lg:h-[18px] lg:w-[185px] xl:w-[170px]" />
-        {/* pasto */}
-        {/* mascota */}
-        <img
-          src={gifSrc}
-          alt={name}
-          draggable={false}
-          className="relative z-[3] max-h-full max-w-full object-contain drop-shadow-2xl contrast-110 saturate-110"
-        />{" "}
-        <img
-          src={grassPng}
-          alt="Base de pasto"
-          draggable={false}
-          className="pointer-events-none absolute -bottom-1 z-[2] w-[125px] select-none object-contain sm:-bottom-2 sm:w-[150px] md:w-[175px] lg:-bottom-3 lg:w-[215px] xl:-bottom-4 xl:w-[260px]"
-        />
-      </div>
-    </div>
+    </>
   );
 }

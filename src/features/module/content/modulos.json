@@ -5,8 +5,8 @@
       "code": "m01",
       "legacyCodes": ["m0", "m1"],
       "sortOrder": 1,
-      "title": "Modulo 1",
-      "name": "Modulo 1",
+      "title": "modulo 1",
+      "name": "El dinero y mis decisiones cotidianas",
       "theme": {
         "tone": "green",
         "color": "#00c853",
@@ -14,34 +14,35 @@
       },
       "missions": {
         "conceptual": {
-          "title": "Mision 1.1. - Conceptual",
+          "title": "El dinero en la vida cotidiana",
           "activityId": "01",
           "activityKey": "m01-conceptual",
           "learn": [
             "Que es el dinero y como se usa en el dia a dia",
             "Reconocer ejemplos simples de ingresos y gastos"
           ],
-          "outcome": "Identificaras cuando el dinero entra y cuando el dinero sale."
+          "outcome": "Identificarás cuándo el dinero entra y cuándo el dinero sale, comprendiendo mejor cómo organizar tus gastos y tus ahorros"
         },
         "procedimental": {
-          "title": "Mision 1.2. - Procedimental",
+          "title": "Identificación de ingresos y gastos personales",
           "activityId": "02",
           "activityKey": "m01-procedimental",
           "learn": [
-            "Tomar decisiones con S/ 5.00 durante un dia escolar",
-            "Elegir transporte y compras segun el saldo disponible"
+            "Tomar decisiones inteligentes con S/ 5.00 durante un día escolar, aprendiendo a organizar mejor el dinero disponible.",
+            "Elegir el transporte y las compras más convenientes según el saldo disponible, priorizando lo más importante y necesario."
           ],
-          "outcome": "Administraras un saldo limitado en situaciones cotidianas."
+          "outcome": "Administrarás un saldo limitado en situaciones cotidianas, tomando decisiones responsables y priorizando tus necesidades más importantes."
         },
         "actitudinal": {
-          "title": "Mision 1.3. - Actitudinal",
+          "title": "Valoración del dinero y del esfuerzo",
           "activityId": "03",
           "activityKey": "m01-actitudinal",
           "learn": [
-            "Reflexionar antes de gastar o ceder a la presion del grupo",
-            "Cuidar el dinero pensando en necesidades, metas y bienestar"
+            
+            "Desarrollar respeto y conciencia sobre el uso del dinero, valorando su esfuerzo y utilidad en la vida diaria.",
+            "Reflexionar antes de gastar, pensando en necesidades, metas y bienestar, sin dejarse llevar por la presión del grupo."
           ],
-          "outcome": "Tomaras decisiones mas responsables sobre tu dinero."
+          "outcome": "Tomarás decisiones más responsables sobre tu dinero, pensando antes de gastar y priorizando lo que realmente necesitas."
         }
       }
     },
@@ -50,7 +51,7 @@
       "code": "m02",
       "sortOrder": 2,
       "title": "Modulo 2",
-      "name": "Presupuesto personal",
+      "name": "Necesidades, deseos y consumo responsable",
       "theme": {
         "tone": "green",
         "color": "#F54927",
@@ -58,34 +59,34 @@
       },
       "missions": {
         "conceptual": {
-          "title": "Conceptual",
+          "title": "Necesidades y deseos",
           "backendActivityId": null,
           "activityKey": "m02-conceptual",
           "learn": [
-            "Que es un presupuesto",
-            "Categorias basicas para presupuestar"
+            "Diferenciar las prioridades personales para tomar decisiones de gasto más conscientes y responsables.",
+            "Priorizar gastos relacionados con el estudio, el bienestar y la vida diaria de manera responsable."
           ],
-          "outcome": "Entenderas como se arma un presupuesto."
+          "outcome": "Distinguirás entre lo que necesitas para vivir, estudiar o cuidar tu bienestar y aquello que puede esperar o no es urgente"
         },
         "procedimental": {
-          "title": "Procedimental",
+          "title": "Clasificación y priorización de gastos",
           "backendActivityId": null,
           "activityKey": "m02-procedimental",
           "learn": [
-            "Armar un presupuesto mensual",
-            "Asignar limites por categoria"
+            "Organizar los gastos cuando el dinero no alcanza para todo, priorizando lo más importante y necesario.",
+            "Aprender a tomar decisiones responsables para distribuir mejor el dinero disponible."
           ],
-          "outcome": "Podras crear tu presupuesto y hacerlo realista."
+          "outcome": "Ordenarás tus gastos cuando el dinero no alcance para todo, priorizando lo más importante y necesario."
         },
         "actitudinal": {
-          "title": "Actitudinal",
+          "title": "Autocontrol y presión social",
           "backendActivityId": null,
           "activityKey": "m02-actitudinal",
           "learn": [
-            "Habitos para gastar con intencion",
-            "Control sin frustracion"
+            "Reconocer cuándo una compra está influida por amigos, redes sociales, moda o impulso, antes de tomar una decisión.",
+            "Fortalecer el autocontrol para evitar gastos innecesarios y comprar de manera más consciente."
           ],
-          "outcome": "Crearas habitos sostenibles."
+          "outcome": "Reconocerás cuándo una compra está influida por amigos, redes sociales, moda o impulso, para tomar decisiones más conscientes y responsables."
         }
       }
     },
@@ -94,7 +95,7 @@
       "code": "m03",
       "sortOrder": 3,
       "title": "Modulo 3",
-      "name": "Ahorro y metas",
+      "name": "Presupuesto personal y control del dinero",
       "theme": {
         "tone": "orange",
         "color": "#FFA500",
@@ -102,29 +103,29 @@
       },
       "missions": {
         "conceptual": {
-          "title": "Conceptual",
+          "title": "¿Qué es un presupuesto?",
           "backendActivityId": null,
           "activityKey": "m03-conceptual",
           "learn": [
-            "fhfhgfhgfh",
-            "gggggggggggggggggggggggggggggg"
+            "Comprender el presupuesto como una herramienta útil para organizar el dinero de manera clara y responsable.",
+            "Aprender a planificar ingresos y gastos para tomar mejores decisiones y alcanzar metas personales."
           ],
-          "outcome": "Tendras money."
+          "outcome": "Comprenderás el presupuesto como una herramienta de organización que te ayudará a planificar mejor tus ingresos y gastos.."
         },
 
         "procedimental": {
-          "title": "Procedimental",
+          "title": "elaboración de un presupuesto personal",
           "backendActivityId": null,
           "activityKey": "m03-procedimental",
-          "learn": [],
-          "outcome": ""
+          "learn": ["Elaborar un presupuesto mensual sencillo para organizar de manera clara los ingresos y gastos personales.","Ajustar el presupuesto según las necesidades y metas, tomando decisiones más responsables con el dinero."],
+          "outcome": "Elaborarás y ajustarás un presupuesto personal sencillo para organizar mejor tus ingresos, gastos y metas mensuales."
         },
         "actitudinal": {
-          "title": "Actitudinal",
+          "title": "Organización y responsabilidad financiera",
           "backendActivityId": null,
           "activityKey": "m03-actitudinal",
-          "learn": [],
-          "outcome": ""
+          "learn": ["Fomentar hábitos de orden y planificación para administrar mejor el dinero en la vida diaria.","Aprender a organizar gastos e ingresos de forma responsable, pensando en metas y necesidades futuras."],
+          "outcome": "Fomentarás hábitos de orden y planificación para organizar mejor tu dinero y tomar decisiones financieras más responsables."
         }
       }
     },
@@ -133,7 +134,7 @@
       "code": "m04",
       "sortOrder": 4,
       "title": "Modulo 4",
-      "name": "Consumo informado",
+      "name": "Ahorro, metas y planificación personal",
       "theme": {
         "tone": "violet",
         "color": "#00ffff",
@@ -168,7 +169,42 @@
       "code": "m05",
       "sortOrder": 5,
       "title": "Modulo 5",
-      "name": "Toma de decisiones financieras",
+      "name": "Endeudamiento responsable y riesgos financieros",
+      "theme": {
+        "tone": "rose",
+        "color": "#7130F7",
+        "accent": "#38bdf8"
+      },
+      "missions": {
+        "conceptual": {
+          "title": "Conceptual",
+          "backendActivityId": null,
+          "activityKey": "m05-conceptual",
+          "learn": [],
+          "outcome": ""
+        },
+        "procedimental": {
+          "title": "Procedimental",
+          "backendActivityId": null,
+          "activityKey": "m05-procedimental",
+          "learn": [],
+          "outcome": ""
+        },
+        "actitudinal": {
+          "title": "Actitudinal",
+          "backendActivityId": null,
+          "activityKey": "m05-actitudinal",
+          "learn": [],
+          "outcome": ""
+        }
+      }
+    },
+       {
+      "id": "module-6",
+      "code": "m06",
+      "sortOrder": 6,
+      "title": "Modulo 6",
+      "name": "Decisiones financieras para la vida",
       "theme": {
         "tone": "rose",
         "color": "#7130F7",
