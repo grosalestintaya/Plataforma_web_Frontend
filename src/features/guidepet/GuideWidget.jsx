@@ -1,9 +1,12 @@
 import React, { useMemo } from "react";
 
 function tipByType(type) {
-  if (type === "conceptual") return "Lee con calma: aquí construyes la idea base.";
-  if (type === "procedimental") return "Aquí se practica: prueba, falla y mejora.";
-  if (type === "actitudinal") return "Piensa en tu vida diaria: decisiones pequeñas suman.";
+  if (type === "conceptual")
+    return "Lee con calma: aquí construyes la idea base.";
+  if (type === "procedimental")
+    return "Aquí se practica: prueba, falla y mejora.";
+  if (type === "actitudinal")
+    return "Piensa en tu vida diaria: decisiones pequeñas suman.";
   return "Sigue avanzando: cada intento cuenta.";
 }
 

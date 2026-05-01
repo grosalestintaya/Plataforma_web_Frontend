@@ -696,85 +696,144 @@ const Perfil = () => {
           <PanelShell
             color={currentStyleMeta.color}
             className="p-4 lg:p-4 xl:p-5">
-            <div className="flex h-full min-h-0 flex-col gap-4">
-              <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-                <div className="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-center">
-                  <div className="relative mx-auto shrink-0 sm:mx-0">
-                    <div
-                      className="absolute inset-[-10px] rounded-full blur-2xl"
-                      style={{
-                        background: `radial-gradient(circle, ${hexToRgba(
-                          currentStyleMeta.color,
-                          0.22,
-                        )} 0%, transparent 70%)`,
-                      }}
-                    />
-                    <img
-                      src={getAvatarPath(displayAvatar)}
-                      alt={profile.username}
-                      className="relative rounded-full border-[4px] object-cover"
-                      style={{
-                        width: "clamp(82px, 7vw, 106px)",
-                        height: "clamp(82px, 7vw, 106px)",
-                        borderColor: currentStyleMeta.color,
-                        backgroundColor: "var(--app-bg, #f8fafc)",
-                        boxShadow: `0 0 0 8px ${hexToRgba(
-                          currentStyleMeta.color,
-                          0.1,
-                        )}`,
-                      }}
-                    />
+            <div className="flex h-full min-h-0 flex-col gap-5">
+              {/* HEADER */}
+              <div
+                className="relative overflow-hidden rounded-[28px] border p-5 lg:p-6"
+                style={{
+                  borderColor: hexToRgba(currentStyleMeta.color, 0.18),
+                  background:
+                    "linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,250,252,0.88))",
+                  boxShadow: "0 12px 30px rgba(15,23,42,0.06)",
+                }}>
+                {/* top accent line */}
+                <div
+                  className="absolute left-0 top-0 h-[3px] w-full"
+                  style={{
+                    background: `linear-gradient(
+          90deg,
+          transparent,
+          ${hexToRgba(currentStyleMeta.color, 0.95)},
+          transparent
+        )`,
+                  }}
+                />
+
+                <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+                  {/* LEFT SIDE */}
+                  <div className="flex min-w-0 flex-col gap-4 sm:flex-row sm:items-center">
+                    {/* AVATAR */}
+                    <div className="relative mx-auto shrink-0 sm:mx-0">
+                      <div
+                        className="absolute inset-[-12px] rounded-full blur-2xl"
+                        style={{
+                          background: `radial-gradient(circle, ${hexToRgba(
+                            currentStyleMeta.color,
+                            0.22,
+                          )} 0%, transparent 70%)`,
+                        }}
+                      />
+
+                      <img
+                        src={getAvatarPath(displayAvatar)}
+                        alt={profile.username}
+                        className="relative rounded-full border-[4px] object-cover"
+                        style={{
+                          width: "clamp(90px, 7vw, 112px)",
+                          height: "clamp(90px, 7vw, 112px)",
+                          borderColor: currentStyleMeta.color,
+                          backgroundColor: "var(--app-bg, #f8fafc)",
+                          boxShadow: `0 0 0 8px ${hexToRgba(
+                            currentStyleMeta.color,
+                            0.1,
+                          )}`,
+                        }}
+                      />
+                    </div>
+
+                    {/* INFO */}
+                    <div className="min-w-0 flex-1 text-center sm:text-left">
+                      <SectionLabel color={currentStyleMeta.color}>
+                        Perfil del jugador
+                      </SectionLabel>
+
+                      <h2
+                        className="mt-2 break-words text-[clamp(1.2rem,1.7vw,1.9rem)] font-black leading-tight"
+                        style={{ color: "var(--card-text, #0f172a)" }}>
+                        {profile.name} {profile.lastname}
+                      </h2>
+
+                      <p
+                        className="mt-1 break-all text-sm font-semibold"
+                        style={{
+                          color: "var(--card-muted, rgba(15,23,42,0.62))",
+                        }}>
+                        @{profile.username}
+                      </p>
+                    </div>
                   </div>
 
-                  <div className="min-w-0 flex-1 text-center sm:text-left">
-                    <SectionLabel color={currentStyleMeta.color}>
-                      Perfil del jugador
-                    </SectionLabel>
+                  {/* ACTION BUTTON */}
+                  <button
+                    type="button"
+                    onClick={handleOpenPasswordModal}
+                    className={cn(
+                      "group relative overflow-hidden rounded-2xl px-5 py-4",
+                      "transition-all duration-200",
+                      "hover:scale-[1.02] active:scale-[0.98]",
+                      "cursor-pointer",
+                    )}
+                    style={{
+                      border: `1px solid ${hexToRgba(currentStyleMeta.color, 0.2)}`,
+                      background: `linear-gradient(
+            180deg,
+            ${hexToRgba(currentStyleMeta.color, 0.7)},
+            rgba(255,255,255,11.95)
+          )`,
+                    }}>
+                    <div className="flex items-center gap-3 --primary">
+                      <div
+                        className="flex h-11 w-11 items-center justify-center rounded-2xl text-lg"
+                        style={{
+                          background: hexToRgba(currentStyleMeta.color, 0.14),
+                          border: `1px solid ${hexToRgba(
+                            currentStyleMeta.color,
+                            0.2,
+                          )}`,
+                        }}>
+                        🔐
+                      </div>
 
-                    <h2
-                      className="mt-1 break-words text-[clamp(1.1rem,1.6vw,1.8rem)] font-black leading-tight"
-                      style={{ color: "var(--card-text, #0f172a)" }}>
-                      {profile.name} {profile.lastname}
-                    </h2>
+                      <div className="text-left">
+                        <p
+                          className="text-sm font-black "
+                          style={{ color: "var(--card-text, #0f172a)" }}>
+                          Cambiar contraseña
+                        </p>
 
-                    <p
-                      className="mt-1 break-all text-sm font-semibold"
-                      style={{
-                        color: "var(--card-muted, rgba(15,23,42,0.62))",
-                      }}>
-                      @{profile.username}
-                    </p>
-                  </div>
+                        <p
+                          className="text-[12px]"
+                          style={{
+                            color: "var(--card-muted, rgba(15,23,42,0.62))",
+                          }}>
+                          Actualiza tu acceso
+                        </p>
+                      </div>
+                    </div>
+                  </button>
                 </div>
-
-                <ActionTile
-                  icon="🔐"
-                  title="Cambiar contraseña"
-                  subtitle="Actualiza el acceso"
-                  color={currentStyleMeta.color}
-                  onClick={handleOpenPasswordModal}
-                />
               </div>
 
-              <div className="flex flex-wrap justify-center gap-2.5 sm:justify-start">
-                <StatusPill
-                  active={profile.is_active}
-                  color={currentStyleMeta.color}
-                />
-                <SmallChip
-                  label="Tema"
-                  value={currentStyleMeta.label}
-                  color={currentStyleMeta.color}
-                />
-                <SmallChip
-                  label="Clase"
-                  value={profile.gradeName}
-                  color={currentStyleMeta.color}
-                />
-              </div>
-
-              <div className="grid min-h-0 flex-1 gap-4 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
-                <div className="space-y-3 min-h-0">
+              {/* CONTENT */}
+              <div className="grid min-h-0 flex-1 gap-4 lg:grid-cols-3">
+                {/* ACADEMIC */}
+                <div
+                  className="space-y-4 rounded-[24px] border p-5"
+                  style={{
+                    borderColor: hexToRgba(currentStyleMeta.color, 0.14),
+                    background:
+                      "linear-gradient(180deg, rgba(255,255,255,0.94), rgba(255,255,255,0.82))",
+                  }}>
                   <SectionLabel color={currentStyleMeta.color}>
                     Datos académicos
                   </SectionLabel>
@@ -785,6 +844,7 @@ const Perfil = () => {
                       value={profile.schoolName}
                       color={currentStyleMeta.color}
                     />
+
                     <InfoRow
                       label="Grado"
                       value={profile.gradeName}
@@ -792,31 +852,55 @@ const Perfil = () => {
                     />
                   </div>
                 </div>
-
-                <div className="space-y-3 min-h-0">
+                <div
+                  className="space-y-4 rounded-[24px] border p-5"
+                  style={{
+                    borderColor: hexToRgba(currentStyleMeta.color, 0.14),
+                    background:
+                      "linear-gradient(180deg, rgba(255,255,255,0.94), rgba(255,255,255,0.82))",
+                  }}>
                   <SectionLabel color={currentStyleMeta.color}>
-                    Información general
+                    platarforma
                   </SectionLabel>
 
-                  <div className="grid gap-3 sm:grid-cols-2">
-                    <InfoRow
-                      label="Rol"
-                      value={profile.roleName}
-                      color={currentStyleMeta.color}
-                    />
-                    <InfoRow
-                      label="Estado"
-                      value={profile.is_active ? "Disponible" : "Restringido"}
-                      color={currentStyleMeta.color}
-                    />
+                  <div className="grid gap-3">
                     <InfoRow
                       label="Avatar"
                       value={selectedAvatar?.name || "Activo"}
                       color={currentStyleMeta.color}
                     />
+
                     <InfoRow
-                      label="Usuario"
-                      value={profile.username}
+                      label="tema"
+                      value={currentStyleMeta.label}
+                      color={currentStyleMeta.color}
+                    />
+                  </div>
+                </div>
+                {/* STATUS CHIPS */}
+
+                {/* GENERAL */}
+                <div
+                  className="space-y-4 rounded-[24px] border p-5"
+                  style={{
+                    borderColor: hexToRgba(currentStyleMeta.color, 0.14),
+                    background:
+                      "linear-gradient(180deg, rgba(255,255,255,0.94), rgba(255,255,255,0.82))",
+                  }}>
+                  <SectionLabel color={currentStyleMeta.color}>
+                    Información general
+                  </SectionLabel>
+
+                  <div className="grid gap-3 sm:grid-cols-1">
+                    <InfoRow
+                      label="Rol"
+                      value={profile.roleName}
+                      color={currentStyleMeta.color}
+                    />
+
+                    <InfoRow
+                      label="Estado"
+                      value={profile.is_active ? "Disponible" : "Restringido"}
                       color={currentStyleMeta.color}
                     />
                   </div>
@@ -830,147 +914,115 @@ const Perfil = () => {
           <PanelShell
             color={currentStyleMeta.color}
             className="p-4 lg:p-4 xl:p-5">
-            <div className="flex h-full min-h-0 flex-col items-center text-center">
+            <div className="flex h-full min-h-0 flex-col gap-3">
               <SectionLabel color={currentStyleMeta.color}>
                 Avatar activo
               </SectionLabel>
 
-              <div className="relative mt-3">
+              {/* Card principal — portrait style */}
+              <div
+                className="relative flex flex-1 flex-col items-center justify-center overflow-hidden rounded-[22px] border p-4"
+                style={{
+                  borderColor: hexToRgba(currentStyleMeta.color, 0.22),
+                  background: `
+        radial-gradient(ellipse at 50% 0%, ${hexToRgba(currentStyleMeta.color, 0.18)} 0%, transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,0.97), rgba(255,255,255,0.88))
+      `,
+                }}>
+                {/* Hexágono decorativo de fondo */}
+                <svg
+                  className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.04]"
+                  viewBox="0 0 200 200"
+                  preserveAspectRatio="xMidYMid slice">
+                  <polygon
+                    points="100,10 180,55 180,145 100,190 20,145 20,55"
+                    fill={currentStyleMeta.color}
+                  />
+                </svg>
+
+                {/* corner badge — rareza */}
                 <div
-                  className="absolute inset-[-12px] rounded-full blur-2xl"
+                  className="absolute left-3 top-3 rounded-full px-2 py-0.5 text-[9px] font-black uppercase tracking-[0.14em]"
                   style={{
-                    background: `radial-gradient(circle, ${hexToRgba(
-                      currentStyleMeta.color,
-                      0.24,
-                    )} 0%, transparent 70%)`,
-                  }}
-                />
-
-                <img
-                  src={getAvatarPath(displayAvatar)}
-                  alt="avatar actual"
-                  className="relative rounded-full border-[5px] object-cover"
-                  style={{
-                    width: "clamp(92px, 8vw, 128px)",
-                    height: "clamp(92px, 8vw, 128px)",
-                    borderColor: currentStyleMeta.color,
-                    boxShadow: `0 0 0 8px ${hexToRgba(
-                      currentStyleMeta.color,
-                      0.12,
-                    )}`,
-                  }}
-                />
-
-                <button
-                  type="button"
-                  onClick={() => setShowAvatars(true)}
-                  className={cn(
-                    "absolute bottom-0 right-0 rounded-full px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.12em]",
-                    "transition-all duration-200 active:scale-[0.98]",
-                    "focus-visible:outline-none focus-visible:ring-4",
-                  )}
-                  style={{
-                    background: `linear-gradient(180deg, ${hexToRgba(
-                      currentStyleMeta.color,
-                      0.98,
-                    )}, ${hexToRgba(currentStyleMeta.color, 0.82)})`,
-                    color: "#fff",
-                    boxShadow: `0 12px 24px ${hexToRgba(
-                      currentStyleMeta.color,
-                      0.24,
-                    )}`,
-                    "--tw-ring-color": hexToRgba(currentStyleMeta.color, 0.16),
+                    background: hexToRgba(currentStyleMeta.color, 0.12),
+                    color: hexToRgba(currentStyleMeta.color, 0.9),
+                    border: `1px solid ${hexToRgba(currentStyleMeta.color, 0.2)}`,
                   }}>
-                  Editar
-                </button>
-              </div>
+                  {currentStyleMeta.icon} {currentStyleMeta.short}
+                </div>
 
-              <p
-                className="mt-3 break-all text-base font-black"
-                style={{ color: "var(--card-text, #0f172a)" }}>
-                @{profile.username}
-              </p>
-
-              <div
-                className="mt-2 rounded-full px-4 py-2 text-[10px] font-black uppercase tracking-[0.14em]"
-                style={{
-                  background: hexToRgba(currentStyleMeta.color, 0.12),
-                  color: hexToRgba(currentStyleMeta.color, 0.96),
-                  border: `1px solid ${hexToRgba(currentStyleMeta.color, 0.2)}`,
-                }}>
-                {equipping
-                  ? "Cambiando avatar..."
-                  : selectedAvatar?.name || "Avatar actual"}
-              </div>
-
-              <div
-                className="mt-4 w-full rounded-[20px] border p-3.5 text-left"
-                style={{
-                  borderColor: hexToRgba(currentStyleMeta.color, 0.16),
-                  background:
-                    "linear-gradient(180deg, rgba(255,255,255,0.94), rgba(255,255,255,0.85))",
-                }}>
-                <p
-                  className="text-[9px] font-black uppercase tracking-[0.16em]"
-                  style={{
-                    color: "var(--card-muted, rgba(15,23,42,0.62))",
-                  }}>
-                  Personalización equipada
-                </p>
-
-                <div className="mt-3 flex items-center gap-3">
+                {/* Avatar */}
+                <div className="relative mb-3 mt-2">
+                  {/* anillo exterior pulsante */}
                   <div
-                    className="flex h-10 w-10 items-center justify-center rounded-2xl text-base"
+                    className="absolute inset-[-6px] rounded-full"
                     style={{
-                      background: hexToRgba(currentStyleMeta.color, 0.16),
-                      border: `1px solid ${hexToRgba(
-                        currentStyleMeta.color,
-                        0.24,
-                      )}`,
-                    }}>
-                    {currentStyleMeta.icon}
-                  </div>
-
-                  <div className="min-w-0">
-                    <p
-                      className="text-sm font-black"
-                      style={{ color: "var(--card-text, #0f172a)" }}>
-                      Tema {currentStyleMeta.label}
-                    </p>
-                    <p
-                      className="text-[11px]"
-                      style={{
-                        color: "var(--card-muted, rgba(15,23,42,0.62))",
-                      }}>
-                      Avatar y estilo sincronizados
-                    </p>
-                  </div>
+                      border: `1.5px dashed ${hexToRgba(currentStyleMeta.color, 0.35)}`,
+                      animation: "spinRing 14s linear infinite",
+                    }}
+                  />
+                  {/* anillo glow */}
+                  <div
+                    className="absolute inset-[-2px] rounded-full blur-md"
+                    style={{
+                      background: hexToRgba(currentStyleMeta.color, 0.22),
+                    }}
+                  />
+                  <img
+                    src={getAvatarPath(displayAvatar)}
+                    alt="avatar actual"
+                    className="relative rounded-full border-[3px] object-cover"
+                    style={{
+                      width: "clamp(90px, 9vw, 320px)",
+                      height: "clamp(80px, 9vw, 320px)",
+                      borderColor: currentStyleMeta.color,
+                      boxShadow: `0 0 0 5px ${hexToRgba(currentStyleMeta.color, 0.1)}`,
+                    }}
+                  />
+                  {/* online dot */}
+                  <span
+                    className="absolute bottom-1 right-1 h-3.5 w-3.5 rounded-full border-2 border-white"
+                    style={{
+                      background: profile.is_active
+                        ? currentStyleMeta.color
+                        : "#f59e0b",
+                      boxShadow: `0 0 8px ${profile.is_active ? hexToRgba(currentStyleMeta.color, 0.7) : "rgba(245,158,11,0.6)"}`,
+                    }}
+                  />
                 </div>
+
+                {/* Nombre */}
+                <p
+                  className="text-[clamp(13px,1.2vw,15px)] font-black leading-tight"
+                  style={{ color: "var(--card-text, #0f172a)" }}>
+                  {equipping
+                    ? "Equipando..."
+                    : selectedAvatar?.name || "Avatar base"}
+                </p>
               </div>
 
-              <div className="mt-auto w-full pt-4">
-                <div className="grid w-full grid-cols-3 gap-2">
-                  {[1, 2, 3].map((n) => (
-                    <div
-                      key={n}
-                      className="h-2.5 rounded-full"
-                      style={{
-                        background:
-                          n === 2
-                            ? hexToRgba(currentStyleMeta.color, 0.92)
-                            : hexToRgba(currentStyleMeta.color, 0.32),
-                        boxShadow:
-                          n === 2
-                            ? `0 0 12px ${hexToRgba(
-                                currentStyleMeta.color,
-                                0.4,
-                              )}`
-                            : "none",
-                      }}
-                    />
-                  ))}
-                </div>
-              </div>
+              {/* Botón cambiar avatar */}
+              <button
+                type="button"
+                onClick={() => setShowAvatars(true)}
+                className="group relative w-full overflow-hidden rounded-[16px] py-3 text-[11px] font-black uppercase tracking-[0.16em] transition-all duration-200 active:scale-[0.98] hover:opacity-90"
+                style={{
+                  background: `linear-gradient(135deg, ${currentStyleMeta.color}, ${hexToRgba(currentStyleMeta.color, 0.75)})`,
+                  color: "#fff",
+                  boxShadow: `0 10px 24px ${hexToRgba(currentStyleMeta.color, 0.28)}`,
+                }}>
+                <span
+                  className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+                  style={{
+                    background:
+                      "linear-gradient(135deg, rgba(255,255,255,0.14), transparent 60%)",
+                  }}
+                />
+                🎮 Cambiar avatar
+              </button>
+
+              {/* keyframe para el anillo */}
+              <style>{`@keyframes spinRing { from { transform: rotate(0deg) } to { transform: rotate(360deg) } }`}</style>
             </div>
 
             {showAvatars && (
@@ -1221,7 +1273,7 @@ const Perfil = () => {
               <div>
                 <p
                   className="text-[11px] font-black uppercase tracking-[0.18em]"
-                  style={{ color: hexToRgba(currentStyleMeta.color, 0.92) }}>
+                  style={{ color: hexToRgba(currentStyleMeta.color) }}>
                   Seguridad
                 </p>
                 <h3

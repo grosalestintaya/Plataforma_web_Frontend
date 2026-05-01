@@ -78,8 +78,8 @@ export function getMascotText(activity) {
   if (activity.status === "locked") {
     return "Aun no. Completa la actividad anterior y volvemos.";
   }
-  if (activity.status === "completed") {
-    return "Buen trabajo. Quieres intentar mejorar tu score?";
+  if (activity.score === 100) {
+    return "Buen trabajo";
   }
   if (activity.type === "conceptual") {
     return "Aqui construimos la idea base. Lee con calma.";

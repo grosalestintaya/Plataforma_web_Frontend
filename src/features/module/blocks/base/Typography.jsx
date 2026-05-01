@@ -4,12 +4,13 @@
  */
 export const TYPOGRAPHY = {
   scale: {
-    eyebrow: "text-sm md:text-base font-semibold uppercase tracking-[0.12em] leading-5",
+    eyebrow:
+      "text-sm md:text-base font-semibold uppercase tracking-[0.12em] leading-5",
     h1: "text-4xl md:text-7xl font-extrabold leading-tight",
     h2: "text-3xl md:text-5xl font-extrabold leading-tight",
     h3: "text-2xl md:text-4xl font-bold leading-snug",
 
-    body: "text-lg md:text-xl font-medium leading-8",
+    body: "text-lg md:text-3xl font-medium leading-8",
     bodySm: "text-base md:text-lg font-medium leading-7",
     label: "text-base md:text-lg font-bold leading-6",
     helper: "text-sm md:text-base font-medium leading-6",
@@ -34,6 +35,7 @@ export const TYPOGRAPHY = {
     left: "text-left",
     center: "text-center",
     right: "text-right",
+    justify: "text-justify",
   },
 };
 
@@ -76,8 +78,7 @@ function renderTextTag({
         width,
         align,
         className,
-      })}
-    >
+      })}>
       {children}
     </Tag>
   );
@@ -168,8 +169,7 @@ export function TextParagraphs({
             width,
             align,
             className,
-          })}
-        >
+          })}>
           {part}
         </p>
       ))}
@@ -212,8 +212,10 @@ function normalizeTone(color) {
 
 function extractText(content, children) {
   if (children !== undefined && children !== null) return children;
-  if (typeof content === "string" || typeof content === "number") return content;
-  if (Array.isArray(content?.paragraphs)) return content.paragraphs.join("\n\n");
+  if (typeof content === "string" || typeof content === "number")
+    return content;
+  if (Array.isArray(content?.paragraphs))
+    return content.paragraphs.join("\n\n");
   return content?.text ?? "";
 }
 
@@ -257,8 +259,7 @@ export default function Typography({
         align: resolvedAlign,
         width: "full",
         className,
-      })}
-    >
+      })}>
       {text}
     </Tag>
   );

@@ -3,12 +3,17 @@ import { Howl } from "howler";
 import clickSfx from "@/assets/audios/sfxmenu/Cursor Saliente.wav";
 import hoverSfx from "@/assets/audios/sfxmenu/Cursor sobre siguiente.wav";
 import successSfx from "@/assets/audios/sfx/Cursor sobre siguiente.wav";
+import hovermascot from "@/assets/audios/sfx/Cursor Sobre Siguiente 2.wav";
 import errorSfx from "@/assets/audios/sfx/error.wav";
 import openModalSfx from "@/assets/audios/sfxmenu/Cursor entrante.wav";
 import closeModalSfx from "@/assets/audios/sfxmenu/Cursor Saliente.wav";
 import mascotTapSfx from "@/assets/audios/sfxmenu/avatar.wav";
 import clickdot from "@/assets/audios/sfxmenu/Cursor sobre siguiente.wav";
-
+import llamita from "@/assets/audios/sfxmenu/LLama.wav";
+import condor from "@/assets/audios/sfxmenu/SonidoCondor.wav";
+import colibri from "@/assets/audios/sfxmenu/SonidoColibri.wav";
+import puma from "@/assets/audios/sfxmenu/sonidopuma2.wav";
+import snake from "@/assets/audios/sfxmenu/serpienteefecto.wav";
 function makeSfx(name, src, volume = 1) {
   return new Howl({
     src: [src],
@@ -41,5 +46,11 @@ export function createSfxCatalog() {
     closeModal: makeSfx("closeModal", closeModalSfx, 1),
     mascotTap: makeSfx("mascotTap", mascotTapSfx, 1),
     clickdot: makeSfx("clickdot", clickdot, 1),
+    hovermascot: makeSfx("hovermascot", hovermascot, 1),
+    hover_llamita: makeSfx("hover_llamita", llamita, 1),
+    hover_condor: makeSfx("hover_condor", condor, 1),
+    hover_colibri: makeSfx("hover_colibri", colibri, 1),
+    hover_puma: makeSfx("hover_puma", puma, 1),
+    hover_snake: makeSfx("hover_snake", snake, 1),
   };
 }
