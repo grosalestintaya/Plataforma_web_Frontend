@@ -64,8 +64,22 @@ export default function ModuleMenuBody({
       text={mascotText}
       wallet={wallet}
       className="xl:justify-center"
-      onHoverMascot={() => audioState?.playSfx?.("hover", { rate: 1.02 })}
-      onClickMascot={() => audioState?.playSfx?.("mascotTap")}
+      onHoverMascot={() => {
+        if (mascot.name === "Llamita") {
+          audioState?.playSfx?.("hover_llamita", { rate: 1.02 });
+        } else if (mascot.name === "Cóndor") {
+          audioState?.playSfx?.("hover_condor", { rate: 0.95 });
+        } else if (mascot.name === "Colibrí") {
+          audioState?.playSfx?.("hover_colibri", { rate: 0.88 });
+        } else if (mascot.name === "Puma") {
+          audioState?.playSfx?.("hover_puma", { rate: 1.0 });
+        } else if (mascot.name === "Serpiente") {
+          audioState?.playSfx?.("hover_snake", { rate: 1.0 });
+        } else {
+          audioState?.playSfx?.("hover", { rate: 1.0 }); // fallback
+        }
+      }}
+      onClickMascot={() => audioState?.playSfx?.("hovermascot")}
     />
   );
 
@@ -86,7 +100,7 @@ export default function ModuleMenuBody({
           {center}
         </section>
 
-        <div className="col-span-2 min-h-0 lg:col-span-1">{right}</div>
+        <div className="col-span-1 min-h-0 lg:col-span-1">{right}</div>
       </div>
     </main>
   );

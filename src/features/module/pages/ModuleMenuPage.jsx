@@ -72,11 +72,10 @@ export default function ModuleMenuPage() {
     return getMissionDisplayContent(moduleCode, selectedActivity.type);
   }, [moduleCode, selectedActivity?.type]);
 
+  // ModuleMenuPage.jsx
   useEffect(() => {
-    // El menu tambien arranca la misma musica del modulo.
     audio.playMusic();
-  }, [audio.playMusic]);
-
+  }, [moduleCode]); // ✅ se dispara cada vez que cambia el módulo
   const playHover = useCallback(() => {
     const now = Date.now();
     if (now - lastHoverAtRef.current < 110) return;
@@ -194,6 +193,7 @@ export default function ModuleMenuPage() {
             onBack={handleBack}
             onOpenSettings={handleOpenSettings}
             audioState={audio}
+            wallet={wallet}
           />
 
           <ModuleMenuBody
@@ -203,7 +203,6 @@ export default function ModuleMenuPage() {
             activityContent={activityContent}
             mascot={mascot}
             mascotText={mascotText}
-            wallet={wallet}
             themeHex={modulePrimaryHex}
             canPlay={canPlay}
             ctaLabel={ctaLabel}

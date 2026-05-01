@@ -208,9 +208,8 @@ export default function InsigniasCard() {
           style={{ color: "var(--background)" }}>
           Insignias
         </h3>
-
-        <div className="w-full min-w-0 overflow-x-auto overflow-y-hidden">
-          <div className="flex min-w-max items-center gap-2 py-1">
+        <div className="w-full min-w-0">
+          <div className="flex items-center justify-between gap-1 py-1">
             {MODULE_SLOTS.map((slot, idx) => {
               const owned = ownedMap.get(slot.baseName);
               const unlocked = owned?.normal || owned?.perfect;
@@ -225,20 +224,18 @@ export default function InsigniasCard() {
 
               return (
                 <React.Fragment key={slot.baseName}>
-                  {/* 👇 onClick añadido, botón "Ver todas" eliminado */}
                   <div
-                    className="group relative flex shrink-0 flex-col items-center"
-                    style={{ cursor: "pointer" }}
+                    className="group relative flex flex-col items-center"
+                    style={{ cursor: "pointer", flex: "1 1 0", minWidth: 0 }}
                     onClick={() => {
                       setSelectedKey(`${slot.baseName}-normal`);
                       setOpen(true);
                     }}>
                     <div
-                      className="relative flex items-center justify-center rounded-full transition"
+                      className="relative flex items-center justify-center rounded-full transition mx-auto"
                       style={{
-                        // 👇 Tamaño del contenedor aumentado
-                        width: "clamp(3.2rem, 4.2vw, 4rem)",
-                        height: "clamp(3.2rem, 4.2vw, 4rem)",
+                        width: "clamp(2.4rem, 6vw, 3.8rem)",
+                        height: "clamp(2.4rem, 6vw, 3.8rem)",
                         background: unlocked
                           ? "var(--primary)/90"
                           : "var(--usercard-border)",
@@ -254,25 +251,28 @@ export default function InsigniasCard() {
                         draggable={false}
                         className={`object-contain ${unlocked ? "" : "grayscale opacity-40"}`}
                         style={{
-                          // 👇 Tamaño de imagen aumentado
-                          width: "clamp(6rem, 3vw, 3.8rem)",
-                          height: "clamp(6rem, 3vw, 3.8rem)",
+                          width: "clamp(1.8rem, 4.5vw, 3rem)",
+                          height: "clamp(1.8rem, 4.5vw, 3rem)",
                         }}
                       />
                       {!unlocked && (
                         <div className="absolute inset-0 flex items-center justify-center">
-                          <Lock className="h-3.5 w-3.5 text-black/50" />
+                          <Lock className="h-3 w-3 text-black/50" />
                         </div>
                       )}
                     </div>
 
                     <div
-                      className="mt-1 text-center text-[10px] font-semibold leading-tight"
-                      style={{ color: "var(--background)" }}>
+                      className="mt-1 text-center font-semibold leading-tight truncate w-full px-0.5"
+                      style={{
+                        color: "var(--background)",
+                        fontSize: "clamp(7px, 1.1vw, 10px)",
+                      }}>
                       {slot.baseName}
                     </div>
 
-                    <div className="pointer-events-none absolute bottom-full z-10 mb-2 hidden group-hover:block">
+                    {/* Tooltip — ahora hacia ABAJO para evitar clip */}
+                    <div className="pointer-events-none absolute top-full z-50 mt-2 hidden group-hover:block">
                       <div className="whitespace-nowrap rounded-lg bg-black px-2 py-1 text-[10px] font-semibold text-white shadow">
                         {tooltip}
                       </div>
@@ -280,7 +280,10 @@ export default function InsigniasCard() {
                   </div>
 
                   {idx !== MODULE_SLOTS.length - 1 && (
-                    <div className="h-px  min-w-[20px] flex-1 bg-white/80 sm:min-w-[26px] lg:min-w-[32px]" />
+                    <div
+                      className="h-px flex-1 bg-white/80"
+                      style={{ minWidth: 8 }}
+                    />
                   )}
                 </React.Fragment>
               );

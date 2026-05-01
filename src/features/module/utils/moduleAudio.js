@@ -1,20 +1,16 @@
-import missionTheme from "@/assets/audios/modules/module1-theme.wav";
-import module1 from "@/assets/audios/modules/module1-theme.wav";
+function getAudioUrl(filename) {
+  return new URL(`/src/assets/audios/modules/${filename}`, import.meta.url)
+    .href;
+}
 
-// Por ahora todos los modulos usan la misma pista base.
-// Dejamos el mapa listo para cuando cada modulo tenga su propio audio.
 const MODULE_MUSIC_MAP = {
-  m01: module1,
-  // m02: module2,
-  // m03: module3,
-  // m04: module4,
-  // m05: module5,
+  m01: getAudioUrl("module1.wav"),
+  m02: getAudioUrl("module2.wav"),
+  m03: getAudioUrl("module3.wav"),
+  m04: getAudioUrl("module4.wav"),
+  m05: getAudioUrl("module5.wav"),
 };
 
-/**
- * Resuelve la musica principal del modulo.
- * El menu y las misiones consumen la misma fuente para mantener continuidad.
- */
 export function getModuleMusicSrc(moduleCode) {
-  return MODULE_MUSIC_MAP[moduleCode] ?? missionTheme;
+  return MODULE_MUSIC_MAP[moduleCode] ?? getAudioUrl("module1.wav");
 }

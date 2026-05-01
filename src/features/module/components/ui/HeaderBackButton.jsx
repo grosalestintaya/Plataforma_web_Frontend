@@ -1,5 +1,7 @@
-function hexToRgba(hex, a = 1) {
-  const h = String(hex || "#000").replace("#", "");
+function hexToRgb(hex) {
+  const h = String(hex || "#000")
+    .replace("#", "")
+    .trim();
   const full =
     h.length === 3
       ? h
@@ -7,78 +9,166 @@ function hexToRgba(hex, a = 1) {
           .map((c) => c + c)
           .join("")
       : h.padEnd(6, "0");
-
   const num = parseInt(full, 16);
-  const r = (num >> 16) & 255;
-  const g = (num >> 8) & 255;
-  const b = num & 255;
-
+  return { r: (num >> 16) & 255, g: (num >> 8) & 255, b: num & 255 };
+}
+function withAlpha(hex, a) {
+  const { r, g, b } = hexToRgb(hex);
   return `rgba(${r},${g},${b},${a})`;
 }
 
-/**
- * Boton de regreso:
- * - Reduce altura y densidad visual para no inflar el header.
- * - Mantiene el look del proyecto con brillo y blur.
- */
+const RING_SHADOW = [
+  "0 0 0 1px #c9a227",
+  "0 0 0 4px #7a5510",
+  "0 0 0 5px #c9a227",
+  `inset 0 1px 0 ${withAlpha("#fff8b4", 0.4)}`,
+  `0 10px 28px ${withAlpha("#000", 0.4)}`,
+].join(", ");
+
+const RING_SHADOW_HOVER = [
+  "0 0 0 1px #c9a227",
+  "0 0 0 4px #7a5510",
+  "0 0 0 6px #e8c840",
+  `inset 0 1px 0 ${withAlpha("#fff8b4", 0.4)}`,
+  `0 12px 32px ${withAlpha("#000", 0.5)}`,
+].join(", ");
+
 export default function HeaderBackButton({
   onClick,
-  themeHex = "#7130F7",
   label = "Volver",
   className = "",
 }) {
   return (
-    <button
-      onClick={onClick}
-      type="button"
-      className={`group relative h-[48px] cursor-pointer overflow-hidden rounded-2xl px-3 font-semibold text-white transition-all duration-300 hover:-translate-y-[1px] hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 active:scale-[0.98] sm:h-[52px] md:h-[56px] md:px-4 ${className}`}
-      style={{
-        background: `linear-gradient(180deg, ${hexToRgba(themeHex, 0.34)} 0%, ${hexToRgba(themeHex, 0.16)} 100%)`,
-        border: `1px solid ${hexToRgba("#ffffff", 0.18)}`,
-        boxShadow: `
-          0 10px 28px ${hexToRgba("#000000", 0.28)},
-          0 0 18px ${hexToRgba(themeHex, 0.2)}
-        `,
-        backdropFilter: "blur(8px)",
-      }}
-      title={label}
-    >
-      <span
-        className="pointer-events-none absolute inset-1 rounded-2xl"
-        style={{
-          background: `radial-gradient(circle at 30% 20%, ${hexToRgba("#ffffff", 0.12)} 0%, ${hexToRgba(themeHex, 0)} 70%)`,
-        }}
+    <>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap"
+        rel="stylesheet"
       />
-
-      <span className="pointer-events-none absolute inset-0 rounded-2xl bg-white/10 opacity-50" />
-
-      <span className="relative z-10 flex items-center gap-3">
+      <button
+        onClick={onClick}
+        type="button"
+        title={label}
+        aria-label={label}
+        className={`group relative overflow-hidden cursor-pointer focus-visible:outline-none active:scale-[0.97] ${className}`}
+        style={{
+          height: 52,
+          paddingInline: "14px 20px",
+          borderRadius: 14,
+          border: "1.5px solid #a07820",
+          background: "linear-gradient(160deg, #f5e9c8, #e2c96a 60%, #c9a227)",
+          boxShadow: RING_SHADOW,
+          display: "flex",
+          alignItems: "center",
+          gap: 12,
+          transition: "transform 220ms ease, box-shadow 220ms ease",
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.boxShadow = RING_SHADOW_HOVER;
+          e.currentTarget.style.transform = "scale(1.02) translateY(-1px)";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.boxShadow = RING_SHADOW;
+          e.currentTarget.style.transform = "scale(1)";
+        }}>
+        {/* Inner frame line */}
         <span
-          className="grid h-8 w-8 shrink-0 place-items-center rounded-xl transition-all duration-300 group-hover:-translate-x-0.5 sm:h-9 sm:w-9"
           style={{
-            background: `linear-gradient(180deg, ${hexToRgba("#ffffff", 0.18)}, ${hexToRgba("#ffffff", 0.06)})`,
-            border: `1px solid ${hexToRgba("#ffffff", 0.14)}`,
-            boxShadow: `inset 0 1px 0 ${hexToRgba("#ffffff", 0.1)}`,
+            position: "absolute",
+            inset: 3,
+            border: "0.5px solid rgba(200,160,40,0.35)",
+            borderRadius: 10,
+            pointerEvents: "none",
           }}
-        >
-          <span className="relative block h-4 w-4">
-            <span className="absolute left-[3px] top-1/2 h-[2.2px] w-[9px] -translate-y-1/2 rounded-full bg-white" />
-            <span className="absolute left-0 top-1/2 h-[8px] w-[8px] -translate-y-1/2 rotate-45 rounded-[1px] border-b-[2.2px] border-l-[2.2px] border-white" />
+        />
+
+        {/* Top glare */}
+        <span
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            height: "40%",
+            background:
+              "linear-gradient(180deg, rgba(255,248,180,0.28), transparent)",
+            borderRadius: "14px 14px 0 0",
+            pointerEvents: "none",
+          }}
+        />
+
+        {/* Badge circular con flecha */}
+        <span
+          className="group-hover:[transform:scale(1.08)_translateX(-2px)]"
+          style={{
+            position: "relative",
+            flexShrink: 0,
+            width: 34,
+            height: 34,
+            borderRadius: "50%",
+            background:
+              "radial-gradient(circle at 35% 30%, #ffe566, #c9a227 55%, #7a5510)",
+            border: "2px solid #7a5510",
+            boxShadow:
+              "0 0 0 1px #e8c840, inset 0 2px 4px rgba(255,240,100,0.5)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            transition: "transform 220ms ease",
+          }}>
+          {/* Flecha ← construida con spans, igual al original */}
+          <span
+            style={{
+              position: "relative",
+              display: "block",
+              width: 14,
+              height: 14,
+            }}>
+            <span
+              style={{
+                position: "absolute",
+                left: 3,
+                top: "50%",
+                height: 2.2,
+                width: 9,
+                transform: "translateY(-50%)",
+                borderRadius: 9999,
+                background: "#3b2200",
+              }}
+            />
+            <span
+              style={{
+                position: "absolute",
+                left: 0,
+                top: "50%",
+                width: 7,
+                height: 7,
+                transform: "translateY(-50%) rotate(45deg)",
+                borderRadius: 1,
+                borderBottom: "2.2px solid #3b2200",
+                borderLeft: "2.2px solid #3b2200",
+              }}
+            />
           </span>
         </span>
 
-        <span className="text-sm tracking-tight sm:text-[15px] md:text-base">{label}</span>
-      </span>
-
-      <span
-        className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition duration-300 group-hover:opacity-100"
-        style={{
-          boxShadow: `
-            inset 0 1px 0 ${hexToRgba("#ffffff", 0.1)},
-            0 0 24px ${hexToRgba(themeHex, 0.34)}
-          `,
-        }}
-      />
-    </button>
+        {/* Label */}
+        <span
+          style={{
+            position: "relative",
+            zIndex: 10,
+            fontFamily: "'Cinzel', Georgia, serif",
+            fontSize: 13,
+            fontWeight: 700,
+            letterSpacing: "0.15em",
+            color: "#1e0e00",
+            textShadow:
+              "0 2px 0 rgba(200,160,40,0.3), 0 1px 0 rgba(255,240,100,0.5)",
+            userSelect: "none",
+            whiteSpace: "nowrap",
+          }}>
+          {label}
+        </span>
+      </button>
+    </>
   );
 }

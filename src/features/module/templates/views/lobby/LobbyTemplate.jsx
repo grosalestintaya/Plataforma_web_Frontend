@@ -329,7 +329,7 @@ function useConfetti(active) {
   useEffect(() => {
     if (!active) return;
     setRunning(true);
-    const timer = setTimeout(() => setRunning(false), 2000);
+    const timer = setTimeout(() => setRunning(false), 5000);
     return () => clearTimeout(timer);
   }, [active]);
 
