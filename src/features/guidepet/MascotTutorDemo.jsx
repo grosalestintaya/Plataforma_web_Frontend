@@ -9,25 +9,20 @@ export default function MascotTutorDemo({
 }) {
   return (
     <>
-      <link
-        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Crimson+Text:ital,wght@0,400;1,400&display=swap"
-        rel="stylesheet"
-      />
-
       <div
-        className="h-full w-full pt-30px"
+        className="h-full w-full  pt-0 "
         style={{
+          paddingBottom: -20,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          justifyContent: "end", // ✅
           width: "100%",
-          height: "100%",
+          height: "105%",
           minHeight: 0,
-          justifyContent: "flex-start",
-          
         }}>
         {/* ── Bubble ── */}
-        <div style={{ position: "relative", width: "100%", maxWidth: 260 }}>
+        <div style={{ position: "relative", width: "100%", maxWidth: 300 }}>
           <div
             style={{
               background: "linear-gradient(160deg, #f5e9c8, #e8d088)",
@@ -39,7 +34,6 @@ export default function MascotTutorDemo({
             }}>
             <div
               style={{
-                fontFamily: "'Cinzel', Georgia, serif",
                 fontSize: 9,
                 letterSpacing: "0.18em",
                 textTransform: "uppercase",
@@ -51,7 +45,6 @@ export default function MascotTutorDemo({
 
             <p
               style={{
-                fontFamily: "'Crimson Text', Georgia, serif",
                 fontSize: 13,
                 fontStyle: "italic",
                 color: "#2a1a06",
@@ -130,24 +123,27 @@ export default function MascotTutorDemo({
               position: "relative",
               zIndex: 3,
               maxHeight: "calc(100% - 40px)",
-              maxWidth: "80%",
+              maxWidth: "120%",
               objectFit: "contain",
               filter:
                 "drop-shadow(0 6px 12px rgba(0,0,0,0.5)) contrast(1.05) saturate(1.1)",
-              marginBottom: 4,
+              marginBottom: 9,
             }}
           />
           {/* Grass */}
           <img
+            className="pl-1.5"
             src={grassPng}
             alt="Base de pasto"
             draggable={false}
             style={{
               position: "absolute",
-              bottom: -10,
+              bottom: -20,
               zIndex: 2,
               xindex: 2,
-              width: "100%",
+              maxWidth: 500,
+
+              width: "140%",
               objectFit: "contain",
               pointerEvents: "none",
               userSelect: "none",

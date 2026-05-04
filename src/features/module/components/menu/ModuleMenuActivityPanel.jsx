@@ -244,7 +244,7 @@ function EmptyState() {
     <div
       style={{
         position: "relative",
-        maxWidth: 960,
+        maxWidth: 60,
         minHeight: 620,
         borderRadius: 6,
         border: "3px solid #8b6914",
@@ -309,7 +309,7 @@ export default function ModuleMenuActivityPanel({
   const parchmentStyle = {
     position: "relative",
     maxWidth: 960,
-    minHeight: 450,
+    maxHeight: 490,
 
     borderRadius: 6,
     border: "3px solid #8b6914",
@@ -324,7 +324,7 @@ export default function ModuleMenuActivityPanel({
       "inset 0 2px 8px rgba(100,60,0,0.18)," +
       "inset 0 -2px 8px rgba(100,60,0,0.12)," +
       "8px 12px 36px rgba(0,0,0,0.45)",
-    padding: "1.25rem 4rem 1.25rem",
+    padding: "1.25rem 2rem 1.25rem",
     display: "flex",
     flexDirection: "column",
   };
@@ -340,7 +340,7 @@ export default function ModuleMenuActivityPanel({
   };
 
   const ctaActiveStyle = {
-    fontSize: 13,
+    fontSize: 16,
     fontWeight: 600,
     letterSpacing: "0.1em",
     padding: "10px 28px",
@@ -361,7 +361,7 @@ export default function ModuleMenuActivityPanel({
   };
 
   const ctaLockedStyle = {
-    fontSize: 13,
+    fontSize: 16,
     fontWeight: 600,
     letterSpacing: "0.1em",
     padding: "10px 28px",
@@ -480,7 +480,7 @@ export default function ModuleMenuActivityPanel({
                     display: "flex",
                     gap: 8,
                     alignItems: "flex-start",
-                    fontSize: 14.5,
+                    fontSize: 15,
                     color: "#2a1a06",
                     lineHeight: 1.5,
                   }}>

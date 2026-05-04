@@ -17,8 +17,7 @@ export default function HeroArea({ area, className, children }) {
         "grid min-h-0 w-full min-w-0 overflow-visible place-items-center place-content-center p-2 md:h-full md:overflow-hidden",
         "[&>*]:min-h-0 [&>*]:min-w-0 [&>*]:max-w-full md:[&>*]:max-h-full",
         className,
-      )}
-    >
+      )}>
       {children}
     </div>
   );

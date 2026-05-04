@@ -14,7 +14,10 @@ export function renderSlot(slotDef, data, Blocks, ctx = {}) {
 
   if (slotDef.when && !slotDef.when(data, ctx)) {
     // Algunos slots opcionales deben reservar su area para evitar saltos de layout.
-    if (slotDef.reserveSpace && (!slotDef.reserveWhen || slotDef.reserveWhen(data, ctx))) {
+    if (
+      slotDef.reserveSpace &&
+      (!slotDef.reserveWhen || slotDef.reserveWhen(data, ctx))
+    ) {
       return (
         <div
           className={cn("w-full max-w-full", slotDef.placeholderClassName)}
@@ -32,8 +35,7 @@ export function renderSlot(slotDef, data, Blocks, ctx = {}) {
         className={cn(
           "flex min-h-0 min-w-0 max-w-full flex-col gap-3 md:max-h-full",
           slotDef.stackClassName,
-        )}
-      >
+        )}>
         {slotDef.items.map((child, index) => (
           <React.Fragment key={index}>
             {renderSlot(child, data, Blocks, ctx)}
@@ -49,7 +51,11 @@ export function renderSlot(slotDef, data, Blocks, ctx = {}) {
       : slotDef.layoutDef;
   const nestedLayout = normalizeLayout(nestedLayoutDef);
 
-  if (nestedLayout && Array.isArray(slotDef.slots) && slotDef.slots.length > 0) {
+  if (
+    nestedLayout &&
+    Array.isArray(slotDef.slots) &&
+    slotDef.slots.length > 0
+  ) {
     return (
       <HeroGrid layout={nestedLayout} className="h-full min-h-0 w-full">
         {slotDef.slots.map((childSlot, index) => {
@@ -60,8 +66,7 @@ export function renderSlot(slotDef, data, Blocks, ctx = {}) {
             <HeroArea
               key={`${childSlot.area}-${index}`}
               area={childSlot.area}
-              className={childSlot.className}
-            >
+              className={childSlot.className}>
               {renderedChild}
             </HeroArea>
           );
@@ -75,6 +80,12 @@ export function renderSlot(slotDef, data, Blocks, ctx = {}) {
 
   const props = slotDef.props ? slotDef.props(data, ctx) : {};
   const children = slotDef.children ? slotDef.children(data, ctx) : null;
-
-  return children !== null ? <Comp {...props}>{children}</Comp> : <Comp {...props} />;
+  const slotClassName = slotDef.className
+    ? { className: cn(slotDef.className, props.className) }
+    : {};
+  return children !== null ? (
+    <Comp {...props}>{children}</Comp>
+  ) : (
+    <Comp {...props} />
+  );
 }
