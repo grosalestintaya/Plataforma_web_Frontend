@@ -107,7 +107,11 @@
             "component": "objectClassification",
             "category": "interactive",
             "area": "interactive",
-            "layoutVariant": "bankLeft",
+            "layoutVariant": "bankTop",
+            "bankColumns": 8,
+            "bankRows": 1,
+            "categoryColumns": 3,
+            "categoryRows": 2,
             "panelTitle": "Clasifica los diferentes objetos",
             "bankTitle": "Objetos",
             "submitLabel": "Continuar",
@@ -297,8 +301,10 @@
             "category": "interactive",
             "area": "interactive",
             "layoutVariant": "bankTop",
-            "bankColumns": 6,
+            "bankColumns": 8,
             "bankRows": 1,
+            "categoryColumns": 3,
+            "categoryRows": 2,
             "panelTitle": "Clasifica los diferentes objetos",
             "bankTitle": "Objetos",
             "submitLabel": "Continuar",
@@ -372,6 +378,34 @@
                 },
                 "title": {
                   "text": "Galletas",
+                  "variant": "caption",
+                  "align": "center"
+                },
+                "correctCategoryId": "desire"
+              },
+              {
+                "id": "s2-gaseosaddd",
+                "media": {
+                  "src": "image001.png",
+                  "alt": "Gaseosa",
+                  "variant": "square"
+                },
+                "title": {
+                  "text": "Gaseosa",
+                  "variant": "caption",
+                  "align": "center"
+                },
+                "correctCategoryId": "desire"
+              },
+              {
+                "id": "s2-chocolateasas",
+                "media": {
+                  "src": "image001.png",
+                  "alt": "Chocolate",
+                  "variant": "square"
+                },
+                "title": {
+                  "text": "Chocolate",
                   "variant": "caption",
                   "align": "center"
                 },
@@ -470,8 +504,9 @@
             "component": "objectClassification",
             "category": "interactive",
             "area": "interactive",
-            "categoryColumns": 3,
-            "categoryRows": 2,
+            "layoutVariant": "bankLeft",
+            "categoryColumns": 2,
+            "categoryRows": 3,
             "bankTitle": "Objetos",
             "submitLabel": "Continuar",
             "categories": [
@@ -670,6 +705,9 @@
             "component": "objectClassification",
             "category": "interactive",
             "area": "interactive",
+            "layoutVariant": "bankLeft",
+            "categoryColumns": 2,
+            "categoryRows": 3,
             "bankTitle": "Objetos",
             "submitLabel": "Continuar",
             "categories": [

@@ -163,6 +163,7 @@ function ObjectDropZone({
   category,
   items,
   compact = false,
+  columnCount,
   slotCount,
   rowCount,
   slotClassName = "",
@@ -197,13 +198,13 @@ function ObjectDropZone({
 
       <CollageCard
         items={items}
-        columns={compact ? 3 : 2}
+        columns={Math.max(1, Number(columnCount) || (compact ? 3 : 2))}
         rows={rowCount}
         slotCount={slotCount}
-        rowMode="fr"
+        rowMode="auto"
         trackProgress={false}
         className="mt-0.5 flex-1 min-h-0 items-stretch justify-start"
-        gridClassName="h-full content-start place-items-stretch gap-1 overflow-auto pr-0.5"
+        gridClassName="h-full content-start place-items-stretch gap-1 overflow-y-auto overflow-x-hidden pr-0.5"
         itemSlotClassName={cn("h-full min-h-0", slotClassName)}
         renderItem={renderTile}
         renderEmptySlot={() => <EmptyCollageSlot />}
@@ -307,10 +308,12 @@ export default function DragDropClassification({ config, view, heroApi }) {
     bankRowsOverride || Math.ceil(items.length / bankColumns),
   );
   const bankSlotCount = bankColumns * initialBankRows;
-  const bankTopHeight = `${initialBankRows * 112 + Math.max(0, initialBankRows - 1) * 4 + 6}px`;
-  const bankTopSlotClassName = "min-h-[112px]";
+  const bankTopHeight = `${initialBankRows * 112 + Math.max(0, initialBankRows - 1) * 4 + 24}px`;
+  const bankTopSlotClassName = "min-h-[112px] self-start";
   const bankLeftSlotClassName = "min-h-[98px]";
-  const categorySlotClassName = "";
+  const categorySlotClassName = compactTiles
+    ? "min-h-[112px] self-start"
+    : "min-h-[132px] self-start";
 
   const groupedItems = useMemo(() => {
     const groups = Object.fromEntries(categories.map((category) => [category.id, []]));
@@ -521,7 +524,7 @@ export default function DragDropClassification({ config, view, heroApi }) {
             rowMode="auto"
             trackProgress={false}
             className="h-full min-h-0 items-stretch justify-start"
-            gridClassName="h-full content-start place-items-stretch gap-1 overflow-hidden"
+            gridClassName="h-full content-start place-items-stretch gap-1 overflow-x-auto overflow-y-hidden pb-0.5"
             itemSlotClassName={bankTopSlotClassName}
             emptyState={
               <CompletedBankNotice
@@ -550,6 +553,7 @@ export default function DragDropClassification({ config, view, heroApi }) {
                 category={category}
                 items={groupedItems[category.id] ?? []}
                 compact
+                columnCount={categorySlotMeta[category.id]?.columns}
                 slotCount={categorySlotMeta[category.id]?.slotCount}
                 rowCount={categorySlotMeta[category.id]?.rows}
                 slotClassName={categorySlotClassName}
@@ -568,7 +572,7 @@ export default function DragDropClassification({ config, view, heroApi }) {
   }
 
   return (
-    <div className="mt-1 grid min-h-0 flex-1 gap-1.5 lg:grid-cols-[0.22fr_0.78fr]">
+    <div className="mt-1 grid min-h-0 flex-1 gap-1.5 lg:grid-cols-[minmax(300px,_0.3fr)_minmax(0,_0.7fr)]">
       <div
         onDragEnter={() => setDragOverZone("bank")}
         onDragOver={(event) => handleZoneDragOver(event, "bank")}
@@ -583,10 +587,10 @@ export default function DragDropClassification({ config, view, heroApi }) {
           columns={2}
           rows={initialBankRows}
           slotCount={bankSlotCount}
-          rowMode="fr"
+          rowMode="auto"
           trackProgress={false}
           className="h-full min-h-0 items-stretch justify-start"
-          gridClassName="h-full content-start place-items-stretch gap-1 overflow-hidden"
+          gridClassName="h-full content-start place-items-stretch gap-1 overflow-y-auto overflow-x-hidden pr-0.5"
           itemSlotClassName={bankLeftSlotClassName}
           emptyState={
             <CompletedBankNotice
@@ -621,6 +625,7 @@ export default function DragDropClassification({ config, view, heroApi }) {
                 key={category.id}
                 category={category}
                 items={groupedItems[category.id] ?? []}
+                columnCount={categorySlotMeta[category.id]?.columns}
                 slotCount={categorySlotMeta[category.id]?.slotCount}
                 rowCount={categorySlotMeta[category.id]?.rows}
                 slotClassName={categorySlotClassName}

@@ -30,7 +30,7 @@ function getItemId(item, index) {
 function getGridAxisSize(value) {
   const numericValue = Number(value);
   if (!Number.isFinite(numericValue) || numericValue <= 0) return null;
-  return Math.max(1, Math.min(6, Math.round(numericValue)));
+  return Math.max(1, Math.min(12, Math.round(numericValue)));
 }
 
 function getGridLayout(requestedColumns, requestedRows, itemCount) {
