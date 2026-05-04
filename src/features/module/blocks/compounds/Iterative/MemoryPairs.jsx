@@ -3,7 +3,7 @@ import { cn } from "@/shared/libs/utils";
 import Image from "../../base/Media/Image";
 import { getMediaVariant } from "../../base/Media/mediaVariant";
 import Typography from "../../base/Typography";
-
+import quipuicon from "/public/iconcolor.png";
 const DEFAULT_GRID = { cols: 4, rows: 3 };
 
 function shuffle(items) {
@@ -402,8 +402,7 @@ export default function MemoryPairs({
           type="button"
           onClick={restartBoard}
           disabled={restartRemaining <= 0 || isComplete || isPreviewActive}
-          className="flex min-w-[128px] items-center gap-2 border border-black/70 px-2.5 py-1 text-left text-white transition hover:bg-black/10 disabled:cursor-not-allowed disabled:opacity-45"
-        >
+          className="flex min-w-[128px] items-center gap-2 border border-black/70 px-2.5 py-1 text-left text-white transition hover:bg-black/10 disabled:cursor-not-allowed disabled:opacity-45">
           <span className="text-2xl leading-none">↻</span>
           <div className="min-w-0">
             <div className="text-sm font-semibold md:text-base">
@@ -417,8 +416,7 @@ export default function MemoryPairs({
       <div className="mt-1 flex min-h-0 flex-1 overflow-hidden border border-black/70 p-1">
         <div
           ref={boardViewportRef}
-          className="flex min-h-0 flex-1 items-center justify-center overflow-hidden"
-        >
+          className="flex min-h-0 flex-1 items-center justify-center overflow-hidden">
           <div
             className="grid place-content-center"
             style={{
@@ -432,8 +430,7 @@ export default function MemoryPairs({
               width: boardMetrics ? `${boardMetrics.boardWidth}px` : "100%",
               maxWidth: "100%",
               maxHeight: "100%",
-            }}
-          >
+            }}>
             {deck.map((card, index) => {
               const isFaceUp =
                 isPreviewActive ||
@@ -457,8 +454,7 @@ export default function MemoryPairs({
                     isPreviewActive
                       ? "cursor-not-allowed"
                       : "cursor-pointer hover:bg-black/10",
-                  )}
-                >
+                  )}>
                   {isFaceUp ? (
                     media ? (
                       <div className="flex h-full w-full flex-col gap-0.5">
@@ -489,7 +485,7 @@ export default function MemoryPairs({
                   ) : (
                     <div className="text-xs text-white/55">
                       <Image
-                        src="../public/iconcolor.png"
+                        src={quipuicon}
                         alt="Quipu Yachay"
                         className="h-full w-full"
                         imgClassName="block h-full w-full object-contain"
@@ -525,8 +521,7 @@ export default function MemoryPairs({
               });
               onFinish?.(result);
             }}
-            className="h-9 cursor-pointer rounded border border-white/20 bg-black/20 px-5 font-semibold text-white transition hover:bg-black/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 disabled:cursor-not-allowed disabled:opacity-40"
-          >
+            className="h-9 cursor-pointer rounded border border-white/20 bg-black/20 px-5 font-semibold text-white transition hover:bg-black/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 disabled:cursor-not-allowed disabled:opacity-40">
             {finishLabel}
           </button>
         </div>
