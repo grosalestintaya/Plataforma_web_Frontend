@@ -30,8 +30,7 @@ export default function HeroGrid({ layout, className, children }) {
         ...(layout.md?.cols ? { "--cols-md": layout.md.cols } : {}),
         ...(layout.md?.rows ? { "--rows-md": layout.md.rows } : {}),
         ...(mdAreasCss ? { "--areas-md": mdAreasCss } : {}),
-      }}
-    >
+      }}>
       {children}
     </section>
   );

@@ -28,7 +28,7 @@
           "activityId": "02",
           "activityKey": "m01-procedimental",
           "learn": [
-            "Tomar decisiones inteligentes con S/ 5.00 durante un día escolar, aprendiendo a organizar mejor el dinero disponible.",
+            "Tomar decisiones inteligentes con S/ 5.00 durante un día escolar .",
             "Elegir el transporte y las compras más convenientes según el saldo disponible, priorizando lo más importante y necesario."
           ],
           "outcome": "Administrarás un saldo limitado en situaciones cotidianas, tomando decisiones responsables y priorizando tus necesidades más importantes."
@@ -40,7 +40,7 @@
           "learn": [
             
             "Desarrollar respeto y conciencia sobre el uso del dinero, valorando su esfuerzo y utilidad en la vida diaria.",
-            "Reflexionar antes de gastar, pensando en necesidades, metas y bienestar, sin dejarse llevar por la presión del grupo."
+            "Reflexionar antes de gastar, pensando en necesidades, metas y bienestar ."
           ],
           "outcome": "Tomarás decisiones más responsables sobre tu dinero, pensando antes de gastar y priorizando lo que realmente necesitas."
         }
@@ -117,7 +117,7 @@
           "title": "elaboración de un presupuesto personal",
           "backendActivityId": null,
           "activityKey": "m03-procedimental",
-          "learn": ["Elaborar un presupuesto mensual sencillo para organizar de manera clara los ingresos y gastos personales.","Ajustar el presupuesto según las necesidades y metas, tomando decisiones más responsables con el dinero."],
+          "learn": ["Elaborar un presupuesto  para organizar de manera clara los ingresos y gastos personales.","Ajustar el presupuesto según las necesidades y metas, tomando decisiones más responsables con el dinero."],
           "outcome": "Elaborarás y ajustarás un presupuesto personal sencillo para organizar mejor tus ingresos, gastos y metas mensuales."
         },
         "actitudinal": {

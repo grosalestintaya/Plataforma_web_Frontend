@@ -40,10 +40,6 @@ export default function HeaderBackButton({
 }) {
   return (
     <>
-      <link
-        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap"
-        rel="stylesheet"
-      />
       <button
         onClick={onClick}
         type="button"
@@ -156,8 +152,7 @@ export default function HeaderBackButton({
           style={{
             position: "relative",
             zIndex: 10,
-            fontFamily: "'Cinzel', Georgia, serif",
-            fontSize: 13,
+            fontSize: 14,
             fontWeight: 700,
             letterSpacing: "0.15em",
             color: "#1e0e00",

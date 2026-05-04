@@ -22,18 +22,14 @@
           "align": "center"
         },
         "body": {
-          "paragraphs": [
-            "Usaras una cantidad limitada de dinero durante un dia escolar.",
-            "Tendras S/ 5.00 para usarlo en transporte, comida y otras situaciones.",
-            "Lee bien y decide de la mejor manera."
+          "paragraphs": [  
+            "Reto: administra tu dinero", "ㅤㅤ","",
+            "╰› Usaras una cantidad limitada de dinero durante un dia escolar.", "ㅤㅤ",
+            "╰› Tendras S/ 5.00 para usarlo en transporte, comida y otras situaciones.","ㅤㅤ",
+            "╰› Lee bien y decide de la mejor manera.","ㅤㅤ","ㅤㅤ","ㅤㅤ","ㅤㅤ"
           ],
           "variant": "body1",
           "align": "left"
-        },
-        "media": {
-          "src": "",
-          "alt": "Inicio de la practica procedimental",
-          "variant": "vertical"
         }
       },
       "elements": {

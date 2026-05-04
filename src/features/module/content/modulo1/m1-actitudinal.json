@@ -24,11 +24,12 @@
         "body": {
           "paragraphs": [
             "En esta mision responderas preguntas sobre decisiones cotidianas relacionadas con el dinero.",
-            "La idea es reconocer cuando una eleccion cuida mejor tu bienestar, tu meta o tu saldo.",
-            "Lee cada situacion, elige una opcion y explica por que."
+            "╰› La idea es reconocer cuando una eleccion cuida mejor tu bienestar, tu meta o tu saldo.",
+            "╰› Lee cada situacion, elige una opcion y explica por que.",
+            "╰› no existen respuestas correctas o incorrectas ,ve sin preocupaciones.","ㅤㅤ","ㅤㅤ","ㅤㅤ"
           ],
           "variant": "body1",
-          "align": "left"
+          "align": "justify"
         },
         "media": {
           "src": "",
@@ -78,7 +79,7 @@
           "align": "center"
         },
         "media": {
-          "src": "1/ir-en-combi.png",
+          "src": "1/pensando.png",
           "alt": "Producto del kiosko para la situacion 1",
           "variant": "horizontal"
         }
@@ -168,7 +169,7 @@
           "align": "center"
         },
         "media": {
-          "src": "1/extra-canje.png",
+          "src": "1/act1.jpeg",
           "alt": "Situacion de ahorro frente al kiosko",
           "variant": "vertical"
         }
@@ -197,9 +198,10 @@
             "question": {
               "text": "Has ahorrado para tu pasaje, pero tus amigos quieren comprar algo en el kiosko y te invitan a gastar con ellos. Que harias?",
               "variant": "body1",
-              "align": "center"
+              "align": "justify"
             },
             "options": [
+              
               {
                 "id": "use_savings",
                 "label": {
@@ -207,6 +209,7 @@
                   "variant": "body2"
                 },
                 "score": 60
+                
               },
               {
                 "id": "keep_savings",
@@ -250,7 +253,7 @@
           "align": "center"
         },
         "media": {
-          "src": "/activity/1/caramelo.png",
+          "src": "/activity/1/sobra5.jpeg",
           "alt": "Dinero sobrante del recreo en la situacion 3",
           "variant": "square"
         }
@@ -340,7 +343,7 @@
           "align": "center"
         },
         "media": {
-          "src": "",
+          "src": "1/impulso.jpeg",
           "alt": "Kiosko con compra no planificada",
           "variant": "vertical"
         }

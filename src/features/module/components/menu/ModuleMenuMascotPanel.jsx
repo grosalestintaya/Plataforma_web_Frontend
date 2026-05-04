@@ -13,10 +13,10 @@ export default function ModuleMenuMascotPanel({
   const mascotInteractive = typeof onClickMascot === "function";
 
   return (
-    <aside className={`flex h-full w-full justify-center ${className}`}>
-      <div className="flex h-full w-full max-w-[360px] min-h-0 flex-col gap-1.5 px-1 sm:gap-2 sm:px-0">
+    <aside className={`flex h-full w-full justify-end ${className}`}>
+      <div className="flex h-full w-full max-w-[360px] min-h-0 flex-col gap-1.5 px-1 sm:gap-2 sm:pl-2  ">
         <div
-          className="flex origin-top flex-wrap items-center justify-center gap-1.5 scale-[0.74] sm:scale-[0.8] md:scale-[0.86] lg:scale-[0.92] xl:scale-100"
+          className="flex origin-top flex-wrap items-center justify-end gap-1.5 scale-[0.74] sm:scale-[0.8] md:scale-[0.86] lg:scale-[0.92] xl:scale-100"
           onMouseEnter={onHoverWallet}></div>
 
         <div className="min-h-0 flex-1">

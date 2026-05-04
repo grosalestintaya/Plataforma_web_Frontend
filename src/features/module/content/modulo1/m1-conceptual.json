@@ -85,8 +85,8 @@
         },
         "body": {
           "paragraphs": [
-            "El dinero facilita el intercambio. Si no existiera, tendríamos que cambiar cosas por cosas (por ejemplo, cambiar un cuaderno por una bebida), y eso no siempre funciona porque la otra persona puede no necesitar lo que tú ofreces. Por eso usamos dinero: porque es un medio aceptado por todos para comprar de forma más rápida y ordenada.",
-            "Idea clave: el dinero es limitado. Si lo gastas en una cosa, te queda menos para otra; por eso conviene usarlo con cuidado."
+            "El dinero facilita el intercambio de bienes y servicios. Sin él, tendríamos que cambiar objetos por otros, y eso no siempre funciona porque la otra persona puede no necesitar lo que ofrecemos. Por eso usamos dinero, porque es un medio de pago aceptado por todos.",
+            "Además, el dinero es limitado: si lo gastas en una cosa, tendrás menos para otra. Por eso es importante usarlo con responsabilidad."
           ],
           "variant": "body1",
           "align": "justify"
@@ -143,26 +143,25 @@
         },
         "body": {
           "paragraphs": [
-            "En el día a día usamos dinero para cubrir necesidades y también para darnos algunos gustos. Como estudiantes, lo usamos para movernos, alimentarnos, estudiar y comunicarnos.",
-            "Cada vez que pagas algo, estás tomando una decisión: eliges en qué se va tu dinero. Por eso es importante reconocer en qué cosas gastas con más frecuencia.",
-            "Recuerda: un gasto pequeño, si se repite varias veces, al final suma bastante. Por ejemplo, si gastas S/2 en el recreo durante 5 días, habrás gastado S/10 en una semana."
+            "En el día a día usamos dinero para cubrir necesidades y también algunos gustos, como movilizarnos, alimentarnos, estudiar y comunicarnos. Cada vez que pagas algo, tomas una decisión sobre en qué gastar tu dinero, por eso es importante reconocer tus gastos más frecuente",
+            "Recuerda: un gasto pequeño, si se repite varias veces, puede sumar bastante. Por ejemplo, si gastas S/2 en el recreo durante 5 días, habrás gastado S/10 en una semana."
           ],
           "variant": "body1",
-          "align": "center"
+          "align": "justify"
         },
         "feedback": {
           "title": {
             "text": "Usos típicos",
-            "variant": "label",
+            "variant": "body",
             "align": "left"
           },
           "items": [
-            "Transporte: pasaje de ida y vuelta al colegio.",
-            "Recreo: comida o bebida en el kiosko.",
-            "Estudio: útiles, fotocopias o materiales para trabajos.",
-            "Recargas: saldo o datos para comunicarse o para tareas."
+            "Transporte: pasaje al colegio.",
+            "Recreo: comida o bebida.",
+            "Estudio: útiles o fotocopias.",
+            "Recargas: saldo o datos móviles."
           ],
-          "variant": "bodySm",
+          "variant": "body",
           "align": "left"
         },
         "media": {
@@ -223,12 +222,11 @@
         },
         "body": {
           "paragraphs": [
-            "A lo largo del día, a veces recibimos dinero y otras veces lo usamos para pagar. A ese movimiento del dinero lo llamamos ingresos y gastos.",
-            "Un ingreso ocurre cuando recibes dinero por alguna razón (por ejemplo, te dan dinero para la semana, recibes una propina o vendes algo que ya no usas). La idea clave es: “recibí dinero”.",
-            "Un gasto ocurre cuando usas dinero para pagar o comprar algo (por ejemplo, pagar pasaje, comprar en el kiosko o recargar saldo). La idea clave es: “yo pagué”."
+            "A lo largo del día, a veces recibimos dinero y otras veces lo usamos para pagar. A ese movimiento del dinero lo llamamos ingresos y gastos. Un ingreso ocurre cuando recibes dinero por alguna razón, por ejemplo, cuando te dan dinero para la semana, recibes una propina o vendes algo que ya no usas. La idea clave es: “recibí dinero”.",
+            "Un gasto ocurre cuando usas dinero para pagar o comprar algo (por ejemplo, pagar pasaje, comprar en el kiosko o recargar saldo)."
           ],
           "variant": "body1",
-          "align": "center"
+          "align": "justify"
         }
       },
       "elements": {
@@ -541,7 +539,7 @@
                   {
                     "id": "q2-income",
                     "label": {
-                      "text": "Vendí un juguete que ya no usaba",
+                      "text": "Ayudé a recolectar frutas en el campo",
                       "variant": "label",
                       "align": "center"
                     },
@@ -598,7 +596,7 @@
                       "align": "center"
                     },
                     "media": {
-                      "src": "",
+                      "src": "1/reciclando.png",
                       "alt": "Reciclar y recibir dinero",
                       "variant": "horizontal"
                     },
@@ -619,7 +617,7 @@
                       "align": "center"
                     },
                     "media": {
-                      "src": "",
+                      "src": "1/kiosco.png",
                       "alt": "Comprar una bebida",
                       "variant": "horizontal"
                     },
@@ -650,7 +648,7 @@
                       "align": "center"
                     },
                     "media": {
-                      "src": "",
+                      "src": "1/propina.png",
                       "alt": "Recibir una propina",
                       "variant": "horizontal"
                     },
@@ -671,7 +669,7 @@
                       "align": "center"
                     },
                     "media": {
-                      "src": "",
+                      "src": "1/recarga.png",
                       "alt": "Pagar una recarga",
                       "variant": "horizontal"
                     },

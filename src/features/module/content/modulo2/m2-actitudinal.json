@@ -23,12 +23,12 @@
         },
         "body": {
           "paragraphs": [
-            "En esta mision pensaras en decisiones cotidianas relacionadas con necesidades, deseos y uso responsable del dinero.",
-            "La idea es reconocer cuando una eleccion prioriza lo importante y cuida mejor tu bienestar.",
-            "Lee cada situacion, elige una opcion y, si quieres, explica por que."
+            "╰› En esta mision pensaras en decisiones cotidianas relacionadas con necesidades, deseos y uso responsable del dinero.","ㅤㅤ",
+            "╰› La idea es reconocer cuando una eleccion prioriza lo importante y cuida mejor tu bienestar.","ㅤㅤ",
+            "╰› Lee cada situacion, elige una opcion y, si quieres, explica por que.","ㅤㅤ","ㅤㅤ"
           ],
           "variant": "body1",
-          "align": "left"
+          "align": "justify"
         },
         "media": {
           "src": "",
