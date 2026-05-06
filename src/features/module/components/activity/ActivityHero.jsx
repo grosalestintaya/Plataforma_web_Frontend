@@ -13,7 +13,12 @@ const DEFAULT_HERO_LAYOUT = {
   scaledContentHeight: null,
 };
 
-function getNextHeroLayout({ availableWidth, availableHeight, contentWidth, contentHeight }) {
+function getNextHeroLayout({
+  availableWidth,
+  availableHeight,
+  contentWidth,
+  contentHeight,
+}) {
   const shouldScaleToViewport = availableWidth > 0 && availableWidth < 768;
   const scale =
     shouldScaleToViewport && contentWidth > 0
@@ -135,13 +140,12 @@ export default function Hero({ moduleData, missionKey, viewIndex, heroApi }) {
   return (
     <main
       ref={outerRef}
-      className={HERO_VIEWPORT_CLASS}
+      className={HERO_VIEWPORT_CLASS + "pt-0"}
       style={{
         // La variable debe ser una longitud CSS valida porque varios bloques
         // calculan su alto con `calc(var(--hero-height) * ...)`.
         "--hero-height": layout.height ? `${layout.height}px` : "50px",
-      }}
-    >
+      }}>
       {/* ELIMAR EN UN FUTURO ESTE DIV, LOS COMPONENTES DEBEN DE SER RESPONSIVOS POR SI SOLOS Y ACOMODARSE */}
       <div
         ref={innerRef}
@@ -152,16 +156,15 @@ export default function Hero({ moduleData, missionKey, viewIndex, heroApi }) {
             : undefined,
           transform: `scale(${layout.scale})`,
           transformOrigin: "top center",
-        }}
-      >
+        }}>
         <Template
           variant={view.variant}
           data={view.data}
           heroApi={heroApi}
           view={view}
         />
-      </div>{/* ELIMAR EN UN FUTURO ESTE DIV, LOS COMPONENTES DEBEN DE SER RESPONSIVOS POR SI SOLOS Y ACOMODARSE */}
-
+      </div>
+      {/* ELIMAR EN UN FUTURO ESTE DIV, LOS COMPONENTES DEBEN DE SER RESPONSIVOS POR SI SOLOS Y ACOMODARSE */}
     </main>
   );
 }

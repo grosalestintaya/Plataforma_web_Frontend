@@ -3,7 +3,6 @@ import { cn } from "@/shared/libs/utils";
 import Image from "../../base/Media/Image";
 import { getMediaVariant } from "../../base/Media/mediaVariant";
 import Typography from "../../base/Typography";
-import quipuicon from "/public/iconcolor.png";
 const DEFAULT_GRID = { cols: 4, rows: 3 };
 
 function shuffle(items) {
@@ -485,7 +484,7 @@ export default function MemoryPairs({
                   ) : (
                     <div className="text-xs text-white/55">
                       <Image
-                        src={quipuicon}
+                        src="/public/iconcolor.png"
                         alt="Quipu Yachay"
                         className="h-full w-full"
                         imgClassName="block h-full w-full object-contain"

@@ -244,7 +244,7 @@ function EmptyState() {
     <div
       style={{
         position: "relative",
-        maxWidth: 60,
+        minWidth: 600,
         minHeight: 620,
         borderRadius: 6,
         border: "3px solid #8b6914",
