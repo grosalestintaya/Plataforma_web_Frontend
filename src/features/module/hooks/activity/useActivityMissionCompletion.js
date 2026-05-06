@@ -24,11 +24,7 @@ function extractMissionCompletionSummary(result) {
   const source = result ?? {};
   const awarded = source?.awarded ?? {};
 
-  const xp = pickRewardNumber(
-    awarded?.xp,
-    source?.awardedXp,
-    source?.xpAward,
-  );
+  const xp = pickRewardNumber(awarded?.xp, source?.awardedXp, source?.xpAward);
 
   const coins = pickRewardNumber(
     awarded?.coins,
@@ -37,7 +33,12 @@ function extractMissionCompletionSummary(result) {
   );
 
   // Si el backend responde `alreadyCompleted`, ya no existe delta de recompensa.
-  if (xp === null && coins === null) return null;
+  if (xp === null && coins === null)
+    return {
+      xp: xp ?? 0,
+      coins: coins ?? 0,
+      raw: source,
+    };
 
   return {
     xp: xp ?? 0,

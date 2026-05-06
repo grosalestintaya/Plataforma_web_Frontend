@@ -22,8 +22,8 @@ export default function ModuleMenuMascotPanel({
         <div className="min-h-0 flex-1">
           <div
             className={`h-full rounded-3xl transition ${mascotInteractive ? "cursor-pointer hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/55 active:translate-y-0" : ""}`}
-            onMouseEnter={onHoverMascot}
-            onClick={onClickMascot}
+            onMouseEnter={onClickMascot}
+            onClick={onHoverMascot}
             role={mascotInteractive ? "button" : undefined}
             aria-label={
               mascotInteractive
