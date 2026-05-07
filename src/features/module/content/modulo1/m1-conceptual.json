@@ -137,7 +137,7 @@
       "variant": "split",
       "slots": {
         "title": {
-          "text": "¿Cómo se usa el dinero en nuestro día?",
+          "text": "Uso del dinero en nuestro día",
           "variant": "h1",
           "align": "center"
         },

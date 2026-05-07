@@ -50,11 +50,11 @@ function getSlotShellClass(view, area) {
   }
 
   if (area === "leftNav" || area === "rightNav") {
-    return "hidden md:grid place-items-center place-content-center overflow-visible rounded-[1.5rem] border border-white/20 bg-black/10 p-2";
+    return "hidden md:grid place-items-center place-content-center overflow-visible rounded-[1.5rem] p-2";
   }
 
   if (area === "navigation") {
-    return "place-items-stretch place-content-stretch overflow-visible rounded-[1.5rem] border border-white/20 bg-black/10 p-2 md:p-3";
+    return "place-items-stretch place-content-stretch overflow-visible rounded-[1.5rem] p-2 md:p-3";
   }
 
   return "place-items-stretch place-content-stretch overflow-visible rounded-[1.5rem] border border-white/20 bg-white/5 p-2 md:p-3";

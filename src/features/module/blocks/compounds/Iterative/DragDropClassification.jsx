@@ -1,8 +1,7 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Button from "@/features/module/blocks/base/Action/Button";
-import Image from "@/features/module/blocks/base/Media/Image";
-import { getMediaAspectRatio } from "@/features/module/blocks/base/Media/mediaVariant";
 import Typography from "@/features/module/blocks/base/Typography";
+import Card from "@/features/module/blocks/compounds/container/Card";
 import CollageCard from "@/features/module/blocks/compounds/grouper/CollageCard";
 import { cn } from "@/shared/libs/utils";
 
@@ -96,67 +95,117 @@ function ObjectTile({
   item,
   selected = false,
   compact = false,
+  revealContentOnHover = false,
   onClick,
   onDragStart,
   onDragEnd,
 }) {
-  const imageAspectRatio =
-    getMediaAspectRatio(item?.media) ?? getMediaAspectRatio("square") ?? "1 / 1";
+  const compactTileSize =
+    "calc(min(var(--card-slot-width, 100cqw), var(--dragdrop-zone-slot-height, var(--dragdrop-compact-slot-height, 100cqh))) - 8px)";
+  const tileSize = compact
+    ? null
+    : "max(80px, calc(min(var(--card-slot-width, 100cqw), var(--dragdrop-zone-slot-height, var(--card-slot-height, 100cqh))) - 4px))";
+  const hoverTitle = {
+    ...(item?.title ?? {}),
+    text: getDisplayText(item?.title, "Objeto"),
+    variant: "caption",
+    align: "center",
+    className: cn(
+      "text-white",
+      compact ? "text-[11px] leading-[1.05]" : "text-xs leading-[1.05]",
+    ),
+  };
+  const tileMedia = item?.media?.src
+    ? {
+        ...item.media,
+        alt: item.media.alt ?? getDisplayText(item?.title, "Objeto"),
+        variant: "square",
+      }
+    : null;
 
   return (
-    <button
-      type="button"
-      draggable
-      onClick={onClick}
-      onDragStart={onDragStart}
-      onDragEnd={onDragEnd}
-      className={cn(
-        "flex h-full w-full min-h-0 items-center justify-center border border-black/55 bg-transparent text-center transition",
-        "cursor-grab active:cursor-grabbing focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50",
-        "rounded-none p-0.5",
-        selected && "border-yellow-300 bg-yellow-300/15 text-yellow-50",
-      )}
-    >
-      <div className="flex h-full w-full items-center justify-center overflow-hidden rounded-none border border-black/55 bg-transparent p-0.5">
+    <div className="flex h-full w-full min-h-0 min-w-0 items-center justify-center p-0.5">
+      <button
+        type="button"
+        draggable
+        onClick={onClick}
+        onDragStart={onDragStart}
+        onDragEnd={onDragEnd}
+        className={cn(
+          "inline-flex max-h-full max-w-full shrink-0 items-center justify-center border border-black/55 bg-transparent text-center transition",
+          "cursor-grab active:cursor-grabbing focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50",
+          "rounded-none p-0.5",
+          selected && "border-yellow-300 bg-yellow-300/15 text-yellow-50",
+        )}
+        style={
+          compact
+            ? {
+                width: compactTileSize,
+                height: compactTileSize,
+              }
+            : { width: tileSize, height: tileSize }
+        }
+      >
         <div
-          className="group/tile relative aspect-square h-full max-w-full overflow-hidden border border-black/45 bg-black/5"
-          style={{ aspectRatio: imageAspectRatio }}
+          className="aspect-square flex h-full w-full items-center justify-center overflow-hidden rounded-none border border-black/55 bg-transparent p-0.5"
         >
-          {item?.media?.src ? (
-            <Image
-              src={item.media.src}
-              alt={item.media.alt ?? getDisplayText(item?.title, "Objeto")}
-              variant={item.media.variant ?? "square"}
-              className="h-full w-full"
-              imgClassName="block h-full w-full object-cover"
-            />
-          ) : null}
-
-          <div
-            className={cn(
-              "pointer-events-none absolute inset-x-0 bottom-0 flex items-end border-t border-black/45",
-              "bg-gradient-to-t from-black/60 via-black/35 to-transparent px-1 py-1 backdrop-blur-[1px]",
-              "translate-y-[74%] transition-transform duration-200 ease-out group-hover/tile:translate-y-0 group-focus-within/tile:translate-y-0",
-            )}
-          >
-            <Typography
-              content={{
-                ...(item?.title ?? {}),
-                variant: "caption",
-                align: "center",
-              }}
-              variant="caption"
-              align="center"
-              className={cn(
-                "block w-full truncate text-center text-white",
-                compact ? "text-[11px] leading-[1.05]" : "text-xs leading-[1.05]",
-              )}
-            />
-          </div>
+          <Card
+            as="div"
+            density="compact"
+            fillContainer
+            media={tileMedia}
+            title={hoverTitle}
+            revealContentOnHover={revealContentOnHover}
+            className="h-full w-full rounded-none border-black/45 bg-black/5 p-0.5 shadow-none"
+            mediaClassName="rounded-none border-black/45 bg-black/5 p-0"
+            contentClassName="px-1 py-1"
+          />
         </div>
-      </div>
-    </button>
+      </button>
+    </div>
   );
+}
+
+function getRegularSlotMetrics(rowCount = 1) {
+  if (rowCount >= 4) {
+    return {
+      slotClassName: "min-h-[102px] self-start",
+      slotHeight: "102px",
+      mediaMaxHeight: "80px",
+    };
+  }
+
+  if (rowCount >= 3) {
+    return {
+      slotClassName: "min-h-[104px] self-start",
+      slotHeight: "104px",
+      mediaMaxHeight: "80px",
+    };
+  }
+
+  return {
+    slotClassName: "min-h-[112px] self-start",
+    slotHeight: "112px",
+    mediaMaxHeight: "88px",
+  };
+}
+
+function getCompactCategoryMetrics(visibleRows = 2) {
+  if (visibleRows <= 1) {
+    return {
+      slotClassName: "min-h-0 h-full self-start",
+      overflowSlotClassName:
+        "h-[var(--dragdrop-zone-slot-height)] min-h-[var(--dragdrop-zone-slot-height)] self-start",
+      mediaMaxHeight: "calc(var(--dragdrop-zone-slot-height, 100cqh) - 28px)",
+    };
+  }
+
+  return {
+    slotClassName: "min-h-0 h-full self-start",
+    overflowSlotClassName:
+      "h-[var(--dragdrop-zone-slot-height)] min-h-[var(--dragdrop-zone-slot-height)] self-start",
+    mediaMaxHeight: "calc(var(--dragdrop-zone-slot-height, 100cqh) - 28px)",
+  };
 }
 
 function ObjectDropZone({
@@ -166,6 +215,8 @@ function ObjectDropZone({
   columnCount,
   slotCount,
   rowCount,
+  visibleRows,
+  overflowing = false,
   slotClassName = "",
   dragOver = false,
   onDrop,
@@ -174,6 +225,68 @@ function ObjectDropZone({
   onClick,
   renderTile,
 }) {
+  const viewportRef = useRef(null);
+  const [compactSlotPixels, setCompactSlotPixels] = useState(null);
+  const hasFixedViewportRows =
+    Number.isFinite(Number(visibleRows)) && Number(visibleRows) > 0;
+  const regularMetrics = getRegularSlotMetrics(rowCount);
+  const compactMetrics = getCompactCategoryMetrics(visibleRows);
+  const viewportMetrics =
+    compact || hasFixedViewportRows
+      ? compactMetrics
+      : regularMetrics;
+  const resolvedSlotClassName =
+    compact || hasFixedViewportRows
+      ? overflowing
+        ? viewportMetrics.overflowSlotClassName
+        : viewportMetrics.slotClassName
+      : regularMetrics.slotClassName;
+  const slotHeight = compact ? "100cqh" : regularMetrics.slotHeight;
+  const mediaMaxHeight =
+    compact || hasFixedViewportRows
+      ? viewportMetrics.mediaMaxHeight
+      : regularMetrics.mediaMaxHeight;
+
+  useEffect(() => {
+    if (!(compact || hasFixedViewportRows)) return undefined;
+
+    const element = viewportRef.current;
+    if (!element) return undefined;
+
+    const rows = Math.max(1, Number(visibleRows) || 1);
+    const gap = 4;
+
+    const updateSlotPixels = () => {
+      const height = element.getBoundingClientRect().height;
+      if (!Number.isFinite(height) || height <= 0) return;
+
+      const nextSlotPixels = Math.max(
+        96,
+        Math.floor((height - Math.max(0, rows - 1) * gap) / rows),
+      );
+      setCompactSlotPixels((prev) =>
+        prev === nextSlotPixels ? prev : nextSlotPixels,
+      );
+    };
+
+    updateSlotPixels();
+
+    const observer = new ResizeObserver(() => {
+      updateSlotPixels();
+    });
+
+    observer.observe(element);
+
+    return () => observer.disconnect();
+  }, [compact, hasFixedViewportRows, visibleRows]);
+
+  const compactViewportStyle = compactSlotPixels
+    ? {
+        "--dragdrop-zone-slot-height": `${compactSlotPixels}px`,
+        "--dragdrop-compact-slot-height": `${compactSlotPixels}px`,
+      }
+    : undefined;
+
   return (
     <div
       onClick={onClick}
@@ -196,24 +309,69 @@ function ObjectDropZone({
         />
       </div>
 
-      <CollageCard
-        items={items}
-        columns={Math.max(1, Number(columnCount) || (compact ? 3 : 2))}
-        rows={rowCount}
-        slotCount={slotCount}
-        rowMode="auto"
-        trackProgress={false}
-        className="mt-0.5 flex-1 min-h-0 items-stretch justify-start"
-        gridClassName="h-full content-start place-items-stretch gap-1 overflow-y-auto overflow-x-hidden pr-0.5"
-        itemSlotClassName={cn("h-full min-h-0", slotClassName)}
-        renderItem={renderTile}
-        renderEmptySlot={() => <EmptyCollageSlot />}
-        style={{
-          "--card-slot-height": compact ? "108px" : "132px",
-          "--card-media-max-height": compact ? "84px" : "102px",
-          "--card-content-reserve": "14px",
-        }}
-      />
+      <div
+        ref={viewportRef}
+        className="mt-0.5 min-h-0 flex-1 overflow-hidden"
+        style={compactViewportStyle}
+      >
+        <div
+          className={cn(
+            "h-full min-h-0",
+            compact || hasFixedViewportRows
+              ? overflowing
+                ? "overflow-y-auto overflow-x-hidden pr-0.5"
+                : "overflow-hidden"
+              : "overflow-hidden",
+          )}
+        >
+          <CollageCard
+            items={items}
+            columns={Math.max(1, Number(columnCount) || (compact ? 3 : 2))}
+            rows={rowCount}
+            slotCount={slotCount}
+            rowMode={
+              compact || hasFixedViewportRows
+                ? overflowing
+                  ? "auto"
+                  : "fr"
+                : "auto"
+            }
+            trackProgress={false}
+            className={cn(
+              "min-h-0 items-stretch justify-start",
+              compact || hasFixedViewportRows
+                ? overflowing
+                  ? "h-auto overflow-visible"
+                  : "h-full overflow-hidden"
+                : "",
+            )}
+            gridClassName={cn(
+              "content-start place-items-start gap-1",
+              compact || hasFixedViewportRows
+                ? overflowing
+                  ? "h-auto overflow-visible"
+                  : "h-full overflow-hidden"
+                : "h-full overflow-y-auto overflow-x-hidden pr-0.5",
+            )}
+            itemSlotClassName={cn("min-h-0", resolvedSlotClassName)}
+            renderItem={renderTile}
+            renderEmptySlot={() => <EmptyCollageSlot />}
+            style={{
+              ...(
+                compact || hasFixedViewportRows
+                  ? {}
+                  : { "--card-slot-height": slotHeight }
+              ),
+              ...(
+                compact || hasFixedViewportRows
+                  ? {}
+                  : { "--card-media-max-height": mediaMaxHeight }
+              ),
+              "--card-content-reserve": "14px",
+            }}
+          />
+        </div>
+      </div>
     </div>
   );
 }
@@ -238,6 +396,7 @@ function EmptyCollageSlot() {
 
 function renderTileFactory({
   compact = false,
+  revealContentOnHover = false,
   selectedItemId,
   handleItemClick,
   handleTileDragStart,
@@ -248,6 +407,7 @@ function renderTileFactory({
       <ObjectTile
         item={item}
         compact={compact}
+        revealContentOnHover={revealContentOnHover}
         selected={selectedItemId === item.id}
         onClick={() => handleItemClick(item.id)}
         onDragStart={(event) => handleTileDragStart(event, item.id)}
@@ -281,6 +441,7 @@ export default function DragDropClassification({ config, view, heroApi }) {
   const bankRowsOverride = Number(config?.bankRows);
   const categoryColumnsOverride = Number(config?.categoryColumns);
   const categoryRowsOverride = Number(config?.categoryRows);
+  const revealContentOnHover = Boolean(config?.revealContentOnHover);
 
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [draggedItemId, setDraggedItemId] = useState(null);
@@ -307,13 +468,21 @@ export default function DragDropClassification({ config, view, heroApi }) {
     1,
     bankRowsOverride || Math.ceil(items.length / bankColumns),
   );
-  const bankSlotCount = bankColumns * initialBankRows;
+  const bankRows =
+    layoutVariant === "bankTop"
+      ? initialBankRows
+      : Math.max(
+          1,
+          bankRowsOverride || Math.ceil(Math.max(unassignedItems.length, 1) / bankColumns),
+        );
+  const bankSlotCount = bankColumns * bankRows;
   const bankTopHeight = `${initialBankRows * 112 + Math.max(0, initialBankRows - 1) * 4 + 24}px`;
   const bankTopSlotClassName = "min-h-[112px] self-start";
-  const bankLeftSlotClassName = "min-h-[98px]";
+  const bankLeftMetrics = getRegularSlotMetrics(bankRows);
+  const bankLeftSlotClassName = bankLeftMetrics.slotClassName;
   const categorySlotClassName = compactTiles
     ? "min-h-[112px] self-start"
-    : "min-h-[132px] self-start";
+    : "min-h-[112px] self-start";
 
   const groupedItems = useMemo(() => {
     const groups = Object.fromEntries(categories.map((category) => [category.id, []]));
@@ -333,30 +502,55 @@ export default function DragDropClassification({ config, view, heroApi }) {
       1,
       categoryColumnsOverride || (compactTiles ? 3 : 2),
     );
-    const sharedItemCapacity = Math.max(
-      ...categories.map((category) => {
-        const baselineCount = items.filter(
-          (item) => item.correctCategoryId === category.id,
-        ).length;
-        const currentCount = groupedItems[category.id]?.length ?? 0;
-        return Math.max(baselineCount, currentCount, columnCount);
-      }),
-    );
-    const sharedRows = Math.max(
-      1,
-      categoryRowsOverride || Math.ceil(sharedItemCapacity / columnCount),
-    );
-    const slotCount = sharedRows * columnCount;
+    if (compactTiles) {
+      const configuredVisibleRows = Math.max(1, categoryRowsOverride || 2);
+      const baseVisibleSlotCount = configuredVisibleRows * columnCount;
+
+      return Object.fromEntries(
+        categories.map((category) => {
+          const currentCount = groupedItems[category.id]?.length ?? 0;
+          const requiredRows = Math.max(
+            configuredVisibleRows,
+            Math.ceil(Math.max(currentCount, 1) / columnCount),
+          );
+          const overflowing = requiredRows > configuredVisibleRows;
+
+          return [
+            category.id,
+            {
+              columns: columnCount,
+              rows: overflowing ? requiredRows : configuredVisibleRows,
+              visibleRows: configuredVisibleRows,
+              slotCount: Math.max(currentCount, baseVisibleSlotCount),
+              overflowing,
+            },
+          ];
+        }),
+      );
+    }
 
     return Object.fromEntries(
-      categories.map((category) => [
-        category.id,
-        {
-          columns: columnCount,
-          rows: sharedRows,
-          slotCount,
-        },
-      ]),
+      categories.map((category) => {
+        const currentCount = groupedItems[category.id]?.length ?? 0;
+        const configuredVisibleRows = Math.max(1, categoryRowsOverride || 1);
+        const baseVisibleSlotCount = configuredVisibleRows * columnCount;
+        const requiredRows = Math.max(
+          configuredVisibleRows,
+          Math.ceil(Math.max(currentCount, 1) / columnCount),
+        );
+        const overflowing = requiredRows > configuredVisibleRows;
+
+        return [
+          category.id,
+          {
+            columns: columnCount,
+            rows: overflowing ? requiredRows : configuredVisibleRows,
+            visibleRows: configuredVisibleRows,
+            slotCount: Math.max(currentCount, baseVisibleSlotCount),
+            overflowing,
+          },
+        ];
+      }),
     );
   }, [
     categories,
@@ -483,6 +677,7 @@ export default function DragDropClassification({ config, view, heroApi }) {
 
   const renderCompactTile = renderTileFactory({
     compact: true,
+    revealContentOnHover,
     selectedItemId,
     handleItemClick,
     handleTileDragStart,
@@ -491,6 +686,7 @@ export default function DragDropClassification({ config, view, heroApi }) {
 
   const renderRegularTile = renderTileFactory({
     compact: false,
+    revealContentOnHover,
     selectedItemId,
     handleItemClick,
     handleTileDragStart,
@@ -516,33 +712,35 @@ export default function DragDropClassification({ config, view, heroApi }) {
           )}
           style={{ height: bankTopHeight }}
         >
-          <CollageCard
-            items={unassignedItems}
-            columns={bankColumns}
-            rows={initialBankRows}
-            slotCount={bankSlotCount}
-            rowMode="auto"
-            trackProgress={false}
-            className="h-full min-h-0 items-stretch justify-start"
-            gridClassName="h-full content-start place-items-stretch gap-1 overflow-x-auto overflow-y-hidden pb-0.5"
-            itemSlotClassName={bankTopSlotClassName}
-            emptyState={
-              <CompletedBankNotice
-                continueLabel={
-                  config?.submitLabel ?? heroApi?.advanceLabel ?? "Continuar"
-                }
-                onClear={clearPlacements}
-                onContinue={continueFlow}
-              />
-            }
-            renderItem={renderCompactTile}
-            renderEmptySlot={() => <EmptyCollageSlot />}
-            style={{
-              "--card-slot-height": "108px",
-              "--card-media-max-height": "86px",
-              "--card-content-reserve": "14px",
-            }}
-          />
+          <div className="h-full min-h-0 overflow-hidden">
+            <CollageCard
+              items={unassignedItems}
+              columns={bankColumns}
+              rows={initialBankRows}
+              slotCount={bankSlotCount}
+              rowMode="auto"
+              trackProgress={false}
+              className="min-h-0 items-stretch justify-start"
+              gridClassName="h-full content-start place-items-start gap-1 overflow-x-auto overflow-y-hidden pb-0.5"
+              itemSlotClassName={bankTopSlotClassName}
+              emptyState={
+                <CompletedBankNotice
+                  continueLabel={
+                    config?.submitLabel ?? heroApi?.advanceLabel ?? "Continuar"
+                  }
+                  onClear={clearPlacements}
+                  onContinue={continueFlow}
+                />
+              }
+              renderItem={renderCompactTile}
+              renderEmptySlot={() => <EmptyCollageSlot />}
+              style={{
+                "--card-slot-height": "108px",
+                "--card-media-max-height": "86px",
+                "--card-content-reserve": "14px",
+              }}
+            />
+          </div>
         </div>
 
         <div className="min-h-0 flex-1 border border-black/55 p-0.5">
@@ -556,6 +754,8 @@ export default function DragDropClassification({ config, view, heroApi }) {
                 columnCount={categorySlotMeta[category.id]?.columns}
                 slotCount={categorySlotMeta[category.id]?.slotCount}
                 rowCount={categorySlotMeta[category.id]?.rows}
+                visibleRows={categorySlotMeta[category.id]?.visibleRows}
+                overflowing={categorySlotMeta[category.id]?.overflowing}
                 slotClassName={categorySlotClassName}
                 dragOver={dragOverZone === category.id}
                 onClick={() => placeSelectedItem(category.id)}
@@ -582,33 +782,35 @@ export default function DragDropClassification({ config, view, heroApi }) {
           dragOverZone === "bank" && "bg-white/10",
         )}
       >
-        <CollageCard
-          items={unassignedItems}
-          columns={2}
-          rows={initialBankRows}
-          slotCount={bankSlotCount}
-          rowMode="auto"
-          trackProgress={false}
-          className="h-full min-h-0 items-stretch justify-start"
-          gridClassName="h-full content-start place-items-stretch gap-1 overflow-y-auto overflow-x-hidden pr-0.5"
-          itemSlotClassName={bankLeftSlotClassName}
-          emptyState={
-            <CompletedBankNotice
-              continueLabel={
-                config?.submitLabel ?? heroApi?.advanceLabel ?? "Continuar"
-              }
-              onClear={clearPlacements}
-              onContinue={continueFlow}
-            />
-          }
-          renderItem={renderRegularTile}
-          renderEmptySlot={() => <EmptyCollageSlot />}
-          style={{
-            "--card-slot-height": "94px",
-            "--card-media-max-height": "74px",
-            "--card-content-reserve": "14px",
-          }}
-        />
+        <div className="min-h-0 flex-1 overflow-hidden">
+          <CollageCard
+            items={unassignedItems}
+            columns={2}
+            rows={bankRows}
+            slotCount={bankSlotCount}
+            rowMode="auto"
+            trackProgress={false}
+            className="min-h-0 items-stretch justify-start"
+            gridClassName="h-full content-start place-items-start gap-1 overflow-y-auto overflow-x-hidden pr-0.5"
+            itemSlotClassName={bankLeftSlotClassName}
+            emptyState={
+              <CompletedBankNotice
+                continueLabel={
+                  config?.submitLabel ?? heroApi?.advanceLabel ?? "Continuar"
+                }
+                onClear={clearPlacements}
+                onContinue={continueFlow}
+              />
+            }
+            renderItem={renderRegularTile}
+            renderEmptySlot={() => <EmptyCollageSlot />}
+            style={{
+              "--card-slot-height": bankLeftMetrics.slotHeight,
+              "--card-media-max-height": bankLeftMetrics.mediaMaxHeight,
+              "--card-content-reserve": "14px",
+            }}
+          />
+        </div>
       </div>
 
       <div className="flex min-h-0 flex-col overflow-hidden border border-black/55 p-0.5">
@@ -628,6 +830,8 @@ export default function DragDropClassification({ config, view, heroApi }) {
                 columnCount={categorySlotMeta[category.id]?.columns}
                 slotCount={categorySlotMeta[category.id]?.slotCount}
                 rowCount={categorySlotMeta[category.id]?.rows}
+                visibleRows={categorySlotMeta[category.id]?.visibleRows}
+                overflowing={categorySlotMeta[category.id]?.overflowing}
                 slotClassName={categorySlotClassName}
                 dragOver={dragOverZone === category.id}
                 onClick={() => placeSelectedItem(category.id)}

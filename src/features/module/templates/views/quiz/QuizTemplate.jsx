@@ -254,34 +254,24 @@ export default function QuizTemplate({ variant, data, heroApi, view }) {
       <HeroArea
         key={`${slot.area}-${index}`}
         area={slot.area}
-        className={slotClassName}>
+        className={slotClassName}
+      >
         {renderedSlot}
       </HeroArea>
     );
   };
 
   return (
-    <>
-      {showConfetti && (
-        <Confetti
-          width={width}
-          height={height}
-          recycle={false}
-          numberOfPieces={350}
-        />
-      )}
+    <HeroGrid layout={outerLayout} className="h-full min-h-full w-full">
+      {outerSlots.map(renderQuizSlot)}
 
-      <HeroGrid layout={outerLayout} className="h-full min-h-full w-full">
-        {outerSlots.map(renderQuizSlot)}
-
-        <HeroArea area="content" className="w-full p-0">
-          <div className={contentShellClassName}>
-            <HeroGrid layout={contentLayout} className="h-full min-h-0 w-full">
-              {contentSlots.map(renderQuizSlot)}
-            </HeroGrid>
-          </div>
-        </HeroArea>
-      </HeroGrid>
-    </>
+      <HeroArea area="content" className="w-full p-0">
+        <div className={contentShellClassName}>
+          <HeroGrid layout={contentLayout} className="h-full min-h-0 w-full">
+            {contentSlots.map(renderQuizSlot)}
+          </HeroGrid>
+        </div>
+      </HeroArea>
+    </HeroGrid>
   );
 }

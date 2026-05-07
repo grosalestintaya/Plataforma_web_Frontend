@@ -112,6 +112,7 @@
             "bankRows": 1,
             "categoryColumns": 3,
             "categoryRows": 2,
+            "revealContentOnHover": true,
             "panelTitle": "Clasifica los diferentes objetos",
             "bankTitle": "Objetos",
             "submitLabel": "Continuar",
@@ -137,7 +138,7 @@
               {
                 "id": "s1-cuaderno",
                 "media": {
-                  "src": "image001.png",
+                  "src": "1/botella-gaseosa.jpeg",
                   "alt": "Cuaderno",
                   "variant": "square"
                 },
@@ -305,6 +306,7 @@
             "bankRows": 1,
             "categoryColumns": 3,
             "categoryRows": 2,
+            "revealContentOnHover": true,
             "panelTitle": "Clasifica los diferentes objetos",
             "bankTitle": "Objetos",
             "submitLabel": "Continuar",
@@ -507,6 +509,7 @@
             "layoutVariant": "bankLeft",
             "categoryColumns": 2,
             "categoryRows": 3,
+            "revealContentOnHover": true,
             "bankTitle": "Objetos",
             "submitLabel": "Continuar",
             "categories": [
@@ -708,6 +711,7 @@
             "layoutVariant": "bankLeft",
             "categoryColumns": 2,
             "categoryRows": 3,
+            "revealContentOnHover": true,
             "bankTitle": "Objetos",
             "submitLabel": "Continuar",
             "categories": [

@@ -268,7 +268,7 @@
                 "media": {
                   "src": "1/botella-gaseosa.jpeg",
                   "alt": "Gaseosa como ejemplo de deseo",
-                  "variant": "horizontal"
+                  "variant": "square"
                 },
                 "title": {
                   "text": "Gaseosa",
@@ -285,7 +285,7 @@
                 "media": {
                   "src": "1/galleta.png",
                   "alt": "Galleta como ejemplo de deseo",
-                  "variant": "horizontal"
+                  "variant": "square"
                 },
                 "title": {
                   "text": "Galleta",
@@ -302,7 +302,7 @@
                 "media": {
                   "src": "1/caramelo.png",
                   "alt": "Caramelo como ejemplo de deseo",
-                  "variant": "horizontal"
+                  "variant": "square"
                 },
                 "title": {
                   "text": "Caramelo",
@@ -319,7 +319,7 @@
                 "media": {
                   "src": "1/gaseosa.png",
                   "alt": "Bebida dulce como ejemplo de deseo",
-                  "variant": "horizontal"
+                  "variant": "square"
                 },
                 "title": {
                   "text": "Bebida dulce",
@@ -394,7 +394,7 @@
                 "media": {
                   "src": "1/comprar-comida.png",
                   "alt": "Comida como ejemplo de necesidad",
-                  "variant": "horizontal"
+                  "variant": "square"
                 },
                 "title": {
                   "text": "Comida",
@@ -415,7 +415,7 @@
                 "media": {
                   "src": "1/botella-gaseosa.jpeg",
                   "alt": "Gaseosa como ejemplo de deseo",
-                  "variant": "horizontal"
+                  "variant": "square"
                 },
                 "title": {
                   "text": "Gaseosa",
@@ -424,7 +424,7 @@
                 },
                 "text": {
                   "paragraphs": [
-                    "Si solo me da ganas",
+                    "Si solo me da ganas y no me afecta en nada",
                     "Deseo"
                   ],
                   "variant": "bodySm",
@@ -584,6 +584,7 @@
               "variant": "h4",
               "align": "center"
             },
+            "revealContentOnHover": true,
             "previewSeconds": 5,
             "restartLimit": 1,
             "sectionAdvanceDelayMs": 1500,

@@ -3,8 +3,15 @@ import { cn } from "@/shared/libs/utils";
 import Image from "../../base/Media/Image";
 import { getMediaVariant } from "../../base/Media/mediaVariant";
 import Typography from "../../base/Typography";
+import Card from "../container/Card";
 
 const DEFAULT_GRID = { cols: 4, rows: 3 };
+const MEMORY_CARD_FALLBACK = {
+  width: 104,
+  height: 142,
+  mediaHeight: 88,
+  contentReserve: 40,
+};
 
 function shuffle(items) {
   const next = [...items];
@@ -44,6 +51,106 @@ function getBoardMetrics(width, height, cols, rows, gap) {
     cellHeight,
     boardWidth: cellWidth * cols + gap * (cols - 1),
     boardHeight: cellHeight * rows + gap * (rows - 1),
+  };
+}
+
+function getMemoryMediaRatio(variant) {
+  if (variant === "horizontal") return 3 / 2;
+  if (variant === "vertical") return 2 / 3;
+  return 1;
+}
+
+function getMemoryCardLayout({
+  cellWidth,
+  cellHeight,
+  mediaVariant,
+  labelLength = 0,
+  prioritizeMedia = false,
+}) {
+  if (!cellWidth || !cellHeight) {
+    if (prioritizeMedia && mediaVariant === "square") {
+      const side = MEMORY_CARD_FALLBACK.width;
+
+      return {
+        width: side,
+        height: side,
+        mediaHeight: side,
+        contentReserve: 0,
+      };
+    }
+
+    return {
+      ...MEMORY_CARD_FALLBACK,
+      contentReserve:
+        labelLength > 14 ? 46 : MEMORY_CARD_FALLBACK.contentReserve,
+    };
+  }
+
+  const contentReserve = labelLength > 14 ? 46 : 40;
+  const chromeHeight = 14;
+  const cellInset = 16;
+  const mediaRatio = getMemoryMediaRatio(mediaVariant);
+  const maxWidth = Math.max(cellWidth - cellInset, 76);
+  const maxHeight = Math.max(cellHeight - cellInset, 112);
+
+  if (prioritizeMedia && mediaVariant === "square") {
+    const side = Math.max(76, Math.min(maxWidth, maxHeight));
+
+    return {
+      width: side,
+      height: side,
+      mediaHeight: side,
+      contentReserve: 0,
+    };
+  }
+
+  const widthFromHeight = Math.floor(
+    Math.max(maxHeight - contentReserve - chromeHeight, 56) * mediaRatio,
+  );
+  const width = Math.max(76, Math.min(maxWidth, widthFromHeight));
+  const mediaHeight = Math.max(56, Math.floor(width / mediaRatio));
+  const height = Math.min(
+    maxHeight,
+    mediaHeight + contentReserve + chromeHeight,
+  );
+
+  return {
+    width,
+    height,
+    mediaHeight,
+    contentReserve,
+  };
+}
+
+function normalizeSectionKey(value) {
+  return String(value ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim()
+    .toLowerCase();
+}
+
+function getHiddenCardTheme(section) {
+  const sectionKey = normalizeSectionKey(
+    section?.id ??
+      section?.sectionTitle?.text ??
+      section?.sectionTitle ??
+      section?.title?.text ??
+      section?.title,
+  );
+
+  if (sectionKey.includes("deseo")) {
+    return {
+      shellClassName:
+        "bg-[#d7a317] border-[#8b5e00] hover:bg-[#e0b12c] disabled:hover:bg-[#d7a317]",
+      innerClassName: "bg-[#f0c94d] border-[#8b5e00]",
+    };
+  }
+
+  return {
+    shellClassName:
+      "bg-[#73bfe8] border-[#1e5f86] hover:bg-[#86cbee] disabled:hover:bg-[#73bfe8]",
+    innerClassName: "bg-[#a8daf6] border-[#1e5f86]",
   };
 }
 
@@ -115,6 +222,7 @@ export default function MemoryPairs({
   const instruction = data?.instruction ?? null;
   const sectionTitle = data?.sectionTitle ?? null;
   const finishLabel = data?.finishLabel ?? view?.nav?.finishLabel ?? "Fin";
+  const revealContentOnHover = Boolean(data?.revealContentOnHover);
   const previewSeconds = normalizePositiveNumber(data?.previewSeconds, 4);
   const previewDurationMs = normalizePositiveNumber(
     data?.previewDurationMs,
@@ -177,11 +285,16 @@ export default function MemoryPairs({
     () => shuffle(activeSection?.cards ?? []),
     [activeSection?.cards],
   );
-  const totalPairs = useMemo(
-    () => new Set(deck.map((card) => card.pairId)).size,
+  const sectionPairIds = useMemo(
+    () => [...new Set(deck.map((card) => card.pairId).filter(Boolean))],
     [deck],
   );
-  const isComplete = matched.size === totalPairs && totalPairs > 0;
+  const totalPairs = useMemo(() => sectionPairIds.length, [sectionPairIds]);
+  const matchedPairsInSection = useMemo(
+    () => sectionPairIds.filter((pairId) => matched.has(pairId)).length,
+    [matched, sectionPairIds],
+  );
+  const isComplete = matchedPairsInSection === totalPairs && totalPairs > 0;
   const isPreviewActive = previewRemainingMs > 0;
   const previewSecondsLeft = Math.ceil(previewRemainingMs / 1000);
   const isLastSection = activeSectionIndex >= sections.length - 1;
@@ -230,6 +343,17 @@ export default function MemoryPairs({
   }, [activeSectionIndex, previewDurationMs, previewCycle]);
 
   useEffect(() => {
+    heroApi?.setInteractiveState?.(viewId, {
+      completed: isComplete && isLastSection,
+      totalPairs,
+      matchedPairs: matchedPairsInSection,
+      turns,
+      score: isComplete && isLastSection ? score : 0,
+      sectionIndex: activeSectionIndex,
+      sectionCount: sections.length,
+      type: "memoryGame",
+    });
+
     if (!isComplete) return undefined;
 
     if (!isLastSection) {
@@ -245,17 +369,12 @@ export default function MemoryPairs({
     const result = {
       completed: true,
       totalPairs,
-      matchedPairs: matched.size,
+      matchedPairs: matchedPairsInSection,
       turns,
       score,
       sectionIndex: activeSectionIndex,
       sectionCount: sections.length,
     };
-
-    heroApi?.setInteractiveState?.(viewId, {
-      ...result,
-      type: "memoryGame",
-    });
     onComplete?.(result);
 
     return undefined;
@@ -264,7 +383,7 @@ export default function MemoryPairs({
     heroApi,
     isComplete,
     isLastSection,
-    matched.size,
+    matchedPairsInSection,
     onComplete,
     score,
     sectionAdvanceDelayMs,
@@ -368,9 +487,10 @@ export default function MemoryPairs({
   const statusText = isPreviewActive
     ? `Empieza en ${previewSecondsLeft}s`
     : `${activeSectionIndex + 1}/${sections.length}`;
+  const hiddenCardTheme = getHiddenCardTheme(activeSection);
 
   return (
-    <section className="mx-auto flex h-full min-h-0 w-full max-w-[960px] flex-col overflow-hidden border border-black/70 bg-transparent p-1">
+    <section className="mx-auto flex h-full min-h-0 w-full max-w-[1120px] flex-col overflow-hidden border border-black/70 bg-transparent p-1">
       {instruction ? (
         <div className="mb-1 shrink-0 px-1 text-center">
           <Typography
@@ -380,125 +500,197 @@ export default function MemoryPairs({
         </div>
       ) : null}
 
-      <div className="grid shrink-0 grid-cols-[auto_1fr_auto] items-stretch gap-1">
-        <div className="flex min-w-[128px] items-center border border-black/70 px-2.5 py-1 text-white">
-          <span className="text-sm font-semibold md:text-base">
-            Parejas: {matched.size}/{totalPairs}
-          </span>
-        </div>
-
-        <div className="flex min-w-0 flex-col justify-center border border-black/70 px-2.5 py-1 text-white">
-          <div className="text-center text-xl font-black md:text-3xl">
-            {titleText}
-          </div>
-          {sectionTitleText ? (
-            <div className="mt-0.5 border border-black/60 px-2 py-0.5 text-center text-sm font-semibold md:text-base">
-              {sectionTitleText}
+      <div className="mt-1 flex min-h-0 flex-1 flex-col gap-1 overflow-hidden md:flex-row">
+        <aside className="flex w-full shrink-0 flex-col border border-black/70 p-3 text-white md:w-[270px]">
+          <div className="flex min-h-[180px] flex-1 items-center justify-center border border-black/70 px-4 py-8 text-center">
+            <div className="max-w-[210px] text-3xl font-black leading-tight md:text-4xl">
+              {titleText}
             </div>
-          ) : null}
-        </div>
-
-        <button
-          type="button"
-          onClick={restartBoard}
-          disabled={restartRemaining <= 0 || isComplete || isPreviewActive}
-          className="flex min-w-[128px] items-center gap-2 border border-black/70 px-2.5 py-1 text-left text-white transition hover:bg-black/10 disabled:cursor-not-allowed disabled:opacity-45"
-        >
-          <span className="text-2xl leading-none">↻</span>
-          <div className="min-w-0">
-            <div className="text-sm font-semibold md:text-base">
-              Girar de nuevo:{restartRemaining}
-            </div>
-            <div className="text-xs text-white/70 md:text-sm">{statusText}</div>
           </div>
-        </button>
-      </div>
 
-      <div className="mt-1 flex min-h-0 flex-1 overflow-hidden border border-black/70 p-1">
-        <div
-          ref={boardViewportRef}
-          className="flex min-h-0 flex-1 items-center justify-center overflow-hidden"
-        >
-          <div
-            className="grid place-content-center"
-            style={{
-              gap: `${boardGap}px`,
-              gridTemplateColumns: boardMetrics
-                ? `repeat(${sectionGrid.cols}, ${boardMetrics.cellWidth}px)`
-                : `repeat(${sectionGrid.cols}, minmax(0, 1fr))`,
-              gridTemplateRows: boardMetrics
-                ? `repeat(${sectionGrid.rows}, ${boardMetrics.cellHeight}px)`
-                : undefined,
-              width: boardMetrics ? `${boardMetrics.boardWidth}px` : "100%",
-              maxWidth: "100%",
-              maxHeight: "100%",
-            }}
-          >
-            {deck.map((card, index) => {
-              const isFaceUp =
-                isPreviewActive ||
-                open.includes(index) ||
-                matched.has(card.pairId);
-              const media = card?.media ?? card?.image ?? null;
-              const imageSrc = media?.src ?? card.img ?? "";
-              const imageAlt = media?.alt ?? card.alt ?? `Par ${card.pairId}`;
-              const imageVariant = getMediaVariant(media);
-              const labelContent = getCardLabelContent(card);
+          <div className="mt-3 space-y-3 md:mt-4">
+            <div className="border border-black/70 px-3 py-2 text-center text-2xl font-black md:text-[2rem]">
+              Parejas: {matched.size}/{totalPairs}
+            </div>
 
-              return (
-                <button
-                  key={card.id ?? index}
-                  type="button"
-                  disabled={isPreviewActive}
-                  onClick={() => pick(index)}
-                  className={cn(
-                    "h-full w-full border border-black/70 bg-transparent p-0.5",
-                    "flex items-center justify-center overflow-hidden transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50",
-                    isPreviewActive
-                      ? "cursor-not-allowed"
-                      : "cursor-pointer hover:bg-black/10",
-                  )}
-                >
-                  {isFaceUp ? (
-                    media ? (
-                      <div className="flex h-full w-full flex-col gap-0.5">
-                        <div className="flex min-h-0 flex-1 items-center justify-center border border-black/60 p-0.5">
-                          <Image
-                            src={imageSrc}
-                            alt={imageAlt}
-                            variant={imageVariant}
-                            className="h-full w-full"
-                            imgClassName="block h-full w-full object-contain"
-                          />
-                        </div>
-                        <div className="border border-black/60 px-1 py-0.5">
-                          <Typography
-                            content={labelContent}
-                            className="text-center"
-                          />
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="flex h-full w-full items-center justify-center border border-black/60 px-1.5 py-0.5">
-                        <Typography
-                          content={labelContent}
-                          className="text-center"
-                        />
-                      </div>
-                    )
-                  ) : (
-                    <div className="text-xs text-white/55">
-                      <Image
-                        src="../public/iconcolor.png"
-                        alt="Quipu Yachay"
-                        className="h-full w-full"
-                        imgClassName="block h-full w-full object-contain"
-                      />
+            <button
+              type="button"
+              onClick={restartBoard}
+              disabled={restartRemaining <= 0 || isComplete || isPreviewActive}
+              className="flex w-full items-center gap-3 border border-black/70 px-3 py-3 text-left text-white transition hover:bg-black/10 disabled:cursor-not-allowed disabled:opacity-45"
+            >
+              <span className="text-4xl leading-none">Ã¢â€ Â»</span>
+              <div className="min-w-0">
+                <div className="text-2xl font-black leading-tight">
+                  Girar de nuevo:{restartRemaining}
+                </div>
+                <div className="text-sm text-white/70 md:text-base">
+                  {statusText}
+                </div>
+              </div>
+            </button>
+          </div>
+        </aside>
+
+        <div className="flex min-h-0 flex-1 overflow-hidden border border-black/70 p-1">
+          <div className="flex min-h-0 flex-1 flex-col overflow-hidden border border-black/70 p-2 md:flex-row">
+            {sectionTitleText ? (
+              <>
+                <div className="mb-2 flex shrink-0 items-center justify-center border border-black/70 px-3 py-1 text-center text-sm font-black uppercase tracking-[0.18em] text-white md:hidden">
+                  {sectionTitleText}
+                </div>
+                <div className="mr-2 hidden w-10 shrink-0 items-center justify-center border border-black/70 px-1 py-2 text-white md:flex">
+                  <span
+                    className="text-center text-[0.85rem] font-black uppercase tracking-[0.35em]"
+                    style={{
+                      writingMode: "vertical-rl",
+                      transform: "rotate(180deg)",
+                    }}
+                  >
+                    {sectionTitleText}
+                  </span>
+                </div>
+              </>
+            ) : null}
+
+            <div
+              ref={boardViewportRef}
+              className="flex min-h-0 min-w-0 flex-1 items-center justify-center overflow-hidden"
+            >
+              <div
+                className="grid place-content-center"
+                style={{
+                  gap: `${boardGap}px`,
+                  gridTemplateColumns: boardMetrics
+                    ? `repeat(${sectionGrid.cols}, ${boardMetrics.cellWidth}px)`
+                    : `repeat(${sectionGrid.cols}, minmax(0, 1fr))`,
+                  gridTemplateRows: boardMetrics
+                    ? `repeat(${sectionGrid.rows}, ${boardMetrics.cellHeight}px)`
+                    : undefined,
+                  width: boardMetrics ? `${boardMetrics.boardWidth}px` : "100%",
+                  maxWidth: "100%",
+                  maxHeight: "100%",
+                }}
+              >
+                {deck.map((card, index) => {
+                  const isFaceUp =
+                    isPreviewActive ||
+                    open.includes(index) ||
+                    matched.has(card.pairId);
+                  const media = card?.media ?? card?.image ?? null;
+                  const imageSrc = media?.src ?? card.img ?? "";
+                  const imageAlt = media?.alt ?? card.alt ?? `Par ${card.pairId}`;
+                  const imageVariant = getMediaVariant(media);
+                  const labelContent = getCardLabelContent(card);
+                  const labelText = getDisplayText(labelContent, imageAlt);
+                  const shouldUseHoverRevealCard =
+                    revealContentOnHover && imageVariant === "square";
+                  const cardLayout = getMemoryCardLayout({
+                    cellWidth: boardMetrics?.cellWidth,
+                    cellHeight: boardMetrics?.cellHeight,
+                    mediaVariant: imageVariant,
+                    labelLength: labelText.length,
+                    prioritizeMedia: shouldUseHoverRevealCard,
+                  });
+                  const cardStyle = {
+                    
+                  };
+
+                  return (
+                    <div
+                      key={card.id ?? index}
+                      className="flex h-full w-full items-center justify-center overflow-hidden"
+                    >
+                      <button
+                        type="button"
+                        disabled={isPreviewActive}
+                        onClick={() => pick(index)}
+                        style={cardStyle}
+                        className={cn(
+                          "border p-0.5",
+                          "flex items-center justify-center overflow-hidden transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50",
+                          hiddenCardTheme.shellClassName,
+                          isPreviewActive
+                            ? "cursor-not-allowed"
+                            : "cursor-pointer",
+                        )}
+                      >
+                        {isFaceUp ? (
+                          media ? (
+                            shouldUseHoverRevealCard ? (
+                              <Card
+                                as="div"
+                                density="compact"
+                                fillContainer
+                                media={{
+                                  ...media,
+                                  src: imageSrc,
+                                  alt: imageAlt,
+                                  variant: imageVariant,
+                                }}
+                                title={{
+                                  ...labelContent,
+                                  text: labelText,
+                                  className: cn(
+                                    "text-white",
+                                    labelContent?.className,
+                                  ),
+                                }}
+                                revealContentOnHover
+                                className="h-full w-full rounded-none border-black/60 bg-transparent p-0.5 shadow-none"
+                                mediaClassName="rounded-none border-black/45 bg-transparent p-0"
+                                contentClassName="px-1 py-1"
+                              />
+                            ) : (
+                              <div className="flex h-full w-full flex-col gap-0.5">
+                                <div className="flex min-h-0 flex-1 items-center justify-center border border-black/60 p-0.5">
+                                  <Image
+                                    src={imageSrc}
+                                    alt={imageAlt}
+                                    variant={imageVariant}
+                                    className="h-full w-full"
+                                    imgClassName="block h-full w-full object-contain"
+                                  />
+                                </div>
+                                <div className="border border-black/60 px-1 py-0.5">
+                                  <Typography
+                                    content={labelContent}
+                                    className="text-center"
+                                  />
+                                </div>
+                              </div>
+                            )
+                          ) : (
+                            <div className="flex h-full w-full items-center justify-center border border-black/60 px-1.5 py-0.5">
+                              <Typography
+                                content={labelContent}
+                                className="text-center"
+                              />
+                            </div>
+                          )
+                        ) : (
+                          <div
+                            className={cn(
+                              "flex h-full w-full items-center justify-center border p-2",
+                              hiddenCardTheme.innerClassName,
+                            )}
+                          >
+                            <div className="flex h-full w-full items-center justify-center border border-black/35 bg-white/10 p-3">
+                              <Image
+                                src="/iconcolor.png"
+                                alt="Quipu Yachay"
+                                className="h-full w-full"
+                                imgClassName="block h-full w-full object-contain"
+                              />
+                            </div>
+                          </div>
+                        )}
+                      </button>
                     </div>
-                  )}
-                </button>
-              );
-            })}
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -512,7 +704,7 @@ export default function MemoryPairs({
               const result = {
                 completed: isComplete && isLastSection,
                 totalPairs,
-                matchedPairs: matched.size,
+                matchedPairs: matchedPairsInSection,
                 turns,
                 score,
                 sectionIndex: activeSectionIndex,

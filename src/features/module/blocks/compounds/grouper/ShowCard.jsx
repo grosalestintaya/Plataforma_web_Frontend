@@ -11,59 +11,107 @@ function getShowCardMedia(item) {
   return {
     ...media,
     src,
-    alt: media?.alt ?? item?.alt ?? item?.caption,
+    alt: media?.alt ?? item?.alt ?? item?.caption ?? item?.title ?? "Imagen",
     variant: getMediaVariant(media) ?? getMediaVariant(item),
   };
 }
 
+function getShowCardText(item) {
+  return (
+    item?.text ??
+    item?.description ??
+    item?.subtitle ??
+    item?.label ??
+    null
+  );
+}
+
 /**
  * ShowCard:
- * - El slot distribuye.
- * - Card define el ancho desde su imagen.
+ * - Renderiza 2 o más Cards.
+ * - Las distribuye de izquierda a derecha.
+ * - Cada Card conserva su tamaño visual.
+ * - Si hay poco alto, reduce el ancho para que la Card completa entre.
  */
-export default function ShowCard({ items = [], zoomable = true }) {
-  if (!Array.isArray(items) || items.length === 0) return null;
-
-  const isPair = items.length === 2;
-  const isFourUp = items.length === 4;
+export default function ShowCard({
+  items = [],
+  zoomable = true,
+  className = "",
+  gridClassName = "",
+  cardClassName = "",
+  cardWrapperClassName = "",
+}) {
+  if (!Array.isArray(items) || items.length < 2) return null;
 
   return (
-    <div className="flex h-full min-h-0 w-full items-center justify-center overflow-hidden">
+    <section
+      className={cn(
+        "flex h-full min-h-0 w-full min-w-0 items-center justify-center overflow-hidden",
+        "[container-type:size]",
+        className,
+      )}
+    >
       <div
-        className={
-          isPair
-            ? "mx-auto grid h-full min-h-0 w-full max-w-[920px] grid-cols-1 place-items-center gap-4 overflow-hidden p-1 md:auto-rows-fr md:grid-cols-2"
-            : isFourUp
-              ? "grid h-full min-h-0 w-full grid-cols-1 place-items-center gap-4 overflow-hidden p-1 sm:grid-cols-2 md:auto-rows-fr lg:grid-cols-4"
-              : "grid h-full min-h-0 w-full grid-cols-1 place-items-center gap-4 overflow-hidden p-1 sm:grid-cols-2 md:auto-rows-fr lg:grid-cols-3"
-        }
+        className={cn(
+          "grid h-full min-h-0 w-full min-w-0 overflow-hidden p-1",
+
+          /**
+           * Distribución izquierda a derecha.
+           */
+          "grid-cols-[repeat(auto-fit,minmax(min(180px,100%),1fr))]",
+
+          /**
+           * Centra cada Card dentro de su celda.
+           */
+          "auto-rows-fr place-items-center gap-3 sm:gap-4",
+
+          gridClassName,
+        )}
       >
         {items.map((item, index) => (
           <div
             key={item?.id ?? index}
-            className="module-card-grid-slot w-full"
+            className="flex h-full min-h-0 w-full min-w-0 items-center justify-center overflow-hidden"
           >
-            <Card
-              density="compact"
-              media={getShowCardMedia(item)}
-              title={item?.title ?? null}
-              text={
-                item?.text ??
-                item?.description ??
-                item?.subtitle ??
-                item?.label ??
-                null
-              }
-              className={cn("max-w-full", item?.cardClassName)}
-              mediaClassName={item?.mediaClassName}
-              contentClassName={cn("gap-0", item?.contentClassName)}
-              titleRowClassName={item?.titleRowClassName}
-              autoContentLayout
-              zoomable={zoomable && item?.zoomable !== false}
-            />
+            <div
+              className={cn(
+                /**
+                 * Wrapper visual de la Card.
+                 *
+                 * Esta es la parte importante:
+                 * antes reservábamos poco alto para título/texto.
+                 * Ahora restamos más espacio: 7rem.
+                 *
+                 * Eso hace que la Card se haga un poco más pequeña
+                 * y entre completa dentro del slot.
+                 */
+                "w-[min(100%,clamp(9rem,28cqw,26rem),calc((100cqh-7rem)*1.5))]",
+
+                "max-h-full",
+
+                cardWrapperClassName,
+                item?.cardWrapperClassName,
+              )}
+            >
+              <Card
+                media={getShowCardMedia(item)}
+                title={item?.title ?? null}
+                text={getShowCardText(item)}
+                zoomable={zoomable && item?.zoomable !== false}
+                className={cn(
+                  "h-fit w-full max-h-full max-w-full",
+                  cardClassName,
+                  item?.cardClassName,
+                )}
+                mediaClassName={item?.mediaClassName}
+                contentClassName={item?.contentClassName}
+                titleClassName={item?.titleClassName}
+                textClassName={item?.textClassName}
+              />
+            </div>
           </div>
         ))}
       </div>
-    </div>
+    </section>
   );
-}
+} 
