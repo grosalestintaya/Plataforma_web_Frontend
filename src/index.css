@@ -341,7 +341,21 @@
   .module-card--interactive {
     cursor: pointer;
   }
+  @keyframes metricFloat {
+    0% {
+      opacity: 0;
+      transform: translateY(8px) scale(0.9);
+    }
 
+    20% {
+      opacity: 1;
+    }
+
+    100% {
+      opacity: 0;
+      transform: translateY(-18px) scale(1.05);
+    }
+  }
   .module-card--interactive:hover {
     border-color: rgb(255 255 255 / 0.25);
     transform: translateY(-0.125rem);

@@ -184,10 +184,10 @@ export default function MemoryPairs({
   const isPreviewActive = previewRemainingMs > 0;
   const previewSecondsLeft = Math.ceil(previewRemainingMs / 1000);
   const isLastSection = activeSectionIndex >= sections.length - 1;
-  const score =
-    totalPairs && turns
-      ? Math.max(0, Math.min(100, Math.round((totalPairs / turns) * 100)))
-      : 0;
+  const worstCase = totalPairs * 2;
+  const bestCase = totalPairs;
+  const normalized = (worstCase - turns) / (worstCase - bestCase);
+  const score = Math.max(0, Math.min(100, Math.round(normalized * 100)));
 
   useEffect(() => {
     setActiveSectionIndex(0);
@@ -240,6 +240,13 @@ export default function MemoryPairs({
 
       return () => window.clearTimeout(timeoutId);
     }
+    // 👇 AGREGA ESTO
+    console.log("🎯 MemoryPairs completado:", {
+      score,
+      turns,
+      totalPairs,
+      matchedPairs: matched.size,
+    });
 
     const result = {
       completed: true,

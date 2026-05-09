@@ -652,45 +652,6 @@ export default function ActivityDots({
                     }}
                   />
 
-                  {/* Badge número */}
-                  <div
-                    className="absolute left-[7px] top-[7px] flex h-8 min-w-8 items-center justify-center rounded-full px-2 text-[11px] font-black"
-                    style={{
-                      background: selected
-                        ? `linear-gradient(180deg, ${themeHex}, ${mixHex(themeHex, "#000000", 0.3)})`
-                        : "linear-gradient(180deg, rgba(38,20,8,0.92), rgba(18,10,4,0.92))",
-                      border: selected
-                        ? "1.5px solid rgba(255,255,255,0.55)"
-                        : "1px solid rgba(255,227,190,0.26)",
-                      color: "#FFFFFF",
-                      zIndex: 5,
-                      boxShadow: selected
-                        ? `0 0 0 2px ${hexToRgba(themeHex, 0.35)}, 0 4px 12px rgba(0,0,0,0.4)`
-                        : "0 6px 16px rgba(0,0,0,0.28)",
-                      transition:
-                        "background 0.3s ease, border 0.3s ease, box-shadow 0.3s ease",
-                    }}>
-                    {a.sortOrder}
-                  </div>
-
-                  {/* Badge status */}
-                  <div
-                    className="absolute bottom-[7px] right-[7px] flex h-8 min-w-8 items-center justify-center rounded-full px-2 text-[11px] font-black"
-                    style={{
-                      background: statusBadgeBackground(a.status, themeHex),
-                      border: selected
-                        ? "1.5px solid rgba(255,255,255,0.55)"
-                        : "1px solid rgba(255,255,255,0.24)",
-                      color: "white",
-                      zIndex: 5,
-                      boxShadow: selected
-                        ? "0 0 0 2px rgba(255,255,255,0.15), 0 4px 12px rgba(0,0,0,0.4)"
-                        : "0 6px 16px rgba(0,0,0,0.28)",
-                      transition: "border 0.3s ease, box-shadow 0.3s ease",
-                    }}>
-                    {stateGlyph(a.status)}
-                  </div>
-
                   {/* Hover shimmer */}
                   <div
                     className="pointer-events-none absolute inset-0 rounded-full opacity-0 transition-opacity duration-300 group-hover:opacity-100"
