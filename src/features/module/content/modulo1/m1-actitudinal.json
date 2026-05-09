@@ -420,7 +420,7 @@
       "variant": "postGame",
       "slots": {
         "title": {
-          "text": "Mision Cumplida",
+          "text": "Un nuevo logro se suma a tu camino",
           "variant": "h1",
           "align": "center"
         },

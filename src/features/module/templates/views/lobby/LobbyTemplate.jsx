@@ -1,5 +1,8 @@
 import { useAvatarStore } from "@/features/dashboard/hooks/useAvatarStore";
 import coinIcon from "@/assets/dashboard/coin.png";
+import Confetti from "react-confetti";
+
+import MetricPanel from "@/features/dashboard/components/metricalpanel";
 import * as Blocks from "@/features/module/blocks";
 import { useEquippedAvatar } from "@/features/dashboard/services/useEquippedAvatar.service";
 const XP_ICON_DATA_URI = `data:image/svg+xml;utf8,${encodeURIComponent(`
@@ -128,11 +131,112 @@ function getPayload(data = {}, view, heroApi, avatar) {
       view,
     ),
     rewards: getRewardRowItems(view, rewards),
+    attempt: {
+      score: rewards?.score ?? null,
+      passed: rewards?.passed ?? null,
+      message: rewards?.message ?? null,
+      xpEarned: rewards?.xpEarned ?? null,
+      isImprovement: rewards?.isImprovement ?? null,
+      prevBestScore: rewards?.prevBestScore ?? null,
+      minScore: rewards?.minScore ?? null,
+    },
   };
 }
+import { useState, useEffect } from "react";
 
+function MascotBubble({ message }) {
+  const text = message ?? "¡Hola! Soy Quipu.\nTe guío en esta misión 🙌";
+  const [displayed, setDisplayed] = useState("");
+  const [done, setDone] = useState(false);
+
+  useEffect(() => {
+    setDisplayed("");
+    setDone(false);
+    let i = 0;
+    const interval = setInterval(() => {
+      i++;
+      setDisplayed(text.slice(0, i));
+      if (i >= text.length) {
+        clearInterval(interval);
+        setDone(true);
+      }
+    }, 35);
+    return () => clearInterval(interval);
+  }, [text]);
+
+  return (
+    <div style={{ position: "relative", marginBottom: 8, padding: "0 8px" }}>
+      {/* burbuja */}
+      <div
+        style={{
+          background: "#fff",
+          border: "2.5px solid #111",
+          borderRadius: 14,
+          padding: "10px 14px",
+          whiteSpace: "pre-line",
+          fontSize: 12,
+          fontWeight: 700,
+          lineHeight: 1.5,
+          color: "#111",
+          textAlign: "center",
+          boxShadow: "3px 3px 0px #111",
+        }}>
+        {displayed}
+        {!done && (
+          <span
+            style={{
+              display: "inline-block",
+              width: 2,
+              height: "1em",
+              background: "#111",
+              marginLeft: 2,
+              verticalAlign: "text-bottom",
+              animation: "blink 0.7s step-end infinite",
+            }}
+          />
+        )}
+      </div>
+
+      {/* cola de la burbuja apuntando hacia abajo */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: -12,
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: 0,
+          height: 0,
+          borderLeft: "8px solid transparent",
+          borderRight: "8px solid transparent",
+          borderTop: "12px solid #111",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          bottom: -9,
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: 0,
+          height: 0,
+          borderLeft: "6px solid transparent",
+          borderRight: "6px solid transparent",
+          borderTop: "10px solid #fff",
+        }}
+      />
+
+      <style>{`@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }`}</style>
+    </div>
+  );
+}
 // ─── PreGame ──────────────────────────────────────────────────────────────────
 // titulo arriba, fila inferior: texto izquierda | imagen derecha
+const STEP_ACCENTS = [
+  { border: "#f9c74f", bg: "rgba(249,199,79,0.12)" },
+  { border: "#6ee7b7", bg: "rgba(110,231,183,0.12)" },
+  { border: "#93c5fd", bg: "rgba(147,197,253,0.12)" },
+  { border: "#fca5a5", bg: "rgba(252,165,165,0.12)" },
+];
 
 function PreGame({ payload }) {
   const equippedAvatarName = payload?.equippedAvatarName;
@@ -143,152 +247,246 @@ function PreGame({ payload }) {
 
   return (
     <div
+      className="flex flex-col h-[99%] w-full overflow-hidden rounded-2xl pb-0.5"
       style={{
-        display: "flex",
-        flexDirection: "column",
-        height: "100%",
-        minHeight: 0,
-        width: "100%",
-        gap: "20px",
+        background: "rgba(255,255,255,0.08)",
+        backdropFilter: "blur(16px)",
+        border: "1px solid rgba(255,255,255,0.15)",
       }}>
-      {/* titulo */}
-      <div className="px-6 py-0 text-center text-yellow-300 font-black tracking-widest uppercase">
-        <div className="mx-auto max-w-[760px]">
-          <Blocks.Typography
-            content={payload?.title}
-            variant={payload?.title?.variant ?? "h1"}
-            color={payload?.title?.color}
-            align={payload?.title?.align}
-          />
-        </div>
-      </div>
-
-      {/* texto izquierda | imagen derecha */}
+      {/* grid principal */}
       <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "2fr 1fr",
-          flex: 1,
-          minHeight: 0,
-          gap: "20px",
-        }}>
-        <div className="rounded-2xl border border-yellow-700/40 bg-stone-900/60 backdrop-blur-sm px-6 py-4 text-2xl overflow-auto">
-          <Blocks.Typography
-            content={payload?.body}
-            variant={payload?.body?.variant ?? "body"}
-            color={payload?.body?.color}
-            align={payload?.body?.align}
-          />
+        className="flex-1 grid min-h-0"
+        style={{ gridTemplateColumns: "1fr 500px" }}>
+        {/* columna izquierda */}
+        <div
+          className="flex flex-col gap-4 px-7 py-6"
+          style={{ borderRight: "1px solid rgba(255,255,255,0.1)" }}>
+          {/* título */}
+          <div
+            className="text-yellow-300 font-black tracking-widest uppercase"
+            style={{ fontSize: 6, textShadow: "0 2px 8px rgba(0,0,0,0.4)" }}>
+            <Blocks.Typography
+              content={payload?.title}
+              variant={payload?.title?.variant ?? "h1"}
+              color={payload?.title?.color}
+              align={payload?.title?.align}
+            />
+          </div>
+
+          <div className="flex flex-col gap-2 flex-1 overflow-auto pb-1 px-9">
+            {(payload?.body?.paragraphs ?? []).map((text, i) => {
+              if (!text.trim()) return null;
+              const accent = STEP_ACCENTS[i % STEP_ACCENTS.length];
+              return (
+                <div
+                  key={i}
+                  className="flex items-center gap-6 rounded-xl px-6 py-4"
+                  style={{
+                    background: "rgba(0,0,0,0.22)",
+                    border: "5px solid rgba(255,255,255,0.08)",
+                    borderLeft: `3px solid ${accent.border}`,
+                  }}>
+                  <span className="text-white text-2xl font-medium leading-snug">
+                    {text}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
         </div>
 
-        <div className="relative overflow-hidden rounded-2xl border-none">
+        {/* columna derecha — mascota */}
+        <div
+          className="flex flex-col items-center justify-end px-4 pb-1.5 pt-0"
+          style={{ background: "rgba(0,0,0,0.1)" }}>
+          <MascotBubble message={getRandomMessage()} />
+
           <Blocks.Image
             src={imageSrc}
             alt={imageAlt}
-            variant={payload?.media?.variant ?? payload?.media?.ratio}
-            className="w-full h-full object-cover border-color border-0 "
+            className="w-full object-contain h-[89%]"
+            style={{ maxWidth: 550 }}
           />
         </div>
       </div>
     </div>
   );
 }
+const MASCOT_MESSAGES = [
+  "¡Hola! Soy Quipu.\nTe guío en esta misión 🙌",
+  "¿Listo para aprender?\n¡Vamos juntos! 💪",
+  "Cada misión te hace más sabio.\n¡Tú puedes! ⭐",
+  "Recuerda: el saber\nes tu mejor tesoro 🏆",
+  "¡Ánimo! Esta misión\nserá muy interesante 🎯",
+  "Juntos aprenderemos\ncosas increíbles hoy 🌟",
+];
 
+function getRandomMessage() {
+  return MASCOT_MESSAGES[Math.floor(Math.random() * MASCOT_MESSAGES.length)];
+}
 // ─── PostGame ─────────────────────────────────────────────────────────────────
 // titulo arriba, fila inferior: xp izquierda | imagen centro (TODO) | coins derecha
 
 function PostGame({ payload }) {
   const equippedAvatarName = payload?.equippedAvatarName;
-
   const { xp, coins } = payload?.rewards ?? {};
+  const attempt = payload?.attempt ?? {}; // 👈 nuevo
   const imageSrc = `activity/avatars/${equippedAvatarName}.gif`;
   const imageAlt = equippedAvatarName
     ? `Avatar de ${equippedAvatarName}`
     : (payload?.media?.alt ?? "Imagen");
+
+  const [showConfetti, setShowConfetti] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowConfetti(false), 9000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div
+      className="flex flex-col h-[100%] w-full overflow-hidden rounded-2xl"
       style={{
-        display: "flex",
-        flexDirection: "column",
-        height: "100%",
-        minHeight: 0,
-        width: "100%",
-        gap: "20px",
+        background: "rgba(255,255,255,0.08)",
+        backdropFilter: "blur(16px)",
+        border: "1px solid rgba(255,255,255,0.15)",
+        position: "relative",
       }}>
-      {/* titulo */}
-      <div className="rounded-2xl p-5 text-center">
-        <div className="mx-auto max-w-[760px]">
-          <Blocks.Typography
-            content={payload?.title}
-            variant={payload?.title?.variant ?? "h1"}
-            color={payload?.title?.color}
-            align={payload?.title?.align}
-          />
-        </div>
+      {showConfetti && (
+        <Confetti
+          recycle={false}
+          numberOfPieces={300}
+          gravity={0.18}
+          style={{
+            position: "absolute",
+            inset: 0,
+            zIndex: 10,
+            pointerEvents: "none",
+          }}
+        />
+      )}
+
+      {/* título */}
+      <div className="px-7 pt-6 pb-2 text-center">
+        <Blocks.Typography
+          content={payload?.title}
+          variant={payload?.title?.variant ?? "h1"}
+          color={payload?.title?.color}
+          align={payload?.title?.align}
+        />
       </div>
 
-      {/* xp | imagen (TODO) | coins */}
+      {/* grid: xp | mascota | coins */}
       <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr 1fr",
-          flex: 1,
-          minHeight: 0,
-          gap: "20px",
-        }}>
-        {/* XP — izquierda */}
-        <div className="rounded-2xl border border-yellow-700/450 bg-stone-900/60 flex flex-col items-center justify-center gap-3 p-5">
-          <img
-            src={xp?.media?.src}
-            alt={xp?.media?.alt}
-            style={{ width: 56, height: 56, objectFit: "contain" }}
+        className="flex-1 grid min-h-0 px-6 py-1.5 gap-5.4"
+        style={{ gridTemplateColumns: "1fr 1fr 1fr" }}>
+        <div className="pt-10">
+          <MetricPanel
+            title={xp?.title?.text || xp?.title}
+            value={attempt?.xpEarned || xp?.text?.text}
+            color="#2962ff"
+            textColor="#fff8e6"
+            accent="#f9c74f"
+            className="min-h-[200px] max-w-[440px] mx-auto rounded-2xl px-4 py-3"
+            icon={
+              <img
+                src={xp?.media?.src}
+                alt={xp?.media?.alt}
+                className="h-300 w-300"
+              />
+            }
           />
-          <Blocks.Typography
-            content={xp?.title}
-            variant="label"
-            align="center"
-          />
-          <Blocks.Typography
-            content={xp?.text}
-            variant="bodySm"
-            align="center"
+          <br />
+          <MetricPanel
+            title={coins?.title?.text || coins?.title}
+            value={attempt?.coinsAwarded ?? coins?.text?.text}
+            color="#ffc400"
+            textColor="#ecfdf5"
+            accent=""
+            className="min-h-[200px] max-w-[440px] mx-auto rounded-2xl px-4 py-3"
+            icon={
+              <img
+                src={coins?.media?.src}
+                alt={coins?.media?.alt}
+                className="h-300 w-300 object-contain"
+              />
+            }
           />
         </div>
 
-        {/* imagen central — próxima implementación */}
-        <div className="rounded-2xl flex items-center justify-center">
+        <div className="flex items-center justify-center">
           <Blocks.Image
             src={imageSrc}
             alt={imageAlt}
-            variant={payload?.media?.variant ?? payload?.media?.ratio}
-            className=" w-full h-full object-cover border-color border-0 "
+            variant="square"
+            className="w-full h-full object-contain border-0"
           />
         </div>
 
-        {/* Coins — derecha */}
-        <div className="rounded-2xl border border-yellow-700/40 bg-stone-900/60 flex flex-col items-center justify-center gap-3 p-5">
-          <img
-            src={coins?.media?.src}
-            alt={coins?.media?.alt}
-            style={{ width: 56, height: 56, objectFit: "contain" }}
-          />
-          <Blocks.Typography
-            content={coins?.title}
-            variant="label"
-            align="center"
-          />
-          <Blocks.Typography
-            content={coins?.text}
-            variant="bodySm"
-            align="center"
-          />
+        <div className="pt-10 px-4">
+          {" "}
+          {/* mensaje del intento */}
+          {attempt?.message && (
+            <div
+              className="mx-6 mb-2 px-4 py-4 rounded-xl text-center text-4xl font-semibold"
+              style={{
+                background: attempt?.passed
+                  ? "rgba(110,231,183,0.15)"
+                  : "rgba(252,165,165,0.15)",
+                border: `1px solid ${
+                  attempt?.passed
+                    ? "rgba(110,231,183,0.4)"
+                    : "rgba(252,165,165,0.4)"
+                }`,
+                color: attempt?.passed ? "#ffff" : "#fca5a5",
+              }}>
+              {attempt.message}
+            </div>
+          )}
+          {/* score del intento */}
+          {attempt?.score != null && (
+            <div className="text-justify text-white/70 text-3xl mb-1 pl-8   font-semibold py-5">
+              🟡 Puntaje de este intento:{" "}
+              <span className="font-bold text-white/100">{attempt.score}</span>{" "}
+              <br />
+              {attempt?.prevBestScore != null && (
+                <span>
+                  {" "}
+                  🔴 Mejor marca:{" "}
+                  <span className="font-bold text-white/100">
+                    {attempt.prevBestScore}
+                  </span>{" "}
+                  <br />
+                </span>
+              )}
+              {attempt?.minScore != null && (
+                <span>
+                  {" "}
+                  🔵 Mínimo para aprobar:{" "}
+                  <span className="font-bold text-white/80">
+                    {attempt.minScore}
+                  </span>
+                </span>
+              )}
+            </div>
+          )}
         </div>
-        <div>aun falta poner un footer con texto dinamico</div>
+      </div>
+
+      {/* footer */}
+      <div
+        className="px-7 py-0 text-center"
+        style={{ borderTop: "1px solid rgba(255,255,255,0.1)" }}>
+        <Blocks.Typography
+          content={payload?.footer}
+          variant={payload?.footer?.variant ?? "bodySm"}
+          color={payload?.footer?.color}
+          align={payload?.footer?.align}
+        />
       </div>
     </div>
   );
 }
-
 // ─── Wait ─────────────────────────────────────────────────────────────────────
 
 function Wait({ payload }) {
@@ -300,7 +498,7 @@ function Wait({ payload }) {
         height: "100%",
         minHeight: 0,
         width: "100%",
-        gap: "20px",
+        gap: "10px",
       }}>
       <div className="rounded-2xl p-5 text-center">
         <div className="mx-auto max-w-[760px]">

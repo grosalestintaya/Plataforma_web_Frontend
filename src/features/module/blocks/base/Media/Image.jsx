@@ -12,13 +12,12 @@ const IMAGE_INTRINSIC_FRAME_CLASS = `inline-flex max-w-full ${IMAGE_FRAME_BASE_C
 const IMAGE_SLOT_CLASS =
   "block h-auto w-auto max-h-full max-w-full object-contain";
 
-const IMAGE_RATIO_CLASS =
-  "block h-full w-auto max-w-full object-contain";
+const IMAGE_RATIO_CLASS = "block h-full w-auto max-w-full object-contain";
 
 const IMAGE_INTRINSIC_CLASS =
   "block h-auto w-auto max-h-full max-w-full object-contain";
 
-const IMAGE_SURFACE_CLASS = "rounded-xl border border-white/15";
+const IMAGE_SURFACE_CLASS = "rounded-xl border border-white/0";
 
 function normalizeAssetPath(value) {
   return String(value ?? "")
@@ -155,8 +154,7 @@ export default function Image({
               IMAGE_SURFACE_CLASS,
             )}
           />
-        }
-      >
+        }>
         <img
           src={resolvedSrc}
           alt={resolvedAlt}

@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import { useWindowSize } from "react-use";
-import Confetti from "react-confetti";
 
 import HeroGrid from "../../_core/HeroGrid";
 import HeroArea from "../../_core/HeroArea";
@@ -145,7 +144,7 @@ export default function QuizTemplate({ variant, data, heroApi, view }) {
 
   useEffect(() => {
     if (isComplete && isLastQuiz) {
-      setShowConfetti(true);
+      setShowConfetti(false); // reset to retrigger
 
       const timer = setTimeout(() => {
         setShowConfetti(false);
