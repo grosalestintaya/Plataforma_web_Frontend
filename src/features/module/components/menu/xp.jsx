@@ -25,12 +25,45 @@ function withAlpha(hex, alpha) {
   return `rgba(${r}, ${g}, ${b}, ${Math.max(0, Math.min(1, alpha))})`;
 }
 
+/** Hook que devuelve true cuando el ancho de ventana es menor al breakpoint dado */
+function useIsMobile(breakpoint = 481) {
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== "undefined" && window.innerWidth < breakpoint,
+  );
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const mq = window.matchMedia(`(max-width: ${breakpoint - 1}px)`);
+    const handler = (e) => setIsMobile(e.matches);
+
+    if (mq.addEventListener) {
+      mq.addEventListener("change", handler);
+    } else {
+      mq.addListener(handler); // fallback Safari antiguo
+    }
+
+    setIsMobile(mq.matches);
+
+    return () => {
+      if (mq.removeEventListener) {
+        mq.removeEventListener("change", handler);
+      } else {
+        mq.removeListener(handler);
+      }
+    };
+  }, [breakpoint]);
+
+  return isMobile;
+}
+
 export default function XpPanel({
   monedas = 0,
   themeHex = "#00C853",
   className = "",
 }) {
   const targetValue = Number(monedas || 0);
+  const isMobile = useIsMobile(481);
 
   const [displayValue, setDisplayValue] = useState(0);
   const [delta, setDelta] = useState(null);
@@ -92,6 +125,21 @@ export default function XpPanel({
   const hasDelta = delta !== null && delta !== 0;
   const isPositive = Number(delta) > 0;
 
+  // ─── Tokens responsivos ───────────────────────────────────────────────────
+  const padding = isMobile ? "7px 8px 2px 8px" : "10px 16px 10px 10px";
+  const minWidth = isMobile ? 60 : 140;
+  const gap = isMobile ? 4 : 10;
+  const badgeSize = isMobile ? 26 : 36;
+  const iconSize = isMobile ? 40 : 55;
+  const iconWrapW = isMobile ? 32 : 44;
+  const iconWrapH = isMobile ? 12 : 16;
+  const labelFontSize = isMobile ? 7 : 8;
+  const valueFontSize = isMobile ? 20 : 26;
+  const deltaFontSize = isMobile ? 9 : 10;
+  const borderRadius = isMobile ? 11 : 14;
+  const innerRadius = isMobile ? 8 : 10;
+  // ─────────────────────────────────────────────────────────────────────────
+
   return (
     <>
       <link
@@ -104,19 +152,21 @@ export default function XpPanel({
         style={{
           position: "relative",
           overflow: "hidden",
-          borderRadius: 14,
+          borderRadius,
           border: "1.5px solid #a07820",
           background: "linear-gradient(160deg, #f5e9c8, #e2c96a 60%, #c9a227)",
           boxShadow: pulse
             ? "0 0 0 1px #c9a227, 0 0 0 4px #7a5510, 0 0 0 6px #e8c840, inset 0 1px 0 rgba(255,240,150,0.4), 0 8px 24px rgba(0,0,0,0.5)"
             : "0 0 0 1px #c9a227, 0 0 0 4px #7a5510, 0 0 0 5px #c9a227, inset 0 1px 0 rgba(255,240,150,0.4), 0 8px 24px rgba(0,0,0,0.4)",
-          padding: "10px 16px 10px 10px",
-          minWidth: 140,
+          padding,
+          minWidth,
           display: "flex",
           alignItems: "center",
-          gap: 10,
+          gap,
           transform: pulse ? "scale(1.02)" : "scale(1)",
           transition: "transform 220ms ease, box-shadow 220ms ease",
+          maxWidth: "100%",
+          boxSizing: "border-box",
         }}>
         {/* Inner frame line */}
         <div
@@ -124,7 +174,7 @@ export default function XpPanel({
             position: "absolute",
             inset: 3,
             border: "0.5px solid rgba(200,160,40,0.35)",
-            borderRadius: 10,
+            borderRadius: innerRadius,
             pointerEvents: "none",
           }}
         />
@@ -139,7 +189,7 @@ export default function XpPanel({
             height: "40%",
             background:
               "linear-gradient(180deg, rgba(255,248,180,0.28), transparent)",
-            borderRadius: "14px 14px 0 0",
+            borderRadius: `${borderRadius}px ${borderRadius}px 0 0`,
             pointerEvents: "none",
           }}
         />
@@ -152,7 +202,7 @@ export default function XpPanel({
               top: 6,
               right: 8,
               fontFamily: "'Cinzel', Georgia, serif",
-              fontSize: 10,
+              fontSize: deltaFontSize,
               fontWeight: 600,
               color: isPositive ? "#3b6d11" : "#993c1d",
               textShadow: "0 1px 2px rgba(0,0,0,0.2)",
@@ -168,8 +218,8 @@ export default function XpPanel({
         <div
           style={{
             position: "relative",
-            width: 44,
-            height: 16,
+            width: iconWrapW,
+            height: iconWrapH,
             flexShrink: 0,
             display: "flex",
             alignItems: "center",
@@ -183,8 +233,8 @@ export default function XpPanel({
           {/* circular badge background */}
           <div
             style={{
-              width: 36,
-              height: 36,
+              width: badgeSize,
+              height: badgeSize,
               borderRadius: "50%",
               background:
                 "radial-gradient(circle at 35% 30%, #ffe566, #c9a227 55%, #7a5510)",
@@ -196,8 +246,8 @@ export default function XpPanel({
             }}>
             <XpQuipuIcon
               style={{
-                width: 55,
-                height: 55,
+                width: iconSize,
+                height: iconSize,
                 color: "",
                 filter: "drop-shadow(0 1px 0 rgba(255,240,100,0.5))",
               }}
@@ -210,7 +260,7 @@ export default function XpPanel({
           <div
             style={{
               fontFamily: "'Cinzel', Georgia, serif",
-              fontSize: 8,
+              fontSize: labelFontSize,
               letterSpacing: "0.22em",
               textTransform: "uppercase",
               color: "#7a5c14",
@@ -222,7 +272,7 @@ export default function XpPanel({
           <div
             style={{
               fontFamily: "'Cinzel', Georgia, serif",
-              fontSize: 26,
+              fontSize: valueFontSize,
               fontWeight: 700,
               color: "#1e0e00",
               lineHeight: 1,
@@ -230,6 +280,9 @@ export default function XpPanel({
               textShadow:
                 "0 2px 0 rgba(200,160,40,0.3), 0 1px 0 rgba(255,240,100,0.5)",
               fontVariantNumeric: "tabular-nums",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
             }}>
             {formatInt(displayValue)}
           </div>

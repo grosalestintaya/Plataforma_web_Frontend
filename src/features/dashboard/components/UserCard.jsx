@@ -281,7 +281,7 @@ const UserCard = ({ user, isFirst = false }) => {
                 }}
               />
               <div
-                className="relative rounded-[70px] border  p-[2px]"
+                className="relative rounded-[70px] border  p-[0.1px]"
                 style={{
                   borderColor: "rgba(255,255,255,0.18)",
                   background: `
@@ -299,7 +299,7 @@ const UserCard = ({ user, isFirst = false }) => {
                 <img
                   src={resolveAvatar(user?.foto)}
                   alt={`Perfil de ${user?.nombre || "usuario"}`}
-                  className="h-16 w-16 rounded-[10px] object-cover xl:h-20 xl:w-20"
+                  className="h-17 w-17 rounded-[40px] object-cover xl:h-20 xl:w-20"
                   onError={(e) => {
                     e.currentTarget.onerror = null;
                     e.currentTarget.src = resolveAvatar("default");

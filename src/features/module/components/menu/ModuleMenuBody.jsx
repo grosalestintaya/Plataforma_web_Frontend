@@ -90,8 +90,10 @@ export default function ModuleMenuBody({
           xl:grid-cols-[168px_minmax(0,1fr)_280px]
         ">
         {/* FIX 2: -mt-32 eliminado → self-start + pt-4 para control limpio */}
-        <div className="min-h-0 min-w-0 self-start -mt-34 pt-4">{left}</div>
-        <section className="flex h-full min-h-0 min-w-0 items-start justify-center lg:items-stretch lg:justify-center px-1 sm:px-3 lg:px-5">
+        <div className="-mt-14 min-h-0 min-w-0 self-start sm:-mt-30">
+          {left}
+        </div>
+        <section className="flex h-full min-h-0 min-w-0 items-start justify-center lg:items-stretch lg:justify-center px-1 sm:px-3 lg:px-5 py-2 sm:py-3 lg:py-5 overflow-x-hidden">
           {center}
         </section>
         {/* FIX 4: pt-11 → self-end para anclar el panel al fondo de la celda */}

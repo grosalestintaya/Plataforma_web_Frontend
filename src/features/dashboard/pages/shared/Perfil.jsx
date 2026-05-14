@@ -4,7 +4,95 @@ import { UserService } from "../../services/user.service";
 import { useAuth } from "../../../auth/components/AuthContext";
 
 const getAvatarPath = (imgKey) => `/avatars/${imgKey}.png`;
+const getgifPath = (imgKey) => `/activity/avatars/${imgKey}.gif`;
+const FRASES = [
+  "¡Hoy te ves increíble, guerrero! ✨",
+  "Cada día que entrenas... me haces feliz 🥹",
+  "¿Listo para dominar el mundo? Porque yo sí.",
+  "Shhh... estoy cargando mi poder. Espérame. ⚡",
+  "Dicen que soy raro. Yo digo que soy especial 🌀",
+  "No me mires así... me pongo nervioso 👀",
+  "¡Tú puedes! (Yo también, pero tú primero.)",
+  "Hoy no hay excusas. Solo nosotros dos. 🔥",
+  "Mi cara de concentración activa +50 de fuerza.",
+  "¿Sabías que eres mi humano favorito? 🤫",
+  "Nuevo día, nuevas misiones. ¡Vamos! 🗡️",
+  "Si me das una galleta, entreno contigo gratis. 🍪",
+];
 
+const BurbujaAvatar = ({ color = "#7F77DD" }) => {
+  const [idx, setIdx] = React.useState(() =>
+    Math.floor(Math.random() * FRASES.length),
+  );
+  const [animating, setAnimating] = React.useState(false);
+
+  const siguiente = () => {
+    if (animating) return;
+    setAnimating(true);
+    setTimeout(() => {
+      setIdx((prev) => (prev + 1) % FRASES.length);
+      setAnimating(false);
+    }, 180);
+  };
+
+  return (
+    <div
+      onClick={siguiente}
+      className="relative cursor-pointer select-none"
+      style={{ maxWidth: "260px" }}>
+      {/* Burbuja */}
+      <div
+        style={{
+          background: "#fff",
+          border: `2.5px solid ${color}`,
+          borderRadius: "18px",
+          padding: "10px 16px",
+          boxShadow: `4px 4px 0px ${color}`,
+          transition: "opacity 0.18s, transform 0.18s",
+          opacity: animating ? 0 : 1,
+          transform: animating ? "scale(0.96)" : "scale(1)",
+          fontFamily: "'Nunito', 'Segoe UI', sans-serif",
+          fontWeight: 700,
+          fontSize: "clamp(11px, 1.1vw, 13px)",
+          color: "#1e1b4b",
+          lineHeight: "1.4",
+          userSelect: "none",
+        }}>
+        {FRASES[idx]}
+      </div>
+
+      {/* Cola de burbuja apuntando hacia abajo-izquierda */}
+      {/* Cola de burbuja apuntando hacia abajo al centro */}
+      <svg
+        width="28"
+        height="18"
+        viewBox="0 0 28 18"
+        style={{ display: "block", margin: "0 auto", marginTop: "-2px" }}
+        xmlns="http://www.w3.org/2000/svg">
+        <polygon points="4,0 24,0 14,18" fill="#fff" />
+        <polyline
+          points="4,0 14,18 24,0"
+          fill="none"
+          stroke={color}
+          strokeWidth="2.5"
+          strokeLinejoin="round"
+        />
+      </svg>
+
+      {/* Hint de click */}
+      <p
+        style={{
+          fontSize: "9px",
+          color: color,
+          opacity: 0.6,
+          textAlign: "center",
+          marginTop: "2px",
+          fontWeight: 600,
+          letterSpacing: "0.05em",
+        }}></p>
+    </div>
+  );
+};
 function cn(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -921,28 +1009,13 @@ const Perfil = () => {
 
               {/* Card principal — portrait style */}
               <div
-                className="relative flex flex-1 flex-col items-center justify-center overflow-hidden rounded-[22px] border p-4"
+                className="relative flex flex-1 flex-col items-center justify-center overflow-hidden rounded-[22px]"
                 style={{
-                  borderColor: hexToRgba(currentStyleMeta.color, 0.22),
-                  background: `
-        radial-gradient(ellipse at 50% 0%, ${hexToRgba(currentStyleMeta.color, 0.18)} 0%, transparent 60%),
-        linear-gradient(180deg, rgba(255,255,255,0.97), rgba(255,255,255,0.88))
-      `,
+                  background: `radial-gradient(ellipse at 50% 30%, ${hexToRgba(currentStyleMeta.color, 0.13)} 0%, transparent 70%)`,
                 }}>
-                {/* Hexágono decorativo de fondo */}
-                <svg
-                  className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.04]"
-                  viewBox="0 0 200 200"
-                  preserveAspectRatio="xMidYMid slice">
-                  <polygon
-                    points="100,10 180,55 180,145 100,190 20,145 20,55"
-                    fill={currentStyleMeta.color}
-                  />
-                </svg>
-
                 {/* corner badge — rareza */}
                 <div
-                  className="absolute left-3 top-3 rounded-full px-2 py-0.5 text-[9px] font-black uppercase tracking-[0.14em]"
+                  className="absolute left-3 top-3 z-10 rounded-full px-2 py-0.5 text-[9px] font-black uppercase tracking-[0.14em]"
                   style={{
                     background: hexToRgba(currentStyleMeta.color, 0.12),
                     color: hexToRgba(currentStyleMeta.color, 0.9),
@@ -950,50 +1023,22 @@ const Perfil = () => {
                   }}>
                   {currentStyleMeta.icon} {currentStyleMeta.short}
                 </div>
+                <BurbujaAvatar color={currentStyleMeta.color} />
 
-                {/* Avatar */}
-                <div className="relative mb-3 mt-2">
-                  {/* anillo exterior pulsante */}
-                  <div
-                    className="absolute inset-[-6px] rounded-full"
-                    style={{
-                      border: `1.5px dashed ${hexToRgba(currentStyleMeta.color, 0.35)}`,
-                      animation: "spinRing 14s linear infinite",
-                    }}
-                  />
-                  {/* anillo glow */}
-                  <div
-                    className="absolute inset-[-2px] rounded-full blur-md"
-                    style={{
-                      background: hexToRgba(currentStyleMeta.color, 0.22),
-                    }}
-                  />
-                  <img
-                    src={getAvatarPath(displayAvatar)}
-                    alt="avatar actual"
-                    className="relative rounded-full border-[3px] object-cover"
-                    style={{
-                      width: "clamp(90px, 9vw, 320px)",
-                      height: "clamp(80px, 9vw, 320px)",
-                      borderColor: currentStyleMeta.color,
-                      boxShadow: `0 0 0 5px ${hexToRgba(currentStyleMeta.color, 0.1)}`,
-                    }}
-                  />
-                  {/* online dot */}
-                  <span
-                    className="absolute bottom-1 right-1 h-3.5 w-3.5 rounded-full border-2 border-white"
-                    style={{
-                      background: profile.is_active
-                        ? currentStyleMeta.color
-                        : "#f59e0b",
-                      boxShadow: `0 0 8px ${profile.is_active ? hexToRgba(currentStyleMeta.color, 0.7) : "rgba(245,158,11,0.6)"}`,
-                    }}
-                  />
-                </div>
+                {/* Avatar protagonista */}
+                <img
+                  src={getgifPath(displayAvatar)}
+                  alt="avatar actual"
+                  className="object-contain drop-shadow-xl"
+                  style={{
+                    width: "clamp(140px, 16vw, 480px)",
+                    height: "clamp(140px, 16vw, 480px)",
+                  }}
+                />
 
                 {/* Nombre */}
                 <p
-                  className="text-[clamp(13px,1.2vw,15px)] font-black leading-tight"
+                  className="mt-2 text-[clamp(13px,1.2vw,15px)] font-black leading-tight"
                   style={{ color: "var(--card-text, #0f172a)" }}>
                   {equipping
                     ? "Equipando..."

@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 function hexToRgb(hex) {
   const h = String(hex || "#000")
     .replace("#", "")
@@ -33,11 +35,63 @@ const RING_SHADOW_HOVER = [
   `0 12px 32px ${withAlpha("#000", 0.5)}`,
 ].join(", ");
 
+/** Hook que devuelve true cuando el ancho de ventana es menor al breakpoint dado */
+function useIsMobile(breakpoint = 481) {
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== "undefined" && window.innerWidth < breakpoint,
+  );
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const mq = window.matchMedia(`(max-width: ${breakpoint - 1}px)`);
+    const handler = (e) => setIsMobile(e.matches);
+
+    if (mq.addEventListener) {
+      mq.addEventListener("change", handler);
+    } else {
+      mq.addListener(handler); // fallback Safari antiguo
+    }
+
+    setIsMobile(mq.matches);
+
+    return () => {
+      if (mq.removeEventListener) {
+        mq.removeEventListener("change", handler);
+      } else {
+        mq.removeListener(handler);
+      }
+    };
+  }, [breakpoint]);
+
+  return isMobile;
+}
+
 export default function HeaderBackButton({
   onClick,
   label = "Volver",
   className = "",
 }) {
+  const isMobile = useIsMobile(481);
+
+  // ─── Tokens responsivos ───────────────────────────────────────────────────
+  const height = isMobile ? 42 : 52;
+  // En móvil solo hay el badge, centramos con padding simétrico
+  const paddingInline = isMobile ? "8px" : "14px 20px";
+  const borderRadius = isMobile ? 11 : 14;
+  const innerRadius = isMobile ? 8 : 10;
+  const gap = isMobile ? 8 : 12;
+  const badgeSize = isMobile ? 26 : 34;
+  const labelFontSize = isMobile ? 12 : 14;
+  const arrowBoxSize = isMobile ? 11 : 14;
+  const arrowBarW = isMobile ? 7 : 9;
+  const arrowBarH = isMobile ? 1.8 : 2.2;
+  const arrowBarLeft = isMobile ? 2 : 3;
+  const arrowChevronW = isMobile ? 5 : 7;
+  const arrowChevronH = isMobile ? 5 : 7;
+  const arrowBorder = isMobile ? "1.8px" : "2.2px";
+  // ─────────────────────────────────────────────────────────────────────────
+
   return (
     <>
       <button
@@ -47,16 +101,18 @@ export default function HeaderBackButton({
         aria-label={label}
         className={`group relative overflow-hidden cursor-pointer focus-visible:outline-none active:scale-[0.97] ${className}`}
         style={{
-          height: 52,
-          paddingInline: "14px 20px",
-          borderRadius: 14,
+          height,
+          paddingInline,
+          borderRadius,
           border: "1.5px solid #a07820",
           background: "linear-gradient(160deg, #f5e9c8, #e2c96a 60%, #c9a227)",
           boxShadow: RING_SHADOW,
           display: "flex",
           alignItems: "center",
-          gap: 12,
+          gap,
           transition: "transform 220ms ease, box-shadow 220ms ease",
+          maxWidth: "100%",
+          boxSizing: "border-box",
         }}
         onMouseEnter={(e) => {
           e.currentTarget.style.boxShadow = RING_SHADOW_HOVER;
@@ -72,7 +128,7 @@ export default function HeaderBackButton({
             position: "absolute",
             inset: 3,
             border: "0.5px solid rgba(200,160,40,0.35)",
-            borderRadius: 10,
+            borderRadius: innerRadius,
             pointerEvents: "none",
           }}
         />
@@ -87,7 +143,7 @@ export default function HeaderBackButton({
             height: "40%",
             background:
               "linear-gradient(180deg, rgba(255,248,180,0.28), transparent)",
-            borderRadius: "14px 14px 0 0",
+            borderRadius: `${borderRadius}px ${borderRadius}px 0 0`,
             pointerEvents: "none",
           }}
         />
@@ -98,8 +154,8 @@ export default function HeaderBackButton({
           style={{
             position: "relative",
             flexShrink: 0,
-            width: 34,
-            height: 34,
+            width: badgeSize,
+            height: badgeSize,
             borderRadius: "50%",
             background:
               "radial-gradient(circle at 35% 30%, #ffe566, #c9a227 55%, #7a5510)",
@@ -111,21 +167,21 @@ export default function HeaderBackButton({
             justifyContent: "center",
             transition: "transform 220ms ease",
           }}>
-          {/* Flecha ← construida con spans, igual al original */}
+          {/* Flecha ← */}
           <span
             style={{
               position: "relative",
               display: "block",
-              width: 14,
-              height: 14,
+              width: arrowBoxSize,
+              height: arrowBoxSize,
             }}>
             <span
               style={{
                 position: "absolute",
-                left: 3,
+                left: arrowBarLeft,
                 top: "50%",
-                height: 2.2,
-                width: 9,
+                height: arrowBarH,
+                width: arrowBarW,
                 transform: "translateY(-50%)",
                 borderRadius: 9999,
                 background: "#3b2200",
@@ -136,33 +192,36 @@ export default function HeaderBackButton({
                 position: "absolute",
                 left: 0,
                 top: "50%",
-                width: 7,
-                height: 7,
+                width: arrowChevronW,
+                height: arrowChevronH,
                 transform: "translateY(-50%) rotate(45deg)",
                 borderRadius: 1,
-                borderBottom: "2.2px solid #3b2200",
-                borderLeft: "2.2px solid #3b2200",
+                borderBottom: `${arrowBorder} solid #3b2200`,
+                borderLeft: `${arrowBorder} solid #3b2200`,
+                color: "#1e0e00",
               }}
             />
           </span>
         </span>
 
-        {/* Label */}
-        <span
-          style={{
-            position: "relative",
-            zIndex: 10,
-            fontSize: 14,
-            fontWeight: 700,
-            letterSpacing: "0.15em",
-            color: "#1e0e00",
-            textShadow:
-              "0 2px 0 rgba(200,160,40,0.3), 0 1px 0 rgba(255,240,100,0.5)",
-            userSelect: "none",
-            whiteSpace: "nowrap",
-          }}>
-          {label}
-        </span>
+        {/* Label — oculto en móvil */}
+        {!isMobile && (
+          <span
+            style={{
+              position: "relative",
+              zIndex: 10,
+              fontSize: labelFontSize,
+              fontWeight: 700,
+              letterSpacing: "0.15em",
+              color: "#1e0e00",
+              textShadow:
+                "0 2px 0 rgba(200,160,40,0.3), 0 1px 0 rgba(255,240,100,0.5)",
+              userSelect: "none",
+              whiteSpace: "nowrap",
+            }}>
+            {label}
+          </span>
+        )}
       </button>
     </>
   );
