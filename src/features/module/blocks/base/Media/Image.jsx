@@ -1,13 +1,17 @@
-function resolveImageSrc(src) {
-  const value = String(src ?? "").trim();
+import activityImage001 from "/activity/image001.png";
+import { cn } from "@/shared/libs/utils";
+import { getMediaAspectRatio } from "./mediaVariant";
+import ZoomableFrame from "../../compounds/iteractive/cardIteraction/ZoomableCard";
 
-  if (!value) return "/activity/image001.png";
+const IMAGE_FRAME_BASE_CLASS = "items-center justify-center overflow-hidden";
 
-  if (/^(https?:|data:|blob:)/.test(value)) return value;
+const IMAGE_SLOT_FRAME_CLASS = `inline-flex max-w-full ${IMAGE_FRAME_BASE_CLASS}`;
+const IMAGE_RATIO_FRAME_CLASS = `flex w-full max-w-full ${IMAGE_FRAME_BASE_CLASS}`;
+const IMAGE_INTRINSIC_FRAME_CLASS = `inline-flex max-w-full ${IMAGE_FRAME_BASE_CLASS}`;
 
-  if (value.startsWith("/")) return value;
+const IMAGE_SLOT_CLASS =
+  "block h-auto w-auto max-h-full max-w-full object-contain";
 
-  return `/activity/${value.replace(/^activity\//, "")}`;
 const IMAGE_RATIO_CLASS = "block h-full w-auto max-w-full object-contain";
 
 const IMAGE_INTRINSIC_CLASS =
@@ -53,60 +57,111 @@ function resolveActivityImageSrc(src) {
   return normalizedSrc ? `/activity/${normalizedSrc}` : activityImage001;
 }
 
+function resolveAspectRatio(value) {
+  if (!value) return null;
+
+  const mediaAspectRatio = getMediaAspectRatio(value);
+  if (mediaAspectRatio) return mediaAspectRatio;
+
+  const raw = String(value).trim().toLowerCase();
+
+  if (/^\d+\s*\/\s*\d+$/.test(raw)) {
+    const [w, h] = raw.split("/").map((part) => part.trim());
+    return `${w} / ${h}`;
+  }
+
+  return null;
+}
+
+/**
+ * Image:
+ * - auto: si recibe variant/ratio, crea una caja proporcional; si no, usa tamaño natural.
+ * - slot: el padre ya define el espacio.
+ * - ratio: Image define su propia caja proporcional.
+ * - intrinsic: comportamiento natural.
+ */
 export default function Image({
   src,
   alt = "Imagen",
-  mode = "contain",
-  size = "slot",
+  className = "",
+  imgClassName = "",
+  imgStyle,
+  placeholderLabel = "Imagen",
+  variant = null,
+  ratio = null,
+  mode = "auto",
+  fitToContent = false,
+  zoomable = false,
+  zoomLabel,
+  style,
 }) {
-  const resolvedSrc = resolveImageSrc(src);
+  const resolvedSrc = resolveActivityImageSrc(src);
+  const resolvedAlt = alt || placeholderLabel || "Imagen";
 
-  const isCard = size === "card";
-  const isModal = size === "modal";
+  const aspectHint = variant ?? ratio;
+  const hasAspectHint = Boolean(aspectHint);
 
-  return (
-    <figure className="flex h-full min-h-0 w-full min-w-0 items-center justify-center overflow-hidden">
-      <div
-        className={
-          isModal
-            ? "flex h-[min(86vh,42rem)] w-[min(88vw,56rem)] items-center justify-center overflow-hidden rounded-2xl"
-            : isCard
-              ? "flex h-full min-h-0 w-full min-w-0 items-center justify-center overflow-hidden rounded-2xl"
-              : "flex h-full min-h-0 w-full min-w-0 max-h-full max-w-full items-center justify-center overflow-hidden rounded-2xl"
-        }
-      >
-    <div className={cn(frameClassName, className)} style={resolvedStyle}>
-      <ZoomableFrame
-        enabled={zoomable}
-        label={zoomLabel ?? `Ampliar ${resolvedAlt}`}
-        triggerClassName={triggerClassName}
-        modalClassName="rounded-2xl"
-        modalChildren={
-          <img
-            src={resolvedSrc}
-            alt={resolvedAlt}
-            className={cn(
-              "block max-h-[86vh] max-w-[88vw] rounded-2xl object-contain shadow-2xl",
-              IMAGE_SURFACE_CLASS,
-            )}
-          />
-        }>
+  const resolvedMode = fitToContent
+    ? "intrinsic"
+    : mode === "auto"
+      ? hasAspectHint
+        ? "ratio"
+        : "intrinsic"
+      : mode;
+
+  const shouldApplyAspectRatio = resolvedMode === "ratio";
+  const aspectRatio = shouldApplyAspectRatio
+    ? resolveAspectRatio(aspectHint)
+    : null;
+
+  const resolvedStyle =
+    aspectRatio || style
+      ? { ...(aspectRatio ? { aspectRatio } : {}), ...(style ?? {}) }
+      : undefined;
+
+  const frameClassName =
+    resolvedMode === "slot"
+      ? IMAGE_SLOT_FRAME_CLASS
+      : resolvedMode === "ratio"
+        ? IMAGE_RATIO_FRAME_CLASS
+        : IMAGE_INTRINSIC_FRAME_CLASS;
+
+  const imageClassName =
+    resolvedMode === "slot"
+      ? IMAGE_SLOT_CLASS
+      : resolvedMode === "ratio"
+        ? IMAGE_RATIO_CLASS
+        : IMAGE_INTRINSIC_CLASS;
+
+  // Sin zoom: renderiza la imagen directamente
+  if (!zoomable) {
+    return (
+      <div className={cn(frameClassName, className)} style={resolvedStyle}>
         <img
           src={resolvedSrc}
-          alt={alt}
+          alt={resolvedAlt}
           loading="lazy"
           decoding="async"
-          className={
-            isCard
-              ? mode === "cover"
-                ? "block h-full w-full min-h-0 min-w-0 rounded-2xl object-cover"
-                : "block h-full w-full min-h-0 min-w-0 rounded-2xl object-contain"
-              : mode === "cover"
-                ? "block max-h-full max-w-full rounded-2xl object-cover"
-                : "block max-h-full max-w-full rounded-2xl object-contain"
-          }
+          className={cn(imageClassName, IMAGE_SURFACE_CLASS, imgClassName)}
+          style={imgStyle}
         />
       </div>
-    </figure>
+    );
+  }
+
+  // Con zoom: delega en ZoomableFrame usando su API (media/interaction)
+  return (
+    <div className={cn(frameClassName, className)} style={resolvedStyle}>
+      <ZoomableFrame
+        media={{
+          src: resolvedSrc,
+          alt: resolvedAlt,
+          mode,
+        }}
+        interaction={{
+          label: zoomLabel ?? `Ampliar ${resolvedAlt}`,
+        }}
+      />
+    </div>
   );
 }
