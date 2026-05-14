@@ -1,11 +1,10 @@
+import { useRef, useState, useEffect, useCallback } from "react";
 import { templates } from "@/features/module/templates";
 
 const HERO_VIEWPORT_CLASS =
-  "h-full min-h-0 w-full overflow-x-hidden overflow-y-auto px-10 py-1";
+  "h-full min-h-0 w-full overflow-x-hidden overflow-y-auto px-10 py-1 ";
 const HERO_CANVAS_CLASS = "min-h-full w-full will-change-transform md:h-full";
-const HERO_MESSAGE_CLASS =
-  "flex h-full w-full items-center justify-center px-6 text-center text-white/80";
-const HERO_MESSAGE_LABEL_CLASS = "ml-2 font-semibold";
+
 const DEFAULT_HERO_LAYOUT = {
   height: 0,
   scale: 1,
@@ -42,13 +41,34 @@ function isSameHeroLayout(prev, next) {
   );
 }
 
-/**
- * Hero:
- * - Renderiza la vista actual dentro del canvas principal de la mision.
- * - Expone la altura real disponible mediante `--hero-height`.
- * - Integra aqui mismo el escalado responsive para evitar wrappers extra.
- */
 export default function Hero({ moduleData, missionKey, viewIndex, heroApi }) {
+  const outerRef = useRef(null);
+  const innerRef = useRef(null);
+  const [layout, setLayout] = useState(DEFAULT_HERO_LAYOUT);
+
+  const updateLayout = useCallback(() => {
+    const outer = outerRef.current;
+    const inner = innerRef.current;
+    if (!outer) return;
+
+    const next = getNextHeroLayout({
+      availableWidth: outer.clientWidth,
+      availableHeight: outer.clientHeight,
+      contentWidth: inner?.scrollWidth ?? 0,
+      contentHeight: inner?.scrollHeight ?? 0,
+    });
+
+    setLayout((prev) => (isSameHeroLayout(prev, next) ? prev : next));
+  }, []);
+
+  useEffect(() => {
+    updateLayout();
+    const observer = new ResizeObserver(updateLayout);
+    if (outerRef.current) observer.observe(outerRef.current);
+    if (innerRef.current) observer.observe(innerRef.current);
+    return () => observer.disconnect();
+  }, [updateLayout]);
+
   const views = moduleData.missions?.[missionKey]?.views ?? [];
   const view = views[viewIndex];
   const Template = view ? templates[view.template] : null;
@@ -85,11 +105,8 @@ export default function Hero({ moduleData, missionKey, viewIndex, heroApi }) {
       ref={outerRef}
       className={HERO_VIEWPORT_CLASS + "pt-0"}
       style={{
-        // La variable debe ser una longitud CSS valida porque varios bloques
-        // calculan su alto con `calc(var(--hero-height) * ...)`.
         "--hero-height": layout.height ? `${layout.height}px` : "50px",
       }}>
-      {/* ELIMAR EN UN FUTURO ESTE DIV, LOS COMPONENTES DEBEN DE SER RESPONSIVOS POR SI SOLOS Y ACOMODARSE */}
       <div
         ref={innerRef}
         className={HERO_CANVAS_CLASS}
@@ -107,7 +124,6 @@ export default function Hero({ moduleData, missionKey, viewIndex, heroApi }) {
           view={view}
         />
       </div>
-      {/* ELIMAR EN UN FUTURO ESTE DIV, LOS COMPONENTES DEBEN DE SER RESPONSIVOS POR SI SOLOS Y ACOMODARSE */}
     </main>
   );
 }

@@ -54,8 +54,7 @@ export default function ImageZoom({
               aria-modal="true"
               aria-labelledby={dialogTitleId}
               className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 p-4 backdrop-blur-[2px]"
-              onClick={closeZoom}
-            >
+              onClick={closeZoom}>
               <h2 id={dialogTitleId} className="sr-only">
                 {label}
               </h2>
@@ -64,15 +63,13 @@ export default function ImageZoom({
                 type="button"
                 onClick={closeZoom}
                 aria-label="Cerrar imagen ampliada"
-                className="absolute right-2 top-2 z-20 inline-flex size-10 items-center justify-center rounded-full border border-white/20 bg-black/55 text-white transition hover:bg-black/75 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
-              >
+                className="absolute right-2 top-2 z-20 inline-flex size-10 items-center justify-center rounded-full border border-white/20 bg-black/55 text-white transition hover:bg-black/75 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60">
                 ×
               </button>
 
               <div
                 className="relative flex max-h-[90vh] max-w-[92vw] items-center justify-center overflow-visible"
-                onClick={(event) => event.stopPropagation()}
-              >
+                onClick={(event) => event.stopPropagation()}>
                 {modalChildren}
               </div>
             </div>,
