@@ -23,13 +23,13 @@
         },
         "body": {
           "paragraphs": [  
-            "Reto: administra tu dinero", "ㅤㅤ","",
+            "ㅤㅤㅤㅤㅤㅤㅤReto: administra tu dinero", "ㅤㅤ","",
             "╰› Usaras una cantidad limitada de dinero durante un dia escolar.", "ㅤㅤ",
             "╰› Tendras S/ 5.00 para usarlo en transporte, comida y otras situaciones.","ㅤㅤ",
-            "╰› Lee bien y decide de la mejor manera.","ㅤㅤ","ㅤㅤ","ㅤㅤ","ㅤㅤ"
+            "╰› Lee bien y decide de la mejor manera."
           ],
           "variant": "body1",
-          "align": "left"
+          "align": "justify"
         }
       },
       "elements": {

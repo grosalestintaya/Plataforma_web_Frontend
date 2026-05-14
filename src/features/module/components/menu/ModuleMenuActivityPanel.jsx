@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 /**
  * =========================================================
@@ -66,6 +66,34 @@ const STATUS_BADGE_COLORS = {
   in_progress: { color: "#ba7517", bg: "rgba(186,117,23,0.12)" },
 };
 
+/** Hook que devuelve true cuando el ancho de ventana es menor al breakpoint dado */
+function useIsMobile(breakpoint = 481) {
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== "undefined" && window.innerWidth < breakpoint,
+  );
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia(`(max-width: ${breakpoint - 1}px)`);
+    const handler = (e) => setIsMobile(e.matches);
+    if (mq.addEventListener) {
+      mq.addEventListener("change", handler);
+    } else {
+      mq.addListener(handler);
+    }
+    setIsMobile(mq.matches);
+    return () => {
+      if (mq.removeEventListener) {
+        mq.removeEventListener("change", handler);
+      } else {
+        mq.removeListener(handler);
+      }
+    };
+  }, [breakpoint]);
+
+  return isMobile;
+}
+
 /**
  * =========================================================
  * Sub-components
@@ -111,7 +139,7 @@ function GoldDivider({ gem = "star" }) {
         display: "flex",
         alignItems: "center",
         gap: 8,
-        margin: "1rem 0",
+        margin: "0.6rem 0",
         color: "#8b6914",
       }}>
       <div
@@ -156,7 +184,7 @@ function GoldDivider({ gem = "star" }) {
   );
 }
 
-function StatItem({ label, value }) {
+function StatItem({ label, value, isMobile }) {
   return (
     <div
       style={{
@@ -165,7 +193,7 @@ function StatItem({ label, value }) {
           "linear-gradient(135deg, rgba(120,80,10,0.14), rgba(180,130,40,0.07))",
         border: "1.5px solid #a07820",
         borderRadius: 3,
-        padding: "8px 10px",
+        padding: isMobile ? "5px 6px" : "8px 10px",
         textAlign: "center",
       }}>
       <div
@@ -180,7 +208,7 @@ function StatItem({ label, value }) {
       <span
         style={{
           display: "block",
-          fontSize: 9,
+          fontSize: isMobile ? 7 : 9,
           letterSpacing: "0.15em",
           textTransform: "uppercase",
           color: "#7a5c14",
@@ -191,7 +219,7 @@ function StatItem({ label, value }) {
       <span
         style={{
           display: "block",
-          fontSize: 15,
+          fontSize: isMobile ? 12 : 15,
           fontWeight: 600,
           color: "#1e0e00",
         }}>
@@ -239,13 +267,14 @@ function StatusBadge({ status }) {
  * =========================================================
  */
 
-function EmptyState() {
+function EmptyState({ isMobile }) {
   return (
     <div
       style={{
         position: "relative",
-        maxWidth: 60,
-        minHeight: 620,
+        minWidth: isMobile ? "unset" : 600,
+        width: isMobile ? "100%" : undefined,
+        minHeight: isMobile ? 320 : 620,
         borderRadius: 6,
         border: "3px solid #8b6914",
         background:
@@ -255,7 +284,8 @@ function EmptyState() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        padding: "2rem",
+        padding: isMobile ? "1rem" : "2rem",
+        boxSizing: "border-box",
       }}>
       <CornerOrnament style={{ top: -4, left: -4 }} />
       <CornerOrnament style={{ top: -4, right: -4, transform: "scaleX(-1)" }} />
@@ -268,7 +298,7 @@ function EmptyState() {
       <p
         style={{
           fontStyle: "italic",
-          fontSize: 15,
+          fontSize: isMobile ? 13 : 15,
           color: "#6b4c0e",
           textAlign: "center",
         }}>
@@ -292,8 +322,9 @@ export default function ModuleMenuActivityPanel({
   ctaLabel = "Iniciar misión",
   onPlay,
 }) {
-  if (!activity) return <EmptyState />;
+  const isMobile = useIsMobile(481);
 
+  // useMemo SIEMPRE antes de cualquier return condicional (Rules of Hooks)
   const displayData = useMemo(
     () => ({
       title:
@@ -304,13 +335,35 @@ export default function ModuleMenuActivityPanel({
     [activity, activityContent],
   );
 
-  /* ---- Styles ---- */
+  if (!activity) return <EmptyState isMobile={isMobile} />;
+
+  /* ── Tokens responsivos ─────────────────────────────────────────── */
+  const padding = isMobile ? "0.75rem 1rem 0.75rem" : "1.25rem 2rem 1.25rem";
+  const minWidth = isMobile ? "unset" : 220;
+  const width = "100%";
+  const minHeight = isMobile ? "unset" : 460;
+  const maxHeight = isMobile ? 550 : 500;
+  const titleFontSize = isMobile
+    ? "clamp(15px,4vw,20px)"
+    : "clamp(18px, 4vw, 28px)";
+  const typeFontSize = isMobile ? 8 : 10;
+  const sectionPad = isMobile ? "0.6rem 0.75rem" : "1rem 1.25rem";
+  const learnFontSize = isMobile ? 13 : 15;
+  const helperFontSize = isMobile ? 12 : 13.5;
+  const ctaFontSize = isMobile ? 13 : 16;
+  const ctaPadding = isMobile ? "8px 16px" : "10px 28px";
+  const statGap = isMobile ? 6 : 10;
+  /* ─────────────────────────────────────────────────────────────── */
 
   const parchmentStyle = {
     position: "relative",
     maxWidth: 960,
-    maxHeight: 490,
-
+    minWidth,
+    width,
+    minHeight,
+    maxHeight,
+    // En móvil crece hacia abajo libremente; en desktop tiene tope
+    overflowY: isMobile ? "visible" : "invisible",
     borderRadius: 6,
     border: "3px solid #8b6914",
     background:
@@ -324,9 +377,10 @@ export default function ModuleMenuActivityPanel({
       "inset 0 2px 8px rgba(100,60,0,0.18)," +
       "inset 0 -2px 8px rgba(100,60,0,0.12)," +
       "8px 12px 36px rgba(0,0,0,0.45)",
-    padding: "1.25rem 2rem 1.25rem",
+    padding,
     display: "flex",
     flexDirection: "column",
+    boxSizing: "border-box",
   };
 
   const sectionBoxStyle = {
@@ -335,15 +389,15 @@ export default function ModuleMenuActivityPanel({
       "linear-gradient(135deg, rgba(100,60,0,0.07), rgba(180,130,40,0.05))",
     border: "1.5px solid #a07820",
     borderRadius: 3,
-    padding: "1rem 1.25rem",
+    padding: sectionPad,
     flex: 1,
   };
 
   const ctaActiveStyle = {
-    fontSize: 16,
+    fontSize: ctaFontSize,
     fontWeight: 600,
     letterSpacing: "0.1em",
-    padding: "10px 28px",
+    padding: ctaPadding,
     borderRadius: 3,
     cursor: "pointer",
     background:
@@ -361,10 +415,10 @@ export default function ModuleMenuActivityPanel({
   };
 
   const ctaLockedStyle = {
-    fontSize: 16,
+    fontSize: ctaFontSize,
     fontWeight: 600,
     letterSpacing: "0.1em",
-    padding: "10px 28px",
+    padding: ctaPadding,
     borderRadius: 3,
     cursor: "not-allowed",
     background: "linear-gradient(160deg, #c8b88a, #a89060)",
@@ -374,9 +428,10 @@ export default function ModuleMenuActivityPanel({
   };
 
   return (
-    /* Google Fonts import via link — place in your index.html for production */
     <>
-      <section style={parchmentStyle}>
+      <section
+        style={parchmentStyle}
+        className="overflow-x-hidden overflow-y-hidden h-full w-full">
         {/* Corner ornaments */}
         <CornerOrnament style={{ top: -4, left: -4 }} />
         <CornerOrnament
@@ -390,10 +445,10 @@ export default function ModuleMenuActivityPanel({
         />
 
         {/* ── Header ── */}
-        <header>
+        <header style={{ marginBottom: isMobile ? 8 : 0 }}>
           <p
             style={{
-              fontSize: 10,
+              fontSize: typeFontSize,
               letterSpacing: "0.25em",
               textTransform: "uppercase",
               color: "#6b4c0e",
@@ -404,7 +459,7 @@ export default function ModuleMenuActivityPanel({
 
           <h2
             style={{
-              fontSize: "clamp(18px, 4vw, 28px)",
+              fontSize: titleFontSize,
               fontWeight: 700,
               color: "#1e0e00",
               lineHeight: 1.2,
@@ -420,12 +475,24 @@ export default function ModuleMenuActivityPanel({
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(3, 1fr)",
-            gap: 10,
+            gap: statGap,
             marginBottom: 4,
           }}>
-          <StatItem label="Estado" value={formatStatus(activity.status)} />
-          <StatItem label="Intentos" value={activity.attemptsCount ?? 0} />
-          <StatItem label="Mejor Score" value={activity.bestScore ?? "—"} />
+          <StatItem
+            label="Estado"
+            value={formatStatus(activity.status)}
+            isMobile={isMobile}
+          />
+          <StatItem
+            label="Intentos"
+            value={activity.attemptsCount ?? 0}
+            isMobile={isMobile}
+          />
+          <StatItem
+            label="Mejor Score"
+            value={activity.bestScore ?? "—"}
+            isMobile={isMobile}
+          />
         </section>
 
         <GoldDivider gem="square" />
@@ -445,11 +512,11 @@ export default function ModuleMenuActivityPanel({
 
           <p
             style={{
-              fontSize: 11,
+              fontSize: isMobile ? 9 : 11,
               letterSpacing: "0.18em",
               textTransform: "uppercase",
               color: "#7a5c14",
-              margin: "0 0 10px",
+              margin: `0 0 ${isMobile ? 6 : 10}px`,
               display: "flex",
               alignItems: "center",
               gap: 6,
@@ -471,7 +538,7 @@ export default function ModuleMenuActivityPanel({
                 margin: 0,
                 display: "flex",
                 flexDirection: "column",
-                gap: 7,
+                gap: isMobile ? 5 : 7,
               }}>
               {displayData.learn.map((item, i) => (
                 <li
@@ -480,7 +547,7 @@ export default function ModuleMenuActivityPanel({
                     display: "flex",
                     gap: 8,
                     alignItems: "flex-start",
-                    fontSize: 15,
+                    fontSize: learnFontSize,
                     color: "#2a1a06",
                     lineHeight: 1.5,
                   }}>
@@ -501,7 +568,7 @@ export default function ModuleMenuActivityPanel({
             <p
               style={{
                 fontStyle: "italic",
-                fontSize: 14,
+                fontSize: isMobile ? 12 : 14,
                 color: "#7a5c14",
                 margin: 0,
               }}>
@@ -512,14 +579,14 @@ export default function ModuleMenuActivityPanel({
           {displayData.outcome && (
             <div
               style={{
-                marginTop: 14,
-                paddingTop: 12,
+                marginTop: isMobile ? 10 : 14,
+                paddingTop: isMobile ? 8 : 12,
                 borderTop: "1px solid rgba(160,120,32,0.35)",
               }}>
               <span
                 style={{
                   display: "block",
-                  fontSize: 9,
+                  fontSize: isMobile ? 7 : 9,
                   letterSpacing: "0.15em",
                   textTransform: "uppercase",
                   color: "#7a5c14",
@@ -530,7 +597,7 @@ export default function ModuleMenuActivityPanel({
               <p
                 style={{
                   fontStyle: "italic",
-                  fontSize: 14,
+                  fontSize: isMobile ? 12 : 14,
                   color: "#2a1a06",
                   margin: 0,
                 }}>
@@ -541,23 +608,25 @@ export default function ModuleMenuActivityPanel({
         </section>
 
         {/* ── Footer ── */}
-        <div style={{ marginTop: "1.25rem" }}>
+        <div style={{ marginTop: isMobile ? "0.75rem" : "1.25rem" }}>
           <footer
             style={{
               display: "flex",
-              alignItems: "center",
+              alignItems: isMobile ? "flex-start" : "center",
               justifyContent: "space-between",
-              gap: 16,
+              gap: isMobile ? 10 : 16,
+              // En móvil apila el texto arriba y el botón debajo
+              flexDirection: isMobile ? "column" : "row",
               flexWrap: "wrap",
             }}>
             <p
               style={{
                 fontStyle: "italic",
-                fontSize: 13.5,
+                fontSize: helperFontSize,
                 color: "#6b4c0e",
                 margin: 0,
                 flex: 1,
-                minWidth: 160,
+                minWidth: isMobile ? "unset" : 160,
               }}>
               {getHelperText(activity)}
             </p>
@@ -568,6 +637,13 @@ export default function ModuleMenuActivityPanel({
               onClick={onPlay}
               title={canPlay ? "Iniciar actividad" : "Actividad bloqueada"}
               style={canPlay ? ctaActiveStyle : ctaLockedStyle}
+              // En móvil el botón ocupa todo el ancho
+              {...(isMobile && {
+                style: {
+                  ...(canPlay ? ctaActiveStyle : ctaLockedStyle),
+                  width: "100%",
+                },
+              })}
               onMouseEnter={(e) => {
                 if (canPlay) {
                   e.currentTarget.style.transform = "translateY(-1px)";

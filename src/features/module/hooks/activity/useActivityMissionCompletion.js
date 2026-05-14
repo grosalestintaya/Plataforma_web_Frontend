@@ -24,26 +24,31 @@ function pickRewardNumber(...values) {
 function extractMissionCompletionSummary(result) {
   const source = result ?? {};
   const awarded = source?.awarded ?? {};
+  const attempt = source?.attempt ?? {};
 
-  const xp = pickRewardNumber(
-    awarded?.xp,
-    source?.awardedXp,
-    source?.xpAward,
-  );
-
+  const xp = pickRewardNumber(awarded?.xp, source?.awardedXp, source?.xpAward);
   const coins = pickRewardNumber(
     awarded?.coins,
     source?.awardedCoins,
     source?.coinsAward,
   );
 
-  // Si el backend responde `alreadyCompleted`, ya no existe delta de recompensa.
-  if (xp === null && coins === null) return null;
-
   return {
+    // Lo que ya existía
     xp: xp ?? 0,
     coins: coins ?? 0,
     raw: source,
+
+    // 👇 NUEVO — datos del intento actual
+    score: attempt?.score ?? null,
+    passed: attempt?.passed ?? null,
+    message: attempt?.message ?? null,
+    xpEarned: attempt?.xpEarned ?? null, // XP que hubiera ganado
+    xpAwarded: attempt?.xpAwarded ?? null, // XP que realmente se grabó
+    coinsAwarded: attempt?.coinsAwarded ?? null,
+    isImprovement: attempt?.isImprovement ?? null,
+    prevBestScore: attempt?.prevBestScore ?? null,
+    minScore: attempt?.minScore ?? null,
   };
 }
 

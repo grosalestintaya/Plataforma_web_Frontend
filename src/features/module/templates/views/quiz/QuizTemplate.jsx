@@ -1,3 +1,6 @@
+import { useEffect, useMemo, useState } from "react";
+import { useWindowSize } from "react-use";
+
 import HeroGrid from "../../_core/HeroGrid";
 import HeroArea from "../../_core/HeroArea";
 import { renderSlot } from "../../_core/SlotRenderer";
@@ -16,7 +19,114 @@ export default function QuizTemplate({ variant, data, heroApi, view }) {
   const slots = runtime?.slots ?? [];
   const payload = runtime?.payload ?? {};
 
-  if (!layout || !slots.length) {
+  const reason = draft.formKey === formKey ? draft.reason : "";
+
+  const reasonText = reason.trim();
+
+  const reasonRequired = Boolean(
+    formQuestion?.reasonRequired ??
+    formQuestion?.inputRequired ??
+    formQuestion?.requireReason ??
+    false,
+  );
+
+  const hasPromptInput = Boolean(
+    formQuestion?.prompt || formQuestion?.placeholder,
+  );
+
+  const minReasonLength = Number(formQuestion?.minReasonLength ?? 8);
+
+  const selectedOption =
+    (formQuestion?.options ?? []).find((item) => item?.id === selectedId) ??
+    null;
+
+  const selectedOptionLabel =
+    typeof selectedOption?.label === "string" ||
+    typeof selectedOption?.label === "number"
+      ? String(selectedOption?.label)
+      : (selectedOption?.label?.text ?? null);
+
+  const hasRequiredReason =
+    !hasPromptInput || !reasonRequired || reasonText.length >= minReasonLength;
+
+  const isComplete = Boolean(selectedId) && hasRequiredReason;
+
+  const requiresCompletion = view?.nav?.mode === "lockedUntilComplete";
+
+  const canAdvance =
+    Boolean(heroApi?.canAdvance ?? true) && (!requiresCompletion || isComplete);
+
+  const canGoBack = Boolean(heroApi?.canGoBack ?? true);
+
+  const missionViews = heroApi?.getMissionViews?.() ?? [];
+
+  const quizViews = missionViews.filter((item) =>
+    /quiz/i.test(String(item?.template ?? "")),
+  );
+
+  const currentQuizIndex = quizViews.findIndex(
+    (item) => (item?.id ?? item?.viewId) === viewId,
+  );
+
+  const progress = {
+    current: currentQuizIndex >= 0 ? currentQuizIndex + 1 : 1,
+
+    total: Math.max(quizViews.length, 1),
+  };
+
+  const isLastQuiz = progress.current === progress.total;
+
+  /**
+   * =========================================================
+   * Trigger confetti
+   * =========================================================
+   */
+
+  useEffect(() => {
+    if (isComplete && isLastQuiz) {
+      setShowConfetti(false); // reset to retrigger
+
+      const timer = setTimeout(() => {
+        setShowConfetti(false);
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [isComplete, isLastQuiz]);
+
+  /**
+   * =========================================================
+   * Interactive state
+   * =========================================================
+   */
+
+  useEffect(() => {
+    if (!formQuestion) return;
+
+    heroApi?.setInteractiveState?.(viewId, {
+      completed: isComplete,
+      selectedOptionId: selectedId ?? null,
+      selectedOptionLabel,
+      reasonText,
+      reasonLength: reasonText.length,
+      reasonRequired,
+      score: isComplete ? Number(selectedOption?.score ?? 100) : 0,
+      countsTowardScore: isComplete,
+      type: "reflectionQuestion",
+    });
+  }, [
+    formQuestion,
+    heroApi,
+    isComplete,
+    reasonRequired,
+    reasonText,
+    selectedId,
+    selectedOption?.score,
+    selectedOptionLabel,
+    viewId,
+  ]);
+
+  if (!outerLayout || !contentLayout || !slots.length) {
     return (
       <div className="grid h-full min-h-0 w-full place-items-center text-white/80">
         Config inválida para QuizTemplate

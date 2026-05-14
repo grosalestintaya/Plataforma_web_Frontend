@@ -193,7 +193,7 @@ export default function ModulesRope({
                 showEndKnots
                 showPendants
                 stampStep={10.9}
-                title="  ✎ Ruta de aprendizaje﹏﹏"></MainRope>
+                title=" Nudos que almacenaban conocimiento"></MainRope>
             </svg>
           </div>
         </div>

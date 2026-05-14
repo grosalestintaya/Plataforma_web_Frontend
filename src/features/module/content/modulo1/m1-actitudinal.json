@@ -26,8 +26,7 @@
             "En esta mision responderas preguntas sobre decisiones cotidianas relacionadas con el dinero.",
             "╰› La idea es reconocer cuando una eleccion cuida mejor tu bienestar, tu meta o tu saldo.",
             "╰› Lee cada situacion, elige una opcion y explica por que.",
-            "╰› no existen respuestas correctas o incorrectas ,ve sin preocupaciones.","ㅤㅤ","ㅤㅤ","ㅤㅤ"
-          ],
+            "╰› no existen respuestas correctas o incorrectas ,ve sin preocupaciones."          ],
           "variant": "body1",
           "align": "justify"
         },
@@ -420,7 +419,7 @@
       "variant": "postGame",
       "slots": {
         "title": {
-          "text": "Mision Cumplida",
+          "text": "Un nuevo logro se suma a tu camino",
           "variant": "h1",
           "align": "center"
         },
