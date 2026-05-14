@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const SETTINGS_BUTTON_CLASS =
   "group relative grid cursor-pointer place-items-center focus-visible:outline-none active:scale-[0.97]";
@@ -23,13 +23,49 @@ function withAlpha(hex, alpha) {
   return `rgba(${r}, ${g}, ${b}, ${Math.max(0, Math.min(1, alpha))})`;
 }
 
+/** Hook que devuelve true cuando el ancho de ventana es menor al breakpoint dado */
+function useIsMobile(breakpoint = 481) {
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== "undefined" && window.innerWidth < breakpoint,
+  );
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia(`(max-width: ${breakpoint - 1}px)`);
+    const handler = (e) => setIsMobile(e.matches);
+    if (mq.addEventListener) {
+      mq.addEventListener("change", handler);
+    } else {
+      mq.addListener(handler);
+    }
+    setIsMobile(mq.matches);
+    return () => {
+      if (mq.removeEventListener) {
+        mq.removeEventListener("change", handler);
+      } else {
+        mq.removeListener(handler);
+      }
+    };
+  }, [breakpoint]);
+
+  return isMobile;
+}
+
 export default function HeaderSettingsButton({
   onClick,
   iconSrc,
   title = "Configuración",
   className = "",
 }) {
-  // ── Capas de ring exterior (igual que XpPanel)
+  const isMobile = useIsMobile(481);
+
+  // ─── Tokens responsivos ───────────────────────────────────────────────────
+  const size = isMobile ? 42 : 56;
+  const borderRadius = isMobile ? 11 : 14;
+  const innerRadius = isMobile ? 8 : 10;
+  const iconSize = isMobile ? 22 : 30;
+  // ─────────────────────────────────────────────────────────────────────────
+
   const ringShadow = [
     `0 0 0 1px #c9a227`,
     `0 0 0 4px #7a5510`,
@@ -46,43 +82,37 @@ export default function HeaderSettingsButton({
     `0 8px 28px ${withAlpha("#000", 0.5)}`,
   ].join(", ");
 
-  const buttonStyle = useMemo(
-    () => ({
-      width: 56,
-      height: 56,
-      borderRadius: 14,
-      border: "0.5 px solid #a07820",
-      background: "greenearl",
-      boxShadow: ringShadow,
-      padding: 0,
-      transition: "transform 220ms ease, box-shadow 220ms ease",
-      overflow: "hidden",
-    }),
-    [],
-  );
+  const buttonStyle = {
+    width: size,
+    height: size,
+    borderRadius,
+    // ✅ border corregido (era "0.5 px" con espacio y "greenearl" de background)
+    border: "1.5px solid #a07820",
+    background: "linear-gradient(160deg, #f5e9c8, #e2c96a 60%, #c9a227)",
+    boxShadow: ringShadow,
+    padding: 0,
+    transition: "transform 220ms ease, box-shadow 220ms ease",
+    overflow: "hidden",
+  };
 
-  // ── Glare superior (igual que XpPanel)
   const glareStyle = {
     position: "absolute",
     top: 0,
     left: 0,
     right: 0,
     height: "40%",
-    borderRadius: "14px 14px 0 0",
+    background: "linear-gradient(180deg, rgba(255,248,180,0.28), transparent)",
+    borderRadius: `${borderRadius}px ${borderRadius}px 0 0`,
     pointerEvents: "none",
   };
 
-  // ── Inner frame
   const innerFrameStyle = {
     position: "absolute",
     inset: 3,
     border: "0.5px solid rgba(200,160,40,0.35)",
-    borderRadius: 10,
+    borderRadius: innerRadius,
     pointerEvents: "none",
   };
-
-  // ── Badge circular (igual al del icono en XpPanel)
-  const badgeStyle = {};
 
   return (
     <>
@@ -90,7 +120,7 @@ export default function HeaderSettingsButton({
         onClick={onClick}
         type="button"
         title={title}
-        label={title}
+        aria-label={title}
         className={`${SETTINGS_BUTTON_CLASS} ${className}`}
         style={buttonStyle}
         onMouseEnter={(e) => {
@@ -107,20 +137,24 @@ export default function HeaderSettingsButton({
         {/* Glare */}
         <span style={glareStyle} />
 
-        {/* Badge + icono */}
+        {/* Icono */}
         <span
-          style={badgeStyle}
-          className="group-hover:[transform:scale(1.08)_rotate(-4deg)] group-active:[transform:scale(0.96)]">
+          className="group-hover:[transform:scale(1.08)_rotate(-4deg)] group-active:[transform:scale(0.96)]"
+          style={{
+            transition: "transform 220ms ease",
+            position: "relative",
+            zIndex: 10,
+          }}>
           <img
             src={iconSrc}
             alt=""
             draggable={false}
             style={{
-              width: 30,
-              height: 30,
+              width: iconSize,
+              height: iconSize,
               objectFit: "contain",
-              filter: "drop-shadow(0 1px 0 rgba(255,240,100,0.5))",
-              color: "#3b2200",
+              filter:
+                "drop-shadow(0 1px 0 rgba(255,240,100,0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.25))",
             }}
           />
         </span>

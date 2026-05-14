@@ -25,12 +25,46 @@ function withAlpha(hex, alpha) {
   return `rgba(${r}, ${g}, ${b}, ${Math.max(0, Math.min(1, alpha))})`;
 }
 
+/** Hook que devuelve true cuando el ancho de ventana es menor al breakpoint dado */
+function useIsMobile(breakpoint = 481) {
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== "undefined" && window.innerWidth < breakpoint,
+  );
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const mq = window.matchMedia(`(max-width: ${breakpoint - 1}px)`);
+    const handler = (e) => setIsMobile(e.matches);
+
+    // API moderna
+    if (mq.addEventListener) {
+      mq.addEventListener("change", handler);
+    } else {
+      mq.addListener(handler); // fallback Safari antiguo
+    }
+
+    setIsMobile(mq.matches);
+
+    return () => {
+      if (mq.removeEventListener) {
+        mq.removeEventListener("change", handler);
+      } else {
+        mq.removeListener(handler);
+      }
+    };
+  }, [breakpoint]);
+
+  return isMobile;
+}
+
 export default function CoinsPanel({
   monedas = 0,
   themeHex = "#00C853",
   className = "",
 }) {
   const targetValue = Number(monedas || 0);
+  const isMobile = useIsMobile(481);
 
   const [displayValue, setDisplayValue] = useState(0);
   const [delta, setDelta] = useState(null);
@@ -95,6 +129,21 @@ export default function CoinsPanel({
   const hasDelta = delta !== null && delta !== 0;
   const isPositive = Number(delta) > 0;
 
+  // ─── Tokens responsivos ───────────────────────────────────────────────────
+  const padding = isMobile ? "7px 8px 2px 8px" : "10px 16px 10px 10px";
+  const minWidth = isMobile ? 60 : 140;
+  const gap = isMobile ? 2 : 10;
+  const minHeight = isMobile ? 12 : 44;
+  const coinSize = isMobile ? 36 : 50;
+  const coinWrapW = isMobile ? 32 : 44;
+  const coinWrapH = isMobile ? 14 : 18;
+  const labelFontSize = isMobile ? 7 : 8;
+  const valueFontSize = isMobile ? 20 : 26;
+  const deltaFontSize = isMobile ? 9 : 10;
+  const borderRadius = isMobile ? 11 : 14;
+  const innerRadius = isMobile ? 6 : 10;
+  // ─────────────────────────────────────────────────────────────────────────
+
   return (
     <>
       <link
@@ -107,19 +156,23 @@ export default function CoinsPanel({
         style={{
           position: "relative",
           overflow: "hidden",
-          borderRadius: 14,
+          borderRadius,
           border: "1.5px solid #a07820",
           background: "linear-gradient(160deg, #f5e9c8, #e2c96a 60%, #c9a227)",
           boxShadow: pulse
             ? "0 0 0 1px #c9a227, 0 0 0 4px #7a5510, 0 0 0 6px #e8c840, inset 0 1px 0 rgba(255,240,150,0.4), 0 8px 24px rgba(0,0,0,0.5)"
             : "0 0 0 1px #c9a227, 0 0 0 4px #7a5510, 0 0 0 5px #c9a227, inset 0 1px 0 rgba(255,240,150,0.4), 0 8px 24px rgba(0,0,0,0.4)",
-          padding: "10px 16px 10px 10px",
-          minWidth: 140,
+          padding,
+          minWidth,
+          minHeight,
           display: "flex",
           alignItems: "center",
-          gap: 10,
+          gap,
           transform: pulse ? "scale(1.02)" : "scale(1)",
           transition: "transform 220ms ease, box-shadow 220ms ease",
+          // Evita que el componente se desborde en pantallas muy pequeñas
+          maxWidth: "100%",
+          boxSizing: "border-box",
         }}>
         {/* Inner frame line */}
         <div
@@ -127,7 +180,7 @@ export default function CoinsPanel({
             position: "absolute",
             inset: 3,
             border: "0.5px solid rgba(200,160,40,0.35)",
-            borderRadius: 10,
+            borderRadius: innerRadius,
             pointerEvents: "none",
           }}
         />
@@ -142,7 +195,7 @@ export default function CoinsPanel({
             height: "40%",
             background:
               "linear-gradient(180deg, rgba(255,248,180,0.28), transparent)",
-            borderRadius: "14px 14px 0 0",
+            borderRadius: `${borderRadius}px ${borderRadius}px 0 0`,
             pointerEvents: "none",
           }}
         />
@@ -155,7 +208,7 @@ export default function CoinsPanel({
               top: 6,
               right: 8,
               fontFamily: "'Cinzel', Georgia, serif",
-              fontSize: 10,
+              fontSize: deltaFontSize,
               fontWeight: 600,
               color: isPositive ? "#3b6d11" : "#993c1d",
               textShadow: "0 1px 2px rgba(0,0,0,0.2)",
@@ -171,8 +224,8 @@ export default function CoinsPanel({
         <div
           style={{
             position: "relative",
-            width: 44,
-            height: 18,
+            width: coinWrapW,
+            height: coinWrapH,
             flexShrink: 0,
             display: "flex",
             alignItems: "center",
@@ -188,8 +241,8 @@ export default function CoinsPanel({
             alt="Monedas"
             draggable={false}
             style={{
-              width: 50,
-              height: 50,
+              width: coinSize,
+              height: coinSize,
               objectFit: "contain",
             }}
           />
@@ -200,7 +253,7 @@ export default function CoinsPanel({
           <div
             style={{
               fontFamily: "'Cinzel', Georgia, serif",
-              fontSize: 8,
+              fontSize: labelFontSize,
               letterSpacing: "0.22em",
               textTransform: "uppercase",
               color: "#7a5c14",
@@ -212,7 +265,7 @@ export default function CoinsPanel({
           <div
             style={{
               fontFamily: "'Cinzel', Georgia, serif",
-              fontSize: 26,
+              fontSize: valueFontSize,
               fontWeight: 700,
               color: "#1e0e00",
               lineHeight: 1,
@@ -220,6 +273,10 @@ export default function CoinsPanel({
               textShadow:
                 "0 2px 0 rgba(200,160,40,0.3), 0 1px 0 rgba(255,240,100,0.5)",
               fontVariantNumeric: "tabular-nums",
+              // Evita overflow del número en pantallas muy estrechas
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
             }}>
             {formatInt(displayValue)}
           </div>

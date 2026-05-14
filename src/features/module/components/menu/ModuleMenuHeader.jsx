@@ -72,7 +72,7 @@ export default function ModuleMenuHeader({
             />
           </div>
 
-          <div className="flex min-w-0 justify-center px-1 sm:px-2">
+          <div className="invisible sm:visible min-w-0 justify-center px-1 sm:px-2">
             <h1
               className="truncate text-center"
               style={{
@@ -85,13 +85,13 @@ export default function ModuleMenuHeader({
                   "0 0 18px rgba(232,200,64,0.35)",
                   "0 4px 14px rgba(0,0,0,0.5)",
                 ].join(", "),
-                fontSize: "clamp(0.85rem, 2.5vw, 1.75rem)",
+                fontSize: "clamp(0.85rem, 2.5vw, 2.75rem)",
               }}>
               {title}
             </h1>
           </div>
 
-          <div className="flex items-center justify-end gap-3 sm:gap-4">
+          <div className="flex items-center justify-end gap-3 sm:gap-4 pr-3">
             <XpPanel monedas={wallet?.xp ?? 0} themeHex={themeHex} />
             <CoinsPanel monedas={wallet?.coins ?? 0} themeHex={themeHex} />
             <HeaderSettingsButton
@@ -101,7 +101,8 @@ export default function ModuleMenuHeader({
             />
           </div>
         </div>
-        <div className="-mt-5 -m-3 overflow-hidden sm:-mx-4 md:-mx-8 lg:-mx-10 -pt-2">
+        <div className="mt-0 sm:-mt-5 -m-3 overflow-hidden sm:-mx-4 md:-mx-8 lg:-mx-10 -pt-2">
+          {" "}
           <HeaderRopeSvg
             themeHex={themeHex}
             className="block h-[40px] w-full select-none sm:h-[54px] md:h-[78px] lg:h-[142px] "
