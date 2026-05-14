@@ -1,5 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
+function isLobbyTemplate(template) {
+  // En Lobby todavia no hay actividad real que proteger con confirmacion.
+  return String(template ?? "").toLowerCase().includes("lobby");
+}
+
 /**
  * Reune las salidas controladas de la actividad:
  * header, boton atras del navegador y recarga/cierre de pestana.
@@ -29,35 +34,36 @@ export function useActivityExitGuards({
       ),
     [activityId, missionAttempt.attemptId, missionAttempt.status],
   );
-  const isLobbyView = String(currentTemplate ?? "")
-    .toLowerCase()
-    .includes("lobby");
+  const isLobbyView = isLobbyTemplate(currentTemplate);
   // La confirmacion solo aplica una vez que dejamos la intro Lobby.
   const shouldConfirmExit = hasActiveAttempt && !isLobbyView;
+
+  const buildExitPayload = useCallback(
+    (reason) => ({
+      moduleCode,
+      missionKey,
+      exitReason: reason,
+      interactiveResponses: getInteractiveResponses(),
+    }),
+    [getInteractiveResponses, missionKey, moduleCode],
+  );
 
   useEffect(() => {
     abandonAndExitRef.current = async (reason) => {
       if (hasActiveAttempt) {
         await missionAttempt.abandonMission({
           score: missionScore,
-          extraPayload: {
-            moduleCode,
-            missionKey,
-            exitReason: reason,
-            interactiveResponses: getInteractiveResponses(),
-          },
+          extraPayload: buildExitPayload(reason),
         });
       }
 
       navigate(moduleMenuPath);
     };
   }, [
-    getInteractiveResponses,
+    buildExitPayload,
     hasActiveAttempt,
     missionAttempt,
-    missionKey,
     missionScore,
-    moduleCode,
     moduleMenuPath,
     navigate,
   ]);
@@ -119,15 +125,11 @@ export function useActivityExitGuards({
     const handleBeforeUnload = (event) => {
       if (!shouldConfirmExit) return;
 
+      // keepalive permite enviar el abandono durante refresh/cierre sin await.
       missionAttempt.abandonMission({
         score: missionScore,
         keepalive: true,
-        extraPayload: {
-          moduleCode,
-          missionKey,
-          exitReason: "beforeunload",
-          interactiveResponses: getInteractiveResponses(),
-        },
+        extraPayload: buildExitPayload("beforeunload"),
       });
 
       event.preventDefault();
@@ -137,11 +139,9 @@ export function useActivityExitGuards({
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [
-    getInteractiveResponses,
+    buildExitPayload,
     missionAttempt,
-    missionKey,
     missionScore,
-    moduleCode,
     shouldConfirmExit,
   ]);
 

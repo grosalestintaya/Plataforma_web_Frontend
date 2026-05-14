@@ -1,242 +1,158 @@
-import { useEffect, useState } from "react";
-import { getMediaVariant } from "../../base/Media/mediaVariant";
 import Card from "../container/Card";
-import FlipCard from "../Iterative/FlipCard";
+import { getCardItemId } from "../iteractive/cardIteraction/cardInteractionRegistry";
 import { cn } from "@/shared/libs/utils";
 
-const COLLAGE_ROOT_CLASS =
-  "flex h-full min-h-0 w-full items-stretch justify-start overflow-hidden";
-
-const COLLAGE_GRID_CLASS =
-  "grid h-full min-h-0 w-full max-w-full place-items-stretch content-start justify-start gap-3 overflow-hidden";
-
-const COLLAGE_ITEM_SLOT_CLASS = "module-card-grid-slot";
-
-const SELECTED_CARD_CLASS =
-  "border-emerald-200/90 bg-emerald-500/15 shadow-[0_0_26px_rgba(52,211,153,0.32)] ring-4 ring-inset ring-emerald-300/80";
-
-function isFlipItem(item) {
+function getItemText(item) {
   return (
-    item?.component === "flipCard" ||
-    item?.type === "flipCard" ||
-    item?.renderAs === "flipCard"
+    item?.text ?? item?.description ?? item?.subtitle ?? item?.label ?? null
   );
 }
 
-function getItemId(item, index) {
-  return item?.id ?? `collage-item-${index + 1}`;
+function getItemZoomable(item) {
+  if (item?.zoomable === false) return false;
+  if (item?.media?.zoomable === false) return false;
+
+  return undefined;
 }
 
-function getGridAxisSize(value) {
-  const numericValue = Number(value);
-  if (!Number.isFinite(numericValue) || numericValue <= 0) return null;
-  return Math.max(1, Math.min(12, Math.round(numericValue)));
+function getGridColumnsClass(columns) {
+  if (columns <= 1) return "grid-cols-1";
+  if (columns == 2) return "grid-cols-2";
+  if (columns == 3) return "grid-cols-2 sm:grid-cols-3";
+  if (columns == 4) return "grid-cols-2 sm:grid-cols-4";
+  if (columns <= 6) return "grid-cols-2 sm:grid-cols-3 xl:grid-cols-6";
+  if (columns <= 8) return "grid-cols-2 sm:grid-cols-4 xl:grid-cols-8";
+
+  return "grid-cols-[repeat(auto-fit,minmax(min(100%,14rem),1fr))]";
 }
 
-function getGridLayout(requestedColumns, requestedRows, itemCount) {
-  if (!Number.isFinite(itemCount) || itemCount <= 0) {
-    return { columns: 1, rows: 1 };
-  }
+function getGridRowsClass(rows) {
+  if (rows === 1) return "grid-rows-1";
+  if (rows === 2) return "grid-rows-2";
+  if (rows === 3) return "grid-rows-3";
+  if (rows === 4) return "grid-rows-4";
+  if (rows === 5) return "grid-rows-5";
+  if (rows === 6) return "grid-rows-6";
 
-  const explicitColumns = getGridAxisSize(requestedColumns);
-  const resolvedColumns =
-    explicitColumns ?? getGridAxisSize(Math.sqrt(itemCount));
-
-  const explicitRows = getGridAxisSize(requestedRows);
-  const resolvedRows =
-    explicitRows ?? getGridAxisSize(Math.ceil(itemCount / resolvedColumns));
-
-  return { columns: resolvedColumns, rows: resolvedRows };
-}
-
-function getItemMedia(item, fallbackAlt = "Tarjeta") {
-  const media = item?.media ?? item?.image ?? {};
-  const src = media?.src ?? item?.src;
-
-  if (!src) return null;
-
-  return {
-    ...media,
-    src,
-    alt: media?.alt ?? item?.alt ?? item?.caption ?? fallbackAlt,
-    variant: getMediaVariant(media) ?? getMediaVariant(item) ?? "horizontal",
-  };
+  return null;
 }
 
 export default function CollageCard({
   items = [],
-  selectable = false,
+  columns,
+  rows,
   selectedIds = [],
   onSelect,
-  columns = 2,
-  rows,
+  onComplete,
   slotCount,
-  rowMode = "fr",
-  heroApi,
-  view,
-  className = "",
-  gridClassName = "",
-  itemSlotClassName = "",
-  emptyState = null,
-  renderItem = null,
-  renderEmptySlot = null,
-  trackProgress = true,
-  style = undefined,
+  renderEmptySlot,
+  className,
+  gridClassName,
+  slotClassName,
+  emptySlotClassName,
 }) {
-  const [revealedIds, setRevealedIds] = useState([]);
-  const hasItems = Array.isArray(items) && items.length > 0;
-  const effectiveSlotCount = Math.max(
-    hasItems ? items.length : 0,
-    Number.isFinite(Number(slotCount)) ? Number(slotCount) : 0,
-  );
-  const gridLayout = getGridLayout(
-    columns,
-    rows,
-    effectiveSlotCount > 0 ? effectiveSlotCount : 0,
-  );
-  const interactiveViewId = view?.id ?? view?.viewId;
-  const slots = Array.from({ length: effectiveSlotCount }, (_, index) =>
-    hasItems ? items[index] ?? null : null,
-  );
-
-  useEffect(() => {
-    if (!trackProgress || !interactiveViewId || !hasItems) {
-      return;
-    }
-
-    heroApi?.setInteractiveState?.(interactiveViewId, {
-      completed: revealedIds.length === items.length,
-      type: "collageCard",
-      revealedIds,
-      revealedCount: revealedIds.length,
-      total: items.length,
-      countsTowardScore: false,
-      score: revealedIds.length === items.length ? 100 : 0,
-    });
-  }, [hasItems, heroApi, interactiveViewId, items, revealedIds]);
-
-  if (!hasItems && !emptyState) return null;
-
-  function handleFlipComplete(itemId) {
-    if (!itemId) return;
-    setRevealedIds((prev) =>
-      prev.includes(itemId) ? prev : [...prev, itemId],
-    );
+  if (!Array.isArray(items) || items.length === 0) {
+    if (!slotCount || slotCount <= 0) return null;
   }
 
-  return (
-    <div className={cn(COLLAGE_ROOT_CLASS, className)} style={style}>
-      <div
-        className={cn(COLLAGE_GRID_CLASS, gridClassName)}
-        style={{
-          gridTemplateColumns: `repeat(${gridLayout.columns}, minmax(0, 1fr))`,
-          gridTemplateRows:
-            rowMode === "auto"
-              ? `repeat(${gridLayout.rows}, minmax(0, auto))`
-              : `repeat(${gridLayout.rows}, minmax(0, 1fr))`,
-        }}
-      >
-        {!hasItems && emptyState ? (
-          <div className="relative z-10 col-span-full row-span-full h-full min-h-0 w-full min-w-0">
-            {emptyState}
-          </div>
-        ) : null}
+  const resolvedColumns = columns ?? Math.min(Math.max(items.length, 1), 4);
+  const resolvedSlotCount = Math.max(
+    slotCount ?? items.length,
+    items.length,
+    1,
+  );
+  const slots = Array.from(
+    { length: resolvedSlotCount },
+    (_, index) => items[index] ?? null,
+  );
 
+  return (
+    <section
+      className={cn(
+        "grid w-full min-w-0 place-items-center p-1",
+        "overflow-visible",
+        "lg:h-full lg:min-h-0 lg:overflow-hidden",
+        className,
+      )}
+    >
+      <div
+        className={cn(
+          "grid w-full min-w-0",
+          getGridColumnsClass(resolvedColumns),
+          rows ? getGridRowsClass(rows) : null,
+          "items-center justify-items-center content-center gap-3",
+          "overflow-visible",
+          "auto-rows-[minmax(10rem,auto)]",
+          rows ? "lg:auto-rows-fr" : "lg:auto-rows-fr",
+          "lg:h-full lg:min-h-0 lg:overflow-hidden",
+          gridClassName,
+        )}
+      >
         {slots.map((item, index) => {
           if (!item) {
             return (
               <div
-                key={`collage-empty-${index + 1}`}
+                key={`empty-slot-${index}`}
                 className={cn(
-                  COLLAGE_ITEM_SLOT_CLASS,
-                  "pointer-events-none",
-                  itemSlotClassName,
+                  "flex h-full min-h-[10rem] w-full min-w-0 items-center justify-center p-2",
+                  "lg:min-h-0",
+                  slotClassName,
                 )}
               >
-                {renderEmptySlot ? renderEmptySlot({ index }) : null}
+                {renderEmptySlot ? (
+                  renderEmptySlot(index)
+                ) : (
+                  <div
+                    className={cn(
+                      "h-full min-h-[10rem] w-full rounded-[1.6rem] border border-dashed border-white/15 bg-white/5",
+                      "lg:min-h-0",
+                      emptySlotClassName,
+                    )}
+                  />
+                )}
               </div>
             );
           }
 
-          const isFlip = isFlipItem(item);
-          const itemId = getItemId(item, index);
+          const itemId = getCardItemId(item, index);
           const isSelected = selectedIds.includes(itemId);
-          const media = getItemMedia(item, item?.caption ?? "Tarjeta");
-
-          if (typeof renderItem === "function") {
-            return (
-              <div
-                key={itemId}
-                className={cn(COLLAGE_ITEM_SLOT_CLASS, itemSlotClassName)}
-              >
-                {renderItem({ item, index, itemId, isSelected, media })}
-              </div>
-            );
-          }
-
-          if (isFlip) {
-            return (
-              <div
-                key={itemId}
-                className={cn(COLLAGE_ITEM_SLOT_CLASS, itemSlotClassName)}
-              >
-                <FlipCard
-                  compact
-                  fillContainer
-                  data={{
-                    mode: item?.mode ?? "revealGrid",
-                    columns: 1,
-                    countsTowardScore: false,
-                    items: [
-                      {
-                        id: itemId,
-                        image: media,
-                        label: item?.title ?? item?.label,
-                        caption: item?.caption,
-                        correct: item?.correct,
-                        reveal: item?.reveal ??
-                          item?.back ?? {
-                            text: "Sin contenido",
-                            variant: "bodySm",
-                            align: "center",
-                          },
-                      },
-                    ],
-                  }}
-                  selectedId={isSelected ? itemId : null}
-                  containerClassName="max-w-full"
-                  gridContainerClassName="grid-cols-1"
-                  onComplete={() => handleFlipComplete(itemId)}
-                />
-              </div>
-            );
-          }
 
           return (
             <div
               key={itemId}
-              className={cn(COLLAGE_ITEM_SLOT_CLASS, itemSlotClassName)}
-            >
-              <Card
-                as={selectable ? "button" : "article"}
-                density="compact"
-                fillContainer
-                onClick={selectable ? () => onSelect?.(item, index) : undefined}
-                selected={selectable && isSelected}
               className={cn(
-                  "max-h-full max-w-full",
-                  selectable && isSelected ? SELECTED_CARD_CLASS : "",
-                )}
-                media={media}
-                title={item?.title ?? item?.label}
-                text={item?.text ?? null}
-                contentClassName="gap-0"
-                zoomable={!selectable && item?.zoomable !== false}
-              />
+                "flex w-full min-w-0 items-center justify-center overflow-visible p-2",
+                "min-h-[10rem]",
+                "lg:h-full lg:min-h-0 lg:overflow-hidden",
+                slotClassName,
+              )}
+            >
+              <div className="group/collage relative h-full w-full min-w-0">
+                <Card
+                  title={item?.title}
+                  text={getItemText(item)}
+                  media={item?.media}
+                  interaction={item?.interaction}
+                  selected={isSelected}
+                  zoomable={getItemZoomable(item)}
+                  variant={item?.cardVariant ?? item?.variant}
+                  size={item?.size}
+                  onSelect={() => onSelect?.(item, index)}
+                  onComplete={() => onComplete?.(itemId, item, index)}
+                />
+
+                {item?.hoverLabel ? (
+                  <div className="pointer-events-none absolute inset-x-3 bottom-3 z-20 translate-y-3 opacity-0 transition duration-200 group-hover/collage:translate-y-0 group-hover/collage:opacity-100 group-focus-within/collage:translate-y-0 group-focus-within/collage:opacity-100">
+                    <div className="rounded-2xl bg-[linear-gradient(180deg,rgba(25,18,11,0.82),rgba(12,9,6,0.64))] px-3 py-2 text-center text-sm font-bold text-white shadow-[0_14px_28px_rgba(0,0,0,0.24)] backdrop-blur-sm">
+                      {item.hoverLabel}
+                    </div>
+                  </div>
+                ) : null}
+              </div>
             </div>
           );
         })}
       </div>
-    </div>
+    </section>
   );
 }

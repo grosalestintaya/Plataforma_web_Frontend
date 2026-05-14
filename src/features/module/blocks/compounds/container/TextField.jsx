@@ -13,39 +13,58 @@ export default function TextField({
   fieldWrapClassName = "",
   inputClassName = "",
 }) {
-  if (!prompt) return null;
+  if (!prompt && !placeholder) return null;
 
   const isSplit = variant === "split";
 
   return (
     <section
       className={cn(
-        isSplit
-          ? "grid h-full min-h-0 w-full grid-cols-[minmax(220px,0.9fr)_minmax(0,1.6fr)] gap-2 rounded-xl border border-white/30 p-2"
-          : "grid h-full min-h-0 w-full grid-rows-[auto_minmax(0,1fr)] gap-2 rounded-xl border border-white/30 p-2",
+        "grid min-h-0 w-full min-w-0 gap-2 rounded-2xl border border-white/10 bg-white/5 p-2",
+        "overflow-visible",
+
+        /**
+         * Mobile:
+         * Siempre apilado para evitar cortes horizontales.
+         */
+        "grid-cols-1 grid-rows-[auto_auto]",
+
+        /**
+         * md+:
+         * Split sólo si se solicita.
+         */
+        isSplit &&
+          "md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] md:grid-rows-1 md:items-stretch",
+
         containerClassName,
       )}
     >
+      {prompt ? (
+        <div
+          className={cn(
+            "flex min-h-0 min-w-0 items-center rounded-xl border border-white/10 bg-white/5 px-3 py-2",
+            "overflow-hidden",
+            labelClassName,
+          )}
+        >
+          <Typography
+            content={prompt}
+            variant={prompt?.variant ?? "helper"}
+            color={prompt?.color}
+            align={prompt?.align ?? "center"}
+            component={prompt?.component}
+            className={cn(
+              "w-full min-w-0 leading-tight [text-wrap:balance]",
+              prompt?.className,
+            )}
+          />
+        </div>
+      ) : null}
+
       <div
         className={cn(
-          isSplit
-            ? "flex min-h-0 items-center rounded-md border border-white/30 px-3 py-2"
-            : "min-h-0 rounded-md border border-white/30 px-3 py-2",
-          labelClassName,
-        )}
-      >
-        <Typography
-          content={prompt}
-          variant={prompt?.variant ?? "helper"}
-          color={prompt?.color}
-          align={prompt?.align}
-          component={prompt?.component}
-          className={prompt?.className}
-        />
-      </div>
-      <div
-        className={cn(
-          "flex min-h-0 rounded-md border border-white/30 p-2",
+          "flex min-h-[2.75rem] min-w-0 items-center rounded-xl border border-white/10 bg-white/5 px-3 py-2",
+          "overflow-hidden",
           fieldWrapClassName,
         )}
       >
@@ -54,7 +73,10 @@ export default function TextField({
           value={value}
           onChange={onChange}
           placeholder={placeholder}
-          className={cn("h-full min-h-0 self-stretch", inputClassName)}
+          className={cn(
+            "h-auto min-h-[2rem] w-full min-w-0 self-center",
+            inputClassName,
+          )}
         />
       </div>
     </section>

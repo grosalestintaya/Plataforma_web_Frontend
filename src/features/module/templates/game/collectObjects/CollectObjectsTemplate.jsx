@@ -1,6 +1,6 @@
 import Button from "@/features/module/blocks/base/Action/Button";
 import Typography from "@/features/module/blocks/base/Typography";
-import MemoryPairs from "@/features/module/blocks/compounds/Iterative/MemoryPairs";
+import MemoryPairs from "@/features/module/blocks/compounds/iteractive/MemoryPairs";
 
 /**
  * CollectObjectsTemplate:

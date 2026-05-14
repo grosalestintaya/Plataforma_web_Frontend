@@ -5,41 +5,22 @@ import HeaderSettingsButton from "../ui/HeaderSettingsButton";
 import HeaderExitButton from "../ui/HeaderExitButton";
 import HeaderRopeSvg from "../HeaderRopeSvg";
 
-const HEADER_CLASS = "relative w-full overflow-hidden leading-none";
-const HEADER_STYLE = {
-  minHeight: "var(--activity-header-height, 112px)",
-};
-const HEADER_OVERLAY_CLASS = "pointer-events-none absolute inset-0";
+const HEADER_CLASS =
+  "relative min-h-[var(--activity-header-height,112px)] w-full overflow-hidden leading-none";
+const HEADER_OVERLAY_CLASS =
+  "pointer-events-none absolute inset-0 bg-gradient-to-b from-white/20 via-black/10 to-transparent";
 const HEADER_INNER_CLASS =
   "relative px-[var(--activity-shell-gutter)] py-0";
 const HEADER_BAR_CLASS =
-  "grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 md:gap-3";
-const HEADER_TITLE_GROUP_CLASS = "flex min-w-0 items-center gap-2 px-1";
+  "grid min-h-[68px] grid-cols-[minmax(0,1fr)_auto] items-center gap-2 sm:min-h-[76px] md:gap-3";
+const HEADER_TITLE_GROUP_CLASS = "flex min-w-0 items-center gap-1.5 px-1 sm:gap-2";
 const HEADER_TITLE_CLASS =
-  "truncate text-left text-base font-semibold tracking-tight text-white sm:text-lg md:text-xl lg:text-2xl";
+  "truncate text-left text-sm font-semibold tracking-tight text-white sm:text-lg md:text-xl lg:text-2xl";
 const HEADER_ACTION_CLASS = "flex items-center justify-end";
 const HEADER_ROPE_WRAP_CLASS =
-  "-mx-[var(--activity-shell-gutter)] -mt-5 overflow-hidden";
+  "-mx-[var(--activity-shell-gutter)] -mt-3 overflow-hidden sm:-mt-5";
 const HEADER_ROPE_CLASS =
-  "block h-[40px] w-full select-none sm:h-[54px] md:h-[64px] lg:h-[64px]";
-
-function hexToRgba(hex, a = 1) {
-  const h = String(hex || "#000").replace("#", "");
-  const full =
-    h.length === 3
-      ? h
-          .split("")
-          .map((c) => c + c)
-          .join("")
-      : h.padEnd(6, "0");
-
-  const num = parseInt(full, 16);
-  const r = (num >> 16) & 255;
-  const g = (num >> 8) & 255;
-  const b = num & 255;
-
-  return `rgba(${r},${g},${b},${a})`;
-}
+  "block h-[36px] w-full select-none sm:h-[54px] md:h-[64px] lg:h-[64px]";
 
 /**
  * Header principal de la actividad.
@@ -65,18 +46,6 @@ export default function ActivityHeader({
     );
   }, [mission, moduleData, missionKey]);
 
-  const overlayStyle = useMemo(
-    () => ({
-      background: `linear-gradient(
-        180deg,
-        ${hexToRgba(themeHex, 0.22)} 0%,
-        ${hexToRgba("#000000", 0.12)} 58%,
-        ${hexToRgba("#000000", 0)} 100%
-      )`,
-    }),
-    [themeHex],
-  );
-
   const handleExitActivity = useCallback(() => {
     playSfx?.("click");
     onExitActivity?.();
@@ -88,8 +57,8 @@ export default function ActivityHeader({
   }, [onOpenSettings, playSfx]);
 
   return (
-    <header className={HEADER_CLASS} style={HEADER_STYLE}>
-      <div className={HEADER_OVERLAY_CLASS} style={overlayStyle} />
+    <header className={HEADER_CLASS}>
+      <div className={HEADER_OVERLAY_CLASS} />
 
       <div className={HEADER_INNER_CLASS}>
         <div className={HEADER_BAR_CLASS}>
