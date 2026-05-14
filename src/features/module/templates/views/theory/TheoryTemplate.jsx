@@ -7,8 +7,9 @@ import * as Blocks from "@/features/module/blocks";
 
 /**
  * TheoryTemplate:
- * - Componente delgado que solo ejecuta la config.
- * - Layout, slots y reglas se definen en `theory.config.js`.
+ * - No decide estilos visuales.
+ * - No decide tamaños de Card, ShowCard, CollageCard, etc.
+ * - Solo construye el layout declarado por la config.
  */
 export default function TheoryTemplate({
   variant = "simple",
@@ -26,20 +27,17 @@ export default function TheoryTemplate({
   const slots = runtime?.slots ?? [];
   const payload = runtime?.payload ?? {};
 
-  const LAYOUT_PRINCIPAL = ["explanation", "assessment"].includes(view?.variant)
-    ? "h-full min-h-0 w-full rounded-lg bg-black/20 backdrop-blur-sm"
-    : "h-full min-h-0 w-full";
-
   if (!layout || !slots.length) {
     return (
-      <div className="text-white/80">Config invalida para TheoryTemplate</div>
+      <div className="grid h-full min-h-0 w-full place-items-center text-white/80">
+        Config inválida para TheoryTemplate
+      </div>
     );
   }
 
   return (
-    <HeroGrid layout={layout} className={LAYOUT_PRINCIPAL}>
+    <HeroGrid layout={layout}>
       {slots.map((slot, index) => {
-        // Solo crea el area del grid cuando el slot realmente renderiza algo.
         const renderedSlot = renderSlot(slot, payload, Blocks, {
           heroApi,
           view,
@@ -48,11 +46,7 @@ export default function TheoryTemplate({
         if (!renderedSlot) return null;
 
         return (
-          <HeroArea
-            key={`${slot.area}-${index}`}
-            area={slot.area}
-            className={slot.className}
-          >
+          <HeroArea key={`${slot.area}-${slot.slotId ?? index}`} area={slot.area}>
             {renderedSlot}
           </HeroArea>
         );

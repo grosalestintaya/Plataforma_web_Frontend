@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
  * Se usa para normalizar la respuesta del backend antes de guardarla en runtime.
  */
 function pickRewardNumber(...values) {
+  // Acepta varias formas de respuesta para tolerar cambios pequenos del backend.
   for (const value of values) {
     const parsed = Number(value);
     if (Number.isFinite(parsed)) return parsed;
@@ -51,11 +52,37 @@ function extractMissionCompletionSummary(result) {
   };
 }
 
+function getOrderedMissionKeys(moduleData) {
+  const entries = Object.entries(moduleData?.missions ?? {});
+
+  // Si el contenido declara `order`, lo respetamos; si no, conservamos el
+  // orden de insercion actual para no cambiar misiones existentes.
+  return entries
+    .map(([key, mission], index) => ({
+      key,
+      index,
+      order: Number(mission?.order),
+    }))
+    .sort((a, b) => {
+      const aHasOrder = Number.isFinite(a.order);
+      const bHasOrder = Number.isFinite(b.order);
+
+      if (aHasOrder && bHasOrder && a.order !== b.order) {
+        return a.order - b.order;
+      }
+
+      if (aHasOrder !== bHasOrder) return aHasOrder ? -1 : 1;
+
+      return a.index - b.index;
+    })
+    .map((entry) => entry.key);
+}
+
 /**
  * Resuelve la siguiente mision del modulo para volver al menu ya preseleccionado.
  */
 function getNextMissionKey(moduleData, missionKey) {
-  const missionKeys = Object.keys(moduleData?.missions ?? {});
+  const missionKeys = getOrderedMissionKeys(moduleData);
   const currentIndex = missionKeys.indexOf(missionKey);
 
   if (currentIndex < 0) return null;

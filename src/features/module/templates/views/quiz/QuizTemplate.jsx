@@ -6,78 +6,18 @@ import HeroArea from "../../_core/HeroArea";
 import { renderSlot } from "../../_core/SlotRenderer";
 import { normalizeLayout } from "../../_core/layouts.helpers";
 import { getQuizRuntime } from "./quiz.config";
-
 import * as Blocks from "@/features/module/blocks";
 
-function getFormKey(viewId, formQuestion) {
-  return `${viewId ?? "quiz"}:${formQuestion?.question?.text ?? ""}`;
-}
-
-/**
- * =========================================================
- * Main
- * =========================================================
- */
-
 export default function QuizTemplate({ variant, data, heroApi, view }) {
-  /**
-   * =========================================================
-   * Confetti
-   * =========================================================
-   */
-
-  const { width, height } = useWindowSize();
-
-  const [showConfetti, setShowConfetti] = useState(false);
-
-  /**
-   * Ejemplo:
-   * mostrar confetti cuando sea la última pregunta
-   * y esté completada
-   */
-
-  /**
-   * =========================================================
-   * Runtime
-   * =========================================================
-   */
-
   const runtime = getQuizRuntime({
     variant,
     data,
     view,
   });
 
-  const outerLayout = normalizeLayout(runtime?.outerLayoutDef);
-  const contentLayout = normalizeLayout(runtime?.contentLayoutDef);
+  const layout = normalizeLayout(runtime?.layoutDef);
   const slots = runtime?.slots ?? [];
   const payload = runtime?.payload ?? {};
-  const contentShellClassName =
-    runtime?.contentShellClassName ?? "h-full min-h-0 w-full px-0 md:px-0";
-
-  const viewId = view?.id ?? view?.viewId;
-  const formQuestion = payload?.formQuestion ?? null;
-
-  const formKey = useMemo(
-    () => getFormKey(viewId, formQuestion),
-    [formQuestion, viewId],
-  );
-
-  const [draft, setDraft] = useState({
-    formKey,
-    selectedId: null,
-    reason: "",
-  });
-
-  useEffect(() => {
-    setDraft({
-      formKey,
-      selectedId: null,
-      reason: "",
-    });
-  }, [formKey]);
-
-  const selectedId = draft.formKey === formKey ? draft.selectedId : null;
 
   const reason = draft.formKey === formKey ? draft.reason : "";
 
@@ -188,99 +128,36 @@ export default function QuizTemplate({ variant, data, heroApi, view }) {
 
   if (!outerLayout || !contentLayout || !slots.length) {
     return (
-      <div className="text-white/80">Config invalida para QuizTemplate</div>
+      <div className="grid h-full min-h-0 w-full place-items-center text-white/80">
+        Config inválida para QuizTemplate
+      </div>
     );
   }
 
-  const quizState = {
-    progress,
-    selectedId,
-
-    setSelectedId: (nextSelectedId) =>
-      setDraft((prev) => ({
-        ...prev,
-        formKey,
-        selectedId: nextSelectedId,
-      })),
-
-    reason,
-
-    setReason: (nextReason) =>
-      setDraft((prev) => ({
-        ...prev,
-        formKey,
-        reason: nextReason,
-      })),
-
-    canGoBack,
-    canAdvance,
-
-    goBack: () => heroApi?.goBackCurrentView?.(),
-
-    advance: () => heroApi?.advanceCurrentView?.(),
-
-    advanceLabel: heroApi?.advanceLabel ?? "Continuar",
-  };
-
-  const outerSlots = slots.filter((slot) =>
-    ["navigation", "leftNav", "rightNav"].includes(slot.area),
-  );
-  const contentSlots = slots.filter(
-    (slot) => !["navigation", "leftNav", "rightNav"].includes(slot.area),
-  );
-
-  const renderQuizSlot = (slot, index) => {
-    const slotClassName =
-      typeof slot?.className === "function"
-        ? slot.className(payload, {
-            heroApi,
-            view,
-            quizState,
-          })
-        : slot?.className;
-
-    const renderedSlot = renderSlot(slot, payload, Blocks, {
-      heroApi,
-      view,
-      quizState,
-    });
-
-    if (!renderedSlot) {
-      return null;
-    }
-
-    return (
-      <HeroArea
-        key={`${slot.area}-${index}`}
-        area={slot.area}
-        className={slotClassName}>
-        {renderedSlot}
-      </HeroArea>
-    );
-  };
-
   return (
-    <>
-      {showConfetti && (
-        <Confetti
-          width={width}
-          height={height}
-          recycle={false}
-          numberOfPieces={350}
-        />
-      )}
+    <HeroGrid
+      layout={layout}
+      className="mx-0 w-[calc(100vw-2rem)] min-w-0 max-w-[calc(100vw-2rem)] overflow-visible px-0 sm:w-[calc(100vw-2rem)] sm:max-w-[calc(100vw-2rem)] sm:px-0 md:w-full md:max-w-full md:px-0 lg:px-12"
+    >
+      {slots.map((slot, index) => {
+        const renderedSlot = renderSlot(slot, payload, Blocks, {
+          heroApi,
+          view,
+          quizVariant: runtime?.variant,
+        });
 
-      <HeroGrid layout={outerLayout} className="h-full min-h-full w-full">
-        {outerSlots.map(renderQuizSlot)}
+        if (!renderedSlot) return null;
 
-        <HeroArea area="content" className="w-full p-0">
-          <div className={contentShellClassName}>
-            <HeroGrid layout={contentLayout} className="h-full min-h-0 w-full">
-              {contentSlots.map(renderQuizSlot)}
-            </HeroGrid>
-          </div>
-        </HeroArea>
-      </HeroGrid>
-    </>
+        return (
+          <HeroArea
+            key={`${slot.area}-${slot.slotId ?? index}`}
+            area={slot.area}
+            className="w-full min-w-0 max-w-full justify-start overflow-visible"
+          >
+            {renderedSlot}
+          </HeroArea>
+        );
+      })}
+    </HeroGrid>
   );
 }

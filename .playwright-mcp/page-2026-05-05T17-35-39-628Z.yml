@@ -1,0 +1,97 @@
+- generic [ref=e31]:
+  - complementary [ref=e32]:
+    - generic [ref=e33]:
+      - img "Logo" [ref=e37]
+      - navigation [ref=e38]:
+        - link "Inicio" [ref=e39] [cursor=pointer]:
+          - /url: /app
+          - img [ref=e41]
+          - generic [ref=e44]: Inicio
+        - link "Tienda" [ref=e45] [cursor=pointer]:
+          - /url: /app/store
+          - img [ref=e47]
+          - generic [ref=e51]: Tienda
+        - link "Ranking" [ref=e52] [cursor=pointer]:
+          - /url: /app/ranking
+          - img [ref=e54]
+          - generic [ref=e60]: Ranking
+        - link "Perfil" [ref=e61] [cursor=pointer]:
+          - /url: /app/perfil
+          - img [ref=e63]
+          - generic [ref=e65]: Perfil
+    - button "Salir" [ref=e67]:
+      - img [ref=e68]
+      - generic [ref=e71]: Salir
+  - main [ref=e72]:
+    - generic [ref=e73]:
+      - generic [ref=e76]:
+        - generic [ref=e78]:
+          - img "Perfil de carlitos pepelucho garcia marquez" [ref=e82]
+          - generic [ref=e84]:
+            - generic [ref=e85]:
+              - heading "carlitos pepelucho garcia marquez" [level=2] [ref=e86]
+              - generic [ref=e87]:
+                - generic [ref=e90]: 🏫 miguel grau
+                - generic [ref=e93]: 👨🏼‍🎓tercero B
+                - generic [ref=e96]: 🔮 Lv. Chasque
+            - generic [ref=e98]:
+              - paragraph [ref=e99]: PROGRESO ACTUAL EN EL NIVEL Chasque
+              - generic [ref=e100]: 68%
+        - generic [ref=e103]:
+          - complementary [ref=e104]:
+            - generic [ref=e105]:
+              - img "Intis" [ref=e109]
+              - generic [ref=e110]:
+                - paragraph [ref=e111]: intis
+                - paragraph [ref=e113]: "0"
+          - complementary [ref=e114]:
+            - generic [ref=e115]:
+              - img [ref=e119]
+              - generic [ref=e128]:
+                - paragraph [ref=e129]: XP
+                - paragraph [ref=e131]: "0"
+      - generic [ref=e134]:
+        - img "Mapa de subcuerdas de módulos" [ref=e137]:
+          - button "Abrir Módulo 1" [ref=e138] [cursor=pointer]
+          - button "Abrir Módulo 2" [ref=e172] [cursor=pointer]
+          - button "Abrir Módulo 3" [ref=e196] [cursor=pointer]
+          - button "Abrir Módulo 4" [ref=e225] [cursor=pointer]
+          - button "Abrir Módulo 5" [ref=e254] [cursor=pointer]:
+            - generic [ref=e292]: Módulo 5
+          - generic [ref=e394]: ✎ Ruta de aprendizaje﹏﹏
+        - generic [ref=e397]:
+          - heading "Chakana sagrada" [level=2] [ref=e398]
+          - img [ref=e406]:
+            - generic [ref=e451]: M5
+            - generic [ref=e466]: M1
+            - generic [ref=e469]: M2
+            - generic [ref=e472]: M3
+            - generic [ref=e475]: M4
+          - generic [ref=e496]:
+            - paragraph [ref=e497]: La chakana está completa. El módulo final ya está disponible.
+            - button "Ingresar al módulo final" [ref=e498] [cursor=pointer]
+      - generic [ref=e500]:
+        - heading "Insignias" [level=3] [ref=e501]
+        - generic [ref=e503]:
+          - generic [ref=e504] [cursor=pointer]:
+            - img "Suyu" [ref=e506]
+            - generic [ref=e507]: Suyu
+          - generic [ref=e509] [cursor=pointer]:
+            - img "Antisuyo" [ref=e511]
+            - generic [ref=e512]: Antisuyo
+          - generic [ref=e514] [cursor=pointer]:
+            - img "Collasuyo" [ref=e516]
+            - generic [ref=e517]: Collasuyo
+          - generic [ref=e519] [cursor=pointer]:
+            - img "Contisuyo" [ref=e521]
+            - generic [ref=e522]: Contisuyo
+          - generic [ref=e524] [cursor=pointer]:
+            - generic [ref=e525]:
+              - img "Chinchaysuyo" [ref=e526]
+              - img [ref=e528]
+            - generic [ref=e531]: Chinchaysuyo
+          - generic [ref=e533] [cursor=pointer]:
+            - generic [ref=e534]:
+              - img "Centro" [ref=e535]
+              - img [ref=e537]
+            - generic [ref=e540]: Centro

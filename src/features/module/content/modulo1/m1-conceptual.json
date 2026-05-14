@@ -137,7 +137,7 @@
       "variant": "split",
       "slots": {
         "title": {
-          "text": "¿Cómo se usa el dinero en nuestro día?",
+          "text": "Uso del dinero en nuestro día",
           "variant": "h1",
           "align": "center"
         },
@@ -344,82 +344,234 @@
             "items": [
               {
                 "id": "card-1",
-                "renderAs": "flipCard",
-                "src": "1/recibir-dinero.png",
-                "caption": "Recibir una propina",
-                "reveal": {
-                  "text": "Ingreso",
-                  "tone": "success"
+                "interaction": {
+                  "type": "flipCard",
+                  "backCard": {
+                    "title": {
+                      "text": "Ingreso",
+                      "variant": "h3",
+                      "align": "center",
+                      "color": "success"
+                    },
+                    "text": {
+                      "text": "Recibes dinero, por eso aumenta tu dinero disponible.",
+                      "variant": "bodySm",
+                      "align": "center"
+                    }
+                  }
+                },
+                "media": {
+                  "src": "1/recibir-dinero.png",
+                  "alt": "Recibir una propina",
+                  "variant": "horizontal"
+                },
+                "title": {
+                  "text": "Recibir una propina",
+                  "variant": "label",
+                  "align": "center"
                 }
               },
               {
                 "id": "card-2",
-                "renderAs": "flipCard",
-                "src": "1/pagar-pasaje.png",
-                "caption": "Pagar pasaje",
-                "reveal": {
-                  "text": "Gasto",
-                  "tone": "error"
+                "interaction": {
+                  "type": "flipCard",
+                  "backCard": {
+                    "title": {
+                      "text": "Gasto",
+                      "variant": "h3",
+                      "align": "center",
+                      "color": "danger"
+                    },
+                    "text": {
+                      "text": "Usas dinero para pagar algo, por eso tu dinero disminuye.",
+                      "variant": "bodySm",
+                      "align": "center"
+                    }
+                  }
+                },
+                "media": {
+                  "src": "1/pagar-pasaje.png",
+                  "alt": "Pagar pasaje",
+                  "variant": "horizontal"
+                },
+                "title": {
+                  "text": "Pagar pasaje",
+                  "variant": "label",
+                  "align": "center"
                 }
               },
               {
                 "id": "card-3",
-                "renderAs": "flipCard",
-                "src": "1/ganar-dinero.png",
-                "caption": "Ganar dinero por ayudar",
-                "reveal": {
-                  "text": "Ingreso",
-                  "tone": "success"
+                "interaction": {
+                  "type": "flipCard",
+                  "backCard": {
+                    "title": {
+                      "text": "Ingreso",
+                      "variant": "h3",
+                      "align": "center",
+                      "color": "success"
+                    },
+                    "text": {
+                      "text": "Recibes dinero por una ayuda o trabajo realizado.",
+                      "variant": "bodySm",
+                      "align": "center"
+                    }
+                  }
+                },
+                "media": {
+                  "src": "1/ganar-dinero.png",
+                  "alt": "Ganar dinero por ayudar",
+                  "variant": "horizontal"
+                },
+                "title": {
+                  "text": "Ganar dinero por ayudar",
+                  "variant": "label",
+                  "align": "center"
                 }
               },
               {
                 "id": "card-4",
-                "renderAs": "flipCard",
-                "src": "1/comprar-comida.png",
-                "caption": "Comprar alimentos",
-                "reveal": {
-                  "text": "Gasto",
-                  "tone": "error"
+                "interaction": {
+                  "type": "flipCard",
+                  "backCard": {
+                    "title": {
+                      "text": "Gasto",
+                      "variant": "h3",
+                      "align": "center",
+                      "color": "danger"
+                    },
+                    "text": {
+                      "text": "Pagas por alimentos, por eso estás realizando un gasto.",
+                      "variant": "bodySm",
+                      "align": "center"
+                    }
+                  }
+                },
+                "media": {
+                  "src": "1/comprar-comida.png",
+                  "alt": "Comprar alimentos",
+                  "variant": "horizontal"
+                },
+                "title": {
+                  "text": "Comprar alimentos",
+                  "variant": "label",
+                  "align": "center"
                 }
               },
               {
                 "id": "card-5",
-                "renderAs": "flipCard",
-                "src": "1/pagar-pasaje.png",
-                "caption": "Pagar el pasaje de vuelta",
-                "reveal": {
-                  "text": "Gasto",
-                  "tone": "error"
+                "interaction": {
+                  "type": "flipCard",
+                  "backCard": {
+                    "title": {
+                      "text": "Gasto",
+                      "variant": "h3",
+                      "align": "center",
+                      "color": "danger"
+                    },
+                    "text": {
+                      "text": "El pasaje de vuelta también es un pago, por eso es un gasto.",
+                      "variant": "bodySm",
+                      "align": "center"
+                    }
+                  }
+                },
+                "media": {
+                  "src": "1/pagar-pasaje.png",
+                  "alt": "Pagar el pasaje de vuelta",
+                  "variant": "horizontal"
+                },
+                "title": {
+                  "text": "Pagar el pasaje de vuelta",
+                  "variant": "label",
+                  "align": "center"
                 }
               },
               {
                 "id": "card-6",
-                "renderAs": "flipCard",
-                "src": "1/recibir-dinero.png",
-                "caption": "Vender algo que ya no usas",
-                "reveal": {
-                  "text": "Ingreso",
-                  "tone": "success"
+                "interaction": {
+                  "type": "flipCard",
+                  "backCard": {
+                    "title": {
+                      "text": "Ingreso",
+                      "variant": "h3",
+                      "align": "center",
+                      "color": "success"
+                    },
+                    "text": {
+                      "text": "Al vender algo que ya no usas, recibes dinero.",
+                      "variant": "bodySm",
+                      "align": "center"
+                    }
+                  }
+                },
+                "media": {
+                  "src": "1/recibir-dinero.png",
+                  "alt": "Vender algo que ya no usas",
+                  "variant": "horizontal"
+                },
+                "title": {
+                  "text": "Vender algo que ya no usas",
+                  "variant": "label",
+                  "align": "center"
                 }
               },
               {
                 "id": "card-7",
-                "renderAs": "flipCard",
-                "src": "1/comprar-comida.png",
-                "caption": "Comprar ropa",
-                "reveal": {
-                  "text": "Gasto",
-                  "tone": "error"
+                "interaction": {
+                  "type": "flipCard",
+                  "backCard": {
+                    "title": {
+                      "text": "Gasto",
+                      "variant": "h3",
+                      "align": "center",
+                      "color": "danger"
+                    },
+                    "text": {
+                      "text": "Comprar ropa implica usar dinero para pagar.",
+                      "variant": "bodySm",
+                      "align": "center"
+                    }
+                  }
+                },
+                "media": {
+                  "src": "1/comprar-comida.png",
+                  "alt": "Comprar ropa",
+                  "variant": "horizontal"
+                },
+                "title": {
+                  "text": "Comprar ropa",
+                  "variant": "label",
+                  "align": "center"
                 }
               },
               {
                 "id": "card-8",
-                "renderAs": "flipCard",
-                "src": "1/ganar-dinero.png",
-                "caption": "Recompensa por reciclar",
-                "reveal": {
-                  "text": "Ingreso",
-                  "tone": "success"
+                "interaction": {
+                  "type": "flipCard",
+                  "backCard": {
+                    "title": {
+                      "text": "Ingreso",
+                      "variant": "h3",
+                      "align": "center",
+                      "color": "success"
+                    },
+                    "text": {
+                      "text": "Si recibes una recompensa en dinero, se considera ingreso.",
+                      "variant": "bodySm",
+                      "align": "center"
+                    }
+                  }
+                },
+                "media": {
+                  "src": "1/ganar-dinero.png",
+                  "alt": "Recompensa por reciclar",
+                  "variant": "horizontal"
+                },
+                "title": {
+                  "text": "Recompensa por reciclar",
+                  "variant": "label",
+                  "align": "center"
                 }
               }
             ]

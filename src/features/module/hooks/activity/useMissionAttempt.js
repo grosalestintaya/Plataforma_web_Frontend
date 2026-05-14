@@ -5,6 +5,16 @@ import {
   completeAttemptKeepalive,
 } from "@/services/activityApi";
 
+function createMissionStartEvent(activityId) {
+  // Evento base que deja trazabilidad del inicio del intento en el payload final.
+  return { t: Date.now(), type: "mission_start", activityId };
+}
+
+function withTimestamp(event) {
+  // Todos los eventos internos comparten el mismo shape temporal.
+  return { t: Date.now(), ...event };
+}
+
 /**
  * Maneja el ciclo completo del attempt de una mision.
  * `manual` espera el boton "Empezar"; `auto` inicia al entrar.
@@ -18,6 +28,8 @@ export function useMissionAttempt(activityId, { mode = "manual" } = {}) {
   const startedAtRef = useRef(null);
   // Acumula eventos para enviarlos juntos al cerrar la mision.
   const payloadRef = useRef({ events: [] });
+  // Evita duplicar el start si el usuario presiona dos veces antes del re-render.
+  const startPromiseRef = useRef(null);
 
   useEffect(() => {
     // Cada cambio de mision reinicia el intento local.
@@ -26,26 +38,30 @@ export function useMissionAttempt(activityId, { mode = "manual" } = {}) {
     setError(null);
     startedAtRef.current = null;
     payloadRef.current = { events: [] };
+    startPromiseRef.current = null;
   }, [activityId]);
 
   const track = useCallback((event) => {
     // Permite agregar eventos durante la mision sin tocar el backend todavia.
-    payloadRef.current.events.push({ t: Date.now(), ...event });
+    payloadRef.current.events.push(withTimestamp(event));
   }, []);
 
   /**
    * Construye el body final que consume el endpoint de cierre del intento.
-   * Se reutiliza para completar normalmente o para abandonar la actividad.
+   * No muta payloadRef: asi un retry no duplica `mission_finish/abandon`.
    */
   const buildCompletionBody = useCallback(
     ({ score = 0, extraPayload = {}, finishType = "mission_finish" } = {}) => {
       const durationMs = startedAtRef.current ? Date.now() - startedAtRef.current : 0;
-      payloadRef.current.events.push({ t: Date.now(), type: finishType });
+      const events = [
+        ...(payloadRef.current.events ?? []),
+        withTimestamp({ type: finishType }),
+      ];
 
       return {
         score,
         durationMs,
-        payload: { ...payloadRef.current, ...extraPayload },
+        payload: { ...payloadRef.current, events, ...extraPayload },
       };
     },
     [],
@@ -56,24 +72,31 @@ export function useMissionAttempt(activityId, { mode = "manual" } = {}) {
 
     // Evita pedir dos veces el mismo start para una sola vista.
     if (attemptId) return { attemptId };
+    if (startPromiseRef.current) return startPromiseRef.current;
 
     setStatus("starting");
     setError(null);
 
     payloadRef.current = {
-      events: [{ t: Date.now(), type: "mission_start", activityId }],
+      events: [createMissionStartEvent(activityId)],
     };
 
-    try {
+    startPromiseRef.current = (async () => {
       const res = await startActivityAttempt(activityId);
       setAttemptId(res.attemptId);
       startedAtRef.current = Date.now();
       setStatus("active");
       return res;
+    })();
+
+    try {
+      return await startPromiseRef.current;
     } catch (e) {
       setStatus("error");
       setError(e);
       throw e;
+    } finally {
+      startPromiseRef.current = null;
     }
   }, [activityId, attemptId]);
 
@@ -93,6 +116,7 @@ export function useMissionAttempt(activityId, { mode = "manual" } = {}) {
       setStatus("completing");
       setError(null);
 
+      // Completion y abandono usan el mismo contrato; solo cambia finishType.
       const body = buildCompletionBody({
         score,
         extraPayload,
@@ -124,6 +148,7 @@ export function useMissionAttempt(activityId, { mode = "manual" } = {}) {
     } = {}) => {
       if (!attemptId || status === "completed") return null;
 
+      // El abandono marca el intento como completado en backend con metadata extra.
       const body = buildCompletionBody({
         score,
         extraPayload: {

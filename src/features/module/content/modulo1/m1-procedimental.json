@@ -82,7 +82,7 @@
               {
                 "id": "go-by-combi",
                 "title": { "text": "Ir en combi", "variant": "label", "align": "center" },
-                "detail": { "text": "S/ 0.50", "variant": "label", "align": "center" },
+                "": { "text": "S/ 0.50", "variant": "label", "align": "center" },
                 "media": { "src": "1/ir-en-combi.png", "alt": "Ir en combi", "variant": "horizontal" },
                 "score": 100,
                 "cost": 0.5,
@@ -96,7 +96,7 @@
               {
                 "id": "go-walking",
                 "title": { "text": "Ir caminando", "variant": "label", "align": "center" },
-                "detail": { "text": "S/ 0.00", "variant": "label", "align": "center" },
+                "text": { "text": "S/ 0.00", "variant": "label", "align": "center" },
                 "media": { "src": "1/ir-caminando.png", "alt": "Ir caminando", "variant": "horizontal" },
                 "score": 60,
                 "cost": 0,
@@ -129,11 +129,11 @@
       "template": "shopDailySpending",
       "variant": "shop",
       "slots": {
-        "title": { "text": "Situacion 2", "variant": "eyebrow" },
+        "title": { "text": "Situacion 2", "variant": "eyebrow", "align":"left" },
         "amount": { "text": "Monto", "variant": "h3" },
         "situation": {
           "text": "Hora del recreo, escoge que comprar con el dinero que tienes.",
-          "variant": "h3",
+          "variant": "h2",
           "align": "left"
         }
       },
@@ -211,8 +211,8 @@
       "name": "VISTA 4 - Practica: Situacion extra",
       "viewType": "Practica",
       "objective": "Aprovechar una botella para recuperar parte del dinero.",
-      "template": "decisionDailySpending",
-      "variant": "decision",
+      "template": "eventDailySpending",
+      "variant": "event",
       "slots": {
         "title": { "text": "Situacion extra", "variant": "eyebrow" },
         "amount": { "label": "Monto" },
@@ -240,7 +240,7 @@
               {
                 "id": "recycle-bottle",
                 "title": { "text": "Canjear botella", "variant": "label", "align": "center" },
-                "detail": { "text": "+ S/ 0.50", "variant": "label", "align": "center" },
+                "text": { "text": "+ S/ 0.50", "variant": "label", "align": "center" },
                 "media": { "src": "1/canjear-botella.png", "alt": "Canjear botella", "variant": "horizontal" },
                 "score": 100,
                 "reward": 0.5,
@@ -253,7 +253,7 @@
               {
                 "id": "skip-bottle",
                 "title": { "text": "No canjear botella", "variant": "label", "align": "center" },
-                "detail": { "text": "S/ 0.00", "variant": "label", "align": "center" },
+                "": { "text": "S/ 0.00", "variant": "label", "align": "center" },
                 "media": { "src": "1/no-canjear-botella.png", "alt": "No canjear botella", "variant": "horizontal" },
                 "score": 60,
                 "reward": 0,
@@ -316,7 +316,7 @@
               {
                 "id": "return-combi",
                 "title": { "text": "Regresar en combi", "variant": "label", "align": "center" },
-                "detail": { "text": "S/ 0.50", "variant": "label", "align": "center" },
+                "": { "text": "S/ 0.50", "variant": "label", "align": "center" },
                 "media": { "src": "1/regresar-combi.png", "alt": "Regresar en combi", "variant": "horizontal" },
                 "score": 80,
                 "cost": 0.5,
@@ -329,7 +329,7 @@
               {
                 "id": "return-walking",
                 "title": { "text": "Regresar caminando", "variant": "label", "align": "center" },
-                "detail": { "text": "S/ 0.00", "variant": "label", "align": "center" },
+                "": { "text": "S/ 0.00", "variant": "label", "align": "center" },
                 "media": { "src": "1/regresar-caminando.png", "alt": "Regresar caminando", "variant": "horizontal" },
                 "score": 100,
                 "cost": 0,

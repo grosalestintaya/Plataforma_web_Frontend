@@ -8,7 +8,7 @@ import BudgetAdjustmentTemplate from "./game/budgetAdjustment/BudgetAdjustmentTe
 import CollectObjectsTemplate from "./game/collectObjects/CollectObjectsTemplate";
 import WhatWouldYouDoTemplate from "./game/whatWouldYouDo/WhatWouldYouDoTemplate";
 
-import MemoryPairs from "@/features/module/blocks/compounds/Iterative/MemoryPairs";
+import MemoryPairs from "@/features/module/blocks/compounds/iteractive/MemoryPairs";
 
 export const templates = {
   // Views (guia nueva)

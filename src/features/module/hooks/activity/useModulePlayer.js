@@ -1,7 +1,13 @@
 import { useCallback, useMemo, useState } from "react";
 
 function clamp(n, min, max) {
+  // Mantiene el indice dentro del rango real de vistas.
   return Math.max(min, Math.min(n, max));
+}
+
+function getViewId(view) {
+  // Centraliza el soporte para contenido nuevo (`id`) y legacy (`viewId`).
+  return view?.id ?? view?.viewId ?? null;
 }
 
 /**
@@ -10,6 +16,8 @@ function clamp(n, min, max) {
  * antes de entrar al `postGame`.
  */
 function isPostGameView(view) {
+  if (view?.role === "postGame" || view?.nav?.role === "postGame") return true;
+
   const template = String(view?.template ?? "").toLowerCase();
   const variant = String(view?.variant ?? "").toLowerCase();
 
@@ -21,10 +29,22 @@ function isPostGameView(view) {
  * Sirve para bloquear el regreso desde la primera vista real del flujo.
  */
 function isPreGameView(view) {
+  if (view?.role === "preGame" || view?.nav?.role === "preGame") return true;
+
   const template = String(view?.template ?? "").toLowerCase();
   const variant = String(view?.variant ?? "").toLowerCase();
 
   return template.includes("pregame") || variant === "pregame";
+}
+
+function getFooterActionKind({ isBeforePostGame, isLast }) {
+  // El footer expone intencion semantica para no depender de comparar labels.
+  return isBeforePostGame || isLast ? "finish" : "next";
+}
+
+function getAdvanceLabel(actionKind) {
+  // Mantiene una sola fuente para los textos que leen footer y templates.
+  return actionKind === "finish" ? "Finalizar" : "Continuar";
 }
 
 /**
@@ -91,6 +111,7 @@ export function useModulePlayer(
   // La segunda vista del flujo no debe permitir volver a la intro.
   const isImmediatelyAfterPreGame =
     currentVisiblePosition === 1 && isPreGameView(previousVisibleView);
+  const footerActionKind = getFooterActionKind({ isBeforePostGame, isLast });
 
   const goTo = useCallback(
     (idx) => setViewIndex(views.length ? clamp(idx, 0, views.length - 1) : 0),
@@ -100,7 +121,7 @@ export function useModulePlayer(
   const goToViewId = useCallback(
     (viewId) => {
       const nextIndex = views.findIndex(
-        (item) => (item?.id ?? item?.viewId) === viewId,
+        (item) => getViewId(item) === viewId,
       );
       if (nextIndex < 0) return;
       goTo(nextIndex);
@@ -217,7 +238,8 @@ export function useModulePlayer(
       // Los templates embebidos leen la misma accion/etiqueta que el footer.
       advanceCurrentView,
       goBackCurrentView: prev,
-      advanceLabel: isBeforePostGame || isLast ? "Finalizar" : "Continuar",
+      advanceLabel: getAdvanceLabel(footerActionKind),
+      advanceActionKind: footerActionKind,
       isBeforePostGame,
       canGoBack:
         !isBeforePostGame &&
@@ -234,6 +256,7 @@ export function useModulePlayer(
       isFirst,
       isImmediatelyAfterPreGame,
       isLast,
+      footerActionKind,
       prev,
     ],
   );
@@ -298,7 +321,8 @@ export function useModulePlayer(
       centerText: "Quipu Yachay",
       right: {
         // Si la siguiente visible es postGame, este boton cierra el attempt.
-        label: isBeforePostGame || isLast ? "Finalizar" : "Siguiente",
+        action: footerActionKind,
+        label: footerActionKind === "finish" ? "Finalizar" : "Siguiente",
         enabled: !finishing,
         onClick: advanceCurrentView,
       },
@@ -310,6 +334,7 @@ export function useModulePlayer(
     isImmediatelyAfterPreGame,
     isBeforePostGame,
     isLast,
+    footerActionKind,
     prev,
     view,
   ]);

@@ -1,69 +1,73 @@
 import Card from "../container/Card";
-import { getMediaVariant } from "../../base/Media/mediaVariant";
+import { getCardItemId } from "../iteractive/cardIteraction/cardInteractionRegistry";
 import { cn } from "@/shared/libs/utils";
 
-function getShowCardMedia(item) {
-  const media = item?.media ?? item?.image ?? {};
-  const src = media?.src ?? item?.src;
-
-  if (!src) return null;
-
-  return {
-    ...media,
-    src,
-    alt: media?.alt ?? item?.alt ?? item?.caption,
-    variant: getMediaVariant(media) ?? getMediaVariant(item),
-  };
+function getItemText(item) {
+  return item?.text ?? item?.description ?? item?.subtitle ?? item?.label ?? null;
 }
 
-/**
- * ShowCard:
- * - El slot distribuye.
- * - Card define el ancho desde su imagen.
- */
-export default function ShowCard({ items = [], zoomable = true }) {
+function getItemZoomable(item) {
+  if (item?.zoomable === false) return false;
+  if (item?.media?.zoomable === false) return false;
+
+  return undefined;
+}
+
+export default function ShowCard({
+  items = [],
+  selectedIds = [],
+  onSelect,
+  onComplete,
+}) {
   if (!Array.isArray(items) || items.length === 0) return null;
 
-  const isPair = items.length === 2;
-  const isFourUp = items.length === 4;
-
   return (
-    <div className="flex h-full min-h-0 w-full items-center justify-center overflow-hidden">
+    <section
+      className={cn(
+        "grid w-full min-w-0 place-items-center p-1",
+        "overflow-visible",
+        "lg:h-full lg:min-h-0 lg:overflow-hidden",
+      )}
+    >
       <div
-        className={
-          isPair
-            ? "mx-auto grid h-full min-h-0 w-full max-w-[920px] grid-cols-1 place-items-center gap-4 overflow-hidden p-1 md:auto-rows-fr md:grid-cols-2"
-            : isFourUp
-              ? "grid h-full min-h-0 w-full grid-cols-1 place-items-center gap-4 overflow-hidden p-1 sm:grid-cols-2 md:auto-rows-fr lg:grid-cols-4"
-              : "grid h-full min-h-0 w-full grid-cols-1 place-items-center gap-4 overflow-hidden p-1 sm:grid-cols-2 md:auto-rows-fr lg:grid-cols-3"
-        }
+        className={cn(
+          "grid w-full min-w-0 max-w-[67rem]",
+          "grid-cols-[repeat(auto-fit,minmax(min(100%,16rem),1fr))]",
+          "auto-rows-[minmax(11rem,auto)]",
+          "items-center justify-items-center content-center gap-3",
+          "overflow-visible",
+          "lg:h-full lg:min-h-0 lg:auto-rows-fr lg:overflow-hidden",
+        )}
       >
-        {items.map((item, index) => (
-          <div
-            key={item?.id ?? index}
-            className="module-card-grid-slot w-full"
-          >
-            <Card
-              density="compact"
-              media={getShowCardMedia(item)}
-              title={item?.title ?? null}
-              text={
-                item?.text ??
-                item?.description ??
-                item?.subtitle ??
-                item?.label ??
-                null
-              }
-              className={cn("max-w-full", item?.cardClassName)}
-              mediaClassName={item?.mediaClassName}
-              contentClassName={cn("gap-0", item?.contentClassName)}
-              titleRowClassName={item?.titleRowClassName}
-              autoContentLayout
-              zoomable={zoomable && item?.zoomable !== false}
-            />
-          </div>
-        ))}
+        {items.map((item, index) => {
+          const itemId = getCardItemId(item, index);
+          const isSelected = selectedIds.includes(itemId);
+
+          return (
+            <div
+              key={itemId}
+              className={cn(
+                "flex w-full min-w-0 items-center justify-center overflow-visible p-1",
+                "min-h-[11rem]",
+                "lg:h-full lg:min-h-0 lg:overflow-hidden",
+              )}
+            >
+              <Card
+                title={item?.title}
+                text={getItemText(item)}
+                media={item?.media}
+                interaction={item?.interaction}
+                selected={isSelected}
+                zoomable={getItemZoomable(item)}
+                variant={item?.cardVariant ?? item?.variant}
+                size={item?.size}
+                onSelect={() => onSelect?.(item, index)}
+                onComplete={() => onComplete?.(itemId, item, index)}
+              />
+            </div>
+          );
+        })}
       </div>
-    </div>
+    </section>
   );
 }

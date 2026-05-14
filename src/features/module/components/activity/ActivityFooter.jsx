@@ -4,19 +4,20 @@ import navigateBeforeIcon from "@/shared/icons/icon-navigate-before.svg?raw";
 import navigateNextIcon from "@/shared/icons/icon-navigate-next.svg?raw";
 
 const FOOTER_BUTTON_BASE_CLASS =
-  "inline-flex h-12 min-w-[96px] items-center justify-center gap-2 rounded-xl px-3 text-sm font-medium text-white transition";
+  "inline-flex h-11 w-full min-w-0 items-center justify-center gap-2 rounded-xl px-3 text-sm font-medium text-white transition sm:h-12 sm:min-w-[96px] sm:w-auto";
 const FOOTER_BUTTON_ENABLED_CLASS =
   "cursor-pointer hover:-translate-y-0.5 hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 active:translate-y-0 active:scale-[0.98]";
 const FOOTER_BUTTON_DISABLED_CLASS = "cursor-not-allowed opacity-40";
 const FOOTER_ICON_CLASS = "h-5 w-5 shrink-0";
-const FOOTER_SLOT_PLACEHOLDER_CLASS = "h-12 min-w-[96px]";
+const FOOTER_SLOT_PLACEHOLDER_CLASS = "hidden h-12 min-w-[96px] sm:block";
 const FOOTER_SHELL_CLASS = "border-t border-white/10";
 const FOOTER_SHELL_INNER_CLASS =
-  "flex h-full min-h-[var(--activity-footer-height,64px)] items-center px-[var(--activity-shell-gutter)] text-white/80";
-const FOOTER_CENTER_CLASS = "flex w-full items-center justify-center";
+  "flex min-h-[var(--activity-footer-height,64px)] w-full items-center px-[var(--activity-shell-gutter)] py-2 text-white/80 sm:py-0";
+const FOOTER_CENTER_CLASS = "flex w-full min-w-0 items-center justify-center";
 const FOOTER_NAV_GRID_CLASS =
-  "grid w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 text-sm";
-const FOOTER_TEXT_CLASS = "truncate text-center text-xs sm:text-sm";
+  "grid w-full min-w-0 grid-cols-1 items-center gap-2 text-sm sm:grid-cols-[auto_minmax(0,1fr)_auto] sm:gap-3";
+const FOOTER_TEXT_CLASS =
+  "block w-full min-w-0 whitespace-normal break-words text-center text-[11px] leading-tight sm:truncate sm:text-sm";
 
 /**
  * Reutiliza el estilo de acciones del footer.
@@ -33,41 +34,28 @@ function getFooterButtonClass(disabled) {
  * Convierte un color HEX en RGB para poder mezclarlo.
  * Si el modulo no trae un color valido, el footer cae a un dorado legible.
  */
-function hexToRgb(hex) {
-  if (typeof hex !== "string") return null;
-
-  const normalized = hex.replace("#", "").trim();
-  if (!/^[0-9a-f]{6}$/i.test(normalized)) return null;
-
-  return {
-    r: Number.parseInt(normalized.slice(0, 2), 16),
-    g: Number.parseInt(normalized.slice(2, 4), 16),
-    b: Number.parseInt(normalized.slice(4, 6), 16),
-  };
-}
-
-/**
- * Mezcla el color del modulo con blanco para que el icono contraste
- * sobre el fondo oscuro del footer sin perder relacion con el modulo.
- */
-function getFooterIconColor(themeHex) {
-  const rgb = hexToRgb(themeHex);
-  if (!rgb) return "#f5d76e";
-
-  const mix = 0.35;
-  const lift = (channel) =>
-    Math.round(channel + (255 - channel) * mix)
-      .toString(16)
-      .padStart(2, "0");
-
-  return `#${lift(rgb.r)}${lift(rgb.g)}${lift(rgb.b)}`;
+function getFooterIconColorClass(themeHex) {
+  switch (String(themeHex || "").trim().toLowerCase()) {
+    case "#00c853":
+      return "text-[#59db8f]";
+    case "#f54927":
+      return "text-[#f98973]";
+    case "#ffa500":
+      return "text-[#ffc559]";
+    case "#00ffff":
+      return "text-[#59ffff]";
+    case "#7130f7":
+      return "text-[#a378fa]";
+    default:
+      return "text-[#f5d76e]";
+  }
 }
 
 /**
  * Inserta el SVG inline usando currentColor.
  * Asi el color cae solo sobre el icono y no sobre una caja completa.
  */
-function FooterIcon({ svgMarkup, color }) {
+function FooterIcon({ svgMarkup, colorClass }) {
   const normalizedSvg = useMemo(
     () =>
       svgMarkup.replace(
@@ -80,8 +68,7 @@ function FooterIcon({ svgMarkup, color }) {
   return (
     <span
       aria-hidden="true"
-      className={FOOTER_ICON_CLASS}
-      style={{ color }}
+      className={`${FOOTER_ICON_CLASS} ${colorClass}`}
       dangerouslySetInnerHTML={{ __html: normalizedSvg }}
     />
   );
@@ -94,7 +81,7 @@ function FooterIcon({ svgMarkup, color }) {
 function FooterNavButton({
   label,
   iconSvg,
-  iconColor,
+  iconColorClass,
   iconPosition = "left",
   disabled,
   onClick,
@@ -107,13 +94,13 @@ function FooterNavButton({
       className={getFooterButtonClass(disabled)}
     >
       {iconPosition === "left" ? (
-        <FooterIcon svgMarkup={iconSvg} color={iconColor} />
+        <FooterIcon svgMarkup={iconSvg} colorClass={iconColorClass} />
       ) : null}
 
       <span>{label}</span>
 
       {iconPosition === "right" ? (
-        <FooterIcon svgMarkup={iconSvg} color={iconColor} />
+        <FooterIcon svgMarkup={iconSvg} colorClass={iconColorClass} />
       ) : null}
     </button>
   );
@@ -123,7 +110,7 @@ function FooterNavSlot({
   visible = true,
   label,
   iconSvg,
-  iconColor,
+  iconColorClass,
   iconPosition = "left",
   disabled,
   onClick,
@@ -138,7 +125,7 @@ function FooterNavSlot({
       onClick={onClick}
       label={label}
       iconSvg={iconSvg}
-      iconColor={iconColor}
+      iconColorClass={iconColorClass}
       iconPosition={iconPosition}
     />
   );
@@ -151,11 +138,7 @@ function FooterNavSlot({
  */
 function FooterShell({ children }) {
   return (
-    <footer
-      className={FOOTER_SHELL_CLASS}
-      style={{
-        minHeight: "var(--activity-footer-height, 64px)",
-      }}>
+    <footer className={FOOTER_SHELL_CLASS}>
       <div className={FOOTER_SHELL_INNER_CLASS}>
         {children}
       </div>
@@ -164,7 +147,7 @@ function FooterShell({ children }) {
 }
 
 export default function ModuleFooter({ model, onUiClick, themeHex }) {
-  const iconColor = getFooterIconColor(themeHex);
+  const iconColorClass = getFooterIconColorClass(themeHex);
   const wrapClick =
     (handler, enabled = true) =>
     () => {
@@ -209,7 +192,7 @@ export default function ModuleFooter({ model, onUiClick, themeHex }) {
             disabled
             label={model?.left?.label}
             iconSvg={navigateBeforeIcon}
-            iconColor={iconColor}
+            iconColorClass={iconColorClass}
             iconPosition="left"
           />
 
@@ -221,7 +204,7 @@ export default function ModuleFooter({ model, onUiClick, themeHex }) {
             disabled
             label={model?.right?.label}
             iconSvg={navigateNextIcon}
-            iconColor={iconColor}
+            iconColorClass={iconColorClass}
             iconPosition="right"
           />
         </div>
@@ -238,7 +221,7 @@ export default function ModuleFooter({ model, onUiClick, themeHex }) {
           onClick={wrapClick(model?.left?.onClick, model?.left?.enabled)}
           label={model?.left?.label}
           iconSvg={navigateBeforeIcon}
-          iconColor={iconColor}
+          iconColorClass={iconColorClass}
           iconPosition="left"
         />
 
@@ -251,7 +234,7 @@ export default function ModuleFooter({ model, onUiClick, themeHex }) {
           onClick={wrapClick(model?.right?.onClick, model?.right?.enabled)}
           label={model?.right?.label}
           iconSvg={navigateNextIcon}
-          iconColor={iconColor}
+          iconColorClass={iconColorClass}
           iconPosition="right"
         />
       </div>

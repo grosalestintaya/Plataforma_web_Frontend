@@ -1,28 +1,40 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-function getComparableInteractiveState(result = {}) {
-  return {
-    completed: Boolean(result?.completed),
-    score: Number(result?.score ?? 0),
-    type: result?.type ?? "interactive",
-    countsTowardScore: result?.countsTowardScore,
-    selectedOptionId: result?.selectedOptionId ?? null,
-    selectedOptionLabel: result?.selectedOptionLabel ?? null,
-    reasonText: result?.reasonText ?? null,
-    reasonRequired: Boolean(result?.reasonRequired),
-    balance: result?.balance ?? null,
-    total: result?.total ?? null,
-    selectedProductIds: Array.isArray(result?.selectedProductIds)
-      ? [...result.selectedProductIds].sort()
-      : null,
-  };
+function normalizeComparableValue(value) {
+  // Normaliza estructuras anidadas para comparar estados completos sin
+  // depender del orden de keys ni perder payloads especificos de cada juego.
+  if (Array.isArray(value)) {
+    return value.map(normalizeComparableValue);
+  }
+
+  if (value && typeof value === "object") {
+    return Object.keys(value)
+      .sort()
+      .reduce((acc, key) => {
+        acc[key] = normalizeComparableValue(value[key]);
+        return acc;
+      }, {});
+  }
+
+  return value;
 }
 
 function hasInteractiveStateChanged(previousResult, nextResult) {
   return (
-    JSON.stringify(getComparableInteractiveState(previousResult)) !==
-    JSON.stringify(getComparableInteractiveState(nextResult))
+    JSON.stringify(normalizeComparableValue(previousResult ?? {})) !==
+    JSON.stringify(normalizeComparableValue(nextResult ?? {}))
   );
+}
+
+function getViewId(view) {
+  // Las vistas vienen normalizadas con id/viewId, pero algunos datos legacy
+  // todavia pueden traer solo uno de los dos.
+  return view?.id ?? view?.viewId ?? null;
+}
+
+function getStateValue(state, rule) {
+  const sourceState = state?.[rule.viewId];
+  return sourceState?.[rule.stateKey];
 }
 
 /**
@@ -33,8 +45,7 @@ function isViewAllowedByState(view, interactiveState) {
   const rule = view?.when ?? view?.availability?.dependsOn;
   if (!rule) return true;
 
-  const sourceState = interactiveState?.[rule.viewId];
-  const sourceValue = sourceState?.[rule.stateKey];
+  const sourceValue = getStateValue(interactiveState, rule);
 
   if (rule.includesAny !== undefined) {
     return (
@@ -57,6 +68,58 @@ function isViewAllowedByState(view, interactiveState) {
   }
 
   return true;
+}
+
+function shouldTrackInteractiveEvent(previousResult, nextResult) {
+  // El tracking de attempt solo necesita eventos relevantes; cambios visuales
+  // menores no deben inflar el payload de eventos.
+  return (
+    previousResult?.completed !== nextResult?.completed ||
+    previousResult?.selectedOptionId !== nextResult?.selectedOptionId ||
+    previousResult?.score !== nextResult?.score
+  );
+}
+
+function shouldCountTowardMissionScore(entry) {
+  // Compatibilidad: los interactivos antiguos cuentan salvo que digan false,
+  // pero solo cuando ya estan completos para evitar promedios parciales.
+  return Boolean(entry?.completed) && entry?.countsTowardScore !== false;
+}
+
+function calculateMissionScore(interactiveState) {
+  const scores = Object.values(interactiveState)
+    .filter(shouldCountTowardMissionScore)
+    .map((entry) => Number(entry?.score))
+    .filter((value) => Number.isFinite(value));
+
+  if (!scores.length) return 0;
+
+  return Math.round(
+    scores.reduce((sum, value) => sum + value, 0) / scores.length,
+  );
+}
+
+function buildResponsePayload(viewId, result) {
+  // Mantiene campos conocidos para backend actual y agrega rawPayload para
+  // que nuevos interactivos no pierdan informacion propia.
+  return {
+    viewId,
+    type: result?.type ?? "interactive",
+    completed: Boolean(result?.completed),
+    score: Number(result?.score ?? 0),
+    countsTowardScore: result?.countsTowardScore,
+    selectedOptionId: result?.selectedOptionId ?? result?.selectedId ?? null,
+    selectedOptionLabel: result?.selectedOptionLabel ?? null,
+    reasonText: result?.reasonText ?? null,
+    reasonRequired: Boolean(result?.reasonRequired),
+    awardedCoins: Number(result?.awardedCoins ?? result?.coinsAward ?? 0),
+    balance: result?.balance ?? null,
+    total: result?.total ?? null,
+    selectedProductIds: Array.isArray(result?.selectedProductIds)
+      ? result.selectedProductIds
+      : null,
+    rawPayload: result?.payload ?? result ?? {},
+  };
 }
 
 /**
@@ -89,9 +152,10 @@ export function useActivityInteractiveState({
 
       if (!hasInteractiveStateChanged(previousState, nextResult)) return;
 
-      const shouldTrackEvent =
-        previousState?.completed !== nextResult?.completed ||
-        previousState?.selectedOptionId !== nextResult?.selectedOptionId;
+      const shouldTrackEvent = shouldTrackInteractiveEvent(
+        previousState,
+        nextResult,
+      );
 
       const nextState = {
         ...interactiveStateRef.current,
@@ -122,14 +186,7 @@ export function useActivityInteractiveState({
   );
 
   const missionScore = useMemo(() => {
-    const scores = Object.values(interactiveState)
-      .filter((entry) => entry?.countsTowardScore !== false)
-      .map((entry) => Number(entry?.score))
-      .filter((value) => Number.isFinite(value));
-
-    if (!scores.length) return 0;
-
-    return Math.round(scores.reduce((sum, value) => sum + value, 0) / scores.length);
+    return calculateMissionScore(interactiveState);
   }, [interactiveState]);
 
   const getInteractiveState = useCallback(
@@ -141,7 +198,7 @@ export function useActivityInteractiveState({
     (fromViewId, anticipatedResult = null) => {
       const views = moduleData.missions?.[missionKey]?.views ?? [];
       const currentIndex = views.findIndex(
-        (item) => (item?.id ?? item?.viewId) === fromViewId,
+        (item) => getViewId(item) === fromViewId,
       );
 
       if (currentIndex < 0) return null;
@@ -160,7 +217,7 @@ export function useActivityInteractiveState({
         .slice(currentIndex + 1)
         .find((candidate) => isViewAllowedByState(candidate, previewState));
 
-      return nextVisibleView?.id ?? nextVisibleView?.viewId ?? null;
+      return getViewId(nextVisibleView);
     },
     [missionKey, moduleData],
   );
@@ -171,16 +228,9 @@ export function useActivityInteractiveState({
    */
   const buildInteractiveResponsesPayload = useCallback(
     () =>
-      Object.entries(interactiveState).map(([viewId, result]) => ({
-        viewId,
-        type: result?.type ?? "interactive",
-        completed: Boolean(result?.completed),
-        score: Number(result?.score ?? 0),
-        selectedOptionId: result?.selectedOptionId ?? null,
-        selectedOptionLabel: result?.selectedOptionLabel ?? null,
-        reasonText: result?.reasonText ?? null,
-        reasonRequired: Boolean(result?.reasonRequired),
-      })),
+      Object.entries(interactiveState).map(([viewId, result]) =>
+        buildResponsePayload(viewId, result),
+      ),
     [interactiveState],
   );
 

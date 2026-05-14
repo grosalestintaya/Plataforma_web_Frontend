@@ -1,21 +1,55 @@
+import { cn } from "@/shared/libs/utils";
+
 /**
- * Token map for typography.
- * Keeps scale, color tone, width and alignment in one place.
+ * Typography:
+ * - Sistema tipográfico centralizado.
+ * - No recibe className ni containerClassName desde componentes padres.
+ * - Usa principalmente la configuración declarada en el JSON.
+ * - Normaliza variantes legacy como body1/body2/subtitle1/etc.
  */
+
 export const TYPOGRAPHY = {
   scale: {
     eyebrow:
-      "text-sm md:text-base font-semibold uppercase tracking-[0.12em] leading-5",
-    h1: "text-4xl md:text-7xl font-extrabold leading-tight",
-    h2: "text-3xl md:text-5xl font-extrabold leading-tight",
-    h3: "text-2xl md:text-4xl font-bold leading-snug",
+      "text-[clamp(0.7rem,0.62rem+0.35cqw,0.95rem)] font-semibold uppercase tracking-[0.12em] leading-[1.3]",
 
-    body: "text-lg md:text-3xl font-medium leading-8",
-    bodySm: "text-base md:text-lg font-medium leading-7",
-    label: "text-base md:text-lg font-bold leading-6",
-    helper: "text-sm md:text-base font-medium leading-6",
-    caption: "text-xs md:text-sm font-medium leading-5",
+    h1:
+      "text-[clamp(1.8rem,1.05rem+3.2cqw,4.2rem)] font-extrabold leading-[1.12]",
+
+    h2:
+      "text-[clamp(1.45rem,0.95rem+2.6cqw,3.2rem)] font-extrabold leading-[1.14]",
+
+    h3:
+      "text-[clamp(1.15rem,0.9rem+1.6cqw,2.1rem)] font-bold leading-[1.18]",
+
+    body:
+      "text-[clamp(0.95rem,0.78rem+0.9cqw,1.45rem)] font-medium leading-[1.42]",
+
+    bodySm:
+      "text-[clamp(0.82rem,0.72rem+0.55cqw,1.05rem)] font-medium leading-[1.45]",
+
+    label:
+      "text-[clamp(0.86rem,0.74rem+0.6cqw,1.15rem)] font-bold leading-[1.28]",
+
+    helper:
+      "text-[clamp(0.76rem,0.68rem+0.42cqw,0.98rem)] font-medium leading-[1.38]",
+
+    caption:
+      "text-[clamp(0.66rem,0.6rem+0.3cqw,0.84rem)] font-medium leading-[1.35]",
+
+    cardTitle:
+      "text-[clamp(0.9rem,0.75rem+0.95cqw,1.35rem)] font-extrabold leading-[1.15]",
+
+    cardText:
+      "text-[clamp(0.72rem,0.64rem+0.55cqw,0.95rem)] font-semibold leading-[1.28]",
+
+    cardBackTitle:
+      "text-[clamp(1rem,0.82rem+1cqw,1.45rem)] font-extrabold leading-[1.16]",
+
+    cardBackText:
+      "text-[clamp(0.8rem,0.68rem+0.7cqw,1.05rem)] font-medium leading-[1.34]",
   },
+
   tone: {
     primary: "text-white",
     secondary: "text-white/85",
@@ -24,243 +58,245 @@ export const TYPOGRAPHY = {
     accent: "text-emerald-300",
     success: "text-emerald-300",
     danger: "text-rose-300",
+    warning: "text-amber-300",
   },
+
   width: {
     narrow: "max-w-2xl",
     reading: "max-w-3xl",
-    wide: "max-w-4xl",
+    wide: "max-w-5xl",
     full: "max-w-none",
   },
+
   align: {
     left: "text-left",
     center: "text-center",
     right: "text-right",
     justify: "text-justify",
   },
+
+  clamp: {
+    none: "",
+    1: "line-clamp-1",
+    2: "line-clamp-2",
+    3: "line-clamp-3",
+    4: "line-clamp-4",
+    5: "line-clamp-5",
+  },
 };
 
-/**
- * Builds final className from typography tokens.
- */
-export function getTypographyClassName({
-  variant = "body",
-  tone = "secondary",
-  width = "reading",
-  align = "left",
-  className = "",
-} = {}) {
-  return [
-    TYPOGRAPHY.scale[variant] || TYPOGRAPHY.scale.body,
-    TYPOGRAPHY.tone[tone] || TYPOGRAPHY.tone.secondary,
-    TYPOGRAPHY.width[width] || TYPOGRAPHY.width.reading,
-    TYPOGRAPHY.align[align] || TYPOGRAPHY.align.left,
-    // La tipografia no debe romper el ancho del slot donde se renderiza.
-    "max-w-full break-words [overflow-wrap:anywhere]",
-    className,
-  ].join(" ");
-}
-
-function renderTextTag({
-  as = "p",
-  variant = "body",
-  tone = "secondary",
-  width = "reading",
-  align = "left",
-  className = "",
-  children,
-}) {
-  const Tag = as;
-  return (
-    <Tag
-      className={getTypographyClassName({
-        variant,
-        tone,
-        width,
-        align,
-        className,
-      })}>
-      {children}
-    </Tag>
-  );
-}
-
-/**
- * Heading primitive based on the token scale.
- */
-export function Heading({
-  as,
-  variant = "h1",
-  tone = "primary",
-  width = "reading",
-  align = "left",
-  className = "",
-  children,
-}) {
-  const resolvedVariant = normalizeVariant(variant);
-  const defaultTag =
-    resolvedVariant === "eyebrow"
-      ? "p"
-      : /^h[1-6]$/.test(resolvedVariant)
-        ? resolvedVariant
-        : "h3";
-
-  return renderTextTag({
-    as: as || defaultTag,
-    variant: resolvedVariant,
-    tone,
-    width,
-    align,
-    className,
-    children,
-  });
-}
-
-/**
- * Text primitive for body/caption/label/helper variants.
- */
-export function Text({
-  as = "p",
-  variant = "body",
-  tone = "secondary",
-  width = "reading",
-  align = "left",
-  className = "",
-  children,
-}) {
-  const resolvedVariant = normalizeVariant(variant);
-
-  return renderTextTag({
-    as,
-    variant: resolvedVariant,
-    tone,
-    width,
-    align,
-    className,
-    children,
-  });
-}
-
-/**
- * Splits text by empty lines and renders semantic paragraphs.
- */
-export function TextParagraphs({
-  text = "",
-  variant = "body",
-  tone = "secondary",
-  width = "reading",
-  align = "left",
-  className = "",
-}) {
-  const parts = String(text)
-    .split(/\n\s*\n/)
-    .map((item) => item.trim())
-    .filter(Boolean);
-
-  if (parts.length === 0) return null;
-
-  return (
-    <div className="flex max-w-full flex-col gap-4">
-      {parts.map((part, index) => (
-        <p
-          key={`${part}-${index}`}
-          className={getTypographyClassName({
-            variant,
-            tone,
-            width,
-            align,
-            className,
-          })}>
-          {part}
-        </p>
-      ))}
-    </div>
-  );
-}
-
-/**
- * Maps legacy variant names to the current token scale.
- */
 function normalizeVariant(variant) {
   const map = {
     h4: "h3",
     h5: "h3",
     h6: "h3",
+
     subtitle1: "body",
     subtitle2: "bodySm",
+
     body1: "body",
     body2: "bodySm",
+
     button: "label",
     overline: "eyebrow",
   };
 
-  const resolvedVariant = map[variant] ?? variant ?? "body";
-  return TYPOGRAPHY.scale[resolvedVariant] ? resolvedVariant : "body";
+  const resolved = map[variant] ?? variant ?? "body";
+
+  return TYPOGRAPHY.scale[resolved] ? resolved : "body";
 }
 
-/**
- * Maps legacy color names to current tone tokens.
- */
-function normalizeTone(color) {
+function normalizeTone(tone) {
   const map = {
+    color: "secondary",
     textPrimary: "primary",
     textSecondary: "secondary",
     error: "danger",
   };
 
-  return map[color] ?? color ?? "secondary";
+  const resolved = map[tone] ?? tone ?? "secondary";
+
+  return TYPOGRAPHY.tone[resolved] ? resolved : "secondary";
+}
+
+function normalizeAlign(align) {
+  return TYPOGRAPHY.align[align] ? align : "left";
+}
+
+function normalizeWidth(width) {
+  return TYPOGRAPHY.width[width] ? width : "full";
+}
+
+function normalizeClamp(clamp) {
+  if (clamp === undefined || clamp === null) return "none";
+  return TYPOGRAPHY.clamp[clamp] !== undefined ? clamp : "none";
+}
+
+function resolveDefaultTag(variant) {
+  if (variant === "h1") return "h1";
+  if (variant === "h2") return "h2";
+  if (variant === "h3") return "h3";
+  return "p";
 }
 
 function extractText(content, children) {
   if (children !== undefined && children !== null) return children;
-  if (typeof content === "string" || typeof content === "number")
+
+  if (typeof content === "string" || typeof content === "number") {
     return content;
-  if (Array.isArray(content?.paragraphs))
-    return content.paragraphs.join("\n\n");
+  }
+
+  if (Array.isArray(content?.paragraphs)) {
+    return content.paragraphs;
+  }
+
   return content?.text ?? "";
 }
 
-/**
- * Main typography block used by templates and compounds.
- */
+function resolveOptions({
+  content,
+  variant,
+  tone,
+  color,
+  align,
+  width,
+  clamp,
+  as,
+}) {
+  /**
+   * Prioridad:
+   * 1. JSON/content
+   * 2. Props directas
+   * 3. Fallback global
+   */
+  const resolvedVariant = normalizeVariant(content?.variant ?? variant);
+  const resolvedTone = normalizeTone(
+    content?.tone ?? content?.color ?? tone ?? color,
+  );
+  const resolvedAlign = normalizeAlign(content?.align ?? align);
+  const resolvedWidth = normalizeWidth(content?.width ?? width);
+  const resolvedClamp = normalizeClamp(content?.clamp ?? clamp);
+  const resolvedAs =
+    content?.component ?? content?.as ?? as ?? resolveDefaultTag(resolvedVariant);
+
+  return {
+    variant: resolvedVariant,
+    tone: resolvedTone,
+    align: resolvedAlign,
+    width: resolvedWidth,
+    clamp: resolvedClamp,
+    as: resolvedAs,
+  };
+}
+
+function getTextClassName({ variant, tone, align, clamp }) {
+  return cn(
+    TYPOGRAPHY.scale[variant] ?? TYPOGRAPHY.scale.body,
+    TYPOGRAPHY.tone[tone] ?? TYPOGRAPHY.tone.secondary,
+    TYPOGRAPHY.align[align] ?? TYPOGRAPHY.align.left,
+    TYPOGRAPHY.clamp[clamp] ?? "",
+
+    /**
+     * Base segura.
+     */
+    "block w-full min-w-0 max-w-full",
+
+    /**
+     * Evita cortes verticales en signos, tildes y letras altas.
+     */
+    "py-[0.08em]",
+
+    /**
+     * Permite cortes de línea naturales.
+     */
+    "whitespace-normal break-words [overflow-wrap:anywhere]",
+  );
+}
+
+function getOuterWrapperClassName() {
+  return cn(
+    /**
+     * Siempre ocupa todo el ancho del slot.
+     */
+    "block w-full min-w-0 max-w-full shrink-0",
+
+    /**
+     * Necesario para que cqw mida según el ancho real disponible.
+     */
+    "[container-type:inline-size]",
+  );
+}
+
+function getInnerWrapperClassName(width, align) {
+  return cn(
+    "block w-full min-w-0",
+    TYPOGRAPHY.width[width] ?? TYPOGRAPHY.width.full,
+
+    /**
+     * Si el bloque tiene max-width, se alinea según el JSON.
+     */
+    align === "center" && "mx-auto",
+    align === "left" && "mr-auto",
+    align === "right" && "ml-auto",
+  );
+}
+
 export default function Typography({
   content,
   children,
-  variant = "body",
-  color = "secondary",
-  align = "left",
-  component,
-  className = "",
-  containerClassName = "font-bold",
+  variant,
+  tone,
+  color,
+  align,
+  width,
+  clamp,
+  as,
 }) {
-  const resolvedVariant = normalizeVariant(content?.variant ?? variant);
-  const resolvedTone = normalizeTone(content?.color ?? color);
-  const resolvedAlign = content?.align ?? align;
   const text = extractText(content, children);
-  const Tag = component ?? content?.component ?? "p";
 
-  if (Array.isArray(content?.paragraphs)) {
+  const options = resolveOptions({
+    content,
+    variant,
+    tone,
+    color,
+    align,
+    width,
+    clamp,
+    as,
+  });
+
+  if (text === undefined || text === null || text === "") return null;
+
+  if (Array.isArray(text)) {
+    const parts = text.map((item) => String(item).trim()).filter(Boolean);
+
+    if (parts.length === 0) return null;
+
     return (
-      <TextParagraphs
-        text={content.paragraphs.join("\n\n")}
-        variant={resolvedVariant}
-        tone={resolvedTone}
-        align={resolvedAlign}
-        width="full"
-        className={className}
-      />
+      <div className={getOuterWrapperClassName()}>
+        <div
+          className={cn(
+            getInnerWrapperClassName(options.width, options.align),
+            "flex flex-col gap-4",
+          )}
+        >
+          {parts.map((part, index) => (
+            <p key={`${part}-${index}`} className={getTextClassName(options)}>
+              {part}
+            </p>
+          ))}
+        </div>
+      </div>
     );
   }
 
+  const Tag = options.as;
+
   return (
-    <Tag
-      className={getTypographyClassName({
-        variant: resolvedVariant,
-        tone: resolvedTone,
-        align: resolvedAlign,
-        width: "full",
-        className,
-      })}>
-      {text}
-    </Tag>
+    <div className={getOuterWrapperClassName()}>
+      <div className={getInnerWrapperClassName(options.width, options.align)}>
+        <Tag className={getTextClassName(options)}>{text}</Tag>
+      </div>
+    </div>
   );
 }
