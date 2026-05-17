@@ -70,7 +70,8 @@
         },
         "procedimental": {
           "title": "Clasificación y priorización de gastos",
-          "backendActivityId": null,
+          "activityId": "05",
+          "backendActivityId": "05",
           "activityKey": "m02-procedimental",
           "learn": [
             "Organizar los gastos cuando el dinero no alcanza para todo, priorizando lo más importante y necesario.",

@@ -4,20 +4,23 @@ import navigateBeforeIcon from "@/shared/icons/icon-navigate-before.svg?raw";
 import navigateNextIcon from "@/shared/icons/icon-navigate-next.svg?raw";
 
 const FOOTER_BUTTON_BASE_CLASS =
-  "inline-flex h-11 w-full min-w-0 items-center justify-center gap-2 rounded-xl px-3 text-sm font-medium text-white transition sm:h-12 sm:min-w-[96px] sm:w-auto";
+  "inline-flex h-10 max-w-[38vw] min-w-0 items-center justify-center gap-1.5 rounded-xl px-2.5 text-xs font-medium text-white transition sm:h-12 sm:max-w-none sm:min-w-[96px] sm:gap-2 sm:px-3 sm:text-sm";
 const FOOTER_BUTTON_ENABLED_CLASS =
   "cursor-pointer hover:-translate-y-0.5 hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 active:translate-y-0 active:scale-[0.98]";
 const FOOTER_BUTTON_DISABLED_CLASS = "cursor-not-allowed opacity-40";
 const FOOTER_ICON_CLASS = "h-5 w-5 shrink-0";
-const FOOTER_SLOT_PLACEHOLDER_CLASS = "hidden h-12 min-w-[96px] sm:block";
+const FOOTER_SLOT_PLACEHOLDER_CLASS =
+  "block h-10 w-[clamp(2.75rem,24vw,6rem)] sm:h-12 sm:min-w-[96px] sm:w-auto";
 const FOOTER_SHELL_CLASS = "border-t border-white/10";
 const FOOTER_SHELL_INNER_CLASS =
   "flex min-h-[var(--activity-footer-height,64px)] w-full items-center px-[var(--activity-shell-gutter)] py-2 text-white/80 sm:py-0";
 const FOOTER_CENTER_CLASS = "flex w-full min-w-0 items-center justify-center";
 const FOOTER_NAV_GRID_CLASS =
-  "grid w-full min-w-0 grid-cols-1 items-center gap-2 text-sm sm:grid-cols-[auto_minmax(0,1fr)_auto] sm:gap-3";
+  "grid w-full min-w-0 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 text-sm sm:gap-3";
 const FOOTER_TEXT_CLASS =
   "block w-full min-w-0 whitespace-normal break-words text-center text-[11px] leading-tight sm:truncate sm:text-sm";
+const FOOTER_LEFT_SLOT_CLASS = "flex min-w-0 justify-start";
+const FOOTER_RIGHT_SLOT_CLASS = "flex min-w-0 justify-end";
 
 /**
  * Reutiliza el estilo de acciones del footer.
@@ -97,7 +100,7 @@ function FooterNavButton({
         <FooterIcon svgMarkup={iconSvg} colorClass={iconColorClass} />
       ) : null}
 
-      <span>{label}</span>
+      <span className="min-w-0 truncate">{label}</span>
 
       {iconPosition === "right" ? (
         <FooterIcon svgMarkup={iconSvg} colorClass={iconColorClass} />
@@ -128,6 +131,20 @@ function FooterNavSlot({
       iconColorClass={iconColorClass}
       iconPosition={iconPosition}
     />
+  );
+}
+
+function FooterNavRow({ left, centerText, right }) {
+  return (
+    <div className={FOOTER_NAV_GRID_CLASS}>
+      <div className={FOOTER_LEFT_SLOT_CLASS}>{left}</div>
+
+      <span className={FOOTER_TEXT_CLASS}>
+        {centerText ?? "Quipu Yachay"}
+      </span>
+
+      <div className={FOOTER_RIGHT_SLOT_CLASS}>{right}</div>
+    </div>
   );
 }
 
@@ -187,57 +204,57 @@ export default function ModuleFooter({ model, onUiClick, themeHex }) {
   if (model?.type === "locked") {
     return (
       <FooterShell>
-        <div className={FOOTER_NAV_GRID_CLASS}>
-          <FooterNavButton
-            disabled
-            label={model?.left?.label}
-            iconSvg={navigateBeforeIcon}
-            iconColorClass={iconColorClass}
-            iconPosition="left"
-          />
-
-          <span className={FOOTER_TEXT_CLASS}>
-            {model?.centerText}
-          </span>
-
-          <FooterNavButton
-            disabled
-            label={model?.right?.label}
-            iconSvg={navigateNextIcon}
-            iconColorClass={iconColorClass}
-            iconPosition="right"
-          />
-        </div>
+        <FooterNavRow
+          centerText={model?.centerText}
+          left={
+            <FooterNavButton
+              disabled
+              label={model?.left?.label}
+              iconSvg={navigateBeforeIcon}
+              iconColorClass={iconColorClass}
+              iconPosition="left"
+            />
+          }
+          right={
+            <FooterNavButton
+              disabled
+              label={model?.right?.label}
+              iconSvg={navigateNextIcon}
+              iconColorClass={iconColorClass}
+              iconPosition="right"
+            />
+          }
+        />
       </FooterShell>
     );
   }
 
   return (
     <FooterShell>
-      <div className={FOOTER_NAV_GRID_CLASS}>
-        <FooterNavSlot
-          visible={model?.left?.visible !== false}
-          disabled={!model?.left?.enabled}
-          onClick={wrapClick(model?.left?.onClick, model?.left?.enabled)}
-          label={model?.left?.label}
-          iconSvg={navigateBeforeIcon}
-          iconColorClass={iconColorClass}
-          iconPosition="left"
-        />
-
-        <span className={FOOTER_TEXT_CLASS}>
-          {model?.centerText ?? "Quipu Yachay"}
-        </span>
-
-        <FooterNavButton
-          disabled={!model?.right?.enabled}
-          onClick={wrapClick(model?.right?.onClick, model?.right?.enabled)}
-          label={model?.right?.label}
-          iconSvg={navigateNextIcon}
-          iconColorClass={iconColorClass}
-          iconPosition="right"
-        />
-      </div>
+      <FooterNavRow
+        centerText={model?.centerText}
+        left={
+          <FooterNavSlot
+            visible={model?.left?.visible !== false}
+            disabled={!model?.left?.enabled}
+            onClick={wrapClick(model?.left?.onClick, model?.left?.enabled)}
+            label={model?.left?.label}
+            iconSvg={navigateBeforeIcon}
+            iconColorClass={iconColorClass}
+            iconPosition="left"
+          />
+        }
+        right={
+          <FooterNavButton
+            disabled={!model?.right?.enabled}
+            onClick={wrapClick(model?.right?.onClick, model?.right?.enabled)}
+            label={model?.right?.label}
+            iconSvg={navigateNextIcon}
+            iconColorClass={iconColorClass}
+            iconPosition="right"
+          />
+        }
+      />
     </FooterShell>
   );
 }
