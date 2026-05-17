@@ -3,8 +3,8 @@ import ShowDashboardTitle from "../../components/ShowDashboardTitle";
 import { UserService } from "../../services/user.service";
 import { useAuth } from "../../../auth/components/AuthContext";
 
-const getAvatarPath = (imgKey) => `/avatars/${imgKey}.png`;
-const getgifPath = (imgKey) => `/activity/avatars/${imgKey}.gif`;
+const getAvatarPath = (imgKey) => `/avatars/${imgKey}.webp`;
+const getgifPath = (imgKey) => `/activity/avatars/${imgKey}.webp`;
 const FRASES = [
   "¡Hoy te ves increíble, guerrero! ✨",
   "Cada día que entrenas... me haces feliz 🥹",

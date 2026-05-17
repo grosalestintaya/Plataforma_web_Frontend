@@ -1,6 +1,7 @@
 import React from "react";
 import { LogOut, X } from "lucide-react";
 import SidebarNavItem from "./SidebarNavItem";
+import { useNavigate } from "react-router-dom";
 
 export default function SidebarPanel({
   menuItems,
@@ -11,6 +12,8 @@ export default function SidebarPanel({
   onLogout,
   mode = "desktop", // "desktop" | "mobile-modal"
 }) {
+  const navigate = useNavigate();
+
   const isMobileModal = mode === "mobile-modal";
 
   const rootClass = [
@@ -55,10 +58,12 @@ export default function SidebarPanel({
                 " ",
               )}>
               <img
-                src="/logo.png"
+                src="/logo.webp"
                 alt="Logo"
+                onClick={() => navigate("/app")}
                 className={[
-                  "object-contain transition-all duration-300",
+                  "object-contain transition-all duration-300 cursor-pointer select-none",
+                  "hover:scale-110 active:scale-105",
                   isCollapsed
                     ? "h-9 w-9"
                     : isDesktop

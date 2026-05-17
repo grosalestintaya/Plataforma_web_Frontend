@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { createPortal } from "react-dom";
 import { Menu } from "lucide-react";
-import bg from "@/assets/dashboard/bg4.png";
+import bg from "@/assets/dashboard/bg4.webp";
 import { useAuth } from "../../auth/components/AuthContext";
 import LogoutModal from "../../auth/pages/LogOut";
 import SidebarPanel from "./SidebarPanel";

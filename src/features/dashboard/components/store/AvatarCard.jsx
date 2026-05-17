@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 
 function getAvatarImageSrc(imgKey) {
   if (!imgKey) return null;
-  return `/avatars/${imgKey}.png`;
+  return `/avatars/${imgKey}.webp`;
 }
 
 function StatusBadge({ avatar }) {

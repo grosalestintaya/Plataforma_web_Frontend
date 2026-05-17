@@ -78,7 +78,7 @@
           "align": "center"
         },
         "media": {
-          "src": "1/pensando.png",
+          "src": "1/pensando.webp",
           "alt": "Producto del kiosko para la situacion 1",
           "variant": "horizontal"
         }
@@ -168,7 +168,7 @@
           "align": "center"
         },
         "media": {
-          "src": "1/extra-canje.png",
+          "src": "1/extra-canje.webp",
           "alt": "Situacion de ahorro frente al kiosko",
           "variant": "vertical"
         }
@@ -252,7 +252,7 @@
           "align": "center"
         },
         "media": {
-          "src": "1/galleta.png",
+          "src": "1/galleta.webp",
           "alt": "Dinero sobrante del recreo en la situacion 3",
           "variant": "square"
         }
@@ -342,7 +342,7 @@
           "align": "center"
         },
         "media": {
-          "src": "1/impulso.jpeg",
+          "src": "1/impulso.webp",
           "alt": "Kiosko con compra no planificada",
           "variant": "vertical"
         }

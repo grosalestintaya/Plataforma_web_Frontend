@@ -18,7 +18,7 @@ export default function LandingPage() {
       <header className="sticky top-0 z-20 border-b border-slate-200/70 bg-white/80 backdrop-blur bg-yellow-50">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 ">
           <div className="flex items-center gap-3 ">
-            <img src="/logo_full.png" alt="Quipu Yachay" className="h-12 " />
+            <img src="/logo_full.webp" alt="Quipu Yachay" className="h-12 " />
             <div className="  leading-tight ">
               <div className="pl-10 text-xl text-slate-600 text-yellow-700 ">
                 Tejiendo saberes, ordenando tu futuro.
@@ -45,7 +45,7 @@ export default function LandingPage() {
       <Hero />
 
       <main className="mx-auto max-w-6xl px-4 py-8 md:py-10">
-        {/* HERO NUEVO (con /public/hero/hero.png) */}
+        {/* HERO NUEVO (con /public/hero/hero.webp) */}
 
         {/* What you do here */}
         <section id="que-haras-aqui" className="mt-10">
@@ -230,7 +230,11 @@ export default function LandingPage() {
             {/* Brand */}
             <div>
               <div className="flex items-center gap-3">
-                <img src="/logo_full.png" alt="Quipu Yachay" className="h-11" />
+                <img
+                  src="/logo_full.webp"
+                  alt="Quipu Yachay"
+                  className="h-11"
+                />
                 <div>
                   <div className="text-xs text-slate-600">
                     Tejiendo saberes, ordenando tu futuro.

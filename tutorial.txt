@@ -5,3 +5,28 @@ npm cache clean --force
 npm install
 
                   <div className="h-px min-w-[20px] flex-1 bg-white/80 sm:min-w-[26px] lg:min-w-[32px]" />
+
+
+-----------------------------------------------------------
+----- uso de el trasformador de imagenes ------------------
+-----------------------------------------------------------
+--    chmod +x optimize-images.sh                        --
+--                                                       --
+--   # Carpeta actual                                    --
+--   ./optimize-images.sh                                -- 
+--                                                       --
+--   # Carpeta específica                                --
+--   ./optimize-images.sh /var/www/proyecto/assets       --   
+--                                                       --
+--   # Recursivo (entra en subcarpetas)                  --
+--   ./optimize-images.sh /var/www/proyecto -r           --
+--                                                       --
+--   # Calidad personalizada (default: 82)               --
+--   ./optimize-images.sh /var/www/proyecto -r -q 78     --
+--                                                       --
+--   # Simular sin tocar nada (dry-run)                  --
+--   ./optimize-images.sh /var/www/proyecto --dry-run    --
+--                                                       --
+-----------------------------------------------------------
+-------------- create by georgertx ------------------------
+-----------------------------------------------------------

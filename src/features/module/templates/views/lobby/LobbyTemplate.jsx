@@ -1,10 +1,13 @@
 import { useAvatarStore } from "@/features/dashboard/hooks/useAvatarStore";
-import coinIcon from "@/assets/dashboard/coin.png";
+import coinIcon from "@/assets/dashboard/coin.webp";
 import Confetti from "react-confetti";
+import React, { useMemo, useRef } from "react";
 
 import MetricPanel from "@/features/dashboard/components/metricalpanel";
 import * as Blocks from "@/features/module/blocks";
 import { useEquippedAvatar } from "@/features/dashboard/services/useEquippedAvatar.service";
+import { useState, useEffect } from "react";
+
 const XP_ICON_DATA_URI = `data:image/svg+xml;utf8,${encodeURIComponent(`
   <svg width="76" height="82" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <circle cx="12" cy="9" r="6" stroke="#facc15" stroke-width="1.8" />
@@ -27,6 +30,27 @@ const LOBBY_VARIANT_BY_TEMPLATE = {
   waitLobby: "wait",
 };
 
+// ─── Hook responsivo ──────────────────────────────────────────────────────────
+function useIsMobile(breakpoint = 481) {
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== "undefined" && window.innerWidth < breakpoint,
+  );
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia(`(max-width: ${breakpoint - 1}px)`);
+    const handler = (e) => setIsMobile(e.matches);
+    if (mq.addEventListener) mq.addEventListener("change", handler);
+    else mq.addListener(handler);
+    setIsMobile(mq.matches);
+    return () => {
+      if (mq.removeEventListener) mq.removeEventListener("change", handler);
+      else mq.removeListener(handler);
+    };
+  }, [breakpoint]);
+  return isMobile;
+}
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
 function getBaseRowItems(view) {
   const compounds = Array.isArray(view?.elements?.compound)
     ? view.elements.compound
@@ -142,9 +166,9 @@ function getPayload(data = {}, view, heroApi, avatar) {
     },
   };
 }
-import { useState, useEffect } from "react";
 
-function MascotBubble({ message }) {
+// ─── MascotBubble ─────────────────────────────────────────────────────────────
+function MascotBubble({ message, isMobile }) {
   const text = message ?? "¡Hola! Soy Quipu.\nTe guío en esta misión 🙌";
   const [displayed, setDisplayed] = useState("");
   const [done, setDone] = useState(false);
@@ -166,16 +190,15 @@ function MascotBubble({ message }) {
 
   return (
     <div style={{ position: "relative", marginBottom: 8, padding: "0 8px" }}>
-      {/* burbuja */}
       <div
         style={{
           background: "#fff",
-          border: "2.5px solid #111",
+          border: "2.5px solid #000000FF",
           borderRadius: 14,
-          padding: "10px 14px",
+          padding: isMobile ? "7px 10px" : "10px 24px",
           whiteSpace: "pre-line",
-          fontSize: 12,
-          fontWeight: 700,
+          fontSize: isMobile ? 10 : 14,
+          fontWeight: 600,
           lineHeight: 1.5,
           color: "#111",
           textAlign: "center",
@@ -196,8 +219,6 @@ function MascotBubble({ message }) {
           />
         )}
       </div>
-
-      {/* cola de la burbuja apuntando hacia abajo */}
       <div
         style={{
           position: "absolute",
@@ -224,13 +245,12 @@ function MascotBubble({ message }) {
           borderTop: "10px solid #fff",
         }}
       />
-
       <style>{`@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }`}</style>
     </div>
   );
 }
-// ─── PreGame ──────────────────────────────────────────────────────────────────
-// titulo arriba, fila inferior: texto izquierda | imagen derecha
+
+// ─── Step accent colors ───────────────────────────────────────────────────────
 const STEP_ACCENTS = [
   { border: "#f9c74f", bg: "rgba(249,199,79,0.12)" },
   { border: "#6ee7b7", bg: "rgba(110,231,183,0.12)" },
@@ -238,80 +258,6 @@ const STEP_ACCENTS = [
   { border: "#fca5a5", bg: "rgba(252,165,165,0.12)" },
 ];
 
-function PreGame({ payload }) {
-  const equippedAvatarName = payload?.equippedAvatarName;
-  const imageSrc = `avatars/${equippedAvatarName}.gif`;
-  const imageAlt = equippedAvatarName
-    ? `Avatar de ${equippedAvatarName}`
-    : (payload?.media?.alt ?? "Imagen");
-
-  return (
-    <div
-      className="flex flex-col h-[99%] w-full overflow-hidden rounded-2xl pb-0.5"
-      style={{
-        background: "rgba(255,255,255,0.08)",
-        backdropFilter: "blur(16px)",
-        border: "1px solid rgba(255,255,255,0.15)",
-      }}>
-      {/* grid principal */}
-      <div
-        className="flex-1 grid min-h-0"
-        style={{ gridTemplateColumns: "1fr 500px" }}>
-        {/* columna izquierda */}
-        <div
-          className="flex flex-col gap-4 px-7 py-6"
-          style={{ borderRight: "1px solid rgba(255,255,255,0.1)" }}>
-          {/* título */}
-          <div
-            className="text-yellow-300 font-black tracking-widest uppercase"
-            style={{ fontSize: 6, textShadow: "0 2px 8px rgba(0,0,0,0.4)" }}>
-            <Blocks.Typography
-              content={payload?.title}
-              variant={payload?.title?.variant ?? "h1"}
-              color={payload?.title?.color}
-              align={payload?.title?.align}
-            />
-          </div>
-
-          <div className="flex flex-col gap-2 flex-1 overflow-auto pb-1 px-9">
-            {(payload?.body?.paragraphs ?? []).map((text, i) => {
-              if (!text.trim()) return null;
-              const accent = STEP_ACCENTS[i % STEP_ACCENTS.length];
-              return (
-                <div
-                  key={i}
-                  className="flex items-center gap-6 rounded-xl px-6 py-4"
-                  style={{
-                    background: "rgba(0,0,0,0.22)",
-                    border: "5px solid rgba(255,255,255,0.08)",
-                    borderLeft: `3px solid ${accent.border}`,
-                  }}>
-                  <span className="text-white text-2xl font-medium leading-snug">
-                    {text}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* columna derecha — mascota */}
-        <div
-          className="flex flex-col items-center justify-end px-4 pb-1.5 pt-0"
-          style={{ background: "rgba(0,0,0,0.1)" }}>
-          <MascotBubble message={getRandomMessage()} />
-
-          <Blocks.Image
-            src={imageSrc}
-            alt={imageAlt}
-            className="w-full object-contain h-[89%]"
-            style={{ maxWidth: 550 }}
-          />
-        </div>
-      </div>
-    </div>
-  );
-}
 const MASCOT_MESSAGES = [
   "¡Hola! Soy Quipu.\nTe guío en esta misión 🙌",
   "¿Listo para aprender?\n¡Vamos juntos! 💪",
@@ -324,20 +270,119 @@ const MASCOT_MESSAGES = [
 function getRandomMessage() {
   return MASCOT_MESSAGES[Math.floor(Math.random() * MASCOT_MESSAGES.length)];
 }
-// ─── PostGame ─────────────────────────────────────────────────────────────────
-// titulo arriba, fila inferior: xp izquierda | imagen centro (TODO) | coins derecha
 
-function PostGame({ payload }) {
+// ─── PreGame ──────────────────────────────────────────────────────────────────
+// Desktop: grid 2 cols (texto | avatar)
+// Mobile:  solo columna de texto, avatar oculto
+function PreGame({ payload, isMobile }) {
+  const equippedAvatarName = payload?.equippedAvatarName;
+  const imageSrc = `avatars/${equippedAvatarName}.webp`;
+  const imageAlt = equippedAvatarName
+    ? `Avatar de ${equippedAvatarName}`
+    : (payload?.media?.alt ?? "Imagen");
+
+  return (
+    <div
+      className="flex flex-col h-[99%] w-full overflow-hidden rounded-2xl pb-0.5"
+      style={{
+        background: "rgba(255,255,255,0.08)",
+        backdropFilter: "blur(16px)",
+        border: "1px solid rgba(255,255,255,0.15)",
+      }}>
+      {/* grid principal — mobile: 1 col, desktop: 2 cols */}
+      <div
+        className="flex-1 min-h-0"
+        style={{
+          display: "grid",
+          gridTemplateColumns: isMobile ? "1fr" : "1fr 500px",
+        }}>
+        {/* columna izquierda — texto */}
+        <div
+          className="flex flex-col overflow-hidden"
+          style={{
+            gap: isMobile ? 8 : 16,
+            padding: isMobile ? "12px 10px" : "24px 28px",
+            borderRight: isMobile ? "none" : "1px solid rgba(255,255,255,0.1)",
+          }}>
+          {/* título */}
+          <div
+            className="text-yellow-300 font-black tracking-widest uppercase"
+            style={{
+              fontSize: isMobile ? 5 : 6,
+              textShadow: "0 2px 8px rgba(0,0,0,0.4)",
+            }}>
+            <Blocks.Typography
+              content={payload?.title}
+              variant={payload?.title?.variant ?? "h1"}
+              color={payload?.title?.color}
+              align={payload?.title?.align}
+            />
+          </div>
+
+          {/* párrafos */}
+          <div
+            className="flex flex-col flex-1 overflow-auto pb-1"
+            style={{
+              gap: isMobile ? 6 : 8,
+              paddingInline: isMobile ? 4 : 36,
+            }}>
+            {(payload?.body?.paragraphs ?? []).map((text, i) => {
+              if (!text.trim()) return null;
+              const accent = STEP_ACCENTS[i % STEP_ACCENTS.length];
+              return (
+                <div
+                  key={i}
+                  className="flex items-center rounded-xl"
+                  style={{
+                    gap: isMobile ? 8 : 24,
+                    padding: isMobile ? "8px 10px" : "16px 24px",
+                    background: "rgba(0,0,0,0.22)",
+                    border: "5px solid rgba(255,255,255,0.08)",
+                    borderLeft: `3px solid ${accent.border}`,
+                  }}>
+                  <span
+                    className="text-white font-medium leading-snug"
+                    style={{ fontSize: isMobile ? 14 : 24 }}>
+                    {text}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* columna derecha — mascota: OCULTA en móvil */}
+        {!isMobile && (
+          <div
+            className="flex flex-col items-center justify-end px-4 pb-1.5 pt-0"
+            style={{ background: "rgba(0,0,0,0.1)" }}>
+            <MascotBubble message={getRandomMessage()} isMobile={false} />
+            <Blocks.Image
+              src={imageSrc}
+              alt={imageAlt}
+              className="w-full object-contain h-[89%]"
+              style={{ maxWidth: 550 }}
+            />
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ─── PostGame ─────────────────────────────────────────────────────────────────
+// Desktop: grid 3 cols (métricas | mascota | stats)
+// Mobile:  columna vertical — métricas arriba, imagen centro (más pequeña), stats abajo
+function PostGame({ payload, isMobile }) {
   const equippedAvatarName = payload?.equippedAvatarName;
   const { xp, coins } = payload?.rewards ?? {};
-  const attempt = payload?.attempt ?? {}; // 👈 nuevo
-  const imageSrc = `activity/avatars/${equippedAvatarName}.gif`;
+  const attempt = payload?.attempt ?? {};
+  const imageSrc = `activity/avatars/${equippedAvatarName}.webp`;
   const imageAlt = equippedAvatarName
     ? `Avatar de ${equippedAvatarName}`
     : (payload?.media?.alt ?? "Imagen");
 
   const [showConfetti, setShowConfetti] = useState(true);
-
   useEffect(() => {
     const timer = setTimeout(() => setShowConfetti(false), 9000);
     return () => clearTimeout(timer);
@@ -345,8 +390,9 @@ function PostGame({ payload }) {
 
   return (
     <div
-      className="flex flex-col h-[100%] w-full overflow-hidden rounded-2xl"
+      className="flex flex-col w-full overflow-hidden rounded-2xl"
       style={{
+        height: isMobile ? "auto" : "100%",
         background: "rgba(255,255,255,0.08)",
         backdropFilter: "blur(16px)",
         border: "1px solid rgba(255,255,255,0.15)",
@@ -355,7 +401,7 @@ function PostGame({ payload }) {
       {showConfetti && (
         <Confetti
           recycle={false}
-          numberOfPieces={300}
+          numberOfPieces={isMobile ? 150 : 300}
           gravity={0.18}
           style={{
             position: "absolute",
@@ -367,7 +413,9 @@ function PostGame({ payload }) {
       )}
 
       {/* título */}
-      <div className="px-7 pt-6 pb-2 text-center">
+      <div
+        className="text-center"
+        style={{ padding: isMobile ? "12px 12px 6px" : "24px 28px 8px" }}>
         <Blocks.Typography
           content={payload?.title}
           variant={payload?.title?.variant ?? "h1"}
@@ -376,60 +424,129 @@ function PostGame({ payload }) {
         />
       </div>
 
-      {/* grid: xp | mascota | coins */}
+      {/* contenido principal */}
       <div
-        className="flex-1 grid min-h-0 px-6 py-1.5 gap-5.4"
-        style={{ gridTemplateColumns: "1fr 1fr 1fr" }}>
-        <div className="pt-10">
+        className="flex-1 min-h-0"
+        style={
+          isMobile
+            ? {
+                display: "flex",
+                flexDirection: "column",
+                gap: 10,
+                padding: "8px 10px",
+              }
+            : {
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr 1fr",
+                gap: "5.4px",
+                padding: "6px 24px",
+              }
+        }>
+        {/* métricas XP + Coins */}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: isMobile ? "row" : "column",
+            gap: isMobile ? 8 : 0,
+            paddingTop: isMobile ? 0 : 40,
+            justifyContent: "center",
+            alignItems: isMobile ? "stretch" : "center",
+            width: "100%",
+            boxSizing: "border-box",
+            padding: isMobile ? "0 8px" : "40px 0 0 0",
+          }}>
           <MetricPanel
             title={xp?.title?.text || xp?.title}
             value={attempt?.xpEarned || xp?.text?.text}
             color="#2962ff"
             textColor="#fff8e6"
             accent="#f9c74f"
-            className="min-h-[200px] max-w-[440px] mx-auto rounded-2xl px-4 py-3"
+            className="rounded-2xl"
+            style={{
+              minHeight: isMobile ? "unset" : 200,
+              width: isMobile ? 0 : "100%", // ← clave: fuerza igual tamaño en móvil
+              maxWidth: isMobile ? "none" : 440,
+              flex: 1, // ← siempre flex: 1 para que sean iguales
+              padding: isMobile ? "8px 10px" : "12px 16px",
+              margin: isMobile ? 0 : "0 auto",
+              boxSizing: "border-box",
+              overflow: "hidden", // ← evita desbordamiento
+            }}
             icon={
               <img
                 src={xp?.media?.src}
                 alt={xp?.media?.alt}
-                className="h-300 w-300"
+                style={{
+                  width: isMobile ? 28 : 48,
+                  height: isMobile ? 28 : 48,
+                  objectFit: "contain",
+                  flexShrink: 0, // ← evita que el icono se comprima
+                }}
               />
             }
           />
-          <br />
+          {!isMobile && <br />}
           <MetricPanel
             title={coins?.title?.text || coins?.title}
             value={attempt?.coinsAwarded ?? coins?.text?.text}
             color="#ffc400"
             textColor="#ecfdf5"
             accent=""
-            className="min-h-[200px] max-w-[440px] mx-auto rounded-2xl px-4 py-3"
+            className="rounded-2xl"
+            style={{
+              minHeight: isMobile ? "unset" : 200,
+              width: isMobile ? 0 : "100%", // ← mismo fix
+              maxWidth: isMobile ? "none" : 440,
+              flex: 1,
+              padding: isMobile ? "8px 10px" : "12px 16px",
+              margin: isMobile ? 0 : "0 auto",
+              boxSizing: "border-box",
+              overflow: "hidden",
+            }}
             icon={
               <img
                 src={coins?.media?.src}
                 alt={coins?.media?.alt}
-                className="h-300 w-300 object-contain"
+                style={{
+                  width: isMobile ? 28 : 48,
+                  height: isMobile ? 28 : 48,
+                  objectFit: "contain",
+                  flexShrink: 0,
+                }}
               />
             }
           />
         </div>
 
-        <div className="flex items-center justify-center">
+        {/* imagen / mascota — visible en móvil pero más pequeña */}
+        <div
+          className="flex items-center justify-center"
+          style={{ maxHeight: isMobile ? 160 : "none" }}>
           <Blocks.Image
             src={imageSrc}
             alt={imageAlt}
             variant="square"
-            className="w-full h-full object-contain border-0"
+            className="object-contain border-0"
+            style={{
+              width: "100%",
+              height: isMobile ? 140 : "100%",
+            }}
           />
         </div>
 
-        <div className="pt-10 px-4">
-          {" "}
-          {/* mensaje del intento */}
+        {/* stats / mensaje del intento */}
+        <div
+          style={{
+            paddingTop: isMobile ? 0 : 40,
+            paddingInline: isMobile ? 0 : 16,
+          }}>
           {attempt?.message && (
             <div
-              className="mx-6 mb-2 px-4 py-4 rounded-xl text-center text-4xl font-semibold"
+              className="rounded-xl text-center font-semibold"
               style={{
+                margin: isMobile ? "0 0 6px" : "0 24px 8px",
+                padding: isMobile ? "8px 10px" : "16px",
+                fontSize: isMobile ? 16 : 36,
                 background: attempt?.passed
                   ? "rgba(110,231,183,0.15)"
                   : "rgba(252,165,165,0.15)",
@@ -443,26 +560,30 @@ function PostGame({ payload }) {
               {attempt.message}
             </div>
           )}
-          {/* score del intento */}
           {attempt?.score != null && (
-            <div className="text-justify text-white/70 text-3xl mb-1 pl-8   font-semibold py-5">
-              🟡 Puntaje de este intento:{" "}
-              <span className="font-bold text-white/100">{attempt.score}</span>{" "}
+            <div
+              className="text-white/70 font-semibold"
+              style={{
+                fontSize: isMobile ? 13 : 28,
+                padding: isMobile ? "4px 6px" : "20px 0 20px 32px",
+                textAlign: isMobile ? "center" : "justify",
+                marginBottom: 4,
+              }}>
+              🟡 Puntaje:{" "}
+              <span className="font-bold text-white">{attempt.score}</span>
               <br />
               {attempt?.prevBestScore != null && (
                 <span>
-                  {" "}
                   🔴 Mejor marca:{" "}
-                  <span className="font-bold text-white/100">
+                  <span className="font-bold text-white">
                     {attempt.prevBestScore}
-                  </span>{" "}
+                  </span>
                   <br />
                 </span>
               )}
               {attempt?.minScore != null && (
                 <span>
-                  {" "}
-                  🔵 Mínimo para aprobar:{" "}
+                  🔵 Mínimo:{" "}
                   <span className="font-bold text-white/80">
                     {attempt.minScore}
                   </span>
@@ -475,8 +596,11 @@ function PostGame({ payload }) {
 
       {/* footer */}
       <div
-        className="px-7 py-0 text-center"
-        style={{ borderTop: "1px solid rgba(255,255,255,0.1)" }}>
+        className="text-center"
+        style={{
+          padding: isMobile ? "6px 10px" : "0 28px",
+          borderTop: "1px solid rgba(255,255,255,0.1)",
+        }}>
         <Blocks.Typography
           content={payload?.footer}
           variant={payload?.footer?.variant ?? "bodySm"}
@@ -487,9 +611,9 @@ function PostGame({ payload }) {
     </div>
   );
 }
-// ─── Wait ─────────────────────────────────────────────────────────────────────
 
-function Wait({ payload }) {
+// ─── Wait ─────────────────────────────────────────────────────────────────────
+function Wait({ payload, isMobile }) {
   return (
     <div
       style={{
@@ -498,9 +622,11 @@ function Wait({ payload }) {
         height: "100%",
         minHeight: 0,
         width: "100%",
-        gap: "10px",
+        gap: isMobile ? 6 : 10,
       }}>
-      <div className="rounded-2xl p-5 text-center">
+      <div
+        className="rounded-2xl text-center"
+        style={{ padding: isMobile ? "12px 10px" : "20px" }}>
         <div className="mx-auto max-w-[760px]">
           <Blocks.Typography
             content={payload?.title}
@@ -512,12 +638,15 @@ function Wait({ payload }) {
       </div>
 
       {payload?.media?.src && (
-        <div className="rounded-2xl p-5 flex-1 min-h-0">
+        <div
+          className="rounded-2xl flex-1 min-h-0"
+          style={{ padding: isMobile ? "8px" : "20px" }}>
           <Blocks.Image
             src={payload?.media?.src}
             alt={payload?.media?.alt ?? "Imagen"}
             variant={payload?.media?.variant ?? payload?.media?.ratio}
-            className="min-h-[220px] w-full h-full object-cover"
+            className="w-full h-full object-cover"
+            style={{ minHeight: isMobile ? 140 : 220 }}
           />
         </div>
       )}
@@ -526,16 +655,19 @@ function Wait({ payload }) {
 }
 
 // ─── Entry point ──────────────────────────────────────────────────────────────
-
 export default function LobbyTemplate({ variant, data, heroApi, view }) {
+  const isMobile = useIsMobile(481);
   const { equipped, owned } = useAvatarStore();
   const avatar = equipped || owned;
   const resolvedVariant = resolveVariant(variant, view);
   const payload = getPayload(data, view, heroApi, avatar);
 
-  if (resolvedVariant === "preGame") return <PreGame payload={payload} />;
-  if (resolvedVariant === "postGame") return <PostGame payload={payload} />;
-  if (resolvedVariant === "wait") return <Wait payload={payload} />;
+  if (resolvedVariant === "preGame")
+    return <PreGame payload={payload} isMobile={isMobile} />;
+  if (resolvedVariant === "postGame")
+    return <PostGame payload={payload} isMobile={isMobile} />;
+  if (resolvedVariant === "wait")
+    return <Wait payload={payload} isMobile={isMobile} />;
 
   return (
     <div style={{ color: "rgba(255,255,255,0.8)" }}>

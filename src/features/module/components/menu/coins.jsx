@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import coin from "@/assets/dashboard/coin.png";
+import coin from "@/assets/dashboard/coin.webp";
 
 function formatInt(value) {
   return new Intl.NumberFormat("es-PE").format(Number(value || 0));

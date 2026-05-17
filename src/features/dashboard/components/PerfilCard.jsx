@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 
 const PerfilCard = ({ user }) => {
-  const profileImage = `/avatars/${user?.avatar || "default"}.png`;
+  const profileImage = `/avatars/${user?.avatar || "default"}.webp`;
 
   return (
     <motion.div

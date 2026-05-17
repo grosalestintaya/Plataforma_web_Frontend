@@ -9,11 +9,11 @@ export function getInitials(fullName = "") {
 }
 
 export function resolveInsignia(pinnedImg) {
-  if (!pinnedImg) return `${INSIGNIA_BASE}/default.png`;
+  if (!pinnedImg) return `${INSIGNIA_BASE}/default.webp`;
   return `${INSIGNIA_BASE}/${pinnedImg}`;
 }
 
 export function resolveAvatar(imgKey) {
-  if (!imgKey) return `${AVATAR_BASE}/default.png`;
-  return `${AVATAR_BASE}/${imgKey}.png`;
+  if (!imgKey) return `${AVATAR_BASE}/default.webp`;
+  return `${AVATAR_BASE}/${imgKey}.webp`;
 }

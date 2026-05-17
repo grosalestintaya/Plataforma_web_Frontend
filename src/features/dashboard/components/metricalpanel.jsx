@@ -4,17 +4,11 @@ export default function MetricPanel({
   title,
   value,
   icon,
-
-  // visual state
   delta = null,
   glow = false,
   pulse = false,
-
-  // theme
   color = "var(--coin-panel-bg)",
   textColor = "var(--coin-panel-text)",
-
-  // extra
   className = "",
   children,
 }) {
@@ -24,10 +18,8 @@ export default function MetricPanel({
         `
         relative overflow-hidden rounded-2xl
         transition-all duration-300 ease-out
-
         border border-white/10
         backdrop-blur-md
-
         shadow-[0_8px_18px_rgba(0,0,0,0.12)]
         `,
         pulse && "scale-[1.02]",
@@ -47,19 +39,11 @@ export default function MetricPanel({
       }}>
       {/* Ambient Glow */}
       <div
-        className="
-          pointer-events-none
-          absolute inset-0 opacity-20
-        "
+        className="pointer-events-none absolute inset-0 opacity-20"
         style={{
           background: `
             radial-gradient(circle at 20% 18%, rgba(255,255,255,0.24), transparent 34%),
-            linear-gradient(
-              135deg,
-              transparent 0%,
-              rgba(255,255,255,0.12) 48%,
-              transparent 100%
-            )
+            linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.12) 48%, transparent 100%)
           `,
         }}
       />
@@ -68,37 +52,46 @@ export default function MetricPanel({
       <div className="absolute inset-x-0 top-0 h-px bg-white/20" />
 
       {/* Content */}
-      <div className="relative flex items-center gap-3 px-4 py-3">
-        {/* Icon */}
+      <div className="relative flex items-center gap-2 px-3 py-2 sm:gap-3 sm:px-4 sm:py-3">
+        {/* Icon — antes 120px fijo, ahora responsivo */}
         <div
           className="
-            relative flex h-[120px] w-[120px]
+            relative flex
+            h-[56px] w-[56px]
+            sm:h-[80px] sm:w-[80px]
+            md:h-[120px] md:w-[120px]
             shrink-0 items-center justify-center
             rounded-2xl
           ">
           <div className="absolute inset-[6px] rounded-xl bg-white/5" />
-
           <div className="relative z-10">{icon}</div>
         </div>
 
         {/* Text */}
         <div className="min-w-0 flex-1">
-          {/* Title */}
+          {/* Title — antes text-[30px] fijo */}
           <p
             className="
-              text-[30px]
+              text-[13px]
+              sm:text-[18px]
+              md:text-[24px]
+              lg:text-[30px]
               uppercase
               tracking-[0.18em]
               opacity-80
+              truncate
             ">
             {title}
           </p>
 
-          {/* Value */}
+          {/* Value — antes text-4xl fijo */}
           <div className="relative mt-1">
             <p
               className="
-                text-4xl xl:text-7xl
+                text-2xl
+                sm:text-3xl
+                md:text-4xl
+                xl:text-7xl
                 font-extrabold
                 leading-none
                 tabular-nums
@@ -110,7 +103,6 @@ export default function MetricPanel({
               {value}
             </p>
 
-            {/* Delta */}
             {delta !== null && (
               <span
                 className="
@@ -128,7 +120,6 @@ export default function MetricPanel({
             )}
           </div>
 
-          {/* Optional extra content */}
           {children && <div className="mt-2">{children}</div>}
         </div>
       </div>
