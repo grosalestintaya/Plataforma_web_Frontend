@@ -32,7 +32,7 @@
           "align": "justify"
         },
         "media": {
-          "src": "1/caramelo.png",
+          "src": "1/caramelo.webp",
           "alt": "Inicio de la mision conceptual",
           "variant": "vertical"
         }
@@ -92,7 +92,7 @@
           "align": "justify"
         },
         "media": {
-          "src": "1/uso-dinero.png",
+          "src": "1/uso-dinero.webp",
           "alt": "Estudiante recibiendo dinero en un contexto escolar",
           "variant": "horizontal"
         }
@@ -165,7 +165,7 @@
           "align": "left"
         },
         "media": {
-          "src": "1/uso-del-dinero-2.png",
+          "src": "1/uso-del-dinero-2.webp",
           "alt": "Situaciones cotidianas donde se usa dinero",
           "variant": "horizontal"
         }
@@ -254,7 +254,7 @@
               {
                 "id": "income-card",
                 "media": {
-                  "src": "1/recibir-dinero.png",
+                  "src": "1/recibir-dinero.webp",
                   "alt": "Ejemplo de ingreso: recibir dinero",
                   "variant": "horizontal"
                 },
@@ -272,7 +272,7 @@
               {
                 "id": "expense-card",
                 "media": {
-                  "src": "1/pagar-pasaje.png",
+                  "src": "1/pagar-pasaje.webp",
                   "alt": "Ejemplo de gasto: pagar pasaje",
                   "variant": "horizontal"
                 },
@@ -361,7 +361,7 @@
                   }
                 },
                 "media": {
-                  "src": "1/recibir-dinero.png",
+                  "src": "1/recibir-dinero.webp",
                   "alt": "Recibir una propina",
                   "variant": "horizontal"
                 },
@@ -390,7 +390,7 @@
                   }
                 },
                 "media": {
-                  "src": "1/pagar-pasaje.png",
+                  "src": "1/pagar-pasaje.webp",
                   "alt": "Pagar pasaje",
                   "variant": "horizontal"
                 },
@@ -419,7 +419,7 @@
                   }
                 },
                 "media": {
-                  "src": "1/ganar-dinero.png",
+                  "src": "1/ganar-dinero.webp",
                   "alt": "Ganar dinero por ayudar",
                   "variant": "horizontal"
                 },
@@ -448,7 +448,7 @@
                   }
                 },
                 "media": {
-                  "src": "1/comprar-comida.png",
+                  "src": "1/comprar-comida.webp",
                   "alt": "Comprar alimentos",
                   "variant": "horizontal"
                 },
@@ -477,7 +477,7 @@
                   }
                 },
                 "media": {
-                  "src": "1/pagar-pasaje.png",
+                  "src": "1/pagar-pasaje.webp",
                   "alt": "Pagar el pasaje de vuelta",
                   "variant": "horizontal"
                 },
@@ -506,7 +506,7 @@
                   }
                 },
                 "media": {
-                  "src": "1/recibir-dinero.png",
+                  "src": "1/recibir-dinero.webp",
                   "alt": "Vender algo que ya no usas",
                   "variant": "horizontal"
                 },
@@ -535,7 +535,7 @@
                   }
                 },
                 "media": {
-                  "src": "1/comprar-comida.png",
+                  "src": "1/comprar-comida.webp",
                   "alt": "Comprar ropa",
                   "variant": "horizontal"
                 },
@@ -564,7 +564,7 @@
                   }
                 },
                 "media": {
-                  "src": "1/ganar-dinero.png",
+                  "src": "1/ganar-dinero.webp",
                   "alt": "Recompensa por reciclar",
                   "variant": "horizontal"
                 },
@@ -644,7 +644,7 @@
                       "align": "center"
                     },
                     "media": {
-                      "src": "1/recibir-dinero.png",
+                      "src": "1/recibir-dinero.webp",
                       "alt": "Recibir dinero",
                       "variant": "horizontal"
                     },
@@ -665,7 +665,7 @@
                       "align": "center"
                     },
                     "media": {
-                      "src": "1/pagar-pasaje.png",
+                      "src": "1/pagar-pasaje.webp",
                       "alt": "Pagar pasaje",
                       "variant": "horizontal"
                     },
@@ -696,7 +696,7 @@
                       "align": "center"
                     },
                     "media": {
-                      "src": "1/ganar-dinero.png",
+                      "src": "1/ganar-dinero.webp",
                       "alt": "Vender un juguete",
                       "variant": "horizontal"
                     },
@@ -717,7 +717,7 @@
                       "align": "center"
                     },
                     "media": {
-                      "src": "1/comprar-comida.png",
+                      "src": "1/comprar-comida.webp",
                       "alt": "Comprar una galleta y una bebida",
                       "variant": "horizontal"
                     },
@@ -748,7 +748,7 @@
                       "align": "center"
                     },
                     "media": {
-                      "src": "1/reciclando.png",
+                      "src": "1/reciclando.webp",
                       "alt": "Reciclar y recibir dinero",
                       "variant": "horizontal"
                     },
@@ -769,7 +769,7 @@
                       "align": "center"
                     },
                     "media": {
-                      "src": "1/kiosco.png",
+                      "src": "1/kiosco.webp",
                       "alt": "Comprar una bebida",
                       "variant": "horizontal"
                     },
@@ -800,7 +800,7 @@
                       "align": "center"
                     },
                     "media": {
-                      "src": "1/propina.png",
+                      "src": "1/propina.webp",
                       "alt": "Recibir una propina",
                       "variant": "horizontal"
                     },
@@ -821,7 +821,7 @@
                       "align": "center"
                     },
                     "media": {
-                      "src": "1/recarga.png",
+                      "src": "1/recarga.webp",
                       "alt": "Pagar una recarga",
                       "variant": "horizontal"
                     },

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { resolveAvatar } from "../helpers/helpers";
-import coin from "@/assets/dashboard/coin.png";
+import coin from "@/assets/dashboard/coin.webp";
 import XpQuipuIcon from "@/shared/icons/XpQuipuIcon";
 import { Building2, Users, Sparkles } from "lucide-react";
 const clamp = (n, min = 0, max = 100) =>

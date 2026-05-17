@@ -196,7 +196,7 @@ export default function Login() {
       <div className="relative z-10 text-center mb-8 ">
         <div className="w-40 h-25 cursor-pointer" onClick={() => navigate("/")}>
           <img
-            src="/logo_full.png"
+            src="/logo_full.webp"
             alt="Quipu Yachay"
             className="w-full h-full"
           />

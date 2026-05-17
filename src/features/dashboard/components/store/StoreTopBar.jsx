@@ -1,6 +1,6 @@
 import React from "react";
 import { ShieldCheck } from "lucide-react";
-import coin from "@/assets/dashboard/coin.png";
+import coin from "@/assets/dashboard/coin.webp";
 
 function StatChip({
   label,

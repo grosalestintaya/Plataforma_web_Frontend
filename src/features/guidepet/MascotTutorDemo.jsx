@@ -1,5 +1,5 @@
 import React from "react";
-import grassPng from "@/assets/mascots/grass/base.png";
+import grassPng from "@/assets/mascots/grass/base.webp";
 
 export default function MascotTutorDemo({
   gifSrc = "/mascots/guide.gif",

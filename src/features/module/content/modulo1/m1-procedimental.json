@@ -83,7 +83,7 @@
                 "id": "go-by-combi",
                 "title": { "text": "Ir en combi", "variant": "label", "align": "center" },
                 "": { "text": "S/ 0.50", "variant": "label", "align": "center" },
-                "media": { "src": "1/ir-en-combi.png", "alt": "Ir en combi", "variant": "horizontal" },
+                "media": { "src": "1/ir-en-combi.webp", "alt": "Ir en combi", "variant": "horizontal" },
                 "score": 100,
                 "cost": 0.5,
                 "nextBalance": 4.5,
@@ -97,7 +97,7 @@
                 "id": "go-walking",
                 "title": { "text": "Ir caminando", "variant": "label", "align": "center" },
                 "text": { "text": "S/ 0.00", "variant": "label", "align": "center" },
-                "media": { "src": "1/ir-caminando.png", "alt": "Ir caminando", "variant": "horizontal" },
+                "media": { "src": "1/ir-caminando.webp", "alt": "Ir caminando", "variant": "horizontal" },
                 "score": 60,
                 "cost": 0,
                 "nextBalance": 5,
@@ -155,28 +155,28 @@
                 "id": "gaseosa",
                 "title": { "text": "Gaseosa", "variant": "helper", "align": "center" },
                 "text": { "text": "S/ 1.50", "variant": "caption", "align": "center" },
-                "media": { "src": "1/gaseosa.png", "alt": "Gaseosa", "variant": "square" },
+                "media": { "src": "1/gaseosa.webp", "alt": "Gaseosa", "variant": "square" },
                 "price": 1.5
               },
               {
                 "id": "galleta",
                 "title": { "text": "Galleta", "variant": "helper", "align": "center" },
                 "text": { "text": "S/ 1.00", "variant": "caption", "align": "center" },
-                "media": { "src": "1/galleta.png", "alt": "Galleta", "variant": "square" },
+                "media": { "src": "1/galleta.webp", "alt": "Galleta", "variant": "square" },
                 "price": 1
               },
               {
                 "id": "agua",
                 "title": { "text": "Agua", "variant": "helper", "align": "center" },
                 "text": { "text": "S/ 1.00", "variant": "caption", "align": "center" },
-                "media": { "src": "1/agua.png", "alt": "Agua", "variant": "square" },
+                "media": { "src": "1/agua.webp", "alt": "Agua", "variant": "square" },
                 "price": 1
               },
               {
                 "id": "caramelo",
                 "title": { "text": "Caramelo", "variant": "helper", "align": "center" },
                 "text": { "text": "S/ 0.50", "variant": "caption", "align": "center" },
-                "media": { "src": "1/caramelo.png", "alt": "Caramelo", "variant": "square" },
+                "media": { "src": "1/caramelo.webp", "alt": "Caramelo", "variant": "square" },
                 "price": 0.5
               }
             ]
@@ -221,7 +221,7 @@
           "variant": "h3",
           "align": "left"
         },
-        "media": { "src": "1/extra-canje.png", "alt": "Botella para canje", "variant": "vertical" }
+        "media": { "src": "1/extra-canje.webp", "alt": "Botella para canje", "variant": "vertical" }
       },
       "elements": {
         "base": [
@@ -241,7 +241,7 @@
                 "id": "recycle-bottle",
                 "title": { "text": "Canjear botella", "variant": "label", "align": "center" },
                 "text": { "text": "+ S/ 0.50", "variant": "label", "align": "center" },
-                "media": { "src": "1/canjear-botella.png", "alt": "Canjear botella", "variant": "horizontal" },
+                "media": { "src": "1/canjear-botella.webp", "alt": "Canjear botella", "variant": "horizontal" },
                 "score": 100,
                 "reward": 0.5,
                 "feedback": {
@@ -254,7 +254,7 @@
                 "id": "skip-bottle",
                 "title": { "text": "No canjear botella", "variant": "label", "align": "center" },
                 "": { "text": "S/ 0.00", "variant": "label", "align": "center" },
-                "media": { "src": "1/no-canjear-botella.png", "alt": "No canjear botella", "variant": "horizontal" },
+                "media": { "src": "1/no-canjear-botella.webp", "alt": "No canjear botella", "variant": "horizontal" },
                 "score": 60,
                 "reward": 0,
                 "feedback": {
@@ -317,7 +317,7 @@
                 "id": "return-combi",
                 "title": { "text": "Regresar en combi", "variant": "label", "align": "center" },
                 "": { "text": "S/ 0.50", "variant": "label", "align": "center" },
-                "media": { "src": "1/regresar-combi.png", "alt": "Regresar en combi", "variant": "horizontal" },
+                "media": { "src": "1/regresar-combi.webp", "alt": "Regresar en combi", "variant": "horizontal" },
                 "score": 80,
                 "cost": 0.5,
                 "feedback": {
@@ -330,7 +330,7 @@
                 "id": "return-walking",
                 "title": { "text": "Regresar caminando", "variant": "label", "align": "center" },
                 "": { "text": "S/ 0.00", "variant": "label", "align": "center" },
-                "media": { "src": "1/regresar-caminando.png", "alt": "Regresar caminando", "variant": "horizontal" },
+                "media": { "src": "1/regresar-caminando.webp", "alt": "Regresar caminando", "variant": "horizontal" },
                 "score": 100,
                 "cost": 0,
                 "feedback": {

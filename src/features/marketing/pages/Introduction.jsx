@@ -11,13 +11,13 @@ const FREE_AVATARS = [
     id_avatar: 1,
     key: "avatar_m_base",
     label: "Avatar base masculino",
-    img: "/avatars/avatar_m_base.png",
+    img: "/avatars/avatar_m_base.webp",
   },
   {
     id_avatar: 2,
     key: "avatar_f_base",
     label: "Avatar base femenino",
-    img: "/avatars/avatar_f_base.png",
+    img: "/avatars/avatar_f_base.webp",
   },
 ];
 
@@ -35,25 +35,25 @@ export default function Introduccion() {
         id: 1,
         title: "Bienvenid@ a la plataforma",
         text: "Aquí aprenderás a manejar tus finanzas de forma divertida y educativa.",
-        img: "/intro1.png",
+        img: "/intro1.webp",
       },
       {
         id: 2,
         title: "Explora los módulos",
         text: "Cada módulo te enseñará un nuevo concepto financiero a través de retos interactivos.",
-        img: "intro2.png",
+        img: "intro2.webp",
       },
       {
         id: 3,
         title: "Gana puntos y medallas",
         text: "Completa actividades y gana recompensas mientras avanzas en tu aprendizaje.",
-        img: "/intro3.png",
+        img: "/intro3.webp",
       },
       {
         id: 4,
         title: "Compite en el ranking",
         text: "Comparte tus logros y compite con otros estudiantes para mejorar tu posición.",
-        img: "/intro4.png",
+        img: "/intro4.webp",
       },
       {
         id: 5,
@@ -144,7 +144,7 @@ export default function Introduccion() {
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center bg-gray-50 p-4 md:p-10">
       <img
-        src="/logo_full.png"
+        src="/logo_full.webp"
         alt="Logo"
         className="absolute top-6 left-8 w-24 md:w-32"
       />

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import hero from "@/assets/marketing/hero.png"; // tu imagen hero
+import hero from "@/assets/marketing/hero.webp"; // tu imagen hero
 export default function Hero() {
   return (
     <section className="relative overflow-hidden bg-slate-50">

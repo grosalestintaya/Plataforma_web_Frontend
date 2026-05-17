@@ -1,4 +1,4 @@
-import activityImage001 from "/activity/image001.png";
+import activityImage001 from "/activity/image001.webp";
 import { cn } from "@/shared/libs/utils";
 import { getMediaAspectRatio } from "./mediaVariant";
 import ZoomableFrame from "../../compounds/iteractive/cardIteraction/ZoomableCard";

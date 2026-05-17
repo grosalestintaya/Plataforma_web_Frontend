@@ -5,9 +5,9 @@ import React, {
   useRef,
   useState,
 } from "react";
-import conceptual from "@/assets/modules/conceptual.png";
-import procedimental from "@/assets/modules/procedimental.png";
-import actitudinal from "@/assets/modules/actitudinal.png";
+import conceptual from "@/assets/modules/conceptual.webp";
+import procedimental from "@/assets/modules/procedimental.webp";
+import actitudinal from "@/assets/modules/actitudinal.webp";
 
 function iconForType(type) {
   if (type === "conceptual") return conceptual;

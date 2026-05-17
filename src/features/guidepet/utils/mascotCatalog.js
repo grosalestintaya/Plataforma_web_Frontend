@@ -1,9 +1,9 @@
-import llamaGif from "@/assets/mascots/llama.gif";
+import llamaGif from "@/assets/mascots/llama.webp";
 import condorGif from "@/assets/mascots/condor.gif";
 import colobri from "@/assets/mascots/colibri.gif";
 import pumaGif from "@/assets/mascots/puma.gif";
-import snakeGif from "@/assets/mascots/snake.gif";
-import guideGif from "@/assets/mascots/guide.png";
+import snakeGif from "@/assets/mascots/snake.webp";
+import guideGif from "@/assets/mascots/guide.webp";
 
 export const MASCOT_BY_MODULE = {
   m01: { key: "llama", name: "Llamita", gif: llamaGif },

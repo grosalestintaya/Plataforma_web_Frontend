@@ -9,18 +9,33 @@ import { getQuizRuntime } from "./quiz.config";
 import * as Blocks from "@/features/module/blocks";
 
 export default function QuizTemplate({ variant, data, heroApi, view }) {
-  const runtime = getQuizRuntime({
-    variant,
-    data,
-    view,
-  });
+  // =========================================================
+  // Runtime & layout
+  // =========================================================
+  const runtime = getQuizRuntime({ variant, data, view });
 
   const layout = normalizeLayout(runtime?.layoutDef);
   const slots = runtime?.slots ?? [];
   const payload = runtime?.payload ?? {};
 
-  const reason = draft.formKey === formKey ? draft.reason : "";
+  // =========================================================
+  // View / form identifiers
+  // =========================================================
+  const viewId = view?.id ?? view?.viewId ?? null;
+  const formKey = view?.formKey ?? viewId;
+  const formQuestion = runtime?.formQuestion ?? null;
 
+  // =========================================================
+  // Local state
+  // =========================================================
+  const [selectedId, setSelectedId] = useState(null);
+  const [draft, setDraft] = useState({ formKey: null, reason: "" });
+  const [showConfetti, setShowConfetti] = useState(false);
+
+  // =========================================================
+  // Derived values
+  // =========================================================
+  const reason = draft.formKey === formKey ? draft.reason : "";
   const reasonText = reason.trim();
 
   const reasonRequired = Boolean(
@@ -58,6 +73,9 @@ export default function QuizTemplate({ variant, data, heroApi, view }) {
 
   const canGoBack = Boolean(heroApi?.canGoBack ?? true);
 
+  // =========================================================
+  // Quiz progress
+  // =========================================================
   const missionViews = heroApi?.getMissionViews?.() ?? [];
 
   const quizViews = missionViews.filter((item) =>
@@ -70,36 +88,29 @@ export default function QuizTemplate({ variant, data, heroApi, view }) {
 
   const progress = {
     current: currentQuizIndex >= 0 ? currentQuizIndex + 1 : 1,
-
     total: Math.max(quizViews.length, 1),
   };
 
   const isLastQuiz = progress.current === progress.total;
 
-  /**
-   * =========================================================
-   * Trigger confetti
-   * =========================================================
-   */
-
+  // =========================================================
+  // Trigger confetti
+  // =========================================================
   useEffect(() => {
     if (isComplete && isLastQuiz) {
-      setShowConfetti(false); // reset to retrigger
+      setShowConfetti(true); // FIX: was incorrectly set to false — now triggers confetti
 
       const timer = setTimeout(() => {
-        setShowConfetti(false);
+        setShowConfetti(false); // hide after 5 s
       }, 5000);
 
       return () => clearTimeout(timer);
     }
   }, [isComplete, isLastQuiz]);
 
-  /**
-   * =========================================================
-   * Interactive state
-   * =========================================================
-   */
-
+  // =========================================================
+  // Interactive state
+  // =========================================================
   useEffect(() => {
     if (!formQuestion) return;
 
@@ -126,7 +137,10 @@ export default function QuizTemplate({ variant, data, heroApi, view }) {
     viewId,
   ]);
 
-  if (!outerLayout || !contentLayout || !slots.length) {
+  // =========================================================
+  // Guard: require valid layout & slots
+  // =========================================================
+  if (!layout || !slots.length) {
     return (
       <div className="grid h-full min-h-0 w-full place-items-center text-white/80">
         Config inválida para QuizTemplate
@@ -134,11 +148,13 @@ export default function QuizTemplate({ variant, data, heroApi, view }) {
     );
   }
 
+  // =========================================================
+  // Render
+  // =========================================================
   return (
     <HeroGrid
       layout={layout}
-      className="mx-0 w-[calc(100vw-2rem)] min-w-0 max-w-[calc(100vw-2rem)] overflow-visible px-0 sm:w-[calc(100vw-2rem)] sm:max-w-[calc(100vw-2rem)] sm:px-0 md:w-full md:max-w-full md:px-0 lg:px-12"
-    >
+      className="mx-0 w-[calc(100vw-2rem)] min-w-0 max-w-[calc(100vw-2rem)] overflow-visible px-0 sm:w-[calc(100vw-2rem)] sm:max-w-[calc(100vw-2rem)] sm:px-0 md:w-full md:max-w-full md:px-0 lg:px-12">
       {slots.map((slot, index) => {
         const renderedSlot = renderSlot(slot, payload, Blocks, {
           heroApi,
@@ -152,8 +168,7 @@ export default function QuizTemplate({ variant, data, heroApi, view }) {
           <HeroArea
             key={`${slot.area}-${slot.slotId ?? index}`}
             area={slot.area}
-            className="w-full min-w-0 max-w-full justify-start overflow-visible"
-          >
+            className="w-full min-w-0 max-w-full justify-start overflow-visible">
             {renderedSlot}
           </HeroArea>
         );
