@@ -235,11 +235,57 @@ export default function ClasifyCard({
     completed && totalItems > 0
       ? Math.round((correctCount / totalItems) * Number(runtime?.score ?? view?.score ?? 100))
       : 0;
+  const classifiedCount = Math.max(0, totalItems - bankItems.length);
+  const incorrectCount = Math.max(0, classifiedCount - correctCount);
   const bankSlots = buildSlots(
     bankItems,
     isBankLeftLayout ? Math.max(8, bankItems.length) : Math.max(6, bankItems.length),
   );
   const actionLabel = runtime?.submitLabel ?? heroApi?.advanceLabel ?? "Continuar";
+
+  function buildClassificationState(forceCompleted = completed) {
+    const isFinished = Boolean(forceCompleted);
+    const finalScore =
+      isFinished && totalItems > 0
+        ? Math.round((correctCount / totalItems) * Number(runtime?.score ?? view?.score ?? 100))
+        : 0;
+
+    return {
+      type: "objectClassification",
+      completed: isFinished,
+      terminado: isFinished,
+      finished: isFinished,
+      status: isFinished ? "terminado" : "in_progress",
+      score: finalScore,
+      countsTowardScore,
+      selectedItemId,
+      placements,
+      correctCount,
+      incorrectCount,
+      totalCount: totalItems,
+      bankCount: bankItems.length,
+      classifiedCount,
+      payload: {
+        completed: isFinished,
+        terminado: isFinished,
+        status: isFinished ? "terminado" : "in_progress",
+        placements,
+        correctCount,
+        incorrectCount,
+        totalCount: totalItems,
+        bankCount: bankItems.length,
+        classifiedCount,
+        categoryCount: categories.length,
+        layoutVariant,
+      },
+    };
+  }
+
+  function reportClassificationState(forceCompleted = completed) {
+    const nextState = buildClassificationState(forceCompleted);
+    heroApi?.setInteractiveState?.(viewId, nextState);
+    return nextState;
+  }
 
   function updatePlacements(itemId, categoryId = null) {
     if (!itemId || !itemMap.has(itemId)) return;
@@ -300,6 +346,7 @@ export default function ClasifyCard({
 
   function handleContinue(event) {
     event.stopPropagation();
+    reportClassificationState(true);
     heroApi?.advanceCurrentView?.();
   }
 
@@ -310,36 +357,19 @@ export default function ClasifyCard({
   useEffect(() => {
     if (!heroApi?.setInteractiveState || !viewId) return;
 
-    heroApi.setInteractiveState(viewId, {
-      type: "objectClassification",
-      completed,
-      score,
-      countsTowardScore,
-      selectedItemId,
-      placements,
-      correctCount,
-      totalCount: totalItems,
-      bankCount: bankItems.length,
-      payload: {
-        placements,
-        correctCount,
-        totalCount: totalItems,
-        bankCount: bankItems.length,
-        categoryCount: categories.length,
-        layoutVariant,
-      },
-    });
+    reportClassificationState();
   }, [
     heroApi,
     viewId,
     completed,
-    score,
     countsTowardScore,
     selectedItemId,
     placements,
     correctCount,
+    incorrectCount,
     totalItems,
     bankItems.length,
+    classifiedCount,
     categories.length,
     layoutVariant,
   ]);
@@ -349,21 +379,20 @@ export default function ClasifyCard({
 
     completionSentRef.current = true;
 
-    onComplete?.({
-      completed: true,
-      score,
-      correctCount,
-      totalCount: totalItems,
-      placements,
-      countsTowardScore,
-    });
+    onComplete?.(buildClassificationState(true));
   }, [
     completed,
     score,
     correctCount,
+    incorrectCount,
     totalItems,
     placements,
     countsTowardScore,
+    selectedItemId,
+    bankItems.length,
+    classifiedCount,
+    categories.length,
+    layoutVariant,
     onComplete,
   ]);
 
