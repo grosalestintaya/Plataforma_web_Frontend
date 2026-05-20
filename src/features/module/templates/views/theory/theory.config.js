@@ -343,7 +343,7 @@ export const THEORY_CONFIG = {
       {
         slotId: "mediaImageCard",
         area: "media",
-        when: (payload) => Boolean(payload?.media),
+        when: (payload) => Boolean(payload?.media,),
         block: "Card",
         props: createImageOnlyCardProps,
       },

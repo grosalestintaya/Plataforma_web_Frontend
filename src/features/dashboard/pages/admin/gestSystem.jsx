@@ -25,12 +25,6 @@ export default function GestSystem() {
         path: "../manage/grade",
       },
       {
-        title: "Administrar Insignias",
-        desc: "Crea y organiza insignias.",
-        icon: <Award size={28} />,
-        path: "../manage/insignia",
-      },
-      {
         title: "Administrar Roles",
         desc: "Controla permisos y roles del sistema.",
         icon: <Shield size={28} />,

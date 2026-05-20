@@ -83,7 +83,7 @@
           "align": "center"
         },
         "media": {
-          "src": "1/comprar-comida.png",
+          "src": "1/comprar-comida.webp",
           "alt": "Situacion sobre decidir entre gastar o guardar dinero",
           "variant": "horizontal"
         }
@@ -173,7 +173,7 @@
           "align": "center"
         },
         "media": {
-          "src": "1/botella-gaseosa.jpeg",
+          "src": "1/botella-gaseosa.webp",
           "alt": "Compra impulsiva en la tienda",
           "variant": "square"
         }
@@ -255,7 +255,7 @@
           "align": "center"
         },
         "media": {
-          "src": "1/regresar-combi.png",
+          "src": "1/regresar-combi.webp",
           "alt": "Dinero para utiles y deseos",
           "variant": "horizontal"
         }
@@ -345,7 +345,7 @@
           "align": "center"
         },
         "media": {
-          "src": "1/agua.png",
+          "src": "1/agua.webp",
           "alt": "Elegir entre gastar o reservar dinero",
           "variant": "square"
         }

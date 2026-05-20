@@ -13,14 +13,12 @@ export default function Card({
   onSelect,
   onComplete,
 }) {
-  const {
-    Component: InteractionComponent,
-    interaction: resolvedInteraction,
-  } = getCardInteractionComponent({
-    interaction,
-    media,
-    zoomable,
-  });
+  const { Component: InteractionComponent, interaction: resolvedInteraction } =
+    getCardInteractionComponent({
+      interaction,
+      media,
+      zoomable,
+    });
 
   if (InteractionComponent) {
     return (

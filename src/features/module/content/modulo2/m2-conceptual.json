@@ -30,7 +30,7 @@
           "align": "left"
         },
         "media": {
-          "src": "1/inicio-conceptual.jpeg",
+          "src": "1/inicio-conceptual.webp",
           "alt": "Inicio de la mision necesidades y deseos",
           "variant": "vertical"
         }
@@ -129,7 +129,7 @@
               {
                 "id": "need-food",
                 "media": {
-                  "src": "1/comprar-comida.png",
+                  "src": "1/comprar-comida.webp",
                   "alt": "Comida como ejemplo de necesidad",
                   "variant": "square"
                 },
@@ -146,7 +146,7 @@
               {
                 "id": "need-water",
                 "media": {
-                  "src": "1/agua.png",
+                  "src": "1/agua.webp",
                   "alt": "Agua como ejemplo de necesidad",
                   "variant": "square"
                 },
@@ -163,7 +163,7 @@
               {
                 "id": "need-transport",
                 "media": {
-                  "src": "1/ir-en-combi.png",
+                  "src": "1/ir-en-combi.webp",
                   "alt": "Transporte como ejemplo de necesidad",
                   "variant": "square"
                 },
@@ -180,7 +180,7 @@
               {
                 "id": "need-fare",
                 "media": {
-                  "src": "1/pagar-pasaje.png",
+                  "src": "1/pagar-pasaje.webp",
                   "alt": "Pasaje como ejemplo de necesidad",
                   "variant": "square"
                 },
@@ -267,7 +267,7 @@
               {
                 "id": "desire-soda",
                 "media": {
-                  "src": "1/botella-gaseosa.jpeg",
+                  "src": "1/botella-gaseosa.webp",
                   "alt": "Gaseosa como ejemplo de deseo",
                   "variant": "square"
                 },
@@ -284,7 +284,7 @@
               {
                 "id": "desire-cookie",
                 "media": {
-                  "src": "1/galleta.png",
+                  "src": "1/galleta.webp",
                   "alt": "Galleta como ejemplo de deseo",
                   "variant": "square"
                 },
@@ -301,7 +301,7 @@
               {
                 "id": "desire-candy",
                 "media": {
-                  "src": "1/caramelo.png",
+                  "src": "1/caramelo.webp",
                   "alt": "Caramelo como ejemplo de deseo",
                   "variant": "square"
                 },
@@ -318,7 +318,7 @@
               {
                 "id": "desire-sweetdrink",
                 "media": {
-                  "src": "1/gaseosa.png",
+                  "src": "1/gaseosa.webp",
                   "alt": "Bebida dulce como ejemplo de deseo",
                   "variant": "square"
                 },
@@ -393,7 +393,7 @@
               {
                 "id": "compare-need",
                 "media": {
-                  "src": "1/comprar-comida.png",
+                  "src": "1/comprar-comida.webp",
                   "alt": "Comida como ejemplo de necesidad",
                   "variant": "square"
                 },
@@ -414,7 +414,7 @@
               {
                 "id": "compare-desire",
                 "media": {
-                  "src": "1/botella-gaseosa.jpeg",
+                  "src": "1/botella-gaseosa.webp",
                   "alt": "Gaseosa como ejemplo de deseo",
                   "variant": "square"
                 },
@@ -490,7 +490,7 @@
               {
                 "id": "responsible-priority",
                 "media": {
-                  "src": "1/agua.png",
+                  "src": "1/agua.webp",
                   "alt": "Comprar lo importante primero",
                   "variant": "horizontal"
                 },
@@ -507,7 +507,7 @@
               {
                 "id": "responsible-impulse",
                 "media": {
-                  "src": "1/caramelo.png",
+                  "src": "1/caramelo.webp",
                   "alt": "No gastar por impulso",
                   "variant": "horizontal"
                 },
@@ -524,7 +524,7 @@
               {
                 "id": "responsible-balance",
                 "media": {
-                  "src": "1/recibir-dinero.png",
+                  "src": "1/recibir-dinero.webp",
                   "alt": "Mirar tu saldo antes de decidir",
                   "variant": "horizontal"
                 },
@@ -607,7 +607,7 @@
                     "id": "m2-memory-01",
                     "pairId": "pair-food",
                     "media": {
-                      "src": "1/comprar-comida.png",
+                      "src": "1/comprar-comida.webp",
                       "alt": "Comida",
                       "variant": "square"
                     },
@@ -621,7 +621,7 @@
                     "id": "m2-memory-02",
                     "pairId": "pair-food",
                     "media": {
-                      "src": "1/comprar-comida.png",
+                      "src": "1/comprar-comida.webp",
                       "alt": "Comida",
                       "variant": "square"
                     },
@@ -635,7 +635,7 @@
                     "id": "m2-memory-03",
                     "pairId": "pair-water",
                     "media": {
-                      "src": "1/agua.png",
+                      "src": "1/agua.webp",
                       "alt": "Agua",
                       "variant": "square"
                     },
@@ -649,7 +649,7 @@
                     "id": "m2-memory-04",
                     "pairId": "pair-water",
                     "media": {
-                      "src": "1/agua.png",
+                      "src": "1/agua.webp",
                       "alt": "Agua",
                       "variant": "square"
                     },
@@ -663,7 +663,7 @@
                     "id": "m2-memory-05",
                     "pairId": "pair-transport",
                     "media": {
-                      "src": "1/ir-en-combi.png",
+                      "src": "1/ir-en-combi.webp",
                       "alt": "Transporte",
                       "variant": "square"
                     },
@@ -677,7 +677,7 @@
                     "id": "m2-memory-06",
                     "pairId": "pair-transport",
                     "media": {
-                      "src": "1/ir-en-combi.png",
+                      "src": "1/ir-en-combi.webp",
                       "alt": "Transporte",
                       "variant": "square"
                     },
@@ -691,7 +691,7 @@
                     "id": "m2-memory-13",
                     "pairId": "pair-fare",
                     "media": {
-                      "src": "1/pagar-pasaje.png",
+                      "src": "1/pagar-pasaje.webp",
                       "alt": "Pasaje",
                       "variant": "square"
                     },
@@ -705,7 +705,7 @@
                     "id": "m2-memory-14",
                     "pairId": "pair-fare",
                     "media": {
-                      "src": "1/pagar-pasaje.png",
+                      "src": "1/pagar-pasaje.webp",
                       "alt": "Pasaje",
                       "variant": "square"
                     },
@@ -719,7 +719,7 @@
                     "id": "m2-memory-15",
                     "pairId": "pair-walk",
                     "media": {
-                      "src": "1/ir-caminando.png",
+                      "src": "1/ir-caminando.webp",
                       "alt": "Llegar al colegio",
                       "variant": "square"
                     },
@@ -733,7 +733,7 @@
                     "id": "m2-memory-16",
                     "pairId": "pair-walk",
                     "media": {
-                      "src": "1/ir-caminando.png",
+                      "src": "1/ir-caminando.webp",
                       "alt": "Llegar al colegio",
                       "variant": "square"
                     },
@@ -747,7 +747,7 @@
                     "id": "m2-memory-17",
                     "pairId": "pair-return",
                     "media": {
-                      "src": "1/regresar-combi.png",
+                      "src": "1/regresar-combi.webp",
                       "alt": "Volver a casa",
                       "variant": "square"
                     },
@@ -761,7 +761,7 @@
                     "id": "m2-memory-18",
                     "pairId": "pair-return",
                     "media": {
-                      "src": "1/regresar-combi.png",
+                      "src": "1/regresar-combi.webp",
                       "alt": "Volver a casa",
                       "variant": "square"
                     },
@@ -789,7 +789,7 @@
                     "id": "m2-memory-07",
                     "pairId": "pair-soda",
                     "media": {
-                      "src": "1/botella-gaseosa.jpeg",
+                      "src": "1/botella-gaseosa.webp",
                       "alt": "Gaseosa",
                       "variant": "square"
                     },
@@ -803,7 +803,7 @@
                     "id": "m2-memory-08",
                     "pairId": "pair-soda",
                     "media": {
-                      "src": "1/botella-gaseosa.jpeg",
+                      "src": "1/botella-gaseosa.webp",
                       "alt": "Gaseosa",
                       "variant": "square"
                     },
@@ -817,7 +817,7 @@
                     "id": "m2-memory-09",
                     "pairId": "pair-cookie",
                     "media": {
-                      "src": "1/galleta.png",
+                      "src": "1/galleta.webp",
                       "alt": "Galleta",
                       "variant": "square"
                     },
@@ -831,7 +831,7 @@
                     "id": "m2-memory-10",
                     "pairId": "pair-cookie",
                     "media": {
-                      "src": "1/galleta.png",
+                      "src": "1/galleta.webp",
                       "alt": "Galleta",
                       "variant": "square"
                     },
@@ -845,7 +845,7 @@
                     "id": "m2-memory-11",
                     "pairId": "pair-candy",
                     "media": {
-                      "src": "1/caramelo.png",
+                      "src": "1/caramelo.webp",
                       "alt": "Caramelo",
                       "variant": "square"
                     },
@@ -859,7 +859,7 @@
                     "id": "m2-memory-12",
                     "pairId": "pair-candy",
                     "media": {
-                      "src": "1/caramelo.png",
+                      "src": "1/caramelo.webp",
                       "alt": "Caramelo",
                       "variant": "square"
                     },
@@ -873,7 +873,7 @@
                     "id": "m2-memory-19",
                     "pairId": "pair-sweetdrink",
                     "media": {
-                      "src": "1/gaseosa.png",
+                      "src": "1/gaseosa.webp",
                       "alt": "Bebida dulce",
                       "variant": "square"
                     },
@@ -887,7 +887,7 @@
                     "id": "m2-memory-20",
                     "pairId": "pair-sweetdrink",
                     "media": {
-                      "src": "1/gaseosa.png",
+                      "src": "1/gaseosa.webp",
                       "alt": "Bebida dulce",
                       "variant": "square"
                     },
@@ -901,7 +901,7 @@
                     "id": "m2-memory-21",
                     "pairId": "pair-snackextra",
                     "media": {
-                      "src": "1/extra-canje.png",
+                      "src": "1/extra-canje.webp",
                       "alt": "Snack extra",
                       "variant": "square"
                     },
@@ -915,7 +915,7 @@
                     "id": "m2-memory-22",
                     "pairId": "pair-snackextra",
                     "media": {
-                      "src": "1/extra-canje.png",
+                      "src": "1/extra-canje.webp",
                       "alt": "Snack extra",
                       "variant": "square"
                     },
@@ -929,7 +929,7 @@
                     "id": "m2-memory-23",
                     "pairId": "pair-prize",
                     "media": {
-                      "src": "1/canjear-botella.png",
+                      "src": "1/canjear-botella.webp",
                       "alt": "Premio pequeño",
                       "variant": "square"
                     },
@@ -943,7 +943,7 @@
                     "id": "m2-memory-24",
                     "pairId": "pair-prize",
                     "media": {
-                      "src": "1/canjear-botella.png",
+                      "src": "1/canjear-botella.webp",
                       "alt": "Premio pequeno",
                       "variant": "square"
                     },

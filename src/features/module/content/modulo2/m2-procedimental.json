@@ -30,7 +30,7 @@
           "align": "left"
         },
         "media": {
-          "src": "1/inicio-conceptual.jpeg",
+          "src": "1/inicio-conceptual.webp",
           "alt": "Inicio de la practica de clasificacion",
           "variant": "vertical"
         }
@@ -139,7 +139,7 @@
               {
                 "id": "s1-cuaderno",
                 "media": {
-                  "src": "1/botella-gaseosa.jpeg",
+                  "src": "1/botella-gaseosa.webp",
                   "alt": "Cuaderno",
                   "variant": "square"
                 },
@@ -153,7 +153,7 @@
               {
                 "id": "s1-lapiz",
                 "media": {
-                  "src": "image001.png",
+                  "src": "image001.webp",
                   "alt": "Lapiz",
                   "variant": "square"
                 },
@@ -167,7 +167,7 @@
               {
                 "id": "s1-borrador",
                 "media": {
-                  "src": "image001.png",
+                  "src": "image001.webp",
                   "alt": "Borrador",
                   "variant": "square"
                 },
@@ -181,7 +181,7 @@
               {
                 "id": "s1-regla",
                 "media": {
-                  "src": "image001.png",
+                  "src": "image001.webp",
                   "alt": "Regla",
                   "variant": "square"
                 },
@@ -195,7 +195,7 @@
               {
                 "id": "s1-pegamento",
                 "media": {
-                  "src": "image001.png",
+                  "src": "image001.webp",
                   "alt": "Pegamento",
                   "variant": "square"
                 },
@@ -209,7 +209,7 @@
               {
                 "id": "s1-stickers",
                 "media": {
-                  "src": "image001.png",
+                  "src": "image001.webp",
                   "alt": "Stickers",
                   "variant": "square"
                 },
@@ -223,7 +223,7 @@
               {
                 "id": "s1-plumones",
                 "media": {
-                  "src": "image001.png",
+                  "src": "image001.webp",
                   "alt": "Plumones",
                   "variant": "square"
                 },
@@ -237,7 +237,7 @@
               {
                 "id": "s1-juguete",
                 "media": {
-                  "src": "image001.png",
+                  "src": "image001.webp",
                   "alt": "Juguete",
                   "variant": "square"
                 },
@@ -333,7 +333,7 @@
               {
                 "id": "s2-arroz",
                 "media": {
-                  "src": "image001.png",
+                  "src": "image001.webp",
                   "alt": "Arroz",
                   "variant": "square"
                 },
@@ -347,7 +347,7 @@
               {
                 "id": "s2-leche",
                 "media": {
-                  "src": "image001.png",
+                  "src": "image001.webp",
                   "alt": "Leche",
                   "variant": "square"
                 },
@@ -361,7 +361,7 @@
               {
                 "id": "s2-aceite",
                 "media": {
-                  "src": "image001.png",
+                  "src": "image001.webp",
                   "alt": "Aceite",
                   "variant": "square"
                 },
@@ -375,7 +375,7 @@
               {
                 "id": "s2-galletas",
                 "media": {
-                  "src": "image001.png",
+                  "src": "image001.webp",
                   "alt": "Galletas",
                   "variant": "square"
                 },
@@ -389,7 +389,7 @@
               {
                 "id": "s2-gaseosaddd",
                 "media": {
-                  "src": "image001.png",
+                  "src": "image001.webp",
                   "alt": "Gaseosa",
                   "variant": "square"
                 },
@@ -403,7 +403,7 @@
               {
                 "id": "s2-chocolateasas",
                 "media": {
-                  "src": "image001.png",
+                  "src": "image001.webp",
                   "alt": "Chocolate",
                   "variant": "square"
                 },
@@ -417,7 +417,7 @@
               {
                 "id": "s2-gaseosa",
                 "media": {
-                  "src": "image001.png",
+                  "src": "image001.webp",
                   "alt": "Gaseosa",
                   "variant": "square"
                 },
@@ -431,7 +431,7 @@
               {
                 "id": "s2-chocolate",
                 "media": {
-                  "src": "image001.png",
+                  "src": "image001.webp",
                   "alt": "Chocolate",
                   "variant": "square"
                 },
@@ -475,7 +475,7 @@
           "align": "center"
         },
         "media": {
-          "src": "1/uso-del-dinero-2.png",
+          "src": "1/uso-del-dinero-2.webp",
           "alt": "Referencia de maqueta escolar",
           "variant": "horizontal"
         }
@@ -535,7 +535,7 @@
               {
                 "id": "s3-cartulina",
                 "media": {
-                  "src": "image001.png",
+                  "src": "image001.webp",
                   "alt": "Cartulina",
                   "variant": "square"
                 },
@@ -549,7 +549,7 @@
               {
                 "id": "s3-tijera",
                 "media": {
-                  "src": "image001.png",
+                  "src": "image001.webp",
                   "alt": "Tijera",
                   "variant": "square"
                 },
@@ -563,7 +563,7 @@
               {
                 "id": "s3-pegamento",
                 "media": {
-                  "src": "image001.png",
+                  "src": "image001.webp",
                   "alt": "Pegamento",
                   "variant": "square"
                 },
@@ -577,7 +577,7 @@
               {
                 "id": "s3-regla",
                 "media": {
-                  "src": "image001.png",
+                  "src": "image001.webp",
                   "alt": "Regla",
                   "variant": "square"
                 },
@@ -591,7 +591,7 @@
               {
                 "id": "s3-lapiz",
                 "media": {
-                  "src": "image001.png",
+                  "src": "image001.webp",
                   "alt": "Lapiz",
                   "variant": "square"
                 },
@@ -605,7 +605,7 @@
               {
                 "id": "s3-escarcha",
                 "media": {
-                  "src": "image001.png",
+                  "src": "image001.webp",
                   "alt": "Escarcha",
                   "variant": "square"
                 },
@@ -619,7 +619,7 @@
               {
                 "id": "s3-stickers",
                 "media": {
-                  "src": "image001.png",
+                  "src": "image001.webp",
                   "alt": "Stickers",
                   "variant": "square"
                 },
@@ -633,7 +633,7 @@
               {
                 "id": "s3-cinta",
                 "media": {
-                  "src": "image001.png",
+                  "src": "image001.webp",
                   "alt": "Cinta",
                   "variant": "square"
                 },
@@ -677,7 +677,7 @@
           "align": "center"
         },
         "media": {
-          "src": "1/uso-dinero.png",
+          "src": "1/uso-dinero.webp",
           "alt": "Referencia de presentacion escolar",
           "variant": "horizontal"
         }
@@ -737,7 +737,7 @@
               {
                 "id": "s4-folder",
                 "media": {
-                  "src": "image001.png",
+                  "src": "image001.webp",
                   "alt": "Folder",
                   "variant": "square"
                 },
@@ -751,7 +751,7 @@
               {
                 "id": "s4-hojas",
                 "media": {
-                  "src": "image001.png",
+                  "src": "image001.webp",
                   "alt": "Hojas",
                   "variant": "square"
                 },
@@ -765,7 +765,7 @@
               {
                 "id": "s4-impresiones",
                 "media": {
-                  "src": "image001.png",
+                  "src": "image001.webp",
                   "alt": "Impresiones",
                   "variant": "square"
                 },
@@ -779,7 +779,7 @@
               {
                 "id": "s4-cinta",
                 "media": {
-                  "src": "image001.png",
+                  "src": "image001.webp",
                   "alt": "Cinta",
                   "variant": "square"
                 },
@@ -793,7 +793,7 @@
               {
                 "id": "s4-carton",
                 "media": {
-                  "src": "image001.png",
+                  "src": "image001.webp",
                   "alt": "Carton",
                   "variant": "square"
                 },
@@ -807,7 +807,7 @@
               {
                 "id": "s4-led",
                 "media": {
-                  "src": "image001.png",
+                  "src": "image001.webp",
                   "alt": "Luces",
                   "variant": "square"
                 },
