@@ -5,6 +5,7 @@ import { Lock } from "lucide-react";
 function normalizeStatus(status) {
   if (status === "completed") return "completed";
   if (status === "unlocked") return "unlocked";
+
   return "locked";
 }
 
@@ -72,7 +73,7 @@ function useActiveMap(modules) {
       PIECE_ORDER.map((key, i) => {
         const module = getModuleBySortOrder(modules, i + 1);
         const status = normalizeStatus(module?.status);
-        return [key, status === "completed" || status === "unlocked"];
+        return [key, status === "completed"];
       }),
     );
   }, [modules]);

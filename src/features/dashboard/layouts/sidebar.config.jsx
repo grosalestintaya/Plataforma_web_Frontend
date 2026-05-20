@@ -69,12 +69,12 @@ export const NAV_BY_ROLE = {
       icon: FaUsers,
     },
     {
-      name: "Administrar sistema",
+      name: "Admin",
       path: "admin",
       icon: Settings,
     },
     {
-      name: "Agregar usuario",
+      name: "Agregar",
       path: "add_user",
       icon: FaUserPlus,
     },

@@ -21,10 +21,10 @@ export default function SidebarNavItem({
       className={({ isActive }) =>
         [
           "group relative flex items-center rounded-2xl transition-all duration-200",
-          "focus:outline-none focus:ring-2 focus:ring-white/30",
+          "focus:outline-none focus:ring-2 focus:ring-white/30 mb-2",
 
           collapsed
-            ? "mx-2 justify-center px-8 py-5"
+            ? "mx-2 justify-center px-8 py-3"
             : isDesktop
               ? "mx-3 gap-3 px-4 py-3.5"
               : isMobileModal

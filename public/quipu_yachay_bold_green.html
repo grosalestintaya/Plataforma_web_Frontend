@@ -1,0 +1,606 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+
+:root {
+  --green:   #00C853;
+  --blue:    #2962FF;
+  --yellow:  #FFC400;
+  --white:   #FFFFFF;
+  --ink:     #003318;
+  --green-dark: #009E40;
+  --green-mid:  #00A844;
+  --green-light:#00E676;
+  --surface:    rgba(0,0,0,0.12);
+  --surface2:   rgba(0,0,0,0.08);
+  --border-w:   rgba(255,255,255,0.18);
+  --border-d:   rgba(0,0,0,0.15);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family:'Plus Jakarta Sans',sans-serif;
+  background: var(--green);
+  color: var(--white);
+  overflow-x:hidden;
+}
+
+/* ── HEADER ── */
+.header {
+  position:sticky; top:0; z-index:50;
+  background: rgba(0,180,75,0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-w);
+  padding: 0 2rem;
+}
+.header-inner {
+  max-width:1100px; margin:0 auto;
+  display:flex; align-items:center; justify-content:space-between;
+  height:64px;
+}
+.logo-mark {
+  width:36px; height:36px; border-radius:10px;
+  background: var(--white); display:flex; align-items:center; justify-content:center;
+  font-family:'Fraunces',serif; font-weight:900; color:var(--green); font-size:17px;
+}
+.logo-text { font-family:'Fraunces',serif; font-weight:700; font-size:16px; color:var(--white); }
+.logo-sub { font-size:10px; color:rgba(255,255,255,0.7); font-weight:600; }
+.nav-link {
+  font-size:13px; font-weight:700; color:rgba(255,255,255,0.85);
+  text-decoration:none; padding:6px 14px; border-radius:8px;
+  transition:background 0.15s; cursor:pointer; border:none; background:none;
+}
+.nav-link:hover { background:rgba(255,255,255,0.12); color:#fff; }
+.btn-primary {
+  background:var(--white); color:var(--green);
+  font-size:13px; font-weight:800;
+  border:none; border-radius:10px; padding:9px 20px; cursor:pointer;
+  transition:opacity 0.15s, transform 0.15s;
+}
+.btn-primary:hover { opacity:0.88; transform:translateY(-1px); }
+
+/* ── HERO ── */
+.hero {
+  max-width:1100px; margin:0 auto;
+  padding:80px 2rem 72px;
+  display:grid; grid-template-columns:1fr 420px; gap:56px; align-items:center;
+}
+.hero-badge {
+  display:inline-flex; align-items:center; gap:8px;
+  background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.25);
+  border-radius:100px; padding:6px 16px;
+  font-size:12px; font-weight:800; color:#fff; margin-bottom:22px;
+}
+.hero-badge-dot { width:7px; height:7px; border-radius:50%; background:var(--yellow); }
+.hero-h1 {
+  font-family:'Fraunces',serif; font-weight:900;
+  font-size:58px; line-height:1.0; color:var(--white); margin-bottom:22px;
+}
+.hero-h1 .ac-blue  { color:var(--yellow); }
+.hero-h1 .ac-white { color:rgba(255,255,255,0.55); font-style:italic; }
+.hero-p { font-size:16px; color:rgba(255,255,255,0.8); line-height:1.8; max-width:480px; margin-bottom:34px; }
+.hero-actions { display:flex; align-items:center; gap:14px; }
+.btn-hero {
+  background:var(--white); color:var(--green);
+  font-size:15px; font-weight:800;
+  border:none; border-radius:14px; padding:14px 28px; cursor:pointer;
+  transition:opacity 0.15s, transform 0.15s;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+}
+.btn-hero:hover { opacity:0.9; transform:translateY(-2px); }
+.btn-ghost-w {
+  background:transparent; color:rgba(255,255,255,0.75);
+  font-size:14px; font-weight:700; border:none; cursor:pointer;
+  text-decoration:underline; text-underline-offset:3px;
+}
+.hero-stats { display:flex; gap:28px; margin-top:38px; align-items:center; }
+.stat-n { font-family:'Fraunces',serif; font-weight:900; font-size:30px; color:#fff; }
+.stat-l { font-size:12px; color:rgba(255,255,255,0.65); font-weight:600; }
+.stat-sep { width:1px; height:36px; background:rgba(255,255,255,0.2); }
+
+/* Hero card */
+.hero-card {
+  background: rgba(0,0,0,0.18);
+  border:1px solid var(--border-w);
+  border-radius:24px; padding:28px;
+  backdrop-filter:blur(8px);
+}
+.mission-label {
+  display:inline-flex; align-items:center; gap:6px;
+  background:var(--yellow); color:#1A1100;
+  font-size:11px; font-weight:800;
+  border-radius:8px; padding:4px 10px; margin-bottom:14px;
+}
+.mission-title { font-weight:800; font-size:15px; color:#fff; margin-bottom:6px; }
+.mission-sub { font-size:12px; color:rgba(255,255,255,0.65); line-height:1.6; }
+.prog-wrap { background:rgba(255,255,255,0.15); border-radius:100px; height:7px; margin-top:14px; overflow:hidden; }
+.prog-bar { height:100%; border-radius:100px; background:var(--white); }
+.prog-row { display:flex; justify-content:space-between; margin-top:7px; }
+.prog-label { font-size:11px; color:rgba(255,255,255,0.6); font-weight:700; }
+.mini-row { display:flex; gap:8px; margin-top:14px; }
+.mini-chip {
+  flex:1; background:rgba(255,255,255,0.12); border:1px solid var(--border-w);
+  border-radius:10px; padding:10px 12px;
+  display:flex; align-items:center; gap:7px;
+  font-size:12px; font-weight:800; color:#fff;
+}
+.badges-r { display:flex; gap:7px; margin-top:12px; flex-wrap:wrap; }
+.bp {
+  font-size:11px; font-weight:800;
+  border-radius:100px; padding:4px 12px;
+  border:1px solid rgba(255,255,255,0.2);
+}
+.bp-y { background:var(--yellow); color:#1A1100; }
+.bp-b { background:var(--blue); color:#fff; }
+.bp-w { background:rgba(255,255,255,0.15); color:#fff; }
+
+/* ── DIVIDER ── */
+.divider { border:none; border-top:1px solid rgba(255,255,255,0.15); margin:0 2rem; }
+
+/* ── SECTIONS ── */
+.section { max-width:1100px; margin:0 auto; padding:64px 2rem; }
+.s-label {
+  font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.1em;
+  color:rgba(255,255,255,0.55); margin-bottom:10px;
+}
+.s-h2 {
+  font-family:'Fraunces',serif; font-weight:900; font-size:38px;
+  color:#fff; line-height:1.1; margin-bottom:12px;
+}
+.s-p { font-size:15px; color:rgba(255,255,255,0.7); line-height:1.8; max-width:560px; }
+
+/* ── WHAT GRID ── */
+.what-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:36px; }
+.what-card {
+  border-radius:22px; padding:28px;
+  border:1px solid var(--border-w);
+  transition:transform 0.2s;
+  position:relative; overflow:hidden;
+}
+.what-card:hover { transform:translateY(-3px); }
+.wc1 { background: rgba(255,255,255,0.1); }
+.wc2 { background: var(--blue); }
+.wc3 { background: var(--yellow); }
+.what-icon {
+  width:46px; height:46px; border-radius:13px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:22px; margin-bottom:18px;
+}
+.wi1 { background:rgba(255,255,255,0.15); }
+.wi2 { background:rgba(255,255,255,0.18); }
+.wi3 { background:rgba(0,0,0,0.10); }
+.wct { font-weight:800; font-size:19px; margin-bottom:8px; }
+.wct1 { color:#fff; }
+.wct2 { color:#fff; }
+.wct3 { color:#1A1100; }
+.wcd { font-size:13px; line-height:1.65; }
+.wcd1 { color:rgba(255,255,255,0.7); }
+.wcd2 { color:rgba(255,255,255,0.75); }
+.wcd3 { color:rgba(26,17,0,0.7); }
+.what-items { list-style:none; margin-top:16px; display:flex; flex-direction:column; gap:7px; }
+.what-items li { display:flex; align-items:center; gap:8px; font-size:13px; font-weight:700; }
+.li1 { color:rgba(255,255,255,0.85); }
+.li2 { color:rgba(255,255,255,0.9); }
+.li3 { color:#1A1100; }
+.wd { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+
+/* ── HOW ── */
+.how-wrap {
+  margin-top:36px; border-radius:24px; padding:32px;
+  background: rgba(0,0,0,0.15); border:1px solid var(--border-w);
+}
+.steps-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+.step-card {
+  border-radius:16px; padding:20px;
+  border:1px solid var(--border-w); background:rgba(255,255,255,0.07);
+}
+.step-n {
+  width:36px; height:36px; border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  font-weight:900; font-size:15px; font-family:'Fraunces',serif; margin-bottom:12px;
+}
+.step-title { font-weight:800; font-size:14px; color:#fff; margin-bottom:4px; }
+.step-desc { font-size:12px; color:rgba(255,255,255,0.6); line-height:1.6; }
+.how-cta {
+  margin-top:20px; border-radius:16px; padding:16px 20px;
+  display:flex; align-items:center; justify-content:space-between;
+  background:rgba(255,255,255,0.08); border:1px solid var(--border-w);
+}
+.how-cta-t { font-size:13px; font-weight:700; color:rgba(255,255,255,0.85); }
+
+/* ── REWARDS ── */
+.rewards-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:36px; }
+.reward-card {
+  border-radius:22px; padding:22px;
+  border:1px solid var(--border-w);
+  background:rgba(255,255,255,0.08);
+  transition:transform 0.2s;
+}
+.reward-card:hover { transform:translateY(-2px); }
+.reward-icon { font-size:28px; margin-bottom:12px; }
+.reward-title { font-weight:800; font-size:15px; color:#fff; margin-bottom:6px; }
+.reward-desc { font-size:12px; color:rgba(255,255,255,0.65); line-height:1.6; }
+.reward-tag {
+  display:inline-flex; align-items:center; gap:5px;
+  font-size:11px; font-weight:800;
+  background:rgba(255,255,255,0.12); color:rgba(255,255,255,0.8);
+  border-radius:100px; padding:3px 10px; margin-top:10px; width:fit-content;
+}
+
+.badges-box {
+  margin-top:20px; border-radius:20px; padding:24px;
+  background:rgba(0,0,0,0.15); border:1px solid var(--border-w);
+}
+.badges-hdr { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+.badges-hdr-t { font-weight:800; font-size:14px; color:#fff; }
+.badges-hdr-s { font-size:12px; color:rgba(255,255,255,0.55); font-weight:600; }
+.badges-pills { display:flex; flex-wrap:wrap; gap:8px; }
+
+/* ── CULTURAL ── */
+.cultural {
+  background: var(--blue);
+  padding:64px 2rem; position:relative; overflow:hidden;
+}
+.cultural::before {
+  content:''; position:absolute; inset:0;
+  background-image:repeating-linear-gradient(
+    90deg,rgba(255,255,255,0.04) 0,rgba(255,255,255,0.04) 1px,
+    transparent 1px,transparent 28px
+  );
+}
+.cultural-inner { max-width:1100px; margin:0 auto; position:relative; z-index:1; display:grid; grid-template-columns:1fr auto; gap:48px; align-items:center; }
+.cultural-h2 { font-family:'Fraunces',serif; font-weight:900; font-size:40px; color:#fff; line-height:1.05; margin-bottom:14px; }
+.cultural-h2 .cy { color:var(--yellow); }
+.cultural-p { font-size:15px; color:rgba(255,255,255,0.7); line-height:1.8; max-width:480px; margin-bottom:28px; }
+.btn-yellow {
+  background:var(--yellow); color:#1A1100;
+  font-size:14px; font-weight:800;
+  border:none; border-radius:12px; padding:13px 24px; cursor:pointer;
+  transition:opacity 0.15s;
+}
+.btn-yellow:hover { opacity:0.88; }
+
+/* quipu decoration */
+.quipu-deco { display:flex; gap:10px; align-items:flex-start; padding-top:16px; }
+.qs { display:flex; flex-direction:column; align-items:center; gap:5px; }
+.qk { width:11px; height:11px; border-radius:50%; }
+.ql { width:2px; background:rgba(255,255,255,0.25); }
+
+/* ── FOOTER ── */
+.footer {
+  background: var(--green-dark);
+  border-top:1px solid rgba(255,255,255,0.15);
+  padding:48px 2rem 28px;
+}
+.footer-inner { max-width:1100px; margin:0 auto; }
+.footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr; gap:48px; }
+.footer-p { font-size:13px; color:rgba(255,255,255,0.65); line-height:1.75; margin-top:12px; max-width:320px; }
+.footer-pills { display:flex; flex-wrap:wrap; gap:6px; margin-top:14px; }
+.footer-pill {
+  display:inline-flex; align-items:center; gap:6px;
+  font-size:11px; font-weight:700; color:rgba(255,255,255,0.75);
+  background:rgba(255,255,255,0.1); border-radius:100px; padding:4px 12px;
+  border:1px solid rgba(255,255,255,0.15);
+}
+.fpd { width:6px; height:6px; border-radius:50%; }
+.footer-h { font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:rgba(255,255,255,0.5); margin-bottom:14px; }
+.footer-links { list-style:none; display:flex; flex-direction:column; gap:9px; }
+.footer-links a { font-size:13px; font-weight:600; color:rgba(255,255,255,0.7); text-decoration:none; transition:color 0.15s; cursor:pointer; }
+.footer-links a:hover { color:#fff; }
+.footer-tip { background:rgba(0,0,0,0.2); border-radius:16px; padding:16px 18px; border:1px solid rgba(255,255,255,0.1); }
+.footer-tip-t { font-size:13px; font-weight:800; color:#fff; margin-bottom:6px; }
+.footer-tip-p { font-size:12px; color:rgba(255,255,255,0.6); line-height:1.65; }
+.footer-bottom { margin-top:40px; padding-top:20px; border-top:1px solid rgba(255,255,255,0.1); display:flex; justify-content:space-between; align-items:center; }
+.footer-copy { font-size:12px; color:rgba(255,255,255,0.5); }
+.cdots { display:flex; gap:5px; }
+.cd { width:7px; height:7px; border-radius:50%; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-inner">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div class="logo-mark">Q</div>
+      <div>
+        <div class="logo-text">Quipu Yachay</div>
+        <div class="logo-sub">Tejiendo saberes, ordenando tu futuro.</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <button class="nav-link" onclick="document.getElementById('como-funciona').scrollIntoView({behavior:'smooth'})">¿Cómo funciona?</button>
+      <button class="btn-primary">Iniciar sesión</button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      Educación financiera gamificada
+    </div>
+    <h1 class="hero-h1">
+      Aprende a<br/>
+      manejar tu<br/>
+      <span class="ac-blue">dinero.</span><br/>
+      <span class="ac-white">jugando.</span>
+    </h1>
+    <p class="hero-p">Quipu Yachay te guía con misiones cortas, retos reales y recompensas que te motivan a seguir. Para estudiantes de colegios del Perú.</p>
+    <div class="hero-actions">
+      <button class="btn-hero">Comenzar ahora →</button>
+      <button class="btn-ghost-w">Ver cómo funciona</button>
+    </div>
+    <div class="hero-stats">
+      <div><div class="stat-n">3</div><div class="stat-l">Pasos por misión</div></div>
+      <div class="stat-sep"></div>
+      <div><div class="stat-n">6+</div><div class="stat-l">Tipos de insignias</div></div>
+      <div class="stat-sep"></div>
+      <div><div class="stat-n">100%</div><div class="stat-l">En la web</div></div>
+    </div>
+  </div>
+
+  <div class="hero-card">
+    <div class="mission-label">🎯 Misión activa</div>
+    <div class="mission-title">El presupuesto de Lucía</div>
+    <div class="mission-sub">Lucía recibe S/. 50 a la semana. ¿Cómo debería distribuirlos?</div>
+    <div class="prog-wrap"><div class="prog-bar" style="width:68%"></div></div>
+    <div class="prog-row">
+      <span class="prog-label">68% completado</span>
+      <span class="prog-label">+120 XP</span>
+    </div>
+    <div class="mini-row">
+      <div class="mini-chip">🔥 Racha 5 días</div>
+      <div class="mini-chip">⭐ Nivel 3</div>
+    </div>
+    <div class="badges-r">
+      <span class="bp bp-y">🏅 Ahorrista</span>
+      <span class="bp bp-b">🎯 Decisor</span>
+      <span class="bp bp-w">⚡ Constante</span>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- QUÉ HARÁS -->
+<section class="section" id="que-haras-aqui">
+  <div class="s-label">La experiencia</div>
+  <h2 class="s-h2">¿Qué harás aquí?</h2>
+  <p class="s-p">Aprende el concepto, practícalo con retos reales y gana recompensas que reflejan tu avance.</p>
+
+  <div class="what-grid">
+    <div class="what-card wc1">
+      <div class="what-icon wi1">📚</div>
+      <div class="wct wct1">Aprender</div>
+      <div class="wcd wcd1">Conceptos clave con historias y ejemplos del día a día.</div>
+      <ul class="what-items">
+        <li class="li1"><span class="wd" style="background:rgba(255,255,255,0.5)"></span>Ingresos vs gastos</li>
+        <li class="li1"><span class="wd" style="background:rgba(255,255,255,0.5)"></span>Ahorro inteligente</li>
+        <li class="li1"><span class="wd" style="background:rgba(255,255,255,0.5)"></span>Metas financieras</li>
+      </ul>
+    </div>
+    <div class="what-card wc2">
+      <div class="what-icon wi2">⚔️</div>
+      <div class="wct wct2">Practicar</div>
+      <div class="wcd wcd2">Retos rápidos con feedback inmediato para reforzar.</div>
+      <ul class="what-items">
+        <li class="li2"><span class="wd" style="background:rgba(255,255,255,0.5)"></span>Presupuesto real</li>
+        <li class="li2"><span class="wd" style="background:rgba(255,255,255,0.5)"></span>Tomar decisiones</li>
+        <li class="li2"><span class="wd" style="background:rgba(255,255,255,0.5)"></span>Priorizar gastos</li>
+      </ul>
+    </div>
+    <div class="what-card wc3">
+      <div class="what-icon wi3">🏆</div>
+      <div class="wct wct3">Ganar</div>
+      <div class="wcd wcd3">Puntos, insignias y posiciones en el ranking de tu salón.</div>
+      <ul class="what-items">
+        <li class="li3"><span class="wd" style="background:rgba(26,17,0,0.35)"></span>Insignias únicas</li>
+        <li class="li3"><span class="wd" style="background:rgba(26,17,0,0.35)"></span>Ranking del salón</li>
+        <li class="li3"><span class="wd" style="background:rgba(26,17,0,0.35)"></span>Logros desbloqueables</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- HOW -->
+<section class="section" id="como-funciona">
+  <div class="s-label">El flujo</div>
+  <h2 class="s-h2">¿Cómo funciona una misión?</h2>
+  <p class="s-p">Cuatro pasos cortos. Cada misión completa en minutos.</p>
+
+  <div class="how-wrap">
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-n" style="background:var(--yellow);color:#1A1100;">1</div>
+        <div class="step-title">Historia</div>
+        <div class="step-desc">Un caso corto y real te pone en situación.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-n" style="background:var(--white);color:var(--green);">2</div>
+        <div class="step-title">Actividad</div>
+        <div class="step-desc">Respondes, eliges o completas el reto.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-n" style="background:var(--blue);color:#fff;">3</div>
+        <div class="step-title">Feedback</div>
+        <div class="step-desc">Te explican el porqué de la respuesta correcta.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-n" style="background:rgba(255,255,255,0.15);color:#fff;">4</div>
+        <div class="step-title">Recompensa</div>
+        <div class="step-desc">Ganas XP, puntos e insignias.</div>
+      </div>
+    </div>
+    <div class="how-cta">
+      <div class="how-cta-t">Todo en pantallas cortas — avanzas rápido, sin perder el hilo.</div>
+      <button class="btn-primary">Entrar y comenzar</button>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- REWARDS -->
+<section class="section" id="recompensas">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;">
+    <div>
+      <div class="s-label">Gamificación</div>
+      <h2 class="s-h2">Recompensas y progreso</h2>
+      <p class="s-p">Cada misión te da puntos. Sube de nivel, desbloquea insignias, mejora tu posición.</p>
+    </div>
+    <button class="btn-primary">Ver mis recompensas →</button>
+  </div>
+
+  <div class="rewards-grid">
+    <div class="reward-card">
+      <div class="reward-icon">🏅</div>
+      <div class="reward-title">Insignias</div>
+      <div class="reward-desc">Logros únicos por completar misiones y retos especiales.</div>
+      <div class="reward-tag">Colección</div>
+    </div>
+    <div class="reward-card">
+      <div class="reward-icon">🔥</div>
+      <div class="reward-title">Racha</div>
+      <div class="reward-desc">Días seguidos aprendiendo. No la rompas.</div>
+      <div class="reward-tag">Constancia</div>
+    </div>
+    <div class="reward-card">
+      <div class="reward-icon">⭐</div>
+      <div class="reward-title">Nivel</div>
+      <div class="reward-desc">Sube con cada misión completada y punto ganado.</div>
+      <div class="reward-tag">Progreso</div>
+    </div>
+    <div class="reward-card">
+      <div class="reward-icon">🏆</div>
+      <div class="reward-title">Ranking</div>
+      <div class="reward-desc">Tu posición comparada con tu salón en tiempo real.</div>
+      <div class="reward-tag">Motivación</div>
+    </div>
+  </div>
+
+  <div class="badges-box">
+    <div class="badges-hdr">
+      <div class="badges-hdr-t">Insignias de ejemplo</div>
+      <div class="badges-hdr-s">Se desbloquean por desempeño</div>
+    </div>
+    <div class="badges-pills">
+      <span class="bp bp-w">🌿 Ahorrista</span>
+      <span class="bp bp-b">📋 Planificador</span>
+      <span class="bp bp-y">⚡ Decisor</span>
+      <span class="bp bp-w">🔥 Constante</span>
+      <span class="bp bp-b">🦁 Avanzado</span>
+      <span class="bp bp-y">🏅 Finalista</span>
+    </div>
+  </div>
+</section>
+
+<!-- CULTURAL STRIP -->
+<div class="cultural">
+  <div class="cultural-inner">
+    <div>
+      <h2 class="cultural-h2">El nombre lo<br/>dice todo:<br/><span class="cy">Quipu</span> + Yachay.</h2>
+      <p class="cultural-p">El quipu fue el sistema de registro del Tawantinsuyo. Cada misión es un nudo en tu camino hacia el dominio financiero.</p>
+      <button class="btn-yellow">Comenzar mi camino →</button>
+    </div>
+    <div class="quipu-deco">
+      <div class="qs">
+        <div class="qk" style="background:var(--yellow)"></div>
+        <div class="ql" style="height:55px"></div>
+        <div class="qk" style="background:var(--yellow);opacity:0.5"></div>
+        <div class="ql" style="height:28px"></div>
+      </div>
+      <div class="qs">
+        <div class="ql" style="height:18px"></div>
+        <div class="qk" style="background:#fff"></div>
+        <div class="ql" style="height:48px"></div>
+        <div class="qk" style="background:#fff;opacity:0.4"></div>
+        <div class="ql" style="height:36px"></div>
+      </div>
+      <div class="qs">
+        <div class="qk" style="background:var(--green)"></div>
+        <div class="ql" style="height:38px"></div>
+        <div class="qk" style="background:var(--green);opacity:0.5"></div>
+        <div class="ql" style="height:58px"></div>
+        <div class="qk" style="background:var(--green);opacity:0.25"></div>
+      </div>
+      <div class="qs">
+        <div class="ql" style="height:30px"></div>
+        <div class="qk" style="background:rgba(255,255,255,0.4)"></div>
+        <div class="ql" style="height:52px"></div>
+        <div class="qk" style="background:rgba(255,255,255,0.2)"></div>
+        <div class="ql" style="height:22px"></div>
+      </div>
+      <div class="qs">
+        <div class="qk" style="background:var(--yellow);opacity:0.7"></div>
+        <div class="ql" style="height:68px"></div>
+        <div class="qk" style="background:var(--yellow);opacity:0.3"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="logo-mark">Q</div>
+          <div>
+            <div class="logo-text">Quipu Yachay</div>
+            <div class="logo-sub">Tejiendo saberes, ordenando tu futuro.</div>
+          </div>
+        </div>
+        <p class="footer-p">Plataforma gamificada de educación financiera para estudiantes peruanos. Misiones, retos y recompensas.</p>
+        <div class="footer-pills">
+          <span class="footer-pill"><span class="fpd" style="background:var(--yellow)"></span>Para colegios</span>
+          <span class="footer-pill"><span class="fpd" style="background:var(--white)"></span>En la web</span>
+          <span class="footer-pill"><span class="fpd" style="background:var(--blue)"></span>Misiones cortas</span>
+        </div>
+      </div>
+      <div>
+        <div class="footer-h">Accesos</div>
+        <ul class="footer-links">
+          <li><a>Iniciar sesión</a></li>
+          <li><a>Introducción</a></li>
+          <li><a>¿Cómo funciona?</a></li>
+        </ul>
+        <div class="footer-h" style="margin-top:22px;">Ayuda</div>
+        <ul class="footer-links">
+          <li><a>Preguntas frecuentes</a></li>
+          <li><a>Soporte del colegio</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-h">Consejo rápido</div>
+        <div class="footer-tip">
+          <div class="footer-tip-t">No necesitas ser bueno en mate.</div>
+          <p class="footer-tip-p">Solo constancia: misiones cortas, todos los días. El hábito hace al experto financiero.</p>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2025 Quipu Yachay</div>
+      <div class="cdots">
+        <div class="cd" style="background:var(--white)"></div>
+        <div class="cd" style="background:var(--yellow)"></div>
+        <div class="cd" style="background:var(--blue)"></div>
+        <div class="cd" style="background:rgba(255,255,255,0.3)"></div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
