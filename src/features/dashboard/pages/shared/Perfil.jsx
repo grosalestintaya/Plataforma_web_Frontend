@@ -6,18 +6,45 @@ import { useAuth } from "../../../auth/components/AuthContext";
 const getAvatarPath = (imgKey) => `/avatars/${imgKey}.webp`;
 const getgifPath = (imgKey) => `/activity/avatars/${imgKey}.webp`;
 const FRASES = [
-  "¡Hoy te ves increíble, guerrero! ✨",
-  "Cada día que entrenas... me haces feliz 🥹",
-  "¿Listo para dominar el mundo? Porque yo sí.",
-  "Shhh... estoy cargando mi poder. Espérame. ⚡",
-  "Dicen que soy raro. Yo digo que soy especial 🌀",
-  "No me mires así... me pongo nervioso 👀",
-  "¡Tú puedes! (Yo también, pero tú primero.)",
-  "Hoy no hay excusas. Solo nosotros dos. 🔥",
-  "Mi cara de concentración activa +50 de fuerza.",
-  "¿Sabías que eres mi humano favorito? 🤫",
-  "Nuevo día, nuevas misiones. ¡Vamos! 🗡️",
-  "Si me das una galleta, entreno contigo gratis. 🍪",
+  "Ey… regresaste ✨",
+  "Sabía que hoy avanzaríamos un poco más 🎒",
+  "¿List@? Yo ya preparé el modo enfoque 📚",
+  "Mientras tú aprendes, yo subo contigo 🚀",
+  "Tengo una buena sensación sobre hoy 🌟",
+  "Tu progreso me está sorprendiendo 👀",
+  "Vamos por otra victoria pequeña 🪙",
+  "Me gusta cuando apareces por aquí ☕",
+  "Hoy podríamos desbloquear algo importante 🔓",
+  "Prometo hacer esta misión menos aburrida 🎮",
+  "Tu disciplina está empezando a notarse 📈",
+  "¿Continuamos donde nos quedamos? 🧭",
+  "Cada día sabes un poco más 💡",
+  "Sigo aquí… acompañando el progreso ⚡",
+  "Las metas grandes también empiezan así 🌱",
+  "Tu versión del futuro nos está observando 👁️",
+  "Oye… vamos bastante bien 😌",
+  "Las monedas van y vienen, el conocimiento se queda 📚",
+  "Tengo energía suficiente para otra misión 🔋",
+  "Hoy toca tomar decisiones inteligentes 🎯",
+  "Tu progreso acaba de subir otro nivel ⬆️",
+  "Nada mal… nada mal en absoluto ✨",
+  "Confío en el proceso… y en ti 🌤️",
+  "Tu esfuerzo ya está acumulando resultados 📦",
+  "Seguimos construyendo algo grande 🏗️",
+  "Tu constancia tiene estilo 😎",
+  "La misión financiera continúa 🛰️",
+  "Me agrada este ritmo 📊",
+  "Un paso más sigue siendo avance 🚶",
+  "No hace falta correr para llegar lejos 🌌",
+  "Estoy oficialmente orgullos@ de este progreso 🥹",
+  "Tu inventario de conocimiento sigue creciendo 🎒",
+  "Cada decisión cuenta… incluso las pequeñas 🧩",
+  "¿Sabes? Ya se nota la diferencia 🌠",
+  "Hora de ganar experiencia otra vez 🕹️",
+  "Hoy podemos hacer que las monedas trabajen mejor 💰",
+  "No subestimes lo mucho que has avanzado 📍",
+  "Me alegra seguir esta aventura contigo 🌈",
+  "Tu progreso tiene buena pinta 📡",
 ];
 
 const BurbujaAvatar = ({ color = "#7F77DD" }) => {
@@ -1014,15 +1041,7 @@ const Perfil = () => {
                   background: `radial-gradient(ellipse at 50% 30%, ${hexToRgba(currentStyleMeta.color, 0.13)} 0%, transparent 70%)`,
                 }}>
                 {/* corner badge — rareza */}
-                <div
-                  className="absolute left-3 top-3 z-10 rounded-full px-2 py-0.5 text-[9px] font-black uppercase tracking-[0.14em]"
-                  style={{
-                    background: hexToRgba(currentStyleMeta.color, 0.12),
-                    color: hexToRgba(currentStyleMeta.color, 0.9),
-                    border: `1px solid ${hexToRgba(currentStyleMeta.color, 0.2)}`,
-                  }}>
-                  {currentStyleMeta.icon} {currentStyleMeta.short}
-                </div>
+
                 <BurbujaAvatar color={currentStyleMeta.color} />
 
                 {/* Avatar protagonista */}
@@ -1063,7 +1082,7 @@ const Perfil = () => {
                       "linear-gradient(135deg, rgba(255,255,255,0.14), transparent 60%)",
                   }}
                 />
-                🎮 Cambiar avatar
+                Cambiar avatar
               </button>
 
               {/* keyframe para el anillo */}

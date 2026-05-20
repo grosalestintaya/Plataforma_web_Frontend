@@ -135,7 +135,7 @@ function getMemoryCardView({
   labelText,
 }) {
   const hiddenMedia = {
-    src: "/iconcolor.png",
+    src: "/icon.webp",
     alt: "Quipu Yachay",
     variant: "square",
     mode: "contain",
@@ -455,8 +455,7 @@ export default function MemoryPairs({
               variant="simple"
               size="normal"
               fullWidth
-              className="min-h-[4.75rem] justify-start rounded-[1.5rem] bg-[linear-gradient(180deg,rgba(121,24,8,0.32),rgba(72,10,3,0.26))] px-4 py-3 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_14px_30px_rgba(93,18,5,0.14)] hover:bg-[linear-gradient(180deg,rgba(121,24,8,0.42),rgba(72,10,3,0.34))]"
-            >
+              className="min-h-[4.75rem] justify-start rounded-[1.5rem] bg-[linear-gradient(180deg,rgba(121,24,8,0.32),rgba(72,10,3,0.26))] px-4 py-3 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_14px_30px_rgba(93,18,5,0.14)] hover:bg-[linear-gradient(180deg,rgba(121,24,8,0.42),rgba(72,10,3,0.34))]">
               <div className="flex min-w-0 items-center gap-3">
                 <span className="text-3xl leading-none text-white/80">↻</span>
                 <div className="min-w-0">
@@ -480,8 +479,7 @@ export default function MemoryPairs({
                   "mx-auto grid h-full min-h-0 w-full grid-rows-3 place-content-stretch justify-items-stretch gap-3 sm:gap-4",
                   getBoardGridClass(sectionGrid.cols),
                   getBoardMaxWidthClass(sectionGrid.cols),
-                )}
-              >
+                )}>
                 {deck.map((card, index) => {
                   const isFaceUp =
                     isPreviewActive ||
@@ -489,7 +487,8 @@ export default function MemoryPairs({
                     matched.has(card.pairId);
                   const media = card?.media ?? card?.image ?? null;
                   const imageSrc = media?.src ?? card.img ?? "";
-                  const imageAlt = media?.alt ?? card.alt ?? `Par ${card.pairId}`;
+                  const imageAlt =
+                    media?.alt ?? card.alt ?? `Par ${card.pairId}`;
                   const imageVariant = getMediaVariant(media);
                   const labelContent = getCardLabelContent(card);
                   const labelText = getDisplayText(labelContent, imageAlt);
@@ -506,8 +505,7 @@ export default function MemoryPairs({
                   return (
                     <div
                       key={card.id ?? index}
-                      className="h-full min-h-0 w-full min-w-0"
-                    >
+                      className="h-full min-h-0 w-full min-w-0">
                       <button
                         type="button"
                         disabled={isPreviewActive}
@@ -519,8 +517,7 @@ export default function MemoryPairs({
                           isPreviewActive
                             ? "cursor-not-allowed"
                             : "cursor-pointer",
-                        )}
-                      >
+                        )}>
                         <div
                           className={cn(
                             "pointer-events-none flex h-full min-h-0 w-full min-w-0 items-center justify-center overflow-hidden",
@@ -528,8 +525,7 @@ export default function MemoryPairs({
                             "[&_*]:max-w-full",
                             "[&_article]:h-full [&_article]:w-full [&_article]:min-h-0",
                             "[&_article]:overflow-hidden [&_article]:rounded-[1.45rem] [&_article]:bg-transparent [&_article]:shadow-[inset_0_1px_0_rgba(255,255,255,0.18)]",
-                          )}
-                        >
+                          )}>
                           <Card
                             title={cardView.title}
                             text={cardView.text}
@@ -547,8 +543,7 @@ export default function MemoryPairs({
                               "translate-y-3 opacity-0 transition duration-200",
                               "group-hover/memory:translate-y-0 group-hover/memory:opacity-100",
                               "group-focus-visible/memory:translate-y-0 group-focus-visible/memory:opacity-100",
-                            )}
-                          >
+                            )}>
                             <div className="rounded-2xl bg-[linear-gradient(180deg,rgba(37,26,7,0.78),rgba(16,12,6,0.62))] px-3 py-2 text-center text-sm font-bold text-white shadow-[0_14px_28px_rgba(0,0,0,0.26)] backdrop-blur-sm">
                               {cardView.hoverLabel}
                             </div>
@@ -587,8 +582,7 @@ export default function MemoryPairs({
             }}
             variant="simple"
             size="sm"
-            className="rounded-full bg-[linear-gradient(180deg,rgba(69,14,4,0.44),rgba(28,7,3,0.34))] px-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_12px_26px_rgba(77,17,5,0.18)] hover:bg-[linear-gradient(180deg,rgba(69,14,4,0.58),rgba(28,7,3,0.42))]"
-          >
+            className="rounded-full bg-[linear-gradient(180deg,rgba(69,14,4,0.44),rgba(28,7,3,0.34))] px-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_12px_26px_rgba(77,17,5,0.18)] hover:bg-[linear-gradient(180deg,rgba(69,14,4,0.58),rgba(28,7,3,0.42))]">
             {finishLabel}
           </Button>
         </div>
