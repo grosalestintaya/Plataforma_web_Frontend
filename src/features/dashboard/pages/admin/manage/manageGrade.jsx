@@ -3,6 +3,7 @@ import ShowDashboardTitle from "../../../components/ShowDashboardTitle";
 import { DataService } from "../../../services/data.service";
 import { GradesService } from "../../../services/grades.service";
 import { useNavigate } from "react-router-dom";
+import Toast from "@/features/dashboard/components/Toast";
 import {
   GraduationCap,
   Plus,
@@ -245,26 +246,11 @@ export default function ManageGrade() {
         </div>
 
         {/* Toast */}
-        {toast.msg ? (
-          <div
-            className="mt-4 rounded-2xl border p-3 text-sm"
-            style={{
-              borderColor:
-                toast.type === "error"
-                  ? "rgba(255,64,129,0.35)"
-                  : "rgba(0,200,83,0.30)",
-              backgroundColor:
-                toast.type === "error"
-                  ? "rgba(255,64,129,0.10)"
-                  : "rgba(0,200,83,0.10)",
-              color: "var(--card-text)",
-            }}>
-            <span className="font-semibold">
-              {toast.type === "error" ? "Error:" : "Listo:"}
-            </span>{" "}
-            <span style={{ color: "var(--card-muted)" }}>{toast.msg}</span>
-          </div>
-        ) : null}
+        <Toast
+          toast={toast}
+          onDismiss={() => setToast({ type: "", msg: "" })}
+          duration={3000}
+        />
       </div>
 
       {/* Lista */}

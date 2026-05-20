@@ -1,13 +1,18 @@
 import { useRef, useState } from "react";
 import CardBase from "../../container/CardBase";
 import { cn } from "@/shared/libs/utils";
-
+const FLIP_COLOR = {
+  income: "bg-emerald-500/100",
+  expense: "bg-red-500/90",
+  default: "bg-black/30",
+  orange: "bg-orange-500/90",
+};
 const BACK_TONE_CLASS = {
   income:
-    "border-emerald-300/40 bg-emerald-500/25 text-emerald-50 shadow-[0_0_24px_rgba(16,185,129,0.18)]",
+    "border-emerald-300/40 FLIP_COLOR text-white shadow-[0_0_24px_rgba(16,185,129,0.18)]",
   expense:
-    "border-rose-300/40 bg-rose-500/25 text-rose-50 shadow-[0_0_24px_rgba(244,63,94,0.18)]",
-  default: "border-white/15 bg-black/30 text-white",
+    "border-rose-300/40 FLIP_COLOR text-rose-50 shadow-[0_0_24px_rgba(244,63,94,0.18)]",
+  default: "border-white/15 FLIP_COLOR text-white",
 };
 
 function getBackCard(interaction) {
@@ -99,6 +104,7 @@ function getFlipFrameWidthClass(media, size = "normal") {
 export default function FlipCard({
   title,
   text,
+  color,
   media,
   interaction,
   selected = false,
@@ -108,7 +114,7 @@ export default function FlipCard({
 }) {
   const completedRef = useRef(false);
   const [isFlipped, setIsFlipped] = useState(false);
-
+  const colortone = color ? (FLIP_COLOR[color] ?? FLIP_COLOR.default) : null;
   const backCard = getBackCard(interaction);
   const backTone = getBackTone(backCard);
 
@@ -131,21 +137,18 @@ export default function FlipCard({
           "relative h-full min-h-0 max-w-full min-w-0",
           getFlipFrameWidthClass(media, size),
           "[perspective:1000px]",
-        )}
-      >
+        )}>
         <div
           className={cn(
             "relative grid h-full min-h-0 w-full min-w-0 transition-transform duration-500",
             "[transform-style:preserve-3d]",
             isFlipped && "[transform:rotateY(180deg)]",
-          )}
-        >
+          )}>
           <div
             className={cn(
               "col-start-1 row-start-1 h-full min-h-0 w-full min-w-0",
               "[backface-visibility:hidden]",
-            )}
-          >
+            )}>
             <CardBase
               title={title}
               text={text}
@@ -161,8 +164,7 @@ export default function FlipCard({
             className={cn(
               "col-start-1 row-start-1 h-full min-h-0 w-full min-w-0",
               "[backface-visibility:hidden] [transform:rotateY(180deg)]",
-            )}
-          >
+            )}>
             <CardBase
               title={backCard.title}
               text={backCard.text}

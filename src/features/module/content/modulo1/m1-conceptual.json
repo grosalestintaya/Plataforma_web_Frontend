@@ -274,7 +274,8 @@
                 "media": {
                   "src": "1/pagar-pasaje.webp",
                   "alt": "Ejemplo de gasto: pagar pasaje",
-                  "variant": "horizontal"
+                  "variant": "horizontal",
+                  "color": "orange"
                 },
                 "title": {
                   "text": "Gasto",
