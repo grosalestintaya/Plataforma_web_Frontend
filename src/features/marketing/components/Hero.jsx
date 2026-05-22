@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import hero from "@/assets/marketing/hero.webp"; // tu imagen hero
-export default function Hero() {
+
+export default function Hero({ onIniciarSesion }) {
   return (
     <section className="relative overflow-hidden bg-slate-50">
       {/* IMAGEN PEGADA AL BORDE DERECHO (viewport) */}
@@ -46,11 +47,11 @@ export default function Hero() {
             </p>
 
             <div className="mt-6 flex flex-wrap gap-3">
-              <Link
-                to="/login"
+              <button
+                onClick={onIniciarSesion}
                 className="rounded-2xl bg-[#00C853] px-6 py-3 text-sm font-extrabold text-white shadow-sm hover:opacity-95">
                 Inciar sesión
-              </Link>
+              </button>
 
               <Link
                 to="/i"
