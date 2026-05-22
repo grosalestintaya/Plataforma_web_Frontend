@@ -48,6 +48,10 @@ function getCardMedia(media) {
 }
 
 function getCardWidthClass(media, size = "normal") {
+  if (size === "fill") {
+    return "h-full w-full";
+  }
+
   const variant = media?.variant ?? "horizontal";
 
   if (size === "modal") {
@@ -172,8 +176,10 @@ export default function CardBase({
   return (
     <article
       className={cn(
-        "relative mx-auto grid min-h-0 min-w-0 max-w-full self-center justify-self-center overflow-hidden rounded-2xl p-1.5",
-        "lg:h-full",
+        "relative grid min-h-0 min-w-0 max-w-full overflow-hidden rounded-2xl p-1.5",
+        size === "fill"
+          ? "h-full w-full self-stretch justify-self-stretch"
+          : "mx-auto self-center justify-self-center lg:h-full",
         "[container-type:inline-size]",
         getCardWidthClass(resolvedMedia, size),
         CARD_VARIANT_CLASS[selected ? "solid" : variant] ??

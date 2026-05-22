@@ -23,6 +23,7 @@ export { default as FlipCard } from "./compounds/iteractive/cardIteraction/FlipC
 export { default as ZoomableFrame } from "./compounds/iteractive/cardIteraction/ZoomableCard";
 export { default as MemoryPairs } from "./compounds/iteractive/MemoryPairs";
 export { default as ChooseOne } from "./compounds/iteractive/ChooseOne";
+export { default as Crossword } from "./compounds/iteractive/crossword/Crossword";
 export { default as Calculator } from "./compounds/iteractive/Calculator";
 export { default as Shopping } from "./compounds/iteractive/Shopping";
 export { default as ClasifyCard } from "./compounds/iteractive/ClasifyCard";
