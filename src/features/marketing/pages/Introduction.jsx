@@ -256,7 +256,7 @@ const styles = `
     cursor: not-allowed;
     transform: none;
   }
-  .intro-btn-finish {
+  .intro-btn-finish {<
     background: #FFC400;
     color: #1A1100;
     font-size: 15px;
