@@ -6,329 +6,660 @@
   "missionTitle": "Presupuesto personal y control del dinero",
   "views": [
     {
-      "id": "m3_conceptual_intro",
-      "template": "teoria",
-      "variant": "split",
-      "data": {
+      "viewId": "m3_1_v1",
+      "order": 1,
+      "name": "VISTA 1 - Inicio: Antes de empezar",
+      "viewType": "Inicio",
+      "objective": "Presentar la mision conceptual sobre presupuesto personal.",
+      "template": "preGameLobby",
+      "variant": "preGame",
+      "slots": {
         "title": {
           "text": "Antes de empezar",
-          "variant": "h4"
+          "variant": "h1",
+          "align": "center"
         },
-        "leftText": [
-          "En esta mision veras por que sirve un presupuesto y como puedes armarlo.",
-          "Avanza por las vistas, explora los pasos y completa el ejemplo final.",
-          "Cuando presiones Empezar entraras al recorrido de la mision."
-        ],
-        "rightImage": {
-          "src": "",
-          "alt": "Intro presupuesto personal",
+        "body": {
+          "paragraphs": [
+            "En esta mision aprenderas que es un presupuesto y por que sirve para organizar mejor tu dinero.",
+            "Veras ideas clave, un ejemplo sencillo y al final resolveras un crucigrama para repasar lo mas importante.",
+            "Cuando presiones Empezar comenzara el recorrido conceptual."
+          ],
+          "variant": "body1",
+          "align": "left"
+        },
+        "media": {
+          "src": "activity/inicio-conceptual2.jpeg",
+          "alt": "Inicio de la mision de presupuesto",
           "variant": "vertical"
         }
       },
-      "nav": {
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "text",
+            "slot": "body",
+            "area": "body",
+            "order": 20
+          },
+          {
+            "component": "image",
+            "slot": "media",
+            "area": "media",
+            "order": 30
+          }
+        ],
+        "compound": []
+      },
+      "navigation": {
         "mode": "cta",
         "label": "Empezar",
         "action": "startMissionAttempt"
+      },
+      "completionCriteria": {
+        "type": "manualStart"
       }
     },
     {
-      "id": "m3_c_01_que_es",
-      "template": "teoria",
-      "variant": "split",
-      "data": {
+      "viewId": "m3_1_v2",
+      "order": 2,
+      "name": "VISTA 2 - Teoria: Que es un presupuesto",
+      "viewType": "Teoria",
+      "objective": "Explicar el presupuesto como herramienta para organizar ingresos y gastos.",
+      "template": "simpleTheory",
+      "variant": "simple",
+      "slots": {
         "title": {
           "text": "Que es un presupuesto?",
-          "variant": "h5",
-          "containerClassName": "mx-auto max-w-[560px] rounded-xl border border-white/20 px-6 py-3"
+          "variant": "h1",
+          "align": "center"
         },
-        "leftText": {
+        "body": {
           "paragraphs": [
-            "Un presupuesto es un plan para organizar el dinero disponible, estimando ingresos y gastos en un periodo para evitar gastar mas de lo que se tiene.",
-            "Es como un mapa del dinero: te muestra cuanto entra, cuanto puedes usar y en que debes tener cuidado.",
-            "No es para prohibirte cosas. Es para darte control y ayudarte a decidir mejor."
+            "Un presupuesto es un plan para organizar el dinero que tienes durante un periodo, por ejemplo una semana.",
+            "Te ayuda a comparar cuanto dinero entra, cuanto dinero sale y cuanto te queda disponible despues de tus gastos."
           ],
           "variant": "body1",
-          "align": "left",
-          "containerClassName": "rounded-2xl border border-white/15 px-5 py-5"
+          "align": "center"
         },
-        "rightImage": {
-          "src": "",
-          "alt": "Referencia de presupuesto",
-          "variant": "vertical",
-          "placeholderLabel": "IMAGEN DE REFERENCIA"
+        "feedback": {
+          "paragraphs": [
+            "Piensa en el presupuesto como un mapa del dinero.",
+            "No busca prohibirte gastar, sino ayudarte a decidir mejor."
+          ],
+          "variant": "body2",
+          "align": "center"
         }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "text",
+            "slot": "body",
+            "area": "body1",
+            "order": 20
+          },
+          {
+            "component": "text",
+            "slot": "feedback",
+            "area": "feedback",
+            "order": 30
+          }
+        ],
+        "compound": [
+          {
+            "type": "showCard",
+            "component": "showCard",
+            "category": "grouper",
+            "area": "media",
+            "items": [
+              {
+                "id": "m3-card-ingresos",
+                "media": {
+                  "src": "1/recibir-dinero.png",
+                  "alt": "Dinero que entra",
+                  "variant": "horizontal"
+                },
+                "title": {
+                  "text": "Ingresos",
+                  "variant": "label",
+                  "align": "center"
+                },
+                "text": {
+                  "text": "Dinero que recibes.",
+                  "variant": "bodySm",
+                  "align": "center"
+                }
+              },
+              {
+                "id": "m3-card-gastos",
+                "media": {
+                  "src": "1/pagar-pasaje.png",
+                  "alt": "Dinero que sale",
+                  "variant": "horizontal"
+                },
+                "title": {
+                  "text": "Gastos",
+                  "variant": "label",
+                  "align": "center"
+                },
+                "text": {
+                  "text": "Dinero que usas para pagar.",
+                  "variant": "bodySm",
+                  "align": "center"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "normal"
+      },
+      "completionCriteria": {
+        "type": "reading"
       }
     },
     {
-      "id": "m3_c_02_por_que",
-      "template": "teoria",
-      "variant": "split",
-      "data": {
+      "viewId": "m3_1_v3",
+      "order": 3,
+      "name": "VISTA 3 - Teoria: Por que hacer un presupuesto",
+      "viewType": "Teoria",
+      "objective": "Mostrar por que el presupuesto mejora las decisiones con el dinero.",
+      "template": "simpleTheory",
+      "variant": "simple",
+      "slots": {
         "title": {
-          "text": "Por que deberia crear un presupuesto?",
-          "variant": "h5",
-          "containerClassName": "mx-auto max-w-[760px] rounded-xl border border-white/20 px-6 py-3"
+          "text": "Por que deberias crear un presupuesto?",
+          "variant": "h1",
+          "align": "center"
         },
-        "leftText": {
+        "body": {
           "paragraphs": [
-            "Porque un presupuesto te ayuda a vivir dentro de tus posibilidades y tomar mejores decisiones con tu dinero.",
-            "Cuando anotas ingresos y gastos, ves tu situacion mas clara y detectas gastos innecesarios para decidir si recortas o cambias por algo que te importa mas."
+            "Porque un presupuesto te permite ver tu situacion con mas claridad y detectar si estas gastando mas de lo que tienes.",
+            "Tambien te ayuda a priorizar, ajustar gastos innecesarios y reservar dinero para algo importante."
           ],
           "variant": "body1",
-          "align": "left",
-          "containerClassName": "rounded-2xl border border-white/15 px-5 py-5"
+          "align": "center"
         },
-        "rightImage": {
-          "src": "",
-          "alt": "Persona celebrando",
-          "variant": "vertical",
-          "placeholderLabel": "IMAGEN DE REFERENCIA"
+        "feedback": {
+          "paragraphs": [
+            "Si sabes en que se te va el dinero, puedes corregir a tiempo.",
+            "Si te sobra, puedes ahorrar o guardarlo para una emergencia."
+          ],
+          "variant": "body2",
+          "align": "center"
         }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "text",
+            "slot": "body",
+            "area": "body1",
+            "order": 20
+          },
+          {
+            "component": "text",
+            "slot": "feedback",
+            "area": "feedback",
+            "order": 30
+          }
+        ],
+        "compound": []
+      },
+      "navigation": {
+        "mode": "normal"
+      },
+      "completionCriteria": {
+        "type": "reading"
       }
     },
     {
-      "id": "m3_c_03_quien",
-      "template": "teoria",
-      "variant": "split",
-      "data": {
+      "viewId": "m3_1_v4",
+      "order": 4,
+      "name": "VISTA 4 - Teoria: Quien necesita un presupuesto",
+      "viewType": "Teoria",
+      "objective": "Explicar que cualquier persona puede beneficiarse de un presupuesto.",
+      "template": "simpleTheory",
+      "variant": "simple",
+      "slots": {
         "title": {
           "text": "Quien necesita un presupuesto?",
-          "variant": "h5",
-          "containerClassName": "mx-auto max-w-[720px] rounded-xl border border-white/20 px-6 py-3"
+          "variant": "h1",
+          "align": "center"
         },
-        "leftText": {
+        "body": {
           "paragraphs": [
-            "A veces se cree que el presupuesto solo sirve cuando alguien tiene problemas economicos, pero no es asi.",
-            "Todos necesitan presupuesto, porque ayuda a evitar errores y a planificar mejor lo que quieres lograr con tu dinero.",
-            "Con un presupuesto puedes evitar gastos de mas, planificar una compra y usar mejor el dinero en lo que si te importa."
+            "Todas las personas pueden usar un presupuesto, no solo quienes tienen problemas con el dinero.",
+            "Si recibes dinero para la semana, para el recreo o para una actividad, ya puedes organizarlo con un presupuesto sencillo."
           ],
           "variant": "body1",
-          "align": "left",
-          "containerClassName": "rounded-2xl border border-white/15 px-5 py-5"
+          "align": "center"
         },
-        "rightImage": {
-          "src": "",
-          "alt": "Referencia de presupuesto",
-          "variant": "vertical",
-          "placeholderLabel": "IMAGEN DE REFERENCIA"
+        "feedback": {
+          "paragraphs": [
+            "El presupuesto te sirve para evitar errores pequeños que luego se acumulan.",
+            "Tambien te ayuda a planificar compras y metas."
+          ],
+          "variant": "body2",
+          "align": "center"
         }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "text",
+            "slot": "body",
+            "area": "body1",
+            "order": 20
+          },
+          {
+            "component": "text",
+            "slot": "feedback",
+            "area": "feedback",
+            "order": 30
+          }
+        ],
+        "compound": []
+      },
+      "navigation": {
+        "mode": "normal"
+      },
+      "completionCriteria": {
+        "type": "reading"
       }
     },
     {
-      "id": "m3_c_04_pasos",
-      "template": "stepGuide",
-      "variant": "modalDetail",
-      "data": {
+      "viewId": "m3_1_v5",
+      "order": 5,
+      "name": "VISTA 5 - Teoria: Pasos para armar un presupuesto",
+      "viewType": "Teoria",
+      "objective": "Mostrar los pasos basicos para construir un presupuesto personal.",
+      "template": "splitTheory",
+      "variant": "split",
+      "slots": {
         "title": {
           "text": "Pasos para armar un presupuesto",
-          "variant": "h5",
-          "containerClassName": "mx-auto max-w-[720px] rounded-xl border border-white/20 px-6 py-3"
+          "variant": "h1",
+          "align": "center"
         },
-        "steps": [
+        "body": {
+          "paragraphs": [
+            "Para hacer un presupuesto no necesitas formulas complicadas. Solo debes ordenar la informacion del dinero que entra y del dinero que sale.",
+            "Si sigues estos pasos, podras revisar tu situacion antes de gastar y decidir mejor."
+          ],
+          "variant": "body1",
+          "align": "left"
+        },
+        "feedback": {
+          "title": {
+            "text": "Pasos clave",
+            "variant": "body",
+            "align": "left"
+          },
+          "items": [
+            "1. Anota tus ingresos.",
+            "2. Registra tus gastos.",
+            "3. Clasifica en que gastas.",
+            "4. Calcula tu saldo.",
+            "5. Ajusta si gastas mas de lo que tienes."
+          ],
+          "variant": "bodySm",
+          "align": "left"
+        },
+        "media": {
+          "src": "1/pensando.png",
+          "alt": "Pensar antes de organizar el presupuesto",
+          "variant": "vertical"
+        }
+      },
+      "elements": {
+        "base": [
           {
-            "id": "step-1",
-            "number": "1",
-            "label": {
-              "text": "Ve tus ingresos",
-              "variant": "body1"
-            },
-            "detail": {
-              "title": {
-                "text": "1. Ve tus ingresos",
-                "variant": "h5"
-              },
-              "text": {
-                "paragraphs": [
-                  "En una lista registra todo el dinero que tengas.",
-                  "Algunos ejemplos pueden ser el dinero para tu semana, la propina que te dan o un ingreso extra pequeno."
-                ],
-                "variant": "body1",
-                "align": "left"
-              },
-              "image": {
-                "src": "",
-                "alt": "Ingresos",
-                "variant": "square",
-                "placeholderLabel": "IMAGEN DE REFERENCIA"
-              }
-            }
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
           },
           {
-            "id": "step-2",
-            "number": "2",
-            "label": {
-              "text": "Ve tus gastos",
-              "variant": "body1"
-            },
-            "detail": {
-              "title": {
-                "text": "2. Ve tus gastos",
-                "variant": "h5"
-              },
-              "text": {
-                "paragraphs": [
-                  "Anota en que se va tu dinero durante la semana.",
-                  "Incluye gastos pequenos y repetidos, porque muchas veces ahi se escapa lo mas dificil de notar."
-                ],
-                "variant": "body1",
-                "align": "left"
-              },
-              "image": {
-                "src": "",
-                "alt": "Gastos",
-                "variant": "square",
-                "placeholderLabel": "IMAGEN DE REFERENCIA"
-              }
-            }
+            "component": "text",
+            "slot": "body",
+            "area": "body",
+            "order": 20
           },
           {
-            "id": "step-3",
-            "number": "3",
-            "label": {
-              "text": "Clasifica los gastos",
-              "variant": "body1"
-            },
-            "detail": {
-              "title": {
-                "text": "3. Clasifica los gastos",
-                "variant": "h5"
-              },
-              "text": {
-                "paragraphs": [
-                  "Separa tus gastos en categorias para entender mejor tus decisiones.",
-                  "Por ejemplo: transporte, recreo, materiales o ahorro."
-                ],
-                "variant": "body1",
-                "align": "left"
-              },
-              "image": {
-                "src": "",
-                "alt": "Clasifica",
-                "variant": "square",
-                "placeholderLabel": "IMAGEN DE REFERENCIA"
-              }
-            }
+            "component": "text",
+            "slot": "feedback",
+            "area": "support",
+            "order": 30
           },
           {
-            "id": "step-4",
-            "number": "4",
-            "label": {
-              "text": "Calcula tu saldo",
-              "variant": "body1"
-            },
-            "detail": {
-              "title": {
-                "text": "4. Calcula tu saldo",
-                "variant": "h5"
-              },
-              "text": {
-                "paragraphs": [
-                  "Resta tus gastos a tus ingresos.",
-                  "Ese resultado te dice si te falta dinero, si estas justo o si aun te queda una parte disponible."
-                ],
-                "variant": "body1",
-                "align": "left"
-              },
-              "image": {
-                "src": "",
-                "alt": "Saldo",
-                "variant": "square",
-                "placeholderLabel": "IMAGEN DE REFERENCIA"
-              }
-            }
+            "component": "image",
+            "slot": "media",
+            "area": "media",
+            "order": 40
+          }
+        ],
+        "compound": []
+      },
+      "navigation": {
+        "mode": "normal"
+      },
+      "completionCriteria": {
+        "type": "reading"
+      }
+    },
+    {
+      "viewId": "m3_1_v6",
+      "order": 6,
+      "name": "VISTA 6 - Teoria: Ejemplo rapido de presupuesto",
+      "viewType": "Teoria",
+      "objective": "Mostrar un ejemplo rapido de ingresos, gastos y saldo semanal.",
+      "template": "simpleTheory",
+      "variant": "simple",
+      "slots": {
+        "title": {
+          "text": "Ejemplo rapido: una semana",
+          "variant": "h1",
+          "align": "center"
+        },
+        "body": {
+          "paragraphs": [
+            "Imagina que recibes S/ 20 para la semana. Si gastas S/ 5 en pasajes y S/ 5 en el recreo, todavia te quedan S/ 10.",
+            "Ese resultado final es tu saldo. Si el saldo es positivo, aun tienes dinero disponible. Si fuera negativo, tendrias que ajustar."
+          ],
+          "variant": "body1",
+          "align": "center"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
           },
           {
-            "id": "step-5",
-            "number": "5",
-            "label": {
-              "text": "Compara y ajusta",
-              "variant": "body1"
-            },
-            "detail": {
-              "title": {
-                "text": "5. Compara y ajusta",
-                "variant": "h5"
+            "component": "text",
+            "slot": "body",
+            "area": "body1",
+            "order": 20
+          }
+        ],
+        "compound": [
+          {
+            "type": "showCard",
+            "component": "showCard",
+            "category": "grouper",
+            "area": "media",
+            "items": [
+              {
+                "id": "m3-example-1",
+                "title": {
+                  "text": "Ingresos",
+                  "variant": "label",
+                  "align": "center"
+                },
+                "text": {
+                  "text": "S/ 20.00",
+                  "variant": "body",
+                  "align": "center"
+                }
               },
-              "text": {
-                "paragraphs": [
-                  "Si tus gastos superan tus ingresos, toca ajustar antes de gastar.",
-                  "Si te sobra dinero, puedes decidir cuanto guardar o reservar para algo importante."
-                ],
-                "variant": "body1",
-                "align": "left"
+              {
+                "id": "m3-example-2",
+                "title": {
+                  "text": "Gastos",
+                  "variant": "label",
+                  "align": "center"
+                },
+                "text": {
+                  "text": "S/ 10.00",
+                  "variant": "body",
+                  "align": "center"
+                }
               },
-              "image": {
-                "src": "",
-                "alt": "Ajusta",
-                "variant": "square",
-                "placeholderLabel": "IMAGEN DE REFERENCIA"
+              {
+                "id": "m3-example-3",
+                "title": {
+                  "text": "Saldo",
+                  "variant": "label",
+                  "align": "center"
+                },
+                "text": {
+                  "text": "S/ 10.00",
+                  "variant": "body",
+                  "align": "center"
+                }
               }
+            ]
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "normal"
+      },
+      "completionCriteria": {
+        "type": "reading"
+      }
+    },
+    {
+      "viewId": "m3_1_v7",
+      "order": 7,
+      "name": "VISTA 7 - Interaccion: Crucigrama del presupuesto",
+      "viewType": "Interaccion",
+      "objective": "Reforzar los conceptos clave del presupuesto con un crucigrama.",
+      "template": "assessmentTheory",
+      "variant": "assessment",
+      "slots": {
+        "title": {
+          "text": "Crucigrama del presupuesto",
+          "variant": "h1",
+          "align": "center"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "heading",
+            "slot": "subtitle",
+            "area": "subtitle",
+            "order": 20
+          }
+        ],
+        "compound": [
+          {
+            "type": "crossword",
+            "component": "crossword",
+            "category": "interactive",
+            "area": "assessment",
+            "title": {
+              "text": "Palabras clave del presupuesto",
+              "variant": "h3",
+              "align": "left"
+            },
+            "instruction": {
+              "text": "Haz click en el tablero para cambiar entre palabras y responder su pista.",
+              "variant": "bodySm",
+              "align": "left"
+            },
+            "crossword": {
+              "boardBackground": {
+                "src": "activity/inicio-conceptual2.jpeg",
+                "alt": "Fondo del crucigrama"
+              },
+              "sidebarImage": {
+                "src": "1/pensando.png",
+                "alt": "Imagen de apoyo del presupuesto"
+              },
+              "words": [
+                {
+                  "id": "presupuesto",
+                  "answer": "PRESUPUESTO",
+                  "clue": "Herramienta que organiza ingresos y gastos en un periodo.",
+                  "image": {
+                    "src": "1/recibir-dinero.png",
+                    "alt": "Referencia de presupuesto"
+                  }
+                },
+                {
+                  "id": "ingreso",
+                  "answer": "INGRESO",
+                  "clue": "Dinero que entra o recibes.",
+                  "image": {
+                    "src": "1/ganar-dinero.png",
+                    "alt": "Ejemplo de ingreso"
+                  }
+                },
+                {
+                  "id": "gasto",
+                  "answer": "GASTO",
+                  "clue": "Dinero que sale cuando compras o pagas algo.",
+                  "image": {
+                    "src": "1/pagar-pasaje.png",
+                    "alt": "Ejemplo de gasto"
+                  }
+                },
+                {
+                  "id": "ahorro",
+                  "answer": "AHORRO",
+                  "clue": "Parte del dinero que decides guardar para despues.",
+                  "image": {
+                    "src": "1/agua.png",
+                    "alt": "Ejemplo de ahorro"
+                  }
+                },
+                {
+                  "id": "saldo",
+                  "answer": "SALDO",
+                  "clue": "Diferencia entre ingresos y gastos.",
+                  "image": {
+                    "src": "1/propina.png",
+                    "alt": "Referencia de saldo"
+                  }
+                }
+              ]
             }
           }
         ]
+      },
+      "navigation": {
+        "mode": "lockedUntilComplete",
+        "label": "Completa el crucigrama para continuar"
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "completeCrossword"
       }
     },
     {
-      "id": "m3_c_05_ejemplo_interactivo",
-      "template": "scenarioExplorer",
-      "variant": "numericOutcome",
-      "data": {
+      "viewId": "m3_1_v8",
+      "order": 8,
+      "name": "VISTA 8 - Final: Mision completada",
+      "viewType": "Final",
+      "objective": "Cerrar la mision conceptual y mostrar el cierre del modulo.",
+      "template": "postGameLobby",
+      "variant": "postGame",
+      "slots": {
         "title": {
-          "text": "Ejemplo: Presupuesto para una semana",
-          "variant": "h5",
-          "containerClassName": "mx-auto max-w-[760px] rounded-xl border border-white/20 px-6 py-3"
+          "text": "Mision cumplida",
+          "variant": "h1",
+          "align": "center"
         },
-        "text": {
-          "text": "Completa los recuadros en blanco",
-          "variant": "subtitle2",
-          "containerClassName": "mx-auto max-w-[760px] rounded-xl border border-white/15 px-6 py-2"
-        },
-        "budget": {
-          "prompt": {
-            "text": "Escribe cuanto gastarias por dia en recreo. La vista se actualiza sola y te muestra si tu saldo queda positivo, exacto o negativo.",
-            "variant": "body2",
-            "align": "left"
-          },
-          "incomeItems": [
-            { "label": "Dinero semanal", "value": 10 },
-            { "label": "Propina", "value": 10 }
-          ],
-          "expenseItems": [
-            { "label": "Pasaje: S/ 1.00 x 5 dias", "value": 5 },
-            {
-              "id": "recreo",
-              "label": "Recreo: S/ __ x 5 dias",
-              "isInteractive": true
-            }
-          ],
-          "interactiveInput": {
-            "id": "recreo",
-            "initialValue": "",
-            "multiplier": 5
-          },
-          "notes": {
-            "blank": {
-              "text": "Todavia faltan datos. Completa el valor del recreo para ver el resultado.",
-              "variant": "body2",
-              "align": "left"
-            },
-            "negative": {
-              "text": "Saldo en negativo: tus gastos son mayores a tus ingresos. Debes ajustar tus gastos para no superar lo que tienes.",
-              "variant": "body2",
-              "align": "left"
-            },
-            "neutral": {
-              "text": "Saldo exacto: todo lo que ingresa ya esta comprometido. No hay margen para un gasto extra.",
-              "variant": "body2",
-              "align": "left"
-            },
-            "positive": {
-              "text": "Saldo en positivo: tus gastos son menores a tus ingresos. Tienes dinero extra que puedes ahorrar o guardar para una emergencia.",
-              "variant": "body2",
-              "align": "left"
-            }
-          }
+        "feedback": {
+          "text": "Ahora ya reconoces que es un presupuesto y para que sirve al organizar tu dinero.",
+          "variant": "label",
+          "align": "center",
+          "color": "accent"
         }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "text",
+            "slot": "feedback",
+            "area": "feedback",
+            "order": 20
+          }
+        ],
+        "compound": [
+          {
+            "type": "showCard",
+            "component": "showCard",
+            "category": "grouper",
+            "area": "rewards",
+            "items": [
+              {
+                "id": "reward-xp",
+                "title": {
+                  "text": "XP",
+                  "variant": "label"
+                },
+                "text": {
+                  "text": "+ 10",
+                  "variant": "bodySm"
+                }
+              },
+              {
+                "id": "reward-intis",
+                "title": {
+                  "text": "INTIS",
+                  "variant": "label"
+                },
+                "text": {
+                  "text": "+ 10",
+                  "variant": "bodySm"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "cta",
+        "label": "Continuar",
+        "action": "goToNextMissionMenu"
+      },
+      "completionCriteria": {
+        "type": "endOfMission"
       }
     }
   ]

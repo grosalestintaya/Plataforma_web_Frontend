@@ -126,6 +126,7 @@ function getPayload(view = {}) {
   const collageCard = findCompound(compounds, "collageCard");
   const chooseOne = findCompound(compounds, "chooseOne");
   const memoryPairs = findCompound(compounds, "memoryPairs");
+  const crossword = findCompound(compounds, "crossword");
 
   const { feedbackText, supportList } = normalizeFeedback(
     view?.slots?.feedback,
@@ -149,6 +150,7 @@ function getPayload(view = {}) {
     collageCardData: collageCard ?? null,
     chooseOneData: chooseOne ?? null,
     memoryPairsData: memoryPairs ?? null,
+    crosswordData: crossword ?? null,
   };
 }
 
@@ -382,6 +384,17 @@ export const THEORY_CONFIG = {
             block: "MemoryPairs",
             props: (payload, ctx) => ({
               data: payload?.memoryPairsData,
+              heroApi: ctx?.heroApi,
+              view: ctx?.view,
+            }),
+          },
+          {
+            slotId: "crossword",
+            area: "assessment",
+            when: (payload) => Boolean(payload?.crosswordData),
+            block: "Crossword",
+            props: (payload, ctx) => ({
+              data: payload?.crosswordData,
               heroApi: ctx?.heroApi,
               view: ctx?.view,
             }),

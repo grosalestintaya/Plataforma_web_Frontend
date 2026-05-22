@@ -83,7 +83,7 @@
         },
         "assessment": {
           "text": "Vas a la tienda a comprar los utiles para iniciar las clases",
-          "variant": "h3",
+          "variant": "h1",
           "align": "center"
         }
       },

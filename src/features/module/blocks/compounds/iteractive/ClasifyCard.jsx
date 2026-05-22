@@ -165,8 +165,7 @@ export default function ClasifyCard({
 }) {
   const runtime = config ?? {};
   const viewId = getViewId(view);
-  const layoutVariant = runtime?.layoutVariant ?? "bankTop";
-  const isBankLeftLayout = layoutVariant === "bankLeft";
+  const layoutVariant = "responsive";
 
   const panelTitle = normalizeTextNode(
     runtime?.panelTitle ?? "Arrastra los diferentes objetos a uno de los contenedores",
@@ -237,9 +236,11 @@ export default function ClasifyCard({
       : 0;
   const classifiedCount = Math.max(0, totalItems - bankItems.length);
   const incorrectCount = Math.max(0, classifiedCount - correctCount);
+  const bankVisibleMobileRows = 4;
+  const bankVisibleDesktopCols = 6;
   const bankSlots = buildSlots(
     bankItems,
-    isBankLeftLayout ? Math.max(8, bankItems.length) : Math.max(6, bankItems.length),
+    Math.max(bankVisibleMobileRows, bankVisibleDesktopCols, bankItems.length),
   );
   const actionLabel = runtime?.submitLabel ?? heroApi?.advanceLabel ?? "Continuar";
 
@@ -411,7 +412,7 @@ export default function ClasifyCard({
     );
   }
 
-  function renderBank() {
+  function renderBank({ mobile = false } = {}) {
     return (
       <section
         onDrop={handleBankDrop}
@@ -419,7 +420,7 @@ export default function ClasifyCard({
         onClick={handleBankClick}
         className={cn(
           "rounded-[1.2rem] bg-white/[0.03] p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.10)]",
-          isBankLeftLayout ? "min-h-0 lg:h-full" : "shrink-0",
+          mobile ? "min-h-0" : "shrink-0",
           selectedItemId && "ring-2 ring-white/20",
         )}
       >
@@ -437,50 +438,63 @@ export default function ClasifyCard({
         ) : (
           <div
             className={cn(
-              "grid gap-3",
-              isBankLeftLayout
-                ? "grid-cols-2 auto-rows-[5.6rem] overflow-y-auto overflow-x-hidden pr-1 sm:auto-rows-[6rem] lg:h-full lg:auto-rows-[5.5rem]"
-                : "grid-flow-col auto-cols-[40%] grid-rows-1 overflow-x-auto overflow-y-hidden pb-1 sm:grid-flow-row sm:grid-cols-4 sm:overflow-visible sm:pb-0 lg:grid-cols-8",
+              "overflow-hidden",
+              mobile
+                ? "h-[calc(22.4rem+2.25rem)] sm:h-[calc(24rem+2.25rem)]"
+                : "h-[5.75rem] xl:h-[6.1rem]",
             )}
           >
-            {bankSlots.map((item, index) => (
-              <div
-                key={item?.id ?? `bank-empty-${index}`}
-                className={cn(
-                  "grid min-w-0 place-items-center [container-type:size]",
-                  isBankLeftLayout
-                    ? "h-full min-h-0"
-                    : "h-[6.25rem] w-full sm:h-[6.5rem] lg:h-[5.75rem] xl:h-[6.1rem]",
-                )}
-              >
-                {item ? (
-                  <ObjectTile
-                    item={item}
-                    compact
-                    draggable={draggable}
-                    selected={selectedItemId === item?.id}
-                    onClick={handleItemClick}
-                    onDragStart={handleItemDragStart}
-                    onDragEnd={handleItemDragEnd}
-                  />
-                ) : (
-                  <EmptySlot />
-                )}
-              </div>
-            ))}
+            <div
+              className={cn(
+                "grid gap-3",
+                mobile
+                  ? "grid-cols-1 auto-rows-[5.6rem] overflow-hidden pr-0 sm:auto-rows-[6rem]"
+                  : "grid-cols-6 auto-rows-[5.75rem] overflow-hidden pr-0 xl:auto-rows-[6.1rem]",
+              )}
+            >
+              {bankSlots.map((item, index) => (
+                <div
+                  key={item?.id ?? `bank-empty-${index}`}
+                  className="grid min-w-0 place-items-center [container-type:size] h-full min-h-0"
+                >
+                  {item ? (
+                    <ObjectTile
+                      item={item}
+                      compact
+                      draggable={draggable}
+                      selected={selectedItemId === item?.id}
+                      onClick={handleItemClick}
+                      onDragStart={handleItemDragStart}
+                      onDragEnd={handleItemDragEnd}
+                    />
+                  ) : (
+                    <EmptySlot />
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </section>
     );
   }
 
-  function renderCategories() {
+  function renderCategories({ mobile = false } = {}) {
+    const visibleRows = mobile ? 2 : 3;
+    const visibleSlotCount = visibleRows * 2;
+    const rowGapPx = 8;
+
     return (
-      <div className="grid min-h-0 w-full flex-1 grid-cols-1 gap-2 md:grid-cols-2 lg:h-full">
+      <div
+        className={cn(
+          "grid min-h-0 w-full flex-1 gap-2 lg:h-full",
+          mobile ? "grid-cols-1 grid-rows-2" : "grid-cols-2",
+        )}
+      >
         {categories.map((category) => {
           const tone = getCategoryTone(category.id);
           const placedItems = categorizedItems[category.id] ?? [];
-          const slots = buildSlots(placedItems, 6);
+          const slots = buildSlots(placedItems, visibleSlotCount);
 
           return (
             <section
@@ -489,8 +503,8 @@ export default function ClasifyCard({
               onDragOver={preventDropDefault}
               onClick={() => handleCategoryClick(category.id)}
               className={cn(
-                "flex min-h-[20rem] min-w-0 flex-col gap-2 rounded-[1.2rem] p-2",
-                "md:min-h-[18rem] lg:h-full lg:min-h-0",
+                "flex min-h-0 min-w-0 flex-col gap-2 rounded-[1.2rem] p-2",
+                mobile ? "h-full" : "h-full",
                 tone.shell,
                 selectedItemId && "ring-2 ring-white/20",
               )}
@@ -510,7 +524,13 @@ export default function ClasifyCard({
               </div>
 
               <div className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden rounded-[1rem] scrollbar-thin scrollbar-track-white/5 scrollbar-thumb-white/20">
-                <div className="grid grid-cols-3 gap-2 auto-rows-[6rem] sm:auto-rows-[6.5rem] lg:h-full lg:auto-rows-[calc(50%_-_0.25rem)]">
+                <div
+                  className="grid h-full grid-cols-2 gap-2"
+                  style={{
+                    gridTemplateRows: `repeat(${visibleRows}, minmax(0, 1fr))`,
+                    gridAutoRows: `calc((100% - ${(visibleRows - 1) * rowGapPx}px) / ${visibleRows})`,
+                  }}
+                >
                   {slots.map((item, index) => (
                     <div
                       key={item?.id ?? `${category.id}-empty-${index}`}
@@ -549,21 +569,23 @@ export default function ClasifyCard({
         "shadow-[inset_0_1px_0_rgba(255,255,255,0.12)]",
       )}
     >
-      {isBankLeftLayout ? (
-        <div className="grid min-h-0 flex-1 grid-cols-1 gap-2 lg:grid-cols-[minmax(9rem,13rem)_minmax(0,1fr)]">
-          {renderBank()}
-          <div className="flex min-h-0 min-w-0 flex-col gap-2">
-            {renderPanelTitle()}
-            {renderCategories()}
-          </div>
+      {renderPanelTitle()}
+      <div className="grid min-h-0 flex-1 grid-cols-[minmax(5.5rem,6.4rem)_minmax(0,1fr)] gap-2 lg:hidden">
+        <div className="min-h-0 min-w-0">
+          {renderBank({ mobile: true })}
         </div>
-      ) : (
-        <>
-          {renderPanelTitle()}
-          {renderBank()}
-          {renderCategories()}
-        </>
-      )}
+        <div className="min-h-0 flex min-w-0 flex-col">
+          {renderCategories({ mobile: true })}
+        </div>
+      </div>
+      <div className="hidden min-h-0 flex-1 grid-cols-1 grid-rows-[auto_1fr] gap-2 lg:grid">
+        <div className="min-h-0 min-w-0">
+          {renderBank({ mobile: false })}
+        </div>
+        <div className="min-h-0 flex min-w-0 flex-col">
+          {renderCategories({ mobile: false })}
+        </div>
+      </div>
     </section>
   );
 }
