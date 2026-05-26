@@ -259,12 +259,26 @@ const STEP_ACCENTS = [
 ];
 
 const MASCOT_MESSAGES = [
-  "¡Hola! Soy Quipu.\nTe guío en esta misión 🙌",
-  "¿Listo para aprender?\n¡Vamos juntos! 💪",
-  "Cada misión te hace más sabio.\n¡Tú puedes! ⭐",
-  "Recuerda: el saber\nes tu mejor tesoro 🏆",
-  "¡Ánimo! Esta misión\nserá muy interesante 🎯",
-  "Juntos aprenderemos\ncosas increíbles hoy 🌟",
+  "Todo está listo.\nComencemos esta misión 🎯",
+  "Hoy aprenderemos algo útil.\nVamos juntos 🚀",
+  "Prepárate.\nCada decisión cuenta 💰",
+  "Una nueva misión te espera.\n¿Listo? ✨",
+  "Es momento de comenzar.\nTú puedes 💪",
+  "Tu aventura financiera\nempieza aquí 🧭",
+  "Hoy pondremos a prueba\nnuevas ideas 🧠",
+  "Antes de empezar:\npiensa, decide y aprende 🎮",
+  "Esta misión trata sobre\nhacer elecciones inteligentes 💎",
+  "No necesitas saberlo todo.\nSolo comenzar 🌱",
+  "Toma asiento, aventurero.\nLa misión está por iniciar ⚔️",
+  "Un buen plan puede cambiarlo todo.\nDescubrámoslo 📜",
+  "Cada reto trae\nuna nueva enseñanza ⭐",
+  "Hoy aprenderemos algo\nque sí usarás en la vida 💡",
+  "Respira hondo.\nLa misión comienza ahora 🎒",
+  "Tus decisiones tendrán impacto.\nEmpecemos 📈",
+  "La mejor herramienta\nes lo que aprendes hoy 🛡️",
+  "Todo listo para iniciar.\nVamos allá ⚡",
+  "Esta misión puede parecer pequeña...\npero será importante 🌟",
+  "Comienza una nueva experiencia.\nEstoy contigo 🤝",
 ];
 
 function getRandomMessage() {

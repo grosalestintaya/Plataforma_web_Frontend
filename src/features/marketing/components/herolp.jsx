@@ -4,7 +4,7 @@ export default function HeroLp({ onIniciarSesion }) {
   return (
     <section
       className="relative w-full flex-1 overflow-hidden flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-8 px-6 sm:px-12 lg:px-16 pb-10 sm:pb-0"
-      style={{ background: "#FFF146", minHeight: "100%" }}>
+      style={{ background: "#00C853", minHeight: "100%" }}>
       {/* Blob amarillo decorativo */}
       <div
         className="absolute bottom-0 right-0 w-62 h-48 sm:w-88 sm:h-80 pointer-events-none"
@@ -26,29 +26,34 @@ export default function HeroLp({ onIniciarSesion }) {
       <div className="relative flex flex-col w-full  pb-0 pl-9">
         <h1
           className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black m-0"
-          style={{ color: "#BB6C02" }}>
-          Tu aventura financiera comienza aquí
-        </h1>{" "}
+          style={{ color: "#ffffff" }}>
+          Tu aventura financiera
+        </h1>
+        <h1
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black m-0"
+          style={{ color: "#FFF146" }}>
+          comienza aquí
+        </h1>
         <br />
         <span
           className="text-3xl sm:text-4xl md:text-5xl lg:text-4xl font-black leading-tight"
-          style={{ color: "#7C4DFF" }}>
+          style={{ color: "#FFE31B" }}>
           • Aprende a tomar mejores decisiones
         </span>
         <span
           className="text-3xl sm:text-4xl md:text-5xl lg:text-4xl font-black leading-tight"
-          style={{ color: "#E91E8C" }}>
+          style={{ color: "#FFE31B" }}>
           • Juega y completas desafíos
         </span>
         <span
           className="text-3xl sm:text-4xl md:text-5xl lg:text-4xl font-black leading-tight mb-4 sm:mb-5"
-          style={{ color: "#00C853" }}>
+          style={{ color: "#FFE31B" }}>
           • Avanza hacia tus metas
         </span>
         <br />
         <p
           className="text-sm sm:text-xl md:text-base font-bold leading-relaxed mb-6 sm:mb-7 "
-          style={{ color: "#BB6C02" }}>
+          style={{ color: "#ffffff" }}>
           Aprende finanzas personales paso a paso mediante misiones dinámicas,
           retos prácticos y recompensas por tu progreso.
           <br />

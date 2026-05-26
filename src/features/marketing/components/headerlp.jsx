@@ -3,7 +3,7 @@ import HeaderRopeSvg from "@/features/module/components/HeaderRopeSvg.jsx";
 import logo from "/logo_full.webp";
 export default function Headerlp({
   title,
-  themeHex = "#00C853",
+  themeHex = "#fffff",
   onBack,
   onIniciarSesion,
   onComoFunciona,
@@ -26,7 +26,7 @@ export default function Headerlp({
                 onClick={onComoFunciona}
                 className="text-lg font-bold transition-opacity hover:opacity-70"
                 style={{
-                  color: "#00C853",
+                  color: "#ffff",
                   fontFamily: "'Nunito', sans-serif",
                 }}>
                 ¿Cómo funciona?
@@ -35,7 +35,7 @@ export default function Headerlp({
                 onClick={onInicio}
                 className="text-lg font-bold transition-opacity hover:opacity-70"
                 style={{
-                  color: "#00C853",
+                  color: "#ffff",
                   fontFamily: "'Nunito', sans-serif",
                 }}>
                 Ver introducción

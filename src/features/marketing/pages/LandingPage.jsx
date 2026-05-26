@@ -11,7 +11,7 @@ function ComoFunciona() {
       <div className="text-center max-w-xl mx-auto">
         <h2
           className="text-3xl sm:text-4xl font-black mb-3"
-          style={{ color: "#BB6C02" }}>
+          style={{ color: "#00C853" }}>
           ¿Cómo funciona?
         </h2>
         <p className="text-green-600  font-semibold text-sm sm:text-base opacity-90">
@@ -149,7 +149,7 @@ export default function LandingPage() {
       const el = document.createElement("div");
       const size = 4 + Math.random() * 8;
       el.style.cssText = `
-        position:absolute;border-radius:50%;background:#00C853;
+        position:absolute;border-radius:50%;background:#ffffff;
         width:${size}px;height:${size}px;
         top:${Math.random() * 100}%;left:${Math.random() * 100}%;
         opacity:${0.3 + Math.random() * 0.5};
@@ -192,7 +192,7 @@ export default function LandingPage() {
       <div
         ref={mainRef}
         className="min-h-screen flex flex-col relative overflow-hidden"
-        style={{ background: "#FFF146" }}>
+        style={{ background: "#00C853" }}>
         <Headerlp
           title="Quipu Yachay"
           themeHex="#00C853"
