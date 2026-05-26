@@ -1,9 +1,10 @@
 import { useEffect, useRef } from "react";
+import { resolveAvatar } from "../helpers/helpers";
 
 const ICONS = { ok: "✓", error: "✗", info: "ℹ" };
 const LABELS = { ok: "Listo", error: "Error", info: "Info" };
 
-export default function Toast({ toast, onDismiss, duration = 3000 }) {
+export default function Toast({ toast, onDismiss, duration = 5000, user }) {
   const barRef = useRef(null);
 
   useEffect(() => {
@@ -37,39 +38,43 @@ export default function Toast({ toast, onDismiss, duration = 3000 }) {
     <div
       style={{
         position: "fixed",
-        bottom: 28,
-        left: "50%",
-        transform: "translateX(-50%)",
+        top: 20, // ← antes: bottom: 28
+        right: 20, // ← antes: left: "50%"
         zIndex: 9999,
         animation: "toastIn 0.32s cubic-bezier(.22,1,.36,1) forwards",
+        display: "flex",
+        alignItems: "flex-end", // burbuja alineada al avatar
+        gap: 10,
       }}>
       <style>{`
         @keyframes toastIn {
-          from { transform: translateX(-50%) translateY(60px) scale(0.95); opacity:0 }
-          to   { transform: translateX(-50%) translateY(0)    scale(1);    opacity:1 }
+          from { transform: translateY(-20px) scale(0.95); opacity: 0 }
+          to   { transform: translateY(0)      scale(1);    opacity: 1 }
         }
         @keyframes shrinkBar { from{width:100%} to{width:0%} }
       `}</style>
 
+      {/* Burbuja */}
       <div
         style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 12,
+          position: "relative",
+          maxWidth: 320,
           padding: "13px 18px",
-          borderRadius: 16,
-          minWidth: 380,
-          maxWidth: 580,
+          borderRadius: "18px 18px 4px 18px", // ← pico abajo-derecha hacia el avatar
           border: `1px solid ${colors.border}`,
           backgroundColor: "var(--ui-surface, #fff)",
           overflow: "hidden",
-          position: "relative",
         }}>
-        <span style={{ fontSize: 18, color: colors.text }}>
-          {ICONS[toast.type]}
-        </span>
-
-        <div style={{ flex: 1 }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            marginBottom: 4,
+          }}>
+          <span style={{ fontSize: 16, color: colors.text }}>
+            {ICONS[toast.type]}
+          </span>
           <p
             style={{
               margin: 0,
@@ -79,32 +84,35 @@ export default function Toast({ toast, onDismiss, duration = 3000 }) {
             }}>
             {LABELS[toast.type]}: {toast.title ?? toast.msg}
           </p>
-          {toast.title && (
-            <p
-              style={{
-                margin: "2px 0 0",
-                fontSize: 12,
-                color: "var(--card-muted)",
-              }}>
-              {toast.msg}
-            </p>
-          )}
+          <button
+            onClick={onDismiss}
+            style={{
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              fontSize: 14,
+              color: "var(--card-muted)",
+              lineHeight: 1,
+              marginLeft: "auto",
+              paddingLeft: 8,
+            }}>
+            ✕
+          </button>
         </div>
 
-        <button
-          onClick={onDismiss}
-          style={{
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            fontSize: 16,
-            color: "var(--card-muted)",
-            lineHeight: 1,
-          }}>
-          ✕
-        </button>
+        {toast.title && (
+          <p
+            style={{
+              margin: 0,
+              fontSize: 12,
+              color: "var(--card-muted)",
+              paddingLeft: 26,
+            }}>
+            {toast.msg}
+          </p>
+        )}
 
-        {/* barra de progreso */}
+        {/* Barra de progreso */}
         <div
           style={{
             position: "absolute",
@@ -117,6 +125,23 @@ export default function Toast({ toast, onDismiss, duration = 3000 }) {
           }}
         />
       </div>
+
+      {/* Avatar del agente */}
+      <img
+        src={resolveAvatar("qwd")}
+        alt={`Perfil agente`}
+        onError={(e) => {
+          e.currentTarget.onerror = null;
+          e.currentTarget.src = resolveAvatar("default");
+        }}
+        style={{
+          width: 44,
+          height: 44,
+          borderRadius: "50%",
+          objectFit: "cover",
+          flexShrink: 0,
+        }}
+      />
     </div>
   );
 }

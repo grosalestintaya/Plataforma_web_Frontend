@@ -1,7 +1,9 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import ShowDashboardTitle from "../../components/ShowDashboardTitle";
 import { UsersService } from "../../services/users.service";
+import Toast from "../../components/Toast";
 
+const PAGE_SIZE = 7;
 const clampStr = (v) => (v ?? "").toString();
 
 const Field = ({ label, children, hint }) => (
@@ -25,11 +27,9 @@ const getRolName = (u) =>
 
 export default function Users() {
   const [users, setUsers] = useState([]);
-  const [filtered, setFiltered] = useState([]);
   const [search, setSearch] = useState("");
-
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [page, setPage] = useState(1);
 
   const [showModal, setShowModal] = useState(false);
   const [editUser, setEditUser] = useState(null);
@@ -42,82 +42,83 @@ export default function Users() {
   const [pinnedImg, setPinnedImg] = useState("default");
   const [password, setPassword] = useState("");
   const [isActive, setIsActive] = useState(true);
-
   const [saving, setSaving] = useState(false);
-  const [modalMsg, setModalMsg] = useState("");
-  const [modalErr, setModalErr] = useState("");
+
+  // toast único
+  const [toast, setToast] = useState({ msg: null, type: "ok" });
+  const showToast = useCallback(
+    (msg, type = "ok") => setToast({ msg, type }),
+    [],
+  );
+  const clearToast = useCallback(() => setToast({ msg: null, type: "ok" }), []);
 
   // ======================== LISTAR USUARIOS ========================
   useEffect(() => {
     let alive = true;
-
     (async () => {
       setLoading(true);
-      setError("");
-
       try {
         const data = await UsersService.list();
         if (!alive) return;
-
         setUsers(Array.isArray(data) ? data : []);
-        setFiltered(Array.isArray(data) ? data : []);
       } catch (err) {
-        // 401 ya lo intercepta apiClient (logout + redirect)
-        if (err?.status !== 401) {
-          setError(err?.message || "No se pudieron cargar los usuarios");
-        }
+        if (err?.status !== 401)
+          showToast(
+            err?.message || "No se pudieron cargar los usuarios",
+            "error",
+          );
       } finally {
         if (alive) setLoading(false);
       }
     })();
-
     return () => {
       alive = false;
     };
-  }, []);
+  }, [showToast]);
 
-  // 🔎 FILTRO DE BÚSQUEDA
-  useEffect(() => {
+  // ======================== FILTRO + ORDEN + PAGINACIÓN ========================
+  const sorted = useMemo(() => {
     const q = search.toLowerCase().trim();
-    if (!q) {
-      setFiltered(users);
-      return;
-    }
+    const base = q
+      ? users.filter((u) => {
+          const haystack =
+            `${clampStr(u.name)} ${clampStr(u.lastname)} ${clampStr(u.username)} ${clampStr(getRolName(u))}`.toLowerCase();
+          return haystack.includes(q);
+        })
+      : [...users];
 
-    const results = users.filter((u) => {
-      const haystack =
-        `${clampStr(u.name)} ${clampStr(u.lastname)} ${clampStr(u.username)} ${clampStr(
-          getRolName(u),
-        )}`.toLowerCase();
+    return base.sort((a, b) =>
+      clampStr(a.name).localeCompare(clampStr(b.name), "es", {
+        sensitivity: "base",
+      }),
+    );
+  }, [users, search]);
 
-      return haystack.includes(q);
-    });
+  const totalPages = Math.max(1, Math.ceil(sorted.length / PAGE_SIZE));
 
-    setFiltered(results);
-  }, [search, users]);
+  const paginated = useMemo(() => {
+    const start = (page - 1) * PAGE_SIZE;
+    return sorted.slice(start, start + PAGE_SIZE);
+  }, [sorted, page]);
 
-  // stats
+  // resetear página al buscar
+  useEffect(() => {
+    setPage(1);
+  }, [search]);
+
   const stats = useMemo(() => {
     const total = users.length;
     const active = users.filter((u) => Boolean(u.is_active)).length;
-    const inactive = total - active;
-    return { total, active, inactive };
+    return { total, active, inactive: total - active };
   }, [users]);
 
-  // ======================== ABRIR MODAL DE EDICIÓN ========================
+  // ======================== MODAL ========================
   const openModal = async (id) => {
     try {
-      setModalMsg("");
-      setModalErr("");
-
       const data = await UsersService.getById(id);
-
-      // Tu endpoint devuelve { user: {...} } según tu código
       const u = data?.user ?? data;
       if (!u) throw new Error("No se pudo obtener usuario");
-
       setEditUser(u);
-
       setName(u.name || "");
       setLastname(u.lastname || "");
       setUsername(u.username || "");
@@ -125,13 +126,13 @@ export default function Users() {
       setPinnedImg(u.pinned_img || "default");
       setPassword("");
       setIsActive(Boolean(u.is_active));
-
       setShowModal(true);
     } catch (err) {
-      if (err?.status !== 401) {
-        console.error(err);
-        alert(err?.message || "No se pudo cargar la información del usuario");
-      }
+      if (err?.status !== 401)
+        showToast(
+          err?.message || "No se pudo cargar la información del usuario",
+          "error",
+        );
     }
   };
 
@@ -139,20 +140,13 @@ export default function Users() {
     setShowModal(false);
     setEditUser(null);
     setPassword("");
-    setModalMsg("");
-    setModalErr("");
     setSaving(false);
   };
 
-  // ======================== GUARDAR CAMBIOS ========================
   const handleSave = async (e) => {
     e.preventDefault();
     if (!editUser) return;
-
     setSaving(true);
-    setModalMsg("");
-    setModalErr("");
-
     try {
       await UsersService.update({
         userId: editUser.id_user,
@@ -165,7 +159,6 @@ export default function Users() {
         is_active: isActive,
       });
 
-      // actualizar tabla local
       const patch = {
         ...editUser,
         name,
@@ -175,31 +168,26 @@ export default function Users() {
         pinned_img: pinnedImg,
         is_active: isActive,
       };
-
       setUsers((prev) =>
         prev.map((u) =>
           u.id_user === editUser.id_user ? { ...u, ...patch } : u,
         ),
       );
-      setFiltered((prev) =>
-        prev.map((u) =>
-          u.id_user === editUser.id_user ? { ...u, ...patch } : u,
-        ),
-      );
 
-      setModalMsg("Cambios guardados correctamente");
+      showToast("Cambios guardados correctamente", "ok");
       setTimeout(() => closeModal(), 650);
     } catch (err) {
-      if (err?.status !== 401) {
-        console.error(err);
-        setModalErr(err?.message || "No se pudieron guardar los cambios");
-      }
+      if (err?.status !== 401)
+        showToast(
+          err?.message || "No se pudieron guardar los cambios",
+          "error",
+        );
     } finally {
       setSaving(false);
     }
   };
 
-  // ======================== UI STYLES (theme-aware) ========================
+  // ======================== UI ========================
   const inputBase =
     "w-full h-11 rounded-xl px-3 border outline-none transition";
   const boxShadowFocus = "0 0 0 4px var(--sidebar-accent)";
@@ -221,9 +209,8 @@ export default function Users() {
           borderColor: "var(--card-border)",
         }}>
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          {/* Search */}
           <div className="flex-1">
-            <Field label="Buscar" hint="Busca por nombre, usuario o rol.">
+            <Field label="Buscar" hint="">
               <input
                 type="text"
                 placeholder="Ej: estudiante, docente, @juan..."
@@ -238,8 +225,6 @@ export default function Users() {
               />
             </Field>
           </div>
-
-          {/* Stats */}
           <div className="flex gap-3 flex-wrap lg:justify-end">
             <StatPill label="Total" value={stats.total} />
             <StatPill label="Activos" value={stats.active} tone="success" />
@@ -247,156 +232,194 @@ export default function Users() {
           </div>
         </div>
 
-        {/* States */}
         {loading && (
           <p className="mt-4 text-sm" style={{ color: "var(--card-muted)" }}>
             Cargando usuarios...
           </p>
         )}
-
-        {!loading && error && (
-          <div
-            className="mt-4 rounded-2xl border p-3 text-sm"
-            style={{
-              borderColor: "rgba(255,64,129,0.35)",
-              backgroundColor: "rgba(255,64,129,0.10)",
-              color: "var(--card-text)",
-            }}>
-            <span className="font-semibold">Error:</span>{" "}
-            <span style={{ color: "var(--card-muted)" }}>{error}</span>
-          </div>
-        )}
       </div>
 
       {/* Table Card */}
-      {!loading && !error && (
+      {!loading && (
         <div
           className="mt-6 rounded-3xl border shadow-lg overflow-hidden"
           style={{
             backgroundColor: "var(--ui-surface, #fff)",
             borderColor: "var(--card-border)",
           }}>
-          {filtered.length === 0 ? (
+          {paginated.length === 0 ? (
             <div className="p-6">
               <p className="text-sm" style={{ color: "var(--card-muted)" }}>
                 No se encontraron coincidencias.
               </p>
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full border-collapse">
-                <thead
-                  style={{
-                    backgroundColor: "var(--sidebar)",
-                    color: "var(--sidebar-foreground)",
-                  }}>
-                  <tr>
-                    <th className="p-4 text-left text-sm font-semibold">
-                      Nombre
-                    </th>
-                    <th className="p-4 text-left text-sm font-semibold">
-                      Usuario
-                    </th>
-                    <th className="p-4 text-left text-sm font-semibold">Rol</th>
-                    <th className="p-4 text-left text-sm font-semibold">
-                      Estado
-                    </th>
-                    <th className="p-4 text-center text-sm font-semibold">
-                      Acciones
-                    </th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {filtered.map((u) => (
-                    <tr
-                      key={u.id_user}
-                      className="border-b transition"
-                      style={{ borderColor: "var(--card-border)" }}
-                      onMouseEnter={(e) =>
-                        (e.currentTarget.style.backgroundColor =
-                          "rgba(2,6,23,0.03)")
-                      }
-                      onMouseLeave={(e) =>
-                        (e.currentTarget.style.backgroundColor = "transparent")
-                      }>
-                      <td className="p-4">
-                        <div className="flex items-center gap-3 min-w-0">
-                          <div
-                            className="h-9 w-9 rounded-xl border flex items-center justify-center text-xs font-bold"
+            <>
+              <div className="overflow-x-auto">
+                <table className="w-full border-collapse">
+                  <thead
+                    style={{
+                      backgroundColor: "var(--sidebar)",
+                      color: "var(--sidebar-foreground)",
+                    }}>
+                    <tr>
+                      <th className="p-4 text-left text-sm font-semibold">
+                        Nombre
+                      </th>
+                      <th className="p-4 text-left text-sm font-semibold">
+                        Usuario
+                      </th>
+                      <th className="p-4 text-left text-sm font-semibold">
+                        Rol
+                      </th>
+                      <th className="p-4 text-left text-sm font-semibold">
+                        Estado
+                      </th>
+                      <th className="p-4 text-center text-sm font-semibold">
+                        Acciones
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {paginated.map((u) => (
+                      <tr
+                        key={u.id_user}
+                        className="border-b transition"
+                        style={{ borderColor: "var(--card-border)" }}
+                        onMouseEnter={(e) =>
+                          (e.currentTarget.style.backgroundColor =
+                            "rgba(2,6,23,0.03)")
+                        }
+                        onMouseLeave={(e) =>
+                          (e.currentTarget.style.backgroundColor =
+                            "transparent")
+                        }>
+                        <td className="p-4">
+                          <div className="flex items-center gap-3 min-w-0">
+                            <div
+                              className="h-9 w-9 rounded-xl border flex items-center justify-center text-xs font-bold"
+                              style={{
+                                borderColor: "var(--card-border)",
+                                backgroundColor: "var(--chip-bg)",
+                                color: "var(--sidebar)",
+                              }}>
+                              {getInitials(u.name, u.lastname)}
+                            </div>
+                            <div className="min-w-0">
+                              <p
+                                className="text-sm font-semibold truncate"
+                                style={{ color: "var(--card-text)" }}>
+                                {u.name} {u.lastname}
+                              </p>
+                              <p
+                                className="text-xs truncate"
+                                style={{ color: "var(--card-muted)" }}>
+                                DNI: {clampStr(u.dni) || "—"}
+                              </p>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="p-4">
+                          <span
+                            className="text-sm"
+                            style={{ color: "var(--card-muted)" }}>
+                            @{u.username}
+                          </span>
+                        </td>
+                        <td className="p-4">
+                          <span
+                            className="text-sm font-semibold"
+                            style={{ color: "var(--card-text)" }}>
+                            {getRolName(u)}
+                          </span>
+                        </td>
+                        <td className="p-4">
+                          <StatusPill active={Boolean(u.is_active)} />
+                        </td>
+                        <td className="p-4 text-center">
+                          <button
+                            className="h-10 px-4 rounded-xl font-semibold shadow-sm border transition"
                             style={{
                               borderColor: "var(--card-border)",
-                              backgroundColor: "var(--chip-bg)",
+                              backgroundColor: "var(--usercard-bg)",
                               color: "var(--sidebar)",
                             }}
-                            title="Iniciales">
-                            {getInitials(u.name, u.lastname)}
-                          </div>
+                            onMouseEnter={(e) =>
+                              (e.currentTarget.style.boxShadow =
+                                "0 0 0 4px var(--sidebar-accent)")
+                            }
+                            onMouseLeave={(e) =>
+                              (e.currentTarget.style.boxShadow = "none")
+                            }
+                            onClick={() => openModal(u.id_user)}>
+                            Ver / Editar
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
 
-                          <div className="min-w-0">
-                            <p
-                              className="text-sm font-semibold truncate"
-                              style={{ color: "var(--card-text)" }}>
-                              {u.name} {u.lastname}
-                            </p>
-                            <p
-                              className="text-xs truncate"
-                              style={{ color: "var(--card-muted)" }}>
-                              DNI: {clampStr(u.dni) || "—"}
-                            </p>
-                          </div>
-                        </div>
-                      </td>
+              {/* ===== PAGINACIÓN ===== */}
+              <div
+                className="flex items-center justify-between px-5 py-3 border-t"
+                style={{ borderColor: "var(--card-border)" }}>
+                <p className="text-xs" style={{ color: "var(--card-muted)" }}>
+                  {sorted.length === 0
+                    ? "Sin resultados"
+                    : `Mostrando ${(page - 1) * PAGE_SIZE + 1}–${Math.min(page * PAGE_SIZE, sorted.length)} de ${sorted.length} usuarios`}
+                </p>
 
-                      <td className="p-4">
-                        <span
-                          className="text-sm"
-                          style={{ color: "var(--card-muted)" }}>
-                          @{u.username}
-                        </span>
-                      </td>
+                <div className="flex items-center gap-1">
+                  {/* Anterior */}
+                  <PagBtn
+                    onClick={() => setPage((p) => Math.max(1, p - 1))}
+                    disabled={page === 1}
+                    label="←"
+                  />
 
-                      <td className="p-4">
-                        <span
-                          className="text-sm font-semibold"
-                          style={{ color: "var(--card-text)" }}>
-                          {getRolName(u)}
-                        </span>
-                      </td>
+                  {/* Números */}
+                  {Array.from({ length: totalPages }, (_, i) => i + 1)
+                    .filter(
+                      (n) =>
+                        n === 1 || n === totalPages || Math.abs(n - page) <= 1,
+                    )
+                    .reduce((acc, n, idx, arr) => {
+                      if (idx > 0 && n - arr[idx - 1] > 1)
+                        acc.push(
+                          <span
+                            key={`ellipsis-${n}`}
+                            className="px-1 text-xs"
+                            style={{ color: "var(--card-muted)" }}>
+                            …
+                          </span>,
+                        );
+                      acc.push(
+                        <PagBtn
+                          key={n}
+                          onClick={() => setPage(n)}
+                          active={page === n}
+                          label={n}
+                        />,
+                      );
+                      return acc;
+                    }, [])}
 
-                      <td className="p-4">
-                        <StatusPill active={Boolean(u.is_active)} />
-                      </td>
-
-                      <td className="p-4 text-center">
-                        <button
-                          className="h-10 px-4 rounded-xl font-semibold shadow-sm border transition"
-                          style={{
-                            borderColor: "var(--card-border)",
-                            backgroundColor: "var(--usercard-bg)",
-                            color: "var(--sidebar)",
-                          }}
-                          onMouseEnter={(e) =>
-                            (e.currentTarget.style.boxShadow =
-                              "0 0 0 4px var(--sidebar-accent)")
-                          }
-                          onMouseLeave={(e) =>
-                            (e.currentTarget.style.boxShadow = "none")
-                          }
-                          onClick={() => openModal(u.id_user)}>
-                          Ver / Editar
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  {/* Siguiente */}
+                  <PagBtn
+                    onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                    disabled={page === totalPages}
+                    label="→"
+                  />
+                </div>
+              </div>
+            </>
           )}
         </div>
       )}
 
-      {/* ================= MODAL (theme-aware) ================= */}
+      {/* ================= MODAL ================= */}
       {showModal && editUser && (
         <div className="fixed inset-0 bg-black/30 flex justify-center items-start pt-8 z-50">
           <div
@@ -405,7 +428,6 @@ export default function Users() {
               backgroundColor: "var(--ui-surface, #fff)",
               borderColor: "var(--card-border)",
             }}>
-            {/* Header modal */}
             <div className="flex items-center justify-between gap-3">
               <div className="min-w-0">
                 <h2
@@ -419,7 +441,6 @@ export default function Users() {
                   ID #{editUser.id_user} • Rol: {getRolName(editUser)}
                 </p>
               </div>
-
               <button
                 type="button"
                 onClick={closeModal}
@@ -433,45 +454,21 @@ export default function Users() {
               </button>
             </div>
 
-            {(modalMsg || modalErr) && (
-              <div
-                className="mt-4 rounded-2xl border p-3 text-sm"
-                style={{
-                  borderColor: modalErr
-                    ? "rgba(255,64,129,0.35)"
-                    : "rgba(0,200,83,0.30)",
-                  backgroundColor: modalErr
-                    ? "rgba(255,64,129,0.10)"
-                    : "rgba(0,200,83,0.10)",
-                  color: "var(--card-text)",
-                }}>
-                <span className="font-semibold">
-                  {modalErr ? "Error:" : "Listo:"}
-                </span>{" "}
-                <span style={{ color: "var(--card-muted)" }}>
-                  {modalErr || modalMsg}
-                </span>
-              </div>
-            )}
-
             <form onSubmit={handleSave} className="mt-6 grid grid-cols-3 gap-6">
               {/* COLUMNA 1: Imagen + estado */}
               <div className="flex flex-col items-center gap-4">
-                <div className="text-center">
-                  <p
-                    className="text-sm font-semibold"
-                    style={{ color: "var(--card-muted)" }}>
-                    Imagen de perfil
-                  </p>
-                </div>
-
+                <p
+                  className="text-sm font-semibold"
+                  style={{ color: "var(--card-muted)" }}>
+                  Imagen de perfil
+                </p>
                 <div className="relative">
                   <div
                     className="absolute inset-0 rounded-full blur-xl opacity-35"
                     style={{ backgroundColor: "var(--sidebar)" }}
                   />
                   <img
-                    src={`/avatars/${pinnedImg || "default"}.png`}
+                    src={`/avatars/${pinnedImg || "default"}.webp`}
                     alt="preview"
                     className="relative w-32 h-32 rounded-full border-4 object-cover"
                     style={{
@@ -480,7 +477,6 @@ export default function Users() {
                     }}
                   />
                 </div>
-
                 <div className="w-full">
                   <Field
                     label="Código de avatar"
@@ -498,7 +494,6 @@ export default function Users() {
                     />
                   </Field>
                 </div>
-
                 <div className="w-full">
                   <Field label="Estado">
                     <div
@@ -539,7 +534,6 @@ export default function Users() {
                     }}
                   />
                 </Field>
-
                 <Field label="Colegio">
                   <input
                     type="text"
@@ -554,7 +548,6 @@ export default function Users() {
                     }}
                   />
                 </Field>
-
                 <Field label="Grado">
                   <input
                     type="text"
@@ -586,7 +579,6 @@ export default function Users() {
                     onBlur={(e) => (e.currentTarget.style.boxShadow = "none")}
                   />
                 </Field>
-
                 <Field label="Apellidos">
                   <input
                     type="text"
@@ -600,7 +592,6 @@ export default function Users() {
                     onBlur={(e) => (e.currentTarget.style.boxShadow = "none")}
                   />
                 </Field>
-
                 <Field label="Usuario">
                   <input
                     type="text"
@@ -614,22 +605,20 @@ export default function Users() {
                     onBlur={(e) => (e.currentTarget.style.boxShadow = "none")}
                   />
                 </Field>
-
-                <Field label="DNI" hint="el campo solo acepta 8 dígitos.">
+                <Field label="DNI" hint="El campo solo acepta 8 dígitos.">
                   <input
                     type="text"
                     value={dni}
                     onChange={(e) => setDni(e.target.value)}
                     className={inputBase}
                     style={inputStyle}
+                    inputMode="numeric"
                     onFocus={(e) =>
                       (e.currentTarget.style.boxShadow = boxShadowFocus)
                     }
                     onBlur={(e) => (e.currentTarget.style.boxShadow = "none")}
-                    inputMode="numeric"
                   />
                 </Field>
-
                 <Field
                   label="Nueva contraseña"
                   hint="Déjalo vacío para no cambiarla.">
@@ -662,7 +651,6 @@ export default function Users() {
                   }}>
                   Cancelar
                 </button>
-
                 <button
                   type="submit"
                   disabled={saving}
@@ -678,6 +666,9 @@ export default function Users() {
           </div>
         </div>
       )}
+
+      {/* ===== TOAST ===== */}
+      <Toast toast={toast} onDismiss={clearToast} user={editUser} />
     </div>
   );
 }
@@ -687,6 +678,22 @@ function getInitials(name = "", lastname = "") {
   const a = (name || "").trim()[0] || "";
   const b = (lastname || "").trim()[0] || "";
   return (a + b).toUpperCase() || "U";
+}
+
+function PagBtn({ onClick, disabled, active, label }) {
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      className="h-8 min-w-[32px] px-2 rounded-lg text-xs font-semibold border transition disabled:opacity-40"
+      style={{
+        backgroundColor: active ? "var(--sidebar)" : "transparent",
+        color: active ? "var(--sidebar-foreground)" : "var(--card-text)",
+        borderColor: active ? "var(--sidebar)" : "var(--card-border)",
+      }}>
+      {label}
+    </button>
+  );
 }
 
 function StatPill({ label, value, tone = "neutral" }) {

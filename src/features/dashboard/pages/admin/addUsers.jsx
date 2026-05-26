@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import ShowDashboardTitle from "../../components/ShowDashboardTitle";
 import { DataService } from "../../services/data.service";
 import { UsersService } from "../../services/users.service";
-
+import Toast from "../../components/Toast";
 const Field = ({ label, children, hint, error }) => (
   <div className="flex flex-col gap-1.5">
     <label
@@ -51,7 +51,12 @@ export default function AddUsers() {
   const [loading, setLoading] = useState(false);
   const [checkingDni, setCheckingDni] = useState(false);
   const [message, setMessage] = useState(null);
+  const [toast, setToast] = useState({ msg: null, type: "ok" });
+
   const [error, setError] = useState(null);
+  const showToast = (msg, type = "ok", title = null) =>
+    setToast({ msg, type, ...(title && { title }) });
+  const clearToast = () => setToast({ msg: null, type: "ok" });
 
   useEffect(() => {
     let alive = true;
@@ -260,11 +265,11 @@ export default function AddUsers() {
 
     try {
       await UsersService.create(payload);
-      setMessage("Usuario creado exitosamente.");
+      showToast("Usuario creado exitosamente.", "ok"); // antes: setMessage(...)
       resetForm();
     } catch (err) {
       if (err?.status !== 401) {
-        setError(err?.message || "Error al crear usuario.");
+        showToast(err?.message || "Error al crear usuario.", "error"); // antes: setError(...)
       }
     } finally {
       setLoading(false);
@@ -293,55 +298,30 @@ export default function AddUsers() {
 
   return (
     <div className="p-6 pb-0 pt-0  h-full">
+      <ShowDashboardTitle>Agregar usuarios </ShowDashboardTitle>
+
+      <Toast
+        toast={toast}
+        onDismiss={clearToast}
+        user={""} // el objeto con user.foto y user.nombre
+        duration={3500}
+      />
       <div
-        className="mt-0 rounded-2xl border p-5 shadow-sm"
+        className="mt-6 rounded-2xl border p-5 shadow-sm"
         style={{
           backgroundColor: "var(--chip-bg)",
           borderColor: "var(--card-border)",
         }}>
-        <div className=" items-center justify-between gap-4 ">
-          <div className="min-w-0">
-            <p
-              className="text-sm font-semibold"
-              style={{ color: "var(--card-text)" }}>
-              Creación de cuentas
-            </p>
-            <p className="mt-1 text-xs" style={{ color: "var(--card-muted)" }}>
-              Completa la información requerida según el rol seleccionado.
-            </p>
-          </div>
-
-          <div
-            className="rounded-xl border px-3 py-2 text-xs font-semibold"
-            style={{
-              borderColor: "var(--card-border)",
-              backgroundColor: "var(--usercard-bg)",
-              color: "var(--sidebar)",
-            }}>
-            Rol: {roleLabel || "—"}
-          </div>
-        </div>
-
-        {(message || error) && (
-          <div
-            className="mt-4 rounded-2xl border p-3 text-sm"
-            style={{
-              borderColor: error
-                ? "rgba(255,64,129,0.35)"
-                : "rgba(0,200,83,0.30)",
-              backgroundColor: error
-                ? "rgba(255,64,129,0.10)"
-                : "rgba(0,200,83,0.10)",
-              color: "var(--card-text)",
-            }}>
-            <span className="font-semibold">{error ? "Error:" : "Listo:"}</span>{" "}
-            <span style={{ color: "var(--card-muted)" }}>
-              {error || message}
-            </span>
-          </div>
-        )}
+        <p
+          className="text-sm font-semibold"
+          style={{ color: "var(--card-text)" }}>
+          Agregar nuevo usuario al sistema
+        </p>
+        <p className="text-xs mt-1" style={{ color: "var(--card-muted)" }}>
+          Completa el formulario para crear un nuevo usuario. Asegúrate de que
+          el DNI sea único y que la contraseña cumpla con los requisitos.
+        </p>
       </div>
-
       <div
         className="mt-6 rounded-3xl border p-6 shadow-lg"
         style={{

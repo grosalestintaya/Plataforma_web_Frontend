@@ -354,14 +354,21 @@ function PreGame({ payload, isMobile }) {
         {/* columna derecha — mascota: OCULTA en móvil */}
         {!isMobile && (
           <div
-            className="flex flex-col items-center justify-end px-4 pb-1.5 pt-0"
-            style={{ background: "rgba(0,0,0,0.1)" }}>
+            className="flex flex-col items-center px-4 pb-1.5 pt-0 min-h-0"
+            style={{
+              background: "rgba(0,0,0,0.1)",
+              justifyContent: "flex-end",
+            }}>
             <MascotBubble message={getRandomMessage()} isMobile={false} />
             <Blocks.Image
               src={imageSrc}
               alt={imageAlt}
-              className="w-full object-contain h-[89%]"
-              style={{ maxWidth: 550 }}
+              className="w-full object-contain object-bottom"
+              style={{
+                flex: "1 1 0",
+                minHeight: 0,
+                maxWidth: 550,
+              }}
             />
           </div>
         )}
@@ -520,8 +527,8 @@ function PostGame({ payload, isMobile }) {
 
         {/* imagen / mascota — visible en móvil pero más pequeña */}
         <div
-          className="flex items-center justify-center"
-          style={{ maxHeight: isMobile ? 160 : "none" }}>
+          className="flex items-center justify-center min-h-0"
+          style={{ maxHeight: isMobile ? 160 : "none", overflow: "hidden" }}>
           <Blocks.Image
             src={imageSrc}
             alt={imageAlt}
@@ -529,7 +536,11 @@ function PostGame({ payload, isMobile }) {
             className="object-contain border-0"
             style={{
               width: "100%",
-              height: isMobile ? 140 : "100%",
+              height: isMobile ? 140 : "90%",
+              minHeight: 0,
+              flex: "1 1 0",
+              objectFit: "contain",
+              objectPosition: "center bottom",
             }}
           />
         </div>
@@ -546,7 +557,7 @@ function PostGame({ payload, isMobile }) {
               style={{
                 margin: isMobile ? "0 0 6px" : "0 24px 8px",
                 padding: isMobile ? "8px 10px" : "16px",
-                fontSize: isMobile ? 16 : 36,
+                fontSize: isMobile ? 16 : 29,
                 background: attempt?.passed
                   ? "rgba(110,231,183,0.15)"
                   : "rgba(252,165,165,0.15)",
@@ -564,7 +575,7 @@ function PostGame({ payload, isMobile }) {
             <div
               className="text-white/70 font-semibold"
               style={{
-                fontSize: isMobile ? 13 : 28,
+                fontSize: isMobile ? 13 : 20,
                 padding: isMobile ? "4px 6px" : "20px 0 20px 32px",
                 textAlign: isMobile ? "center" : "justify",
                 marginBottom: 4,
@@ -574,7 +585,7 @@ function PostGame({ payload, isMobile }) {
               <br />
               {attempt?.prevBestScore != null && (
                 <span>
-                  🔴 Mejor marca:{" "}
+                  🟡 Mejor marca:{" "}
                   <span className="font-bold text-white">
                     {attempt.prevBestScore}
                   </span>
@@ -583,7 +594,7 @@ function PostGame({ payload, isMobile }) {
               )}
               {attempt?.minScore != null && (
                 <span>
-                  🔵 Mínimo:{" "}
+                  🟡 Mínimo:{" "}
                   <span className="font-bold text-white/80">
                     {attempt.minScore}
                   </span>

@@ -5,28 +5,32 @@ const API = `${import.meta.env.VITE_API_BASE_URL}/api/me/insignias`;
 const INSIGNIA_BASE_URL = "/insignias";
 
 const MODULE_SLOTS = [
-  { baseName: "Suyu", img: "suyu.png", imgPerfect: "suyu_perfecto.png" },
+  { baseName: "Suyu", img: "suyu.webp", imgPerfect: "suyu_perfecto.webp" },
   {
     baseName: "Antisuyo",
-    img: "antisuyo.png",
-    imgPerfect: "antisuyo_perfecto.png",
+    img: "antisuyo.webp",
+    imgPerfect: "antisuyo_perfecto.webp",
   },
   {
     baseName: "Collasuyo",
-    img: "collasuyo.png",
-    imgPerfect: "collasuyo_perfecto.png",
+    img: "collasuyo.webp",
+    imgPerfect: "collasuyo_perfecto.webp",
   },
   {
     baseName: "Contisuyo",
-    img: "contisuyo.png",
-    imgPerfect: "contisuyo_perfecto.png",
+    img: "contisuyo.webp",
+    imgPerfect: "contisuyo_perfecto.webp",
   },
   {
     baseName: "Chinchaysuyo",
-    img: "chinchaysuyo.png",
-    imgPerfect: "chinchaysuyo_perfecto.png",
+    img: "chinchaysuyo.webp",
+    imgPerfect: "chinchaysuyo_perfecto.webp",
   },
-  { baseName: "Centro", img: "centro.png", imgPerfect: "centro_perfecto.png" },
+  {
+    baseName: "Centro",
+    img: "centro.webp",
+    imgPerfect: "centro_perfecto.webp",
+  },
 ];
 
 const resolveImg = (file) => `${INSIGNIA_BASE_URL}/${file}`;
@@ -134,7 +138,9 @@ export default function InsigniasCard() {
           unlocked: !!normalRow,
           perfect: false,
           img: normalRow
-            ? resolveImg(normalIns?.pinnedImg || slot.img)
+            ? resolveImg(
+                (normalIns?.pinnedImg || slot.img).replace(/\.png$/i, ".webp"),
+              )
             : resolveImg(slot.img),
           description: normalRow
             ? normalIns?.description || ""
@@ -150,7 +156,12 @@ export default function InsigniasCard() {
           unlocked: !!perfectRow,
           perfect: true,
           img: perfectRow
-            ? resolveImg(perfectIns?.pinnedImg || slot.imgPerfect)
+            ? resolveImg(
+                (perfectIns?.pinnedImg || slot.imgPerfect).replace(
+                  /\.png$/i,
+                  ".webp",
+                ),
+              )
             : resolveImg(slot.imgPerfect),
           description: perfectRow
             ? perfectIns?.description || ""
