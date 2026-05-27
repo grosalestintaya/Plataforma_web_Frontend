@@ -40,6 +40,9 @@ function getShellClassName(templateVariant) {
   return base.join(" ");
 }
 
+const INSUFFICIENT_BALANCE_MESSAGE =
+  "No te alcanza ese saldo. Quita un producto o elige una opcion mas economica.";
+
 export default function DailySpendingTemplate({
   view,
   data,
@@ -64,6 +67,7 @@ export default function DailySpendingTemplate({
 
   const [selectedDecision, setSelectedDecision] = useState(null);
   const [selectedProductIds, setSelectedProductIds] = useState([]);
+  const [shopError, setShopError] = useState(null);
 
   const resolvedFeedback = selectedDecision?.feedback ?? feedback;
   const shouldReserveFeedback =
@@ -93,6 +97,7 @@ export default function DailySpendingTemplate({
   useEffect(() => {
     setSelectedDecision(null);
     setSelectedProductIds([]);
+    setShopError(null);
   }, [viewId]);
 
   function handleDecisionSelection(item) {
@@ -123,20 +128,49 @@ export default function DailySpendingTemplate({
   function toggleProduct(item) {
     if (!item?.id) return;
 
-    setSelectedProductIds((prev) =>
-      prev.includes(item.id)
-        ? prev.filter((id) => id !== item.id)
-        : [...prev, item.id],
-    );
+    let nextError = null;
+
+    setSelectedProductIds((prev) => {
+      if (prev.includes(item.id)) {
+        return prev.filter((id) => id !== item.id);
+      }
+
+      const selectedTotal = prev.reduce((sum, selectedId) => {
+        const selectedItem = shopItems.find(
+          (candidate) => candidate?.id === selectedId,
+        );
+
+        return sum + Number(selectedItem?.price ?? 0);
+      }, 0);
+
+      const nextTotal = Number((selectedTotal + Number(item?.price ?? 0)).toFixed(2));
+
+      if (nextTotal > currentBalance) {
+        nextError = INSUFFICIENT_BALANCE_MESSAGE;
+        return prev;
+      }
+
+      return [...prev, item.id];
+    });
+
+    setShopError(nextError);
   }
 
   function removeSelectedProduct(item) {
     if (!item?.id) return;
 
+    setShopError(null);
     setSelectedProductIds((prev) => prev.filter((id) => id !== item.id));
   }
 
   function confirmShopSelection() {
+    if (nextBalance < 0) {
+      setShopError(INSUFFICIENT_BALANCE_MESSAGE);
+      return;
+    }
+
+    setShopError(null);
+
     const resultPayload = {
       selectedProductIds,
       total: totalProducts,
@@ -183,6 +217,7 @@ export default function DailySpendingTemplate({
       totalProducts,
       nextBalance,
       displayedBalance,
+      shopError,
     },
     handlers: {
       onDecisionSelection: handleDecisionSelection,

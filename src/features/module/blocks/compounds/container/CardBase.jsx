@@ -47,35 +47,6 @@ function getCardMedia(media) {
   };
 }
 
-function getCardWidthClass(media, size = "normal") {
-  if (size === "fill") {
-    return "h-full w-full";
-  }
-
-  const variant = media?.variant ?? "horizontal";
-
-  if (size === "modal") {
-    if (variant === "vertical") return "w-[min(100%,22rem)]";
-    if (variant === "square") return "w-[min(100%,34rem)]";
-
-    return "w-[min(100%,48rem)]";
-  }
-
-  if (!media?.src) {
-    return "w-[min(100%,18rem)]";
-  }
-
-  if (variant === "vertical") {
-    return "w-[min(100%,13rem)]";
-  }
-
-  if (variant === "square") {
-    return "w-[min(100%,17rem)]";
-  }
-
-  return "w-[min(100%,24rem)]";
-}
-
 function CardBody({
   media,
   title,
@@ -93,22 +64,22 @@ function CardBody({
   return (
     <div
       className={cn(
-        "grid h-full min-h-0 w-full min-w-0 overflow-hidden",
+        "grid h-full min-h-0 w-full min-w-0  overflow-hidden transition-transform duration-300",
+        // hasMedia ? "w-fit max-w-full justify-self-center" : "w-full",
         hasMedia && hasContent
           ? "grid-rows-[minmax(0,1fr)_auto]"
           : "grid-rows-[minmax(0,1fr)]",
       )}
     >
       {hasMedia ? (
-        <figure className="flex h-full min-h-0 w-full min-w-0 items-center justify-center overflow-hidden rounded-xl">
-          <Image
-            src={media.src}
-            alt={media.alt}
-            variant={media.variant}
-            mode={media.mode}
-            size="card"
-          />
-        </figure>
+        <Image
+          src={media.src}
+          alt={media.alt}
+          variant={media.variant}
+          mode="slot"
+          size="card"
+          className="max-h-full max-w-full"
+        />
       ) : null}
 
       {hasContent ? (
@@ -176,31 +147,23 @@ export default function CardBase({
   return (
     <article
       className={cn(
-        "relative grid min-h-0 min-w-0 max-w-full overflow-hidden rounded-2xl p-1.5",
-        size === "fill"
-          ? "h-full w-full self-stretch justify-self-stretch"
-          : "mx-auto self-center justify-self-center lg:h-full",
+        "relative mx-auto grid w-full max-w-full h-fit max-h-full min-w-0 min-h-0 self-center justify-self-center overflow-hidden rounded-2xl p-1.5",
         "[container-type:inline-size]",
-        getCardWidthClass(resolvedMedia, size),
-        CARD_VARIANT_CLASS[selected ? "solid" : variant] ??
+        CARD_VARIANT_CLASS[selected ? "solid" : variant] ||
           CARD_VARIANT_CLASS.default,
-        interactive &&
-          "transition-transform duration-200 hover:scale-[1.015]",
+        interactive && "transition-transform duration-200 hover:scale-[1.015]",
         className,
       )}
     >
-      <div className="h-full min-h-0 w-full min-w-0 transition-transform duration-300">
-        <CardBody
-          media={resolvedMedia}
-          title={resolvedTitle}
-          text={resolvedText}
-          isBackFace={isBackFace}
-          contentClassName={contentClassName}
-          titleClassName={titleClassName}
-          textClassName={textClassName}
-        />
-      </div>
-
+      <CardBody
+        media={resolvedMedia}
+        title={resolvedTitle}
+        text={resolvedText}
+        isBackFace={isBackFace}
+        contentClassName={contentClassName}
+        titleClassName={titleClassName}
+        textClassName={textClassName}
+      />
       {overlay}
     </article>
   );

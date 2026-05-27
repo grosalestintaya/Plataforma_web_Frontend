@@ -16,6 +16,7 @@ export { default as TextField } from "./compounds/container/TextField";
 // Elementos compuestos: agrupador
 export { default as ShowCard } from "./compounds/grouper/ShowCard";
 export { default as CollageCard } from "./compounds/grouper/CollageCard";
+export { default as ComposeGroup } from "./compounds/grouper/ComposeGroup";
 
 // Elementos compuestos: interactivo
 export { default as IteractionComplete } from "./compounds/iteractive/IteractionComplete";

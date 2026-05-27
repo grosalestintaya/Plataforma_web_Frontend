@@ -1,23 +1,61 @@
-import activityImage001 from "/activity/image001.webp";
+import fallbackImage from "/activity/image001.webp";
 import { cn } from "@/shared/libs/utils";
-import { getMediaAspectRatio } from "./mediaVariant";
-import ZoomableFrame from "../../compounds/iteractive/cardIteraction/ZoomableCard";
 
-const IMAGE_FRAME_BASE_CLASS = "items-center justify-center overflow-hidden";
+const MEDIA_VARIANT_TO_RATIO = {
+  square: "1 / 1",
+  vertical: "2 / 3",
+  horizontal: "3 / 2",
+};
 
-const IMAGE_SLOT_FRAME_CLASS = `inline-flex max-w-full ${IMAGE_FRAME_BASE_CLASS}`;
-const IMAGE_RATIO_FRAME_CLASS = `flex w-full max-w-full ${IMAGE_FRAME_BASE_CLASS}`;
-const IMAGE_INTRINSIC_FRAME_CLASS = `inline-flex max-w-full ${IMAGE_FRAME_BASE_CLASS}`;
+const MEDIA_VALUE_TO_VARIANT = {
+  square: "square",
+  "1:1": "square",
+  "1 / 1": "square",
 
-const IMAGE_SLOT_CLASS =
-  "block h-auto w-auto max-h-full max-w-full object-contain";
+  vertical: "vertical",
+  "2:3": "vertical",
+  "2 / 3": "vertical",
 
-const IMAGE_RATIO_CLASS = "block h-full w-auto max-w-full object-contain";
+  horizontal: "horizontal",
+  "3:2": "horizontal",
+  "3 / 2": "horizontal",
+};
 
-const IMAGE_INTRINSIC_CLASS =
-  "block h-auto w-auto max-h-full max-w-full object-contain";
+const FRAME_BASE_CLASS =
+  "min-h-0 min-w-0 items-center justify-center overflow-hidden";
+
+const FRAME_CLASS_BY_MODE = {
+  slot: `flex h-full w-full max-h-full max-w-full ${FRAME_BASE_CLASS}`,
+  ratio: `flex w-full max-w-full ${FRAME_BASE_CLASS}`,
+  intrinsic: `inline-flex max-h-full max-w-full ${FRAME_BASE_CLASS}`,
+};
+
+const IMAGE_CLASS_BY_MODE = {
+  slot: "block h-full w-full max-h-full max-w-full object-contain",
+  ratio: "block h-full w-full max-h-full max-w-full object-contain",
+  intrinsic: "block h-auto w-auto max-h-full max-w-full object-contain",
+};
 
 const IMAGE_SURFACE_CLASS = "rounded-xl border border-white/0";
+
+function normalizeMediaVariant(value) {
+  if (!value) return null;
+
+  const normalized = String(value).trim().toLowerCase();
+  return MEDIA_VALUE_TO_VARIANT[normalized] ?? null;
+}
+
+function getMediaVariant(value) {
+  if (!value) return null;
+
+  if (typeof value === "object") {
+    return normalizeMediaVariant(
+      value.variant ?? value.orientation ?? value.layout ?? value.ratio,
+    );
+  }
+
+  return normalizeMediaVariant(value);
+}
 
 function normalizeAssetPath(value) {
   return String(value ?? "")
@@ -31,54 +69,64 @@ function normalizeAssetPath(value) {
 }
 
 function resolveActivityImageSrc(src) {
-  if (!src) return activityImage001;
+  if (!src) return fallbackImage;
 
   const raw = String(src).trim();
-  if (!raw) return activityImage001;
+  if (!raw) return fallbackImage;
 
   if (
     raw.startsWith("http://") ||
     raw.startsWith("https://") ||
     raw.startsWith("data:") ||
-    raw.startsWith("blob:")
+    raw.startsWith("blob:") ||
+    raw.startsWith("/")
   ) {
     return raw;
   }
 
-  if (raw.startsWith("/activity/")) {
-    return raw;
-  }
-
-  if (raw.startsWith("/")) {
-    return raw;
-  }
-
   const normalizedSrc = normalizeAssetPath(raw);
-  return normalizedSrc ? `/activity/${normalizedSrc}` : activityImage001;
+
+  return normalizedSrc ? `/activity/${normalizedSrc}` : fallbackImage;
 }
 
 function resolveAspectRatio(value) {
-  if (!value) return null;
+  if (!value) return undefined;
 
-  const mediaAspectRatio = getMediaAspectRatio(value);
-  if (mediaAspectRatio) return mediaAspectRatio;
+  const variant = getMediaVariant(value);
+  if (variant) return MEDIA_VARIANT_TO_RATIO[variant];
 
   const raw = String(value).trim().toLowerCase();
 
   if (/^\d+\s*\/\s*\d+$/.test(raw)) {
-    const [w, h] = raw.split("/").map((part) => part.trim());
-    return `${w} / ${h}`;
+    const [width, height] = raw.split("/").map((part) => part.trim());
+    return `${width} / ${height}`;
   }
 
-  return null;
+  return undefined;
+}
+
+function getResolvedMode({ mode, fitToContent, hasAspectHint }) {
+  if (fitToContent) return "intrinsic";
+
+  if (mode === "auto") {
+    return hasAspectHint ? "ratio" : "intrinsic";
+  }
+
+  if (mode === "slot" || mode === "ratio" || mode === "intrinsic") {
+    return mode;
+  }
+
+  return "intrinsic";
 }
 
 /**
- * Image:
- * - auto: si recibe variant/ratio, crea una caja proporcional; si no, usa tamaño natural.
- * - slot: el padre ya define el espacio.
- * - ratio: Image define su propia caja proporcional.
- * - intrinsic: comportamiento natural.
+ * Image
+ *
+ * mode:
+ * - auto: usa ratio si recibe variant/ratio; si no, usa tamaño natural.
+ * - slot: el padre define el espacio; la imagen se centra y se contiene.
+ * - ratio: el componente crea una caja proporcional.
+ * - intrinsic: usa el tamaño natural de la imagen.
  */
 export default function Image({
   src,
@@ -91,8 +139,6 @@ export default function Image({
   ratio = null,
   mode = "auto",
   fitToContent = false,
-  zoomable = false,
-  zoomLabel,
   style,
 }) {
   const resolvedSrc = resolveActivityImageSrc(src);
@@ -101,67 +147,41 @@ export default function Image({
   const aspectHint = variant ?? ratio;
   const hasAspectHint = Boolean(aspectHint);
 
-  const resolvedMode = fitToContent
-    ? "intrinsic"
-    : mode === "auto"
-      ? hasAspectHint
-        ? "ratio"
-        : "intrinsic"
-      : mode;
+  const resolvedMode = getResolvedMode({
+    mode,
+    fitToContent,
+    hasAspectHint,
+  });
 
-  const shouldApplyAspectRatio = resolvedMode === "ratio";
+  const shouldApplyAspectRatio =
+    resolvedMode === "ratio" || (resolvedMode === "slot" && hasAspectHint);
+
   const aspectRatio = shouldApplyAspectRatio
     ? resolveAspectRatio(aspectHint)
-    : null;
+    : undefined;
 
-  const resolvedStyle =
-    aspectRatio || style
-      ? { ...(aspectRatio ? { aspectRatio } : {}), ...(style ?? {}) }
-      : undefined;
+  const figureStyle = {
+    ...(aspectRatio ? { aspectRatio } : {}),
+    ...(style ?? {}),
+  };
 
-  const frameClassName =
-    resolvedMode === "slot"
-      ? IMAGE_SLOT_FRAME_CLASS
-      : resolvedMode === "ratio"
-        ? IMAGE_RATIO_FRAME_CLASS
-        : IMAGE_INTRINSIC_FRAME_CLASS;
-
-  const imageClassName =
-    resolvedMode === "slot"
-      ? IMAGE_SLOT_CLASS
-      : resolvedMode === "ratio"
-        ? IMAGE_RATIO_CLASS
-        : IMAGE_INTRINSIC_CLASS;
-
-  // Sin zoom: renderiza la imagen directamente
-  if (!zoomable) {
-    return (
-      <div className={cn(frameClassName, className)} style={resolvedStyle}>
-        <img
-          src={resolvedSrc}
-          alt={resolvedAlt}
-          loading="lazy"
-          decoding="async"
-          className={cn(imageClassName, IMAGE_SURFACE_CLASS, imgClassName)}
-          style={imgStyle}
-        />
-      </div>
-    );
-  }
-
-  // Con zoom: delega en ZoomableFrame usando su API (media/interaction)
   return (
-    <div className={cn(frameClassName, className)} style={resolvedStyle}>
-      <ZoomableFrame
-        media={{
-          src: resolvedSrc,
-          alt: resolvedAlt,
-          mode,
-        }}
-        interaction={{
-          label: zoomLabel ?? `Ampliar ${resolvedAlt}`,
-        }}
+    <figure
+      className={cn(FRAME_CLASS_BY_MODE[resolvedMode], className)}
+      style={Object.keys(figureStyle).length ? figureStyle : undefined}
+    >
+      <img
+        src={resolvedSrc}
+        alt={resolvedAlt}
+        loading="lazy"
+        decoding="async"
+        className={cn(
+          IMAGE_CLASS_BY_MODE[resolvedMode],
+          IMAGE_SURFACE_CLASS,
+          imgClassName,
+        )}
+        style={imgStyle}
       />
-    </div>
+    </figure>
   );
 }
