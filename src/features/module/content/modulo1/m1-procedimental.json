@@ -284,7 +284,7 @@
               {
                 "id": "sandwich",
                 "title": {
-                  "text": "Sánguche",
+                  "text": "Pan con pollo",
                   "variant": "helper",
                   "align": "center"
                 },
@@ -294,11 +294,30 @@
                   "align": "center"
                 },
                 "media": {
-                  "src": "1/comprar-comida.webp",
-                  "alt": "Sánguche o comida del recreo",
+                  "src": "1/pan-con-pollo.jpeg",
+                  "alt": "Comida del recreo",
                   "variant": "square"
                 },
                 "price": 2.5
+              },
+                            {
+                "id": "ensalada-fruta",
+                "title": {
+                  "text": "Ensalada de fruta",
+                  "variant": "helper",
+                  "align": "center"
+                },
+                "text": {
+                  "text": "S/ 1.50",
+                  "variant": "caption",
+                  "align": "center"
+                },
+                "media": {
+                  "src": "1/ensalada-de-fruta.jpeg",
+                  "alt": "Ensalada de fruta",
+                  "variant": "square"
+                },
+                "price": 1.5
               },
               {
                 "id": "gaseosa",
@@ -337,25 +356,6 @@
                   "variant": "square"
                 },
                 "price": 0.5
-              },
-              {
-                "id": "jugo-botella",
-                "title": {
-                  "text": "Jugo en botella",
-                  "variant": "helper",
-                  "align": "center"
-                },
-                "text": {
-                  "text": "S/ 1.50",
-                  "variant": "caption",
-                  "align": "center"
-                },
-                "media": {
-                  "src": "1/botella-gaseosa.webp",
-                  "alt": "Jugo en botella plástica",
-                  "variant": "square"
-                },
-                "price": 1.5
               }
             ]
           },

@@ -93,7 +93,7 @@
           "align": "justify"
         },
         "media": {
-          "src": "1/uso-del-dinero-2.webp",
+          "src": "1/uso-dinero.webp",
           "alt": "Uso del dinero para pagar productos y servicios",
           "variant": "horizontal"
         }
@@ -236,7 +236,7 @@
                   "align": "center"
                 },
                 "media": {
-                  "src": "1/recarga.webp",
+                  "src": "1/recargar.jpeg",
                   "alt": "Recargar saldo",
                   "variant": "square"
                 },
@@ -264,7 +264,7 @@
                   "align": "center"
                 },
                 "media": {
-                  "src": "1/sobra5.webp",
+                  "src": "1/ahorrar.jpeg",
                   "alt": "Guardar dinero para después",
                   "variant": "square"
                 },
@@ -292,7 +292,7 @@
                   "align": "center"
                 },
                 "media": {
-                  "src": "1/gaseosa.webp",
+                  "src": "1/comprar-snacks.jpeg",
                   "alt": "Comprar snacks",
                   "variant": "square"
                 },
@@ -315,12 +315,12 @@
               {
                 "id": "daily-likes",
                 "title": {
-                  "text": "Comprar juegos o accesorios",
+                  "text": "Comprar juegos",
                   "variant": "h3",
                   "align": "center"
                 },
                 "media": {
-                  "src": "1/impulso.webp",
+                  "src": "1/comprar-juegos.jpeg",
                   "alt": "Compra por gusto personal",
                   "variant": "square"
                 },
@@ -687,6 +687,34 @@
                 }
               },
               {
+                "id": "case-income-tip",
+                "title": {
+                  "text": "Recibir una propina",
+                  "variant": "label",
+                  "align": "center"
+                },
+                "media": {
+                  "src": "1/recibir-dinero.webp",
+                  "alt": "Recibir una propina",
+                  "variant": "square"
+                },
+                "interaction": {
+                  "type": "flipCard",
+                  "backCard": {
+                    "title": {
+                      "text": "Ingreso",
+                      "variant": "h3",
+                      "align": "center"
+                    },
+                    "text": {
+                      "text": "Es dinero que recibes",
+                      "variant": "bodySm",
+                      "align": "center"
+                    }
+                  }
+                }
+              },
+              {
                 "id": "case-fixed-recharge",
                 "title": {
                   "text": "Recarga semanal",
@@ -694,7 +722,7 @@
                   "align": "center"
                 },
                 "media": {
-                  "src": "1/recarga.webp",
+                  "src": "1/recargar.jpeg",
                   "alt": "Recarga semanal",
                   "variant": "square"
                 },
@@ -735,7 +763,7 @@
                       "align": "center"
                     },
                     "text": {
-                      "text": "Puede cambiar según la situación o necesidad.",
+                      "text": "Puede cambiar según la situación o necesidad",
                       "variant": "bodySm",
                       "align": "center"
                     }
@@ -745,13 +773,13 @@
               {
                 "id": "case-variable-extra-transport",
                 "title": {
-                  "text": "Tomar transporte extra",
+                  "text": "Sacar copias",
                   "variant": "label",
                   "align": "center"
                 },
                 "media": {
-                  "src": "1/regresar-combi.webp",
-                  "alt": "Tomar transporte extra",
+                  "src": "1/copias.jpeg",
+                  "alt": "Sacar copias",
                   "variant": "square"
                 },
                 "interaction": {
@@ -763,7 +791,7 @@
                       "align": "center"
                     },
                     "text": {
-                      "text": "A veces gastas más y otras veces menos.",
+                      "text": "A veces gastas más y otras veces menos",
                       "variant": "bodySm",
                       "align": "center"
                     }
@@ -778,7 +806,7 @@
                   "align": "center"
                 },
                 "media": {
-                  "src": "1/caramelo.webp",
+                  "src": "1/comprar-snacks.jpeg",
                   "alt": "Comprar snacks",
                   "variant": "square"
                 },
@@ -791,7 +819,7 @@
                       "align": "center"
                     },
                     "text": {
-                      "text": "Es un gasto que depende de tu decisión.",
+                      "text": "Es un gasto que depende de tu decisión",
                       "variant": "bodySm",
                       "align": "center"
                     }
@@ -806,7 +834,7 @@
                   "align": "center"
                 },
                 "media": {
-                  "src": "1/impulso.webp",
+                  "src": "1/comprar-juegos.jpeg",
                   "alt": "Compra por impulso",
                   "variant": "square"
                 },
@@ -819,35 +847,7 @@
                       "align": "center"
                     },
                     "text": {
-                      "text": "Está relacionado con gustos o deseos personales.",
-                      "variant": "bodySm",
-                      "align": "center"
-                    }
-                  }
-                }
-              },
-              {
-                "id": "case-income-tip",
-                "title": {
-                  "text": "Recibir una propina",
-                  "variant": "label",
-                  "align": "center"
-                },
-                "media": {
-                  "src": "1/propina.webp",
-                  "alt": "Recibir una propina",
-                  "variant": "square"
-                },
-                "interaction": {
-                  "type": "flipCard",
-                  "backCard": {
-                    "title": {
-                      "text": "Ingreso",
-                      "variant": "h3",
-                      "align": "center"
-                    },
-                    "text": {
-                      "text": "Es dinero que recibes.",
+                      "text": "Está relacionado con gustos o deseos personales",
                       "variant": "bodySm",
                       "align": "center"
                     }
@@ -857,13 +857,13 @@
               {
                 "id": "case-income-sell",
                 "title": {
-                  "text": "Vender algo que ya no usas",
+                  "text": "Vender manzanas",
                   "variant": "label",
                   "align": "center"
                 },
                 "media": {
                   "src": "1/ganar-dinero.webp",
-                  "alt": "Vender algo que ya no usas",
+                  "alt": "Vender manzanas",
                   "variant": "square"
                 },
                 "interaction": {
@@ -875,7 +875,7 @@
                       "align": "center"
                     },
                     "text": {
-                      "text": "Recibes dinero a cambio de lo que vendes.",
+                      "text": "Recibes dinero a cambio de lo que vendes",
                       "variant": "bodySm",
                       "align": "center"
                     }
@@ -1002,7 +1002,7 @@
                       "align": "center"
                     },
                     "media": {
-                      "src": "1/recarga.webp",
+                      "src": "1/recargar.jpeg",
                       "alt": "Recarga semanal",
                       "variant": "horizontal"
                     },
@@ -1016,12 +1016,12 @@
                   {
                     "id": "q2-income",
                     "title": {
-                      "text": "Recibí una propina",
+                      "text": "Vender manzanas",
                       "variant": "label",
                       "align": "center"
                     },
                     "media": {
-                      "src": "1/propina.webp",
+                      "src": "1/ganar-dinero.webp",
                       "alt": "Recibir una propina",
                       "variant": "horizontal"
                     },
@@ -1098,7 +1098,7 @@
                       "align": "center"
                     },
                     "media": {
-                      "src": "1/caramelo.webp",
+                      "src": "1/comprar-snacks.jpeg",
                       "alt": "Comprar snacks",
                       "variant": "horizontal"
                     },
@@ -1112,12 +1112,12 @@
                   {
                     "id": "q4-variable",
                     "title": {
-                      "text": "Tomar transporte extra",
+                      "text": "Sacar copias",
                       "variant": "label",
                       "align": "center"
                     },
                     "media": {
-                      "src": "1/regresar-combi.webp",
+                      "src": "1/copias.jpeg",
                       "alt": "Tomar transporte extra",
                       "variant": "horizontal"
                     },
