@@ -325,8 +325,10 @@ const DAILY_SLOTS = {
         selectedIds: payload?.selectedProductIds ?? [],
         selectedItems: payload?.selectedProducts ?? [],
         calculatorData: payload?.calculatorData,
+        initialBalance: payload?.currentBalance ?? 0,
         total: payload?.totalProducts ?? 0,
         balance: payload?.nextBalance ?? 0,
+        errorMessage: payload?.shopError ?? null,
         onToggleItem: payload?.onToggleProduct,
         onRemoveItem: payload?.onRemoveSelectedProduct,
         onSubmit: payload?.onConfirmShopSelection,
@@ -527,10 +529,6 @@ export function resolveShopNextViewId(heroApi, currentViewId, selectedIds) {
 
   if (currentIndex < 0) return null;
 
-  const hasPlasticBottle = selectedIds.some(
-    (item) => item === "gaseosa" || item === "agua",
-  );
-
   for (let index = currentIndex + 1; index < missionViews.length; index += 1) {
     const candidate = missionViews[index];
     const candidateId = candidate?.id ?? candidate?.viewId;
@@ -540,7 +538,7 @@ export function resolveShopNextViewId(heroApi, currentViewId, selectedIds) {
       branchRule?.viewId === currentViewId &&
       branchRule?.stateKey === "selectedProductIds"
     ) {
-      if (hasPlasticBottle) return candidateId;
+      if (matchesSelectedIdsRule(selectedIds, branchRule)) return candidateId;
       continue;
     }
 
@@ -548,6 +546,28 @@ export function resolveShopNextViewId(heroApi, currentViewId, selectedIds) {
   }
 
   return null;
+}
+
+function matchesSelectedIdsRule(selectedIds, rule) {
+  if (!Array.isArray(selectedIds)) return false;
+
+  if (Array.isArray(rule?.includesAny)) {
+    return rule.includesAny.some((item) => selectedIds.includes(item));
+  }
+
+  if (rule?.includes !== undefined) {
+    return selectedIds.includes(rule.includes);
+  }
+
+  if (rule?.notIncludes !== undefined) {
+    return !selectedIds.includes(rule.notIncludes);
+  }
+
+  if (rule?.equals !== undefined) {
+    return selectedIds.length === 1 && selectedIds[0] === rule.equals;
+  }
+
+  return true;
 }
 
 export function getChoiceItems(view, legacyElement) {

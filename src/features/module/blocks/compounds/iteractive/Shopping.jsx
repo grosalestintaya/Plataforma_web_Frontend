@@ -15,8 +15,10 @@ export default function Shopping({
   selectedIds = [],
   selectedItems = [],
   calculatorData,
+  initialBalance = 0,
   total = 0,
   balance = 0,
+  errorMessage = null,
   onToggleItem,
   onRemoveItem,
   onSubmit,
@@ -44,8 +46,10 @@ export default function Shopping({
         <Calculator
           data={calculatorData}
           items={selectedItems}
+          initialBalance={initialBalance}
           total={total}
           balance={balance}
+          errorMessage={errorMessage}
           onSubmit={onSubmit}
           onRemoveItem={onRemoveItem}
           disabled={disabled}

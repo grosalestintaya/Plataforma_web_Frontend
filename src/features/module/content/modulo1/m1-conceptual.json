@@ -1,39 +1,39 @@
 {
   "missionId": "m1.1",
-  "missionName": "Misión 1.1 – Conceptual",
-  "missionLabel": "Misión 1.1 – Conceptual",
-  "headerTitle": "Misión 1.1 – Conceptual",
-  "missionTitle": "Misión 1.1 – Conceptual",
+  "missionName": "Misión 1.1 - Conceptual",
+  "missionLabel": "Misión 1.1 - Conceptual",
+  "headerTitle": "Misión 1.1 - Conceptual",
+  "missionTitle": "El dinero en la vida cotidiana",
   "activityId": "01",
   "activityKey": "m01-conceptual",
   "views": [
     {
       "viewId": "m1_1_v1",
       "order": 1,
-      "name": "VISTA 1 - Inicio: Antes de empezar",
+      "name": "VISTA 1 - Inicio: ¿Qué aprenderás en esta misión?",
       "viewType": "Inicio",
-      "objective": "Presentar el tema (dinero, ingresos y gastos) antes de iniciar la experiencia.",
+      "objective": "Presentar la misión conceptual del módulo 1 y sus aprendizajes principales.",
       "template": "preGameLobby",
       "variant": "preGame",
       "slots": {
         "title": {
-          "text": "Antes de empezar",
+          "text": "El dinero en la vida cotidiana",
           "variant": "h1",
           "align": "center"
         },
         "body": {
           "paragraphs": [
-            "En esta misión aprenderás qué es el dinero y cómo se relaciona con los ingresos y los gastos en tu vida diaria.",
-            "Verás explicaciones con imágenes y ejemplos cercanos a tu realidad como estudiante.",
-            "También encontrarás actividades interactivas (solo debes hacer clic) para practicar lo aprendido.",
-            "Al final, harás una mini prueba para comprobar tus conocimientos."
+            "En esta misión reconocerás dónde aparece el dinero en tu vida diaria.",
+            "También diferenciarás ingresos, gastos y ahorro en situaciones cercanas a tu experiencia.",
+            "Además, identificarás gastos fijos, variables y discrecionales para pensar mejor antes de gastar.",
+            "Tu meta es aprender a organizar tu dinero y tomar decisiones responsables en situaciones cotidianas."
           ],
           "variant": "body1",
           "align": "justify"
         },
         "media": {
-          "src": "1/caramelo.webp",
-          "alt": "Inicio de la mision conceptual",
+          "src": "1/uso-dinero.webp",
+          "alt": "Situaciones cotidianas donde el dinero está presente",
           "variant": "vertical"
         }
       },
@@ -70,11 +70,11 @@
       }
     },
     {
-      "viewId": "m1_1_v2",
-      "order": 2,
-      "name": "VISTA 2 - Teoría: ¿Qué es el dinero?",
+      "viewId": "m1_1_v3",
+      "order": 3,
+      "name": "VISTA 3 - Teoría: ¿Qué es el dinero?",
       "viewType": "Teoria",
-      "objective": "Explicar qué es el dinero y por qué es útil en la vida diaria.",
+      "objective": "Explicar que el dinero facilita el intercambio y que su uso requiere responsabilidad.",
       "template": "simpleTheory",
       "variant": "simple",
       "slots": {
@@ -85,88 +85,16 @@
         },
         "body": {
           "paragraphs": [
-            "El dinero facilita el intercambio de bienes y servicios. Sin él, tendríamos que cambiar objetos por otros, y eso no siempre funciona porque la otra persona puede no necesitar lo que ofrecemos. Por eso usamos dinero, porque es un medio de pago aceptado por todos.",
-            "Además, el dinero es limitado: si lo gastas en una cosa, tendrás menos para otra. Por eso es importante usarlo con responsabilidad."
+            "El dinero nos ayuda a comprar productos y pagar servicios de manera más fácil. Antes, las personas intercambiaban objetos por otros, pero eso era complicado porque no siempre tenían lo que el otro necesitaba.",
+            "Por eso usamos el dinero, ya que es aceptado por todos como medio de pago.",
+            "Además, el dinero es limitado. Si gastas en una cosa, tendrás menos para otras necesidades o metas. Por eso es importante aprender a usarlo de forma responsable y pensar antes de comprar."
           ],
           "variant": "body1",
           "align": "justify"
-        },
-        "media": {
-          "src": "1/uso-dinero.webp",
-          "alt": "Estudiante recibiendo dinero en un contexto escolar",
-          "variant": "horizontal"
-        }
-      },
-      "elements": {
-        "base": [
-          {
-            "component": "heading",
-            "slot": "title",
-            "area": "title",
-            "order": 10
-          },
-          {
-            "component": "text",
-            "slot": "body",
-            "area": "content",
-            "order": 20
-          },
-          {
-            "component": "image",
-            "slot": "media",
-            "area": "media",
-            "order": 30
-          }
-        ],
-        "compound": []
-      },
-      "navigation": {
-        "mode": "normal"
-      },
-      "completionCriteria": {
-        "type": "reading"
-      }
-    },
-    {
-      "viewId": "m1_1_v3",
-      "order": 3,
-      "name": "VISTA 3 - Teoría: ¿Cómo se usa el dinero en nuestro día a día?",
-      "viewType": "Teoria",
-      "objective": "Relacionar el uso del dinero con situaciones cercanas del contexto escolar.",
-      "template": "splitTheory",
-      "variant": "split",
-      "slots": {
-        "title": {
-          "text": "Uso del dinero en nuestro día",
-          "variant": "h1",
-          "align": "center"
-        },
-        "body": {
-          "paragraphs": [
-            "En el día a día usamos dinero para cubrir necesidades y también algunos gustos, como movilizarnos, alimentarnos, estudiar y comunicarnos. Cada vez que pagas algo, tomas una decisión sobre en qué gastar tu dinero, por eso es importante reconocer tus gastos más frecuente",
-            "Recuerda: un gasto pequeño, si se repite varias veces, puede sumar bastante. Por ejemplo, si gastas S/2 en el recreo durante 5 días, habrás gastado S/10 en una semana."
-          ],
-          "variant": "body1",
-          "align": "justify"
-        },
-        "feedback": {
-          "title": {
-            "text": "Usos típicos",
-            "variant": "body",
-            "align": "left"
-          },
-          "items": [
-            "Transporte: pasaje al colegio.",
-            "Recreo: comida o bebida.",
-            "Estudio: útiles o fotocopias.",
-            "Recargas: saldo o datos móviles."
-          ],
-          "variant": "body",
-          "align": "left"
         },
         "media": {
           "src": "1/uso-del-dinero-2.webp",
-          "alt": "Situaciones cotidianas donde se usa dinero",
+          "alt": "Uso del dinero para pagar productos y servicios",
           "variant": "horizontal"
         }
       },
@@ -181,20 +109,14 @@
           {
             "component": "text",
             "slot": "body",
-            "area": "body",
+            "area": "body1",
             "order": 20
-          },
-          {
-            "component": "text",
-            "slot": "feedback",
-            "area": "support",
-            "order": 30
           },
           {
             "component": "image",
             "slot": "media",
             "area": "media",
-            "order": 40
+            "order": 30
           }
         ],
         "compound": []
@@ -209,112 +131,19 @@
     {
       "viewId": "m1_1_v4",
       "order": 4,
-      "name": "VISTA 4 - Teoría: ¿Qué son ingresos y gastos?",
-      "viewType": "Teoria",
-      "objective": "Comprender la diferencia entre ingreso (recibir dinero) y gasto (usar dinero para pagar).",
-      "template": "simpleTheory",
-      "variant": "simple",
-      "slots": {
-        "title": {
-          "text": "¿Qué son ingresos y gastos?",
-          "variant": "h1",
-          "align": "center"
-        },
-        "body": {
-          "paragraphs": [
-            "A lo largo del día, a veces recibimos dinero y otras veces lo usamos para pagar. A ese movimiento del dinero lo llamamos ingresos y gastos. Un ingreso ocurre cuando recibes dinero por alguna razón, por ejemplo, cuando te dan dinero para la semana, recibes una propina o vendes algo que ya no usas. La idea clave es: “recibí dinero”.",
-            "Un gasto ocurre cuando usas dinero para pagar o comprar algo (por ejemplo, pagar pasaje, comprar en el kiosko o recargar saldo)."
-          ],
-          "variant": "body1",
-          "align": "justify"
-        }
-      },
-      "elements": {
-        "base": [
-          {
-            "component": "heading",
-            "slot": "title",
-            "area": "title",
-            "order": 10
-          },
-          {
-            "component": "text",
-            "slot": "body",
-            "area": "content",
-            "order": 20
-          }
-        ],
-        "compound": [
-          {
-            "type": "showCard",
-            "component": "showCard",
-            "category": "grouper",
-            "area": "content",
-            "items": [
-              {
-                "id": "income-card",
-                "media": {
-                  "src": "1/recibir-dinero.webp",
-                  "alt": "Ejemplo de ingreso: recibir dinero",
-                  "variant": "horizontal"
-                },
-                "title": {
-                  "text": "Ingreso",
-                  "variant": "h3",
-                  "align": "center"
-                },
-                "text": {
-                  "text": "Al recibir dinero",
-                  "variant": "bodySm",
-                  "align": "center"
-                }
-              },
-              {
-                "id": "expense-card",
-                "media": {
-                  "src": "1/pagar-pasaje.webp",
-                  "alt": "Ejemplo de gasto: pagar pasaje",
-                  "variant": "horizontal",
-                  "color": "orange"
-                },
-                "title": {
-                  "text": "Gasto",
-                  "variant": "h3",
-                  "align": "center"
-                },
-                "text": {
-                  "text": "Al usar el dinero",
-                  "variant": "bodySm",
-                  "align": "center"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "navigation": {
-        "mode": "normal"
-      },
-      "completionCriteria": {
-        "type": "reading"
-      }
-    },
-    {
-      "viewId": "m1_1_v5",
-      "order": 5,
-      "name": "VISTA 5 - Interacción: Ejemplos de ingresos y gastos",
+      "name": "VISTA 4 - Teoría: ¿Para qué usas dinero?",
       "viewType": "Interaccion",
-      "objective": "Reconocer ejemplos cotidianos de ingreso y gasto mediante tarjetas.",
+      "objective": "Relacionar el dinero con decisiones cotidianas cercanas al estudiante.",
       "template": "explanationTheory",
       "variant": "explanation",
       "slots": {
         "title": {
-          "text": "Ejemplos prácticos",
+          "text": "¿Para qué usas dinero en tu día a día?",
           "variant": "h1",
           "align": "center"
         },
         "subtitle": {
-          "text": "Toca cada tarjeta para descubrir si se trata de un ingreso o de un gasto.",
+          "text": "El dinero está presente en muchas decisiones diarias. Por ejemplo, al comprar comida, pagar pasajes, recargar saldo, ahorrar o comprar algo que te gusta.",
           "variant": "body1",
           "align": "center"
         }
@@ -339,240 +168,176 @@
             "type": "collageCard",
             "component": "collageCard",
             "category": "grouper",
-            "area": "interaction",
-            "columns": 4,
+            "area": "media",
+            "columns": 3,
             "rows": 2,
             "items": [
               {
-                "id": "card-1",
-                "interaction": {
-                  "type": "flipCard",
-                  "backCard": {
-                    "title": {
-                      "text": "Ingreso",
-                      "variant": "h3",
-                      "align": "center",
-                      "color": "success"
-                    },
-                    "text": {
-                      "text": "Recibes dinero, por eso aumenta tu dinero disponible.",
-                      "variant": "bodySm",
-                      "align": "center"
-                    }
-                  }
-                },
-                "media": {
-                  "src": "1/recibir-dinero.webp",
-                  "alt": "Recibir una propina",
-                  "variant": "horizontal"
-                },
+                "id": "daily-food",
                 "title": {
-                  "text": "Recibir una propina",
-                  "variant": "label",
+                  "text": "Comprar comida",
+                  "variant": "h3",
                   "align": "center"
-                }
-              },
-              {
-                "id": "card-2",
-                "interaction": {
-                  "type": "flipCard",
-                  "backCard": {
-                    "title": {
-                      "text": "Gasto",
-                      "variant": "h3",
-                      "align": "center",
-                      "color": "danger"
-                    },
-                    "text": {
-                      "text": "Usas dinero para pagar algo, por eso tu dinero disminuye.",
-                      "variant": "bodySm",
-                      "align": "center"
-                    }
-                  }
-                },
-                "media": {
-                  "src": "1/pagar-pasaje.webp",
-                  "alt": "Pagar pasaje",
-                  "variant": "horizontal"
-                },
-                "title": {
-                  "text": "Pagar pasaje",
-                  "variant": "label",
-                  "align": "center"
-                }
-              },
-              {
-                "id": "card-3",
-                "interaction": {
-                  "type": "flipCard",
-                  "backCard": {
-                    "title": {
-                      "text": "Ingreso",
-                      "variant": "h3",
-                      "align": "center",
-                      "color": "success"
-                    },
-                    "text": {
-                      "text": "Recibes dinero por una ayuda o trabajo realizado.",
-                      "variant": "bodySm",
-                      "align": "center"
-                    }
-                  }
-                },
-                "media": {
-                  "src": "1/ganar-dinero.webp",
-                  "alt": "Ganar dinero por ayudar",
-                  "variant": "horizontal"
-                },
-                "title": {
-                  "text": "Ganar dinero por ayudar",
-                  "variant": "label",
-                  "align": "center"
-                }
-              },
-              {
-                "id": "card-4",
-                "interaction": {
-                  "type": "flipCard",
-                  "backCard": {
-                    "title": {
-                      "text": "Gasto",
-                      "variant": "h3",
-                      "align": "center",
-                      "color": "danger"
-                    },
-                    "text": {
-                      "text": "Pagas por alimentos, por eso estás realizando un gasto.",
-                      "variant": "bodySm",
-                      "align": "center"
-                    }
-                  }
                 },
                 "media": {
                   "src": "1/comprar-comida.webp",
-                  "alt": "Comprar alimentos",
-                  "variant": "horizontal"
+                  "alt": "Comprar comida",
+                  "variant": "square"
                 },
-                "title": {
-                  "text": "Comprar alimentos",
-                  "variant": "label",
-                  "align": "center"
-                }
-              },
-              {
-                "id": "card-5",
                 "interaction": {
                   "type": "flipCard",
                   "backCard": {
                     "title": {
-                      "text": "Gasto",
+                      "text": "Comprar comida",
                       "variant": "h3",
-                      "align": "center",
-                      "color": "danger"
+                      "align": "center"
                     },
                     "text": {
-                      "text": "El pasaje de vuelta también es un pago, por eso es un gasto.",
+                      "text": "Comprar refrigerio, una bebida o algo para el almuerzo.",
                       "variant": "bodySm",
                       "align": "center"
                     }
                   }
+                }
+              },
+              {
+                "id": "daily-transport",
+                "title": {
+                  "text": "Pagar pasajes",
+                  "variant": "h3",
+                  "align": "center"
                 },
                 "media": {
                   "src": "1/pagar-pasaje.webp",
-                  "alt": "Pagar el pasaje de vuelta",
-                  "variant": "horizontal"
+                  "alt": "Pagar pasajes",
+                  "variant": "square"
                 },
-                "title": {
-                  "text": "Pagar el pasaje de vuelta",
-                  "variant": "label",
-                  "align": "center"
-                }
-              },
-              {
-                "id": "card-6",
                 "interaction": {
                   "type": "flipCard",
                   "backCard": {
                     "title": {
-                      "text": "Ingreso",
+                      "text": "Pagar pasajes",
                       "variant": "h3",
-                      "align": "center",
-                      "color": "success"
+                      "align": "center"
                     },
                     "text": {
-                      "text": "Al vender algo que ya no usas, recibes dinero.",
+                      "text": "Pagar combi, movilidad o transporte para llegar a un lugar.",
                       "variant": "bodySm",
                       "align": "center"
                     }
                   }
-                },
-                "media": {
-                  "src": "1/recibir-dinero.webp",
-                  "alt": "Vender algo que ya no usas",
-                  "variant": "horizontal"
-                },
-                "title": {
-                  "text": "Vender algo que ya no usas",
-                  "variant": "label",
-                  "align": "center"
                 }
               },
               {
-                "id": "card-7",
+                "id": "daily-recharge",
+                "title": {
+                  "text": "Recargar saldo",
+                  "variant": "h3",
+                  "align": "center"
+                },
+                "media": {
+                  "src": "1/recarga.webp",
+                  "alt": "Recargar saldo",
+                  "variant": "square"
+                },
                 "interaction": {
                   "type": "flipCard",
                   "backCard": {
                     "title": {
-                      "text": "Gasto",
+                      "text": "Recargar saldo",
                       "variant": "h3",
-                      "align": "center",
-                      "color": "danger"
+                      "align": "center"
                     },
                     "text": {
-                      "text": "Comprar ropa implica usar dinero para pagar.",
+                      "text": "Comprar una recarga para comunicarte cuando la necesites.",
                       "variant": "bodySm",
                       "align": "center"
                     }
                   }
-                },
-                "media": {
-                  "src": "1/comprar-comida.webp",
-                  "alt": "Comprar ropa",
-                  "variant": "horizontal"
-                },
-                "title": {
-                  "text": "Comprar ropa",
-                  "variant": "label",
-                  "align": "center"
                 }
               },
               {
-                "id": "card-8",
+                "id": "daily-save",
+                "title": {
+                  "text": "Ahorrar",
+                  "variant": "h3",
+                  "align": "center"
+                },
+                "media": {
+                  "src": "1/sobra5.webp",
+                  "alt": "Guardar dinero para después",
+                  "variant": "square"
+                },
                 "interaction": {
                   "type": "flipCard",
                   "backCard": {
                     "title": {
-                      "text": "Ingreso",
+                      "text": "Ahorrar",
                       "variant": "h3",
-                      "align": "center",
-                      "color": "success"
+                      "align": "center"
                     },
                     "text": {
-                      "text": "Si recibes una recompensa en dinero, se considera ingreso.",
+                      "text": "Guardar una parte del dinero para usarla después en algo importante.",
                       "variant": "bodySm",
                       "align": "center"
                     }
                   }
+                }
+              },
+              {
+                "id": "daily-snack",
+                "title": {
+                  "text": "Comprar snacks",
+                  "variant": "h3",
+                  "align": "center"
                 },
                 "media": {
-                  "src": "1/ganar-dinero.webp",
-                  "alt": "Recompensa por reciclar",
-                  "variant": "horizontal"
+                  "src": "1/gaseosa.webp",
+                  "alt": "Comprar snacks",
+                  "variant": "square"
                 },
+                "interaction": {
+                  "type": "flipCard",
+                  "backCard": {
+                    "title": {
+                      "text": "Comprar snacks",
+                      "variant": "h3",
+                      "align": "center"
+                    },
+                    "text": {
+                      "text": "A veces usas dinero en antojos o gustos del momento.",
+                      "variant": "bodySm",
+                      "align": "center"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "daily-likes",
                 "title": {
-                  "text": "Recompensa por reciclar",
-                  "variant": "label",
+                  "text": "Comprar juegos o accesorios",
+                  "variant": "h3",
                   "align": "center"
+                },
+                "media": {
+                  "src": "1/impulso.webp",
+                  "alt": "Compra por gusto personal",
+                  "variant": "square"
+                },
+                "interaction": {
+                  "type": "flipCard",
+                  "backCard": {
+                    "title": {
+                      "text": "Comprar juegos o accesorios",
+                      "variant": "h3",
+                      "align": "center"
+                    },
+                    "text": {
+                      "text": "También puedes gastar en cosas que te gustan o te llaman la atención.",
+                      "variant": "bodySm",
+                      "align": "center"
+                    }
+                  }
                 }
               }
             ]
@@ -580,30 +345,573 @@
         ]
       },
       "navigation": {
-        "mode": "lockedUntilComplete"
+        "mode": "lockedUntilComplete",
+        "label": "Cliclea todas las tarjetas para continuar"
       },
       "completionCriteria": {
         "type": "interaction",
-        "required": "revealAllCards"
+        "required": "reviewCards"
+      }
+    },
+    {
+      "viewId": "m1_1_v5",
+      "order": 5,
+      "name": "VISTA 5 - Teoría: ¿Qué son ingresos y gastos?",
+      "viewType": "Teoria",
+      "objective": "Diferenciar cuándo el dinero entra y cuándo el dinero sale con ejemplos concretos.",
+      "template": "splitTheory",
+      "variant": "split",
+      "slots": {
+        "title": {
+          "text": "¿Qué son ingresos y gastos?",
+          "variant": "h1",
+          "align": "center"
+        },
+        "subtitle": {
+          "text": "Todos los días el dinero entra y sale de nuestras manos.",
+          "variant": "body1",
+          "align": "center"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "heading",
+            "slot": "subtitle",
+            "area": "subtitle",
+            "order": 20
+          }
+        ],
+        "compound": [
+          {
+            "type": "composeGroup",
+            "component": "composeGroup",
+            "category": "grouper",
+            "area": "media",
+            "groups": [
+              {
+                "id": "income-panel",
+                "className": "h-full",
+                "items": [
+                  {
+                    "block": "Typography",
+                    "props": {
+                      "content": {
+                        "paragraphs": [
+                          "Cuando recibes dinero, hablamos de un ingreso.",
+                          "- Dinero para la semana",
+                          "- Una propina",
+                          "- Vender algo que ya no usas"
+                        ],
+                        "variant": "body1",
+                        "align": "left"
+                      }
+                    }
+                  },
+                  {
+                    "block": "Card",
+                    "grow": true,
+                    "wrapperClassName": "flex min-h-0 items-center justify-center",
+                    "props": {
+                      "className": "max-w-[18rem]",
+                      "title": {
+                        "text": "Ingreso",
+                        "variant": "h3",
+                        "align": "center"
+                      },
+                      "text": {
+                        "text": "“recibí dinero”.",
+                        "variant": "bodySm",
+                        "align": "center"
+                      },
+                      "media": {
+                        "src": "1/recibir-dinero.webp",
+                        "alt": "Ejemplo de ingreso",
+                        "variant": "horizontal"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "expense-panel",
+                "className": "h-full",
+                "items": [
+                  {
+                    "block": "Typography",
+                    "props": {
+                      "content": {
+                        "paragraphs": [
+                          "Cuando usas dinero para pagar o comprar algo, hablamos de un gasto.",
+                          "- Pagar pasajes",
+                          "- Comprar en el kiosko",
+                          "- Recargar saldo"
+                        ],
+                        "variant": "body1",
+                        "align": "left"
+                      }
+                    }
+                  },
+                  {
+                    "block": "Card",
+                    "grow": true,
+                    "wrapperClassName": "flex min-h-0 items-center justify-center",
+                    "props": {
+                      "className": "max-w-[18rem]",
+                      "title": {
+                        "text": "Gasto",
+                        "variant": "h3",
+                        "align": "center"
+                      },
+                      "text": {
+                        "text": "“usé dinero”.",
+                        "variant": "bodySm",
+                        "align": "center"
+                      },
+                      "media": {
+                        "src": "1/pagar-pasaje.webp",
+                        "alt": "Ejemplo de gasto",
+                        "variant": "horizontal"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "normal"
+      },
+      "completionCriteria": {
+        "type": "reading"
       }
     },
     {
       "viewId": "m1_1_v6",
       "order": 6,
-      "name": "VISTA 6 - Mini-evaluación: Reconociendo ingresos y gastos",
-      "viewType": "Mini-Evaluacion",
-      "objective": "Verificar si el estudiante puede distinguir ejemplos de ingreso y gasto.",
+      "name": "VISTA 6 - Teoría: ¿Todos los gastos son iguales?",
+      "viewType": "Teoria",
+      "objective": "Explicar la diferencia entre gastos fijos, variables y discrecionales.",
+      "template": "simpleTheory",
+      "variant": "simple",
+      "slots": {
+        "title": {
+          "text": "¿Todos los gastos son iguales?",
+          "variant": "h1",
+          "align": "center"
+        },
+        "body": {
+          "paragraphs": [
+            "No gastamos dinero siempre de la misma forma.",
+            "Algunos gastos son necesarios y se repiten, otros cambian, y otros dependen de nuestros gustos o antojos.",
+            "Por eso existen distintos tipos de gastos."
+          ],
+          "variant": "body1",
+          "align": "center"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "text",
+            "slot": "body",
+            "area": "body1",
+            "order": 20
+          }
+        ],
+        "compound": [
+          {
+            "type": "showCard",
+            "component": "showCard",
+            "category": "grouper",
+            "area": "media",
+            "items": [
+              {
+                "id": "fixed-expense",
+                "title": {
+                  "text": "📌 Gastos fijos",
+                  "variant": "h3",
+                  "align": "center"
+                },
+                "text": {
+                  "paragraphs": [
+                    "Son pagos que casi siempre tienen el mismo monto y se realizan constantemente.",
+                    "Ejemplos:",
+                    "- Internet",
+                    "- Pasajes",
+                    "- Pensión",
+                    "- Recarga semanal",
+                    "👉 “Ya sabes que tendrás que pagarlos.”"
+                  ],
+                  "variant": "bodySm",
+                  "align": "left"
+                }
+              },
+              {
+                "id": "variable-expense",
+                "title": {
+                  "text": "🔄 Gastos variables",
+                  "variant": "h3",
+                  "align": "center"
+                },
+                "text": {
+                  "paragraphs": [
+                    "Son gastos que cambian según la situación o necesidad.",
+                    "Ejemplos:",
+                    "- Comida",
+                    "- Útiles",
+                    "- Salidas",
+                    "- Transporte extra",
+                    "👉 “A veces gastas más, a veces menos.”"
+                  ],
+                  "variant": "bodySm",
+                  "align": "left"
+                }
+              },
+              {
+                "id": "discretionary-expense",
+                "title": {
+                  "text": "🎮 Gastos discrecionales",
+                  "variant": "h3",
+                  "align": "center"
+                },
+                "text": {
+                  "paragraphs": [
+                    "Son gastos relacionados con gustos o deseos personales.",
+                    "Ejemplos:",
+                    "- Snacks",
+                    "- Videojuegos",
+                    "- Accesorios",
+                    "- Ropa que no necesitas urgentemente",
+                    "👉 “Puedes decidir si gastar o no.”"
+                  ],
+                  "variant": "bodySm",
+                  "align": "left"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "normal"
+      },
+      "completionCriteria": {
+        "type": "reading"
+      }
+    },
+    {
+      "viewId": "m1_1_v7",
+      "order": 7,
+      "name": "VISTA 7 - Interacción: Ejemplos prácticos",
+      "viewType": "Interaccion",
+      "objective": "Practicar la clasificación de ejemplos de ingresos y tipos de gasto.",
+      "template": "explanationTheory",
+      "variant": "explanation",
+      "slots": {
+        "title": {
+          "text": "Ejemplos prácticos",
+          "variant": "h1",
+          "align": "center"
+        },
+        "subtitle": {
+          "text": "Toca cada tarjeta para descubrir si se trata de un ingreso, un gasto fijo, un gasto variable o un gasto discrecional.",
+          "variant": "body1",
+          "align": "center"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "heading",
+            "slot": "subtitle",
+            "area": "subtitle",
+            "order": 20
+          }
+        ],
+        "compound": [
+          {
+            "type": "collageCard",
+            "component": "collageCard",
+            "category": "grouper",
+            "area": "media",
+            "columns": 4,
+            "rows": 2,
+            "items": [
+              {
+                "id": "case-fixed-fare",
+                "title": {
+                  "text": "Pagar pasaje",
+                  "variant": "label",
+                  "align": "center"
+                },
+                "media": {
+                  "src": "1/pagar-pasaje.webp",
+                  "alt": "Pagar pasaje",
+                  "variant": "square"
+                },
+                "interaction": {
+                  "type": "flipCard",
+                  "backCard": {
+                    "title": {
+                      "text": "Gasto fijo",
+                      "variant": "h3",
+                      "align": "center"
+                    },
+                    "text": {
+                      "text": "Es un pago que suele repetirse constantemente.",
+                      "variant": "bodySm",
+                      "align": "center"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "case-fixed-recharge",
+                "title": {
+                  "text": "Recarga semanal",
+                  "variant": "label",
+                  "align": "center"
+                },
+                "media": {
+                  "src": "1/recarga.webp",
+                  "alt": "Recarga semanal",
+                  "variant": "square"
+                },
+                "interaction": {
+                  "type": "flipCard",
+                  "backCard": {
+                    "title": {
+                      "text": "Gasto fijo",
+                      "variant": "h3",
+                      "align": "center"
+                    },
+                    "text": {
+                      "text": "Ya sabes que tendrás que pagarlo con frecuencia.",
+                      "variant": "bodySm",
+                      "align": "center"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "case-variable-food",
+                "title": {
+                  "text": "Comprar comida",
+                  "variant": "label",
+                  "align": "center"
+                },
+                "media": {
+                  "src": "1/comprar-comida.webp",
+                  "alt": "Comprar comida",
+                  "variant": "square"
+                },
+                "interaction": {
+                  "type": "flipCard",
+                  "backCard": {
+                    "title": {
+                      "text": "Gasto variable",
+                      "variant": "h3",
+                      "align": "center"
+                    },
+                    "text": {
+                      "text": "Puede cambiar según la situación o necesidad.",
+                      "variant": "bodySm",
+                      "align": "center"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "case-variable-extra-transport",
+                "title": {
+                  "text": "Tomar transporte extra",
+                  "variant": "label",
+                  "align": "center"
+                },
+                "media": {
+                  "src": "1/regresar-combi.webp",
+                  "alt": "Tomar transporte extra",
+                  "variant": "square"
+                },
+                "interaction": {
+                  "type": "flipCard",
+                  "backCard": {
+                    "title": {
+                      "text": "Gasto variable",
+                      "variant": "h3",
+                      "align": "center"
+                    },
+                    "text": {
+                      "text": "A veces gastas más y otras veces menos.",
+                      "variant": "bodySm",
+                      "align": "center"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "case-discretionary-snack",
+                "title": {
+                  "text": "Comprar snacks",
+                  "variant": "label",
+                  "align": "center"
+                },
+                "media": {
+                  "src": "1/caramelo.webp",
+                  "alt": "Comprar snacks",
+                  "variant": "square"
+                },
+                "interaction": {
+                  "type": "flipCard",
+                  "backCard": {
+                    "title": {
+                      "text": "Gasto discrecional",
+                      "variant": "h3",
+                      "align": "center"
+                    },
+                    "text": {
+                      "text": "Es un gasto que depende de tu decisión.",
+                      "variant": "bodySm",
+                      "align": "center"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "case-discretionary-caprice",
+                "title": {
+                  "text": "Comprar algo por impulso",
+                  "variant": "label",
+                  "align": "center"
+                },
+                "media": {
+                  "src": "1/impulso.webp",
+                  "alt": "Compra por impulso",
+                  "variant": "square"
+                },
+                "interaction": {
+                  "type": "flipCard",
+                  "backCard": {
+                    "title": {
+                      "text": "Gasto discrecional",
+                      "variant": "h3",
+                      "align": "center"
+                    },
+                    "text": {
+                      "text": "Está relacionado con gustos o deseos personales.",
+                      "variant": "bodySm",
+                      "align": "center"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "case-income-tip",
+                "title": {
+                  "text": "Recibir una propina",
+                  "variant": "label",
+                  "align": "center"
+                },
+                "media": {
+                  "src": "1/propina.webp",
+                  "alt": "Recibir una propina",
+                  "variant": "square"
+                },
+                "interaction": {
+                  "type": "flipCard",
+                  "backCard": {
+                    "title": {
+                      "text": "Ingreso",
+                      "variant": "h3",
+                      "align": "center"
+                    },
+                    "text": {
+                      "text": "Es dinero que recibes.",
+                      "variant": "bodySm",
+                      "align": "center"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "case-income-sell",
+                "title": {
+                  "text": "Vender algo que ya no usas",
+                  "variant": "label",
+                  "align": "center"
+                },
+                "media": {
+                  "src": "1/ganar-dinero.webp",
+                  "alt": "Vender algo que ya no usas",
+                  "variant": "square"
+                },
+                "interaction": {
+                  "type": "flipCard",
+                  "backCard": {
+                    "title": {
+                      "text": "Ingreso",
+                      "variant": "h3",
+                      "align": "center"
+                    },
+                    "text": {
+                      "text": "Recibes dinero a cambio de lo que vendes.",
+                      "variant": "bodySm",
+                      "align": "center"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "lockedUntilComplete",
+        "label": "Revisa todas las tarjetas"
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "reviewCards"
+      }
+    },
+    {
+      "viewId": "m1_1_v8",
+      "order": 8,
+      "name": "VISTA 8 - Evaluación: Pon a prueba lo aprendido",
+      "viewType": "Evaluacion",
+      "objective": "Comprobar que el estudiante diferencia ingresos y tipos de gasto usando ejemplos cercanos.",
       "template": "assessmentTheory",
       "variant": "assessment",
       "slots": {
         "title": {
-          "text": "Hora de practicar",
+          "text": "¡Pon a prueba lo aprendido!",
           "variant": "h1",
           "align": "center"
         },
         "subtitle": {
           "text": "Elige la opción correcta. Si te equivocas, podrás intentarlo una vez más.",
-          "variant": "body",
+          "variant": "body1",
           "align": "center"
         }
       },
@@ -628,39 +936,38 @@
             "component": "chooseOne",
             "category": "interactive",
             "area": "assessment",
+            "feedbackReserve": true,
             "items": [
               {
                 "id": "q1",
                 "prompt": {
-                  "text": "¿Cuál de estas dos imágenes representa un GASTO?",
+                  "text": "¿Cuál de estas situaciones representa un GASTO?",
                   "variant": "h3",
                   "align": "center"
                 },
                 "options": [
                   {
                     "id": "q1-income",
-                    "label": {
-                      "text": "Me dieron S/5 para el recreo",
+                    "title": {
+                      "text": "Me dieron dinero para la semana",
                       "variant": "label",
                       "align": "center"
                     },
                     "media": {
                       "src": "1/recibir-dinero.webp",
-                      "alt": "Recibir dinero",
+                      "alt": "Recibir dinero para la semana",
                       "variant": "horizontal"
                     },
                     "correct": false,
-                    "score": 100,
                     "feedback": {
+                      "text": "No es gasto. Ahí estás recibiendo dinero, así que es un ingreso.",
                       "variant": "helper",
-                      "align": "center",
-                      "tone": "income",
-                      "text": "Casi. Esta opción es un ingreso porque recibiste dinero, pero la pregunta pedía un gasto."
+                      "align": "center"
                     }
                   },
                   {
                     "id": "q1-expense",
-                    "label": {
+                    "title": {
                       "text": "Pagué mi pasaje",
                       "variant": "label",
                       "align": "center"
@@ -671,12 +978,10 @@
                       "variant": "horizontal"
                     },
                     "correct": true,
-                    "score": 60,
                     "feedback": {
+                      "text": "Correcto. Al pagar tu pasaje estás usando dinero, así que es un gasto.",
                       "variant": "helper",
-                      "align": "center",
-                      "tone": "expense",
-                      "text": "Correcto. Es un gasto porque pagaste por algo."
+                      "align": "center"
                     }
                   }
                 ]
@@ -684,119 +989,34 @@
               {
                 "id": "q2",
                 "prompt": {
-                  "text": "¿Cuál de estas dos imágenes representa un INGRESO?",
+                  "text": "¿Cuál de estas situaciones representa un INGRESO?",
                   "variant": "h3",
                   "align": "center"
                 },
                 "options": [
-                  {
-                    "id": "q2-income",
-                    "label": {
-                      "text": "Ayudé a recolectar frutas en el campo",
-                      "variant": "label",
-                      "align": "center"
-                    },
-                    "media": {
-                      "src": "1/ganar-dinero.webp",
-                      "alt": "Vender un juguete",
-                      "variant": "horizontal"
-                    },
-                    "correct": true,
-                    "score": 60,
-                    "feedback": {
-                      "variant": "helper",
-                      "align": "center",
-                      "tone": "income",
-                      "text": "Correcto. Es un ingreso porque recibiste dinero."
-                    }
-                  },
                   {
                     "id": "q2-expense",
-                    "label": {
-                      "text": "Compré una galleta y una bebida",
+                    "title": {
+                      "text": "Hice una recarga semanal",
                       "variant": "label",
                       "align": "center"
                     },
                     "media": {
-                      "src": "1/comprar-comida.webp",
-                      "alt": "Comprar una galleta y una bebida",
+                      "src": "1/recarga.webp",
+                      "alt": "Recarga semanal",
                       "variant": "horizontal"
                     },
                     "correct": false,
-                    "score": 100,
                     "feedback": {
-                      "text": "Casi. Esta opción es un gasto porque pagaste por algo, pero la pregunta pedía un ingreso.",
+                      "text": "No es ingreso. Ahí estás gastando dinero para pagar un servicio.",
                       "variant": "helper",
-                      "align": "center",
-                      "tone": "expense"
-                    }
-                  }
-                ]
-              },
-              {
-                "id": "q3",
-                "prompt": {
-                  "text": "¿Cuál de estas dos imágenes representa un GASTO?",
-                  "variant": "h3",
-                  "align": "center"
-                },
-                "options": [
-                  {
-                    "id": "q3-income",
-                    "label": {
-                      "text": "Reciclé una botella y me dieron S/0.50",
-                      "variant": "label",
                       "align": "center"
-                    },
-                    "media": {
-                      "src": "1/reciclando.webp",
-                      "alt": "Reciclar y recibir dinero",
-                      "variant": "horizontal"
-                    },
-                    "correct": false,
-                    "score": 60,
-                    "feedback": {
-                      "variant": "helper",
-                      "align": "center",
-                      "tone": "income",
-                      "text": "Casi. Esta opción es un ingreso porque recibiste dinero, pero la pregunta pedía un gasto."
                     }
                   },
                   {
-                    "id": "q3-expense",
-                    "label": {
-                      "text": "Compré una bebida en el kiosko",
-                      "variant": "label",
-                      "align": "center"
-                    },
-                    "media": {
-                      "src": "1/kiosco.webp",
-                      "alt": "Comprar una bebida",
-                      "variant": "horizontal"
-                    },
-                    "correct": true,
-                    "score": 100,
-                    "feedback": {
-                      "variant": "helper",
-                      "align": "center",
-                      "tone": "expense",
-                      "text": "Correcto. Es un gasto porque pagaste por algo."
-                    }
-                  }
-                ]
-              },
-              {
-                "id": "q4",
-                "prompt": {
-                  "text": "¿Cuál de estas dos imágenes representa un INGRESO?",
-                  "variant": "h3",
-                  "align": "center"
-                },
-                "options": [
-                  {
-                    "id": "q4-income",
-                    "label": {
-                      "text": "Recibí una propina por ayudar en casa",
+                    "id": "q2-income",
+                    "title": {
+                      "text": "Recibí una propina",
                       "variant": "label",
                       "align": "center"
                     },
@@ -806,33 +1026,106 @@
                       "variant": "horizontal"
                     },
                     "correct": true,
-                    "score": 100,
                     "feedback": {
+                      "text": "Correcto. Una propina es dinero que recibes, por eso es un ingreso.",
                       "variant": "helper",
-                      "align": "center",
-                      "tone": "income",
-                      "text": "Correcto. Es un ingreso porque recibiste dinero."
+                      "align": "center"
                     }
-                  },
+                  }
+                ]
+              },
+              {
+                "id": "q3",
+                "prompt": {
+                  "text": "¿Cuál de estas situaciones representa un GASTO VARIABLE?",
+                  "variant": "h3",
+                  "align": "center"
+                },
+                "options": [
                   {
-                    "id": "q4-expense",
-                    "label": {
-                      "text": "Pagué una recarga de celular",
+                    "id": "q3-variable",
+                    "title": {
+                      "text": "Comprar comida",
                       "variant": "label",
                       "align": "center"
                     },
                     "media": {
-                      "src": "1/recarga.webp",
-                      "alt": "Pagar una recarga",
+                      "src": "1/comprar-comida.webp",
+                      "alt": "Comprar comida",
+                      "variant": "horizontal"
+                    },
+                    "correct": true,
+                    "feedback": {
+                      "text": "Correcto. La comida puede cambiar según la situación o la necesidad.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "q3-fixed",
+                    "title": {
+                      "text": "Pagar el pasaje de siempre",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "1/pagar-pasaje.webp",
+                      "alt": "Pagar el pasaje de siempre",
                       "variant": "horizontal"
                     },
                     "correct": false,
-                    "score": 60,
                     "feedback": {
+                      "text": "No exactamente. Ese ejemplo se acerca más a un gasto fijo porque suele repetirse constantemente.",
                       "variant": "helper",
-                      "align": "center",
-                      "tone": "expense",
-                      "text": "Casi. Esta opción es un gasto porque pagaste por algo, pero la pregunta pedía un ingreso."
+                      "align": "center"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "q4",
+                "prompt": {
+                  "text": "¿Cuál de estas situaciones representa un GASTO DISCRECIONAL?",
+                  "variant": "h3",
+                  "align": "center"
+                },
+                "options": [
+                  {
+                    "id": "q4-discretionary",
+                    "title": {
+                      "text": "Comprar snacks",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "1/caramelo.webp",
+                      "alt": "Comprar snacks",
+                      "variant": "horizontal"
+                    },
+                    "correct": true,
+                    "feedback": {
+                      "text": "Correcto. Es discrecional porque depende de tu decisión y de tus gustos.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "q4-variable",
+                    "title": {
+                      "text": "Tomar transporte extra",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "1/regresar-combi.webp",
+                      "alt": "Tomar transporte extra",
+                      "variant": "horizontal"
+                    },
+                    "correct": false,
+                    "feedback": {
+                      "text": "No es discrecional. Ese ejemplo corresponde mejor a un gasto variable.",
+                      "variant": "helper",
+                      "align": "center"
                     }
                   }
                 ]
@@ -850,11 +1143,11 @@
       }
     },
     {
-      "viewId": "m1_1_v7",
-      "order": 7,
-      "name": "VISTA 7 - Final: Misión completada",
+      "viewId": "m1_1_v9",
+      "order": 9,
+      "name": "VISTA 9 - Final: Misión completada",
       "viewType": "Final",
-      "objective": "Cerrar la misión y mostrar la recompensa final.",
+      "objective": "Cerrar la misión conceptual y reforzar los aprendizajes logrados.",
       "template": "postGameLobby",
       "variant": "postGame",
       "slots": {
@@ -864,7 +1157,7 @@
           "align": "center"
         },
         "feedback": {
-          "text": "¡Excelente! Completaste la misión: +10 INTIS",
+          "text": "Ahora puedes reconocer dónde aparece el dinero en tu vida cotidiana y distinguir ingresos, gastos y tipos de gasto. +10 INTIS",
           "variant": "label",
           "align": "center",
           "color": "accent"
@@ -899,12 +1192,13 @@
                   "variant": "label"
                 },
                 "text": {
-                  "text": "+ 10",
-                  "variant": "bodySm"
+                  "text": "+10",
+                  "variant": "body1",
+                  "color": "secondary"
                 },
                 "media": {
                   "src": "",
-                  "alt": "Recompensa de XP",
+                  "alt": "Recompensa de experiencia",
                   "variant": "square"
                 }
               },
@@ -915,12 +1209,13 @@
                   "variant": "label"
                 },
                 "text": {
-                  "text": "+ 10",
-                  "variant": "bodySm"
+                  "text": "+10",
+                  "variant": "body1",
+                  "color": "secondary"
                 },
                 "media": {
                   "src": "",
-                  "alt": "Recompensa de INTIS",
+                  "alt": "Recompensa de intis",
                   "variant": "square"
                 }
               }

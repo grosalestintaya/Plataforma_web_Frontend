@@ -1,38 +1,39 @@
 {
   "missionId": "m1.3",
-  "missionName": "Mision 1.3. - Actitudinal",
-  "missionLabel": "Mision 1.3. - Actitudinal",
-  "headerTitle": "Mision 1.3. - Actitudinal",
-  "missionTitle": "Mision 1.3. - Actitudinal",
+  "missionName": "Misión 1.3 - Actitudinal",
+  "missionLabel": "Misión 1.3 - Actitudinal",
+  "headerTitle": "Misión 1.3 - Actitudinal",
+  "missionTitle": "Misión 1.3 - Actitudinal",
   "activityId": "03",
   "activityKey": "m01-actitudinal",
   "views": [
     {
       "viewId": "m1_3_v1",
       "order": 1,
-      "name": "VISTA 1 - Inicio: Hora de practicar",
+      "name": "VISTA 1 – Inicio: Hora de decidir",
       "viewType": "Inicio",
-      "objective": "Presentar la etapa de reflexion sobre decisiones cotidianas con dinero.",
+      "objective": "Presentar la misión actitudinal como un espacio de reflexión sobre decisiones cotidianas con dinero.",
       "template": "preGameLobby",
       "variant": "preGame",
       "slots": {
         "title": {
-          "text": "Hora de practicar",
+          "text": "Reconozco cómo mis decisiones afectan mi dinero",
           "variant": "h1",
           "align": "center"
         },
         "body": {
           "paragraphs": [
-            "En esta mision responderas preguntas sobre decisiones cotidianas relacionadas con el dinero.",
-            "╰› La idea es reconocer cuando una eleccion cuida mejor tu bienestar, tu meta o tu saldo.",
-            "╰› Lee cada situacion, elige una opcion y explica por que.",
-            "╰› no existen respuestas correctas o incorrectas ,ve sin preocupaciones."          ],
+            "En esta misión tomarás decisiones sobre situaciones cercanas a tu vida diaria.",
+            "La idea es identificar qué decisiones ayudan a cuidar mejor tu bienestar, tus responsabilidades, tus metas y tu dinero disponible.",
+            "Recuerda: no se trata de juzgarte. Lo importante es reflexionar, explicar tu decisión y pensar qué podrías mejorar.",
+            "Lee cada caso, elige una opción y, si puedes, escribe por qué la elegirías."
+          ],
           "variant": "body1",
           "align": "justify"
         },
         "media": {
-          "src": "",
-          "alt": "Inicio de la mision actitudinal",
+          "src": "1/pensando.webp",
+          "alt": "Estudiante reflexionando antes de decidir",
           "variant": "vertical"
         }
       },
@@ -44,7 +45,12 @@
             "area": "title",
             "order": 10
           },
-          { "component": "text", "slot": "body", "area": "body", "order": 20 },
+          {
+            "component": "text",
+            "slot": "body",
+            "area": "body",
+            "order": 20
+          },
           {
             "component": "image",
             "slot": "media",
@@ -66,20 +72,20 @@
     {
       "viewId": "m1_3_v2",
       "order": 2,
-      "name": "VISTA 2 - Practica: Situacion 1",
+      "name": "VISTA 2 – Reflexión: Dinero para todo el día",
       "viewType": "Practica",
-      "objective": "Reflexionar sobre guardar dinero en lugar de gastarlo todo por impulso.",
+      "objective": "Reflexionar sobre la importancia de priorizar gastos necesarios y conservar dinero disponible.",
       "template": "simpleQuiz",
       "variant": "simple",
       "slots": {
         "title": {
-          "text": "Situacion 1",
+          "text": "Situación 1",
           "variant": "h1",
           "align": "center"
         },
         "media": {
-          "src": "1/pensando.webp",
-          "alt": "Producto del kiosko para la situacion 1",
+          "src": "1/decidir-pasaje-snacks-ahorro.webp",
+          "alt": "Estudiante pensando entre pasaje, snacks y guardar dinero",
           "variant": "horizontal"
         }
       },
@@ -105,41 +111,41 @@
             "category": "interactive",
             "area": "action",
             "question": {
-              "text": "Tienes S/ 10. Lo gastas todo en dulces o guardas una parte para algo que podrias necesitar despues?",
+              "text": "Sales del colegio y tienes poco dinero. Tus amigos quieren comprar comida rápida, pero también necesitas: pasaje, recarga, ahorrar para una meta. ¿Qué decisión tomarías?",
               "variant": "body1",
-              "align": "center"
+              "align": "justify"
             },
             "options": [
               {
-                "id": "spend_all",
+                "id": "buy_many_snacks",
                 "label": {
-                  "text": "a) Lo gasto todo en dulces",
-                  "variant": "body2"
-                },
-                "score": 60
-              },
-              {
-                "id": "save_part",
-                "label": {
-                  "text": "b) Guardo una parte para algo importante",
+                  "text": "a) Gastar todo para no quedarte fuera del grupo.",
                   "variant": "body2"
                 },
                 "score": 100
               },
               {
-                "id": "split_money",
+                "id": "use_needed_save_part",
                 "label": {
-                  "text": "c) Compro algo pequeno y guardo el resto",
+                  "text": "b) Comprar solo algo pequeño y guardar dinero.",
                   "variant": "body2"
                 },
-                "score": 85
+                "score": 100
+              },
+              {
+                "id": "spend_all_today",
+                "label": {
+                  "text": "c) Usar todo tu dinero y pensar después cómo regresar.",
+                  "variant": "body2"
+                },
+                "score": 100
               }
             ],
             "prompt": {
-              "text": "Explica por que tomarias esa decision. (Opcional)",
+              "text": "¿Por qué elegirías esa opción? (Opcional)",
               "variant": "helper"
             },
-            "placeholder": "Escribe aqui tu razon...",
+            "placeholder": "Escribe por qué tomarías esa decisión...",
             "minReasonLength": 12,
             "reasonRequired": false
           }
@@ -156,20 +162,20 @@
     {
       "viewId": "m1_3_v3",
       "order": 3,
-      "name": "VISTA 3 - Practica: Situacion 2",
+      "name": "VISTA 3 – Reflexión: Salida del colegio",
       "viewType": "Practica",
-      "objective": "Reflexionar sobre la presion del grupo frente al ahorro para el pasaje.",
+      "objective": "Reflexionar sobre la presión del grupo y el cuidado del dinero necesario para regresar a casa.",
       "template": "extendedQuiz",
       "variant": "extended",
       "slots": {
         "title": {
-          "text": "Situacion 2",
+          "text": "Situación 2",
           "variant": "h1",
           "align": "center"
         },
         "media": {
-          "src": "1/extra-canje.webp",
-          "alt": "Situacion de ahorro frente al kiosko",
+          "src": "1/amigos-comida-rapida.webp",
+          "alt": "Estudiante con amigos pensando si comprar comida rápida",
           "variant": "vertical"
         }
       },
@@ -195,35 +201,41 @@
             "category": "interactive",
             "area": "action",
             "question": {
-              "text": "Has ahorrado para tu pasaje, pero tus amigos quieren comprar algo en el kiosko y te invitan a gastar con ellos. Que harias?",
+              "text": "Ahorraste durante varios días Hoy viste algo que te gustó mucho en internet. ¿Qué harías?",
               "variant": "body1",
               "align": "justify"
             },
             "options": [
-              
               {
-                "id": "use_savings",
+                "id": "spend_with_group",
                 "label": {
-                  "text": "a) Uso mi ahorro para acompanar al grupo",
+                  "text": "a) Comprar inmediatamente sin pensar.",
                   "variant": "body2"
                 },
-                "score": 60
-                
+                "score": 100
               },
               {
-                "id": "keep_savings",
+                "id": "small_purchase_keep_money",
                 "label": {
-                  "text": "b) Cuido mi ahorro para el pasaje",
+                  "text": "b) Pensar si realmente lo necesitas antes de gastar.",
+                  "variant": "body2"
+                },
+                "score": 100
+              },
+              {
+                "id": "spend_and_think_later",
+                "label": {
+                  "text": "c) Cotizar y evaluar otras opciones antes de comprar.",
                   "variant": "body2"
                 },
                 "score": 100
               }
             ],
             "prompt": {
-              "text": "Si quieres, cuenta que pensarias en ese momento. (Opcional)",
+              "text": "¿Por qué elegirías esa opción? (Opcional)",
               "variant": "helper"
             },
-            "placeholder": "Escribe por que elegirias esa opcion...",
+            "placeholder": "Cuenta qué pensarías en ese momento...",
             "minReasonLength": 12,
             "reasonRequired": false
           }
@@ -240,20 +252,20 @@
     {
       "viewId": "m1_3_v4",
       "order": 4,
-      "name": "VISTA 4 - Practica: Situacion 3",
+      "name": "VISTA 4 – Reflexión: Compra en internet",
       "viewType": "Practica",
-      "objective": "Reflexionar sobre que hacer con dinero sobrante despues del recreo.",
+      "objective": "Reflexionar sobre compras impulsivas y evaluación antes de usar dinero guardado.",
       "template": "simpleQuiz",
       "variant": "simple",
       "slots": {
         "title": {
-          "text": "Situacion 3",
+          "text": "Situación 3",
           "variant": "h1",
           "align": "center"
         },
         "media": {
-          "src": "1/galleta.webp",
-          "alt": "Dinero sobrante del recreo en la situacion 3",
+          "src": "1/compra-online-ahorro.webp",
+          "alt": "Estudiante viendo una tienda en línea con una alcancía al lado",
           "variant": "square"
         }
       },
@@ -279,41 +291,41 @@
             "category": "interactive",
             "area": "action",
             "question": {
-              "text": "Te sobraron S/ 5 del recreo. Que decision te ayuda a cuidar mejor tu dinero?",
+              "text": "¿Qué harías con el dinero que te sobró del recreo?",
               "variant": "body1",
-              "align": "center"
+              "align": "justify"
             },
             "options": [
               {
-                "id": "quick_spend",
+                "id": "buy_now",
                 "label": {
-                  "text": "a) Lo gasto rapido en golosinas",
-                  "variant": "body2"
-                },
-                "score": 60
-              },
-              {
-                "id": "save_or_plan",
-                "label": {
-                  "text": "b) Guardo una parte o la uso en algo necesario",
+                  "text": "a) Comprar algo que me gusta en ese momento.",
                   "variant": "body2"
                 },
                 "score": 100
               },
               {
-                "id": "compare_before_spending",
+                "id": "think_need",
                 "label": {
-                  "text": "c) Espero un poco y decido despues si vale la pena gastarlo",
+                  "text": "b) Guardar una parte y usar solo lo necesario.",
                   "variant": "body2"
                 },
-                "score": 85
+                "score": 100
+              },
+              {
+                "id": "compare_options",
+                "label": {
+                  "text": "c) Esperar un poco y pensar si realmente necesito gastarlo.",
+                  "variant": "body2"
+                },
+                "score": 100
               }
             ],
             "prompt": {
-              "text": "Si quieres, explica como esa eleccion te ayudaria. (Opcional)",
+              "text": "¿Por qué elegirías esa opción? (Opcional)",
               "variant": "helper"
             },
-            "placeholder": "Describe tu razon...",
+            "placeholder": "Explica qué revisarías antes de decidir...",
             "minReasonLength": 12,
             "reasonRequired": false
           }
@@ -330,20 +342,20 @@
     {
       "viewId": "m1_3_v5",
       "order": 5,
-      "name": "VISTA 5 - Practica: Situacion 4",
+      "name": "VISTA 5 – Reflexión: Dinero que sobró",
       "viewType": "Practica",
-      "objective": "Reflexionar sobre esperar o ahorrar cuando no alcanza para comprar algo.",
+      "objective": "Reflexionar sobre el uso del saldo disponible después del recreo.",
       "template": "extendedQuiz",
       "variant": "extended",
       "slots": {
         "title": {
-          "text": "Situacion 4",
+          "text": "Situación 4",
           "variant": "h1",
           "align": "center"
         },
         "media": {
-          "src": "1/impulso.webp",
-          "alt": "Kiosko con compra no planificada",
+          "src": "1/saldo-recreo.webp",
+          "alt": "Estudiante pensando qué hacer con el dinero que sobró del recreo",
           "variant": "vertical"
         }
       },
@@ -369,33 +381,41 @@
             "category": "interactive",
             "area": "action",
             "question": {
-              "text": "Estas en el kiosko y ves algo que te gusta, pero no te alcanza. Que harias?",
+              "text": "Estás en el kiosko del colegio.Ves algo que te gusta mucho, pero el dinero no te alcanza para comprarlo.¿Qué harías? ",
               "variant": "body1",
-              "align": "center"
+              "align": "justify"
             },
             "options": [
               {
-                "id": "borrow_impulse",
+                "id": "buy_something_now",
                 "label": {
-                  "text": "a) Pido prestado para comprarlo por impulso",
+                  "text": "a) Buscar una opción más económica o esperar otro día..",
                   "variant": "body2"
                 },
-                "score": 60
+                "score": 100
               },
               {
-                "id": "wait_and_plan",
+                "id": "save_part_use_needed",
                 "label": {
-                  "text": "b) No compro y espero otra ocasion o ahorro",
+                  "text": "b) Pedir prestado sin pensar cómo devolverlo.",
+                  "variant": "body2"
+                },
+                "score": 100
+              },
+              {
+                "id": "wait_and_think",
+                "label": {
+                  "text": "c) Pensar si realmente lo necesito o si solo lo quiero en ese momento.",
                   "variant": "body2"
                 },
                 "score": 100
               }
             ],
             "prompt": {
-              "text": "Si quieres, escribe por que esa respuesta te parece mejor. (Opcional)",
+              "text": "Cuéntanos por qué tomarías esa decisión. (Opcional)",
               "variant": "helper"
             },
-            "placeholder": "Comparte tu razon aqui...",
+            "placeholder": "Escribe tu reflexión...",
             "minReasonLength": 12,
             "reasonRequired": false
           }
@@ -412,19 +432,109 @@
     {
       "viewId": "m1_3_v6",
       "order": 6,
-      "name": "VISTA 6 - Final: Lo lograste",
+      "name": "VISTA 6 – Reflexión: Cuando no alcanza",
+      "viewType": "Practica",
+      "objective": "Reflexionar sobre alternativas responsables cuando el dinero disponible no alcanza para comprar algo deseado.",
+      "template": "simpleQuiz",
+      "variant": "simple",
+      "slots": {
+        "title": {
+          "text": "Situación 5",
+          "variant": "h1",
+          "align": "center"
+        },
+        "media": {
+          "src": "1/kiosko-no-alcanza.webp",
+          "alt": "Estudiante mirando un producto en el quiosco con pocas monedas",
+          "variant": "horizontal"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "image",
+            "slot": "media",
+            "area": "media",
+            "order": 20
+          }
+        ],
+        "compound": [
+          {
+            "type": "formQuestion",
+            "component": "formQuestion",
+            "category": "interactive",
+            "area": "action",
+            "question": {
+              "text": "Tienes S/15 y debes decidir entre: pagar pasaje, comprar snacks, ahorrar para una meta. ¿Qué gasto es más importante?",
+              "variant": "body1",
+              "align": "justify"
+            },
+            "options": [
+              {
+                "id": "cheaper_or_wait",
+                "label": {
+                  "text": "a) Comprar muchos snacks y gastar casi todo.",
+                  "variant": "body2"
+                },
+                "score": 100
+              },
+              {
+                "id": "borrow_without_plan",
+                "label": {
+                  "text": "b) Guardar una parte del dinero y usar solo lo necesario.",
+                  "variant": "body2"
+                },
+                "score": 100
+              },
+              {
+                "id": "question_need_or_want",
+                "label": {
+                  "text": "c) Gastar todo en algo que quieres hoy.",
+                  "variant": "body2"
+                },
+                "score": 100
+              }
+            ],
+            "prompt": {
+              "text": "¿Por qué elegirías esa opción? (Opcional)",
+              "variant": "helper"
+            },
+            "placeholder": "Escribe qué harías y por qué...",
+            "minReasonLength": 12,
+            "reasonRequired": false
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "lockedUntilComplete"
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "selectOption"
+      }
+    },
+    {
+      "viewId": "m1_3_v7",
+      "order": 7,
+      "name": "VISTA 7 – Final: Cierre reflexivo",
       "viewType": "Final",
-      "objective": "Cerrar la mision actitudinal y mostrar la recompensa final.",
+      "objective": "Cerrar la misión actitudinal reforzando la reflexión y una mejora personal.",
       "template": "postGameLobby",
       "variant": "postGame",
       "slots": {
         "title": {
-          "text": "Un nuevo logro se suma a tu camino",
+          "text": "Reflexión completada",
           "variant": "h1",
           "align": "center"
         },
         "feedback": {
-          "text": "Lograste una mision perfecta: +10 intis",
+          "text": "Completaste una misión de reflexión sobre cómo tus decisiones afectan tu dinero: +10 INTIS",
           "variant": "label",
           "align": "center",
           "color": "accent"
@@ -454,7 +564,10 @@
             "items": [
               {
                 "id": "reward-xp",
-                "title": { "text": "XP", "variant": "label" },
+                "title": {
+                  "text": "XP",
+                  "variant": "label"
+                },
                 "text": {
                   "text": "+10",
                   "variant": "body1",
@@ -468,7 +581,10 @@
               },
               {
                 "id": "reward-intis",
-                "title": { "text": "INTIS", "variant": "label" },
+                "title": {
+                  "text": "INTIS",
+                  "variant": "label"
+                },
                 "text": {
                   "text": "+10",
                   "variant": "body1",
@@ -476,7 +592,7 @@
                 },
                 "media": {
                   "src": "",
-                  "alt": "Recompensa de Intis",
+                  "alt": "Recompensa de INTIS",
                   "variant": "square"
                 }
               }

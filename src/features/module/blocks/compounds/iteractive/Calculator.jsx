@@ -60,8 +60,10 @@ function SummaryRow({ label, value }) {
 export default function Calculator({
   data,
   items = [],
+  initialBalance = 0,
   total = 0,
   balance = 0,
+  errorMessage = null,
   onSubmit,
   onRemoveItem,
   disabled = false,
@@ -130,9 +132,23 @@ export default function Calculator({
       </div>
 
       <div className="shrink-0 space-y-2 rounded-xl border border-white/10 bg-black/10 p-3">
+        <SummaryRow label="Saldo inicial" value={initialBalance} />
         <SummaryRow label="Suma total" value={total} />
-        <SummaryRow label="Saldo" value={balance} />
+        <SummaryRow label="Saldo restante" value={balance} />
       </div>
+
+      {errorMessage ? (
+        <div className="shrink-0 rounded-xl border border-rose-300/30 bg-rose-500/10 px-3 py-2">
+          <Typography
+            content={{
+              text: errorMessage,
+              variant: "helper",
+              tone: "danger",
+              align: "center",
+            }}
+          />
+        </div>
+      ) : null}
 
       <Button
         variant="primary"

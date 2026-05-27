@@ -116,6 +116,82 @@ function normalizeShowCardItems(items = []) {
   }));
 }
 
+function createTypographyProps(content, fallbackVariant = "bodySm") {
+  return {
+    content,
+    variant: content?.variant ?? fallbackVariant,
+    color: content?.color,
+    align: content?.align,
+    component: content?.component,
+  };
+}
+
+function createCardProps(item) {
+  return {
+    title: item?.title,
+    text: item?.text,
+    media: item?.media,
+    interaction: item?.interaction,
+    zoomable:
+      item?.zoomable === false || item?.media?.zoomable === false
+        ? false
+        : undefined,
+    variant: item?.cardVariant ?? item?.variant,
+    size: item?.size,
+  };
+}
+
+function createFallbackGroupItems(item) {
+  if (!item) return [];
+
+  const next = [];
+
+  if (item?.content) {
+    next.push({
+      block: "Typography",
+      props: createTypographyProps(item.content),
+    });
+  }
+
+  if (item?.title || item?.text || item?.media) {
+    next.push({
+      block: "Card",
+      props: createCardProps(item),
+    });
+  }
+
+  return next;
+}
+
+function getSplitColumnGroups(payload) {
+  if (Array.isArray(payload?.composeGroupData?.groups)) {
+    return payload.composeGroupData.groups;
+  }
+
+  if (Array.isArray(payload?.rowItems) && payload.rowItems.length > 0) {
+    return payload.rowItems.map((item) => ({
+      items: createFallbackGroupItems(item),
+    }));
+  }
+
+  return [];
+}
+
+function hasSplitColumnPair(payload) {
+  return getSplitColumnGroups(payload).length === 2;
+}
+
+function createSplitColumnGroupProps(payload, index) {
+  const group = getSplitColumnGroups(payload)[index] ?? {};
+
+  return {
+    items: Array.isArray(group?.items) ? group.items : [],
+    direction: group?.direction,
+    gap: group?.gap,
+    className: group?.className,
+  };
+}
+
 function getPayload(view = {}) {
   const compounds = Array.isArray(view?.elements?.compound)
     ? view.elements.compound
@@ -127,6 +203,7 @@ function getPayload(view = {}) {
   const chooseOne = findCompound(compounds, "chooseOne");
   const memoryPairs = findCompound(compounds, "memoryPairs");
   const crossword = findCompound(compounds, "crossword");
+  const composeGroup = findCompound(compounds, "composeGroup");
 
   const { feedbackText, supportList } = normalizeFeedback(
     view?.slots?.feedback,
@@ -146,6 +223,7 @@ function getPayload(view = {}) {
     supportListContent: toListContent(supportList),
 
     rowItems: normalizeShowCardItems(showCard?.items ?? []),
+    composeGroupData: composeGroup ?? null,
     flipCardData: flipCard ?? null,
     collageCardData: collageCard ?? null,
     chooseOneData: chooseOne ?? null,
@@ -325,6 +403,11 @@ export const THEORY_CONFIG = {
         when: (payload) => Boolean(payload?.body),
       }),
 
+      createTypographySlot("subtitle", "subtitle", "body", {
+        slotId: "subtitle",
+        when: (payload) => Boolean(payload?.subtitle),
+      }),
+
       {
         slotId: "supportGroup",
         area: "body2",
@@ -343,9 +426,50 @@ export const THEORY_CONFIG = {
       },
 
       {
+        slotId: "comparisonColumns",
+        area: "media",
+        when: (payload) => hasSplitColumnPair(payload),
+        layoutDef: {
+          base: {
+            cols: "1fr",
+            rows: "auto auto",
+            areas: ["leftColumn", "rightColumn"],
+          },
+          md: {
+            cols: "1fr 1fr",
+            rows: "auto",
+            areas: ["leftColumn rightColumn"],
+          },
+          fit: {
+            cols: "1fr 1fr",
+            rows: "minmax(0,1fr)",
+            areas: ["leftColumn rightColumn"],
+          },
+        },
+        slots: [
+          {
+            slotId: "leftColumnGroup",
+            area: "leftColumn",
+            when: (payload) =>
+              (createSplitColumnGroupProps(payload, 0)?.items?.length ?? 0) > 0,
+            block: "ComposeGroup",
+            props: (payload) => createSplitColumnGroupProps(payload, 0),
+          },
+          {
+            slotId: "rightColumnGroup",
+            area: "rightColumn",
+            when: (payload) =>
+              (createSplitColumnGroupProps(payload, 1)?.items?.length ?? 0) > 0,
+            block: "ComposeGroup",
+            props: (payload) => createSplitColumnGroupProps(payload, 1),
+          },
+        ],
+      },
+
+      {
         slotId: "mediaImageCard",
         area: "media",
-        when: (payload) => Boolean(payload?.media,),
+        when: (payload) => !hasSplitColumnPair(payload) && Boolean(payload?.media),
         block: "Card",
         props: createImageOnlyCardProps,
       },
@@ -463,6 +587,22 @@ function insertLayoutRow(layoutDef, { index, area, rowSize = "auto", mdArea }) {
   return next;
 }
 
+function findLayoutAreaIndex(layoutDef, targetArea) {
+  if (!layoutDef?.base?.areas?.length) return -1;
+
+  return layoutDef.base.areas.findIndex((row) => row.includes(targetArea));
+}
+
+function insertLayoutRowBefore(layoutDef, targetArea, options) {
+  const targetIndex = findLayoutAreaIndex(layoutDef, targetArea);
+
+  return insertLayoutRow(layoutDef, {
+    ...options,
+    index:
+      targetIndex >= 0 ? targetIndex : (layoutDef?.base?.areas?.length ?? 0),
+  });
+}
+
 function removeLayoutRow(layoutDef, targetArea) {
   if (!layoutDef?.base) return layoutDef;
 
@@ -517,18 +657,32 @@ function resolveLayoutDef(variant, baseLayout, payload) {
     });
   }
 
-  if (
-    variant === "split" &&
-    (payload?.supportListTitle || payload?.supportListContent)
-  ) {
-    const next = insertLayoutRow(baseLayout, {
-      index: 2,
-      area: "body2",
-      rowSize: "auto",
-      mdArea: "body2 media",
-    });
+  if (variant === "split") {
+    let next = baseLayout;
 
-    return removeLayoutRow(next, "media media");
+    if (!payload?.body) {
+      next = removeLayoutRow(next, "body1");
+    }
+
+    if (payload?.subtitle) {
+      next = insertLayoutRowBefore(next, "media", {
+        area: "subtitle",
+        rowSize: "auto",
+        mdArea: "subtitle subtitle",
+      });
+    }
+
+    if (payload?.supportListTitle || payload?.supportListContent) {
+      next = insertLayoutRowBefore(next, "media", {
+        area: "body2",
+        rowSize: "auto",
+        mdArea: "body2 media",
+      });
+
+      return removeLayoutRow(next, "media media");
+    }
+
+    return next;
   }
 
   if (variant === "assessment" && payload?.subtitle) {
