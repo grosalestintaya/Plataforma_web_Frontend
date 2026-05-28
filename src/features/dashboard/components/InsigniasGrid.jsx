@@ -51,7 +51,12 @@ export default function InsigniasGrid({ loading, insignias, count }) {
                   alt={b?.name ?? "Insignia"}
                   className="h-full w-full object-contain"
                   onError={(e) => {
-                    e.currentTarget.src = resolveInsignia("default.png");
+                    e.currentTarget.style.display = "none";
+                    const span = document.createElement("span");
+                    span.textContent = "Sin insignia";
+                    span.style.cssText =
+                      "font-size:0.7rem;color:#FFC400;opacity:0.6;";
+                    e.currentTarget.parentNode.appendChild(span);
                   }}
                 />
               </div>
