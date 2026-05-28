@@ -10,7 +10,8 @@ export function getInitials(fullName = "") {
 
 export function resolveInsignia(pinnedImg) {
   if (!pinnedImg) return `${INSIGNIA_BASE}/default.webp`;
-  return `${INSIGNIA_BASE}/${pinnedImg}`;
+  const cleanName = pinnedImg.replace(/\.png$/i, "");
+  return `${INSIGNIA_BASE}/${cleanName}.webp`;
 }
 
 export function resolveAvatar(imgKey) {

@@ -368,9 +368,9 @@ function PreGame({ payload, isMobile }) {
         {/* columna derecha — mascota: OCULTA en móvil */}
         {!isMobile && (
           <div
-            className="flex flex-col items-center px-4 pb-1.5 pt-0 min-h-0"
+            className="flex flex-col items-center px-4 pb-1.5 pt-1 min-h-0"
             style={{
-              background: "#ffc600",
+              background: "#fabe01",
               justifyContent: "flex-end",
             }}>
             <MascotBubble message={getRandomMessage()} isMobile={false} />

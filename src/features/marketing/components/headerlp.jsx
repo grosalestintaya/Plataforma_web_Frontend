@@ -8,6 +8,7 @@ export default function Headerlp({
   onIniciarSesion,
   onComoFunciona,
   onInicio,
+  OnYsi,
 }) {
   return (
     <header className="relative w-full overflow-hidden">
@@ -22,6 +23,15 @@ export default function Headerlp({
           {/* CTA */}
           <div className="flex items-center flex-shrink-0 ml-auto sm:ml-0 px-3.5">
             <nav className="hidden sm:flex items-center gap-10 mx-auto pr-15">
+              <a
+                onClick={OnYsi}
+                className="text-lg font-bold transition-opacity hover:opacity-70"
+                style={{
+                  color: "#ffff",
+                  fontFamily: "'Nunito', sans-serif",
+                }}>
+                ¿Y si nadie te enseñó sobre dinero?
+              </a>
               <a
                 onClick={onComoFunciona}
                 className="text-lg font-bold transition-opacity hover:opacity-70"
