@@ -236,7 +236,7 @@
                   "align": "center"
                 },
                 "media": {
-                  "src": "1/recargar.jpeg",
+                  "src": "1/recargar.webp",
                   "alt": "Recargar saldo",
                   "variant": "square"
                 },
@@ -264,7 +264,7 @@
                   "align": "center"
                 },
                 "media": {
-                  "src": "1/ahorrar.jpeg",
+                  "src": "1/ahorrar.webp",
                   "alt": "Guardar dinero para después",
                   "variant": "square"
                 },
@@ -292,7 +292,7 @@
                   "align": "center"
                 },
                 "media": {
-                  "src": "1/comprar-snacks.jpeg",
+                  "src": "1/comprar-snacks.webp",
                   "alt": "Comprar snacks",
                   "variant": "square"
                 },
@@ -320,7 +320,7 @@
                   "align": "center"
                 },
                 "media": {
-                  "src": "1/comprar-juegos.jpeg",
+                  "src": "1/comprar-juegos.webp",
                   "alt": "Compra por gusto personal",
                   "variant": "square"
                 },
@@ -564,7 +564,7 @@
               {
                 "id": "variable-expense",
                 "title": {
-                  "text": "🔄 Gastos variables",
+                  "text": "📌Gastos variables",
                   "variant": "h3",
                   "align": "center"
                 },
@@ -585,7 +585,7 @@
               {
                 "id": "discretionary-expense",
                 "title": {
-                  "text": "🎮 Gastos discrecionales",
+                  "text": "📌 Gastos discrecionales",
                   "variant": "h3",
                   "align": "center"
                 },
@@ -722,7 +722,7 @@
                   "align": "center"
                 },
                 "media": {
-                  "src": "1/recargar.jpeg",
+                  "src": "1/recargar.webp",
                   "alt": "Recarga semanal",
                   "variant": "square"
                 },
@@ -778,7 +778,7 @@
                   "align": "center"
                 },
                 "media": {
-                  "src": "1/copias.jpeg",
+                  "src": "1/copias.webp",
                   "alt": "Sacar copias",
                   "variant": "square"
                 },
@@ -806,7 +806,7 @@
                   "align": "center"
                 },
                 "media": {
-                  "src": "1/comprar-snacks.jpeg",
+                  "src": "1/comprar-snacks.webp",
                   "alt": "Comprar snacks",
                   "variant": "square"
                 },
@@ -834,7 +834,7 @@
                   "align": "center"
                 },
                 "media": {
-                  "src": "1/comprar-juegos.jpeg",
+                  "src": "1/comprar-juegos.webp",
                   "alt": "Compra por impulso",
                   "variant": "square"
                 },
@@ -1002,7 +1002,7 @@
                       "align": "center"
                     },
                     "media": {
-                      "src": "1/recargar.jpeg",
+                      "src": "1/recargar.webp",
                       "alt": "Recarga semanal",
                       "variant": "horizontal"
                     },
@@ -1098,7 +1098,7 @@
                       "align": "center"
                     },
                     "media": {
-                      "src": "1/comprar-snacks.jpeg",
+                      "src": "1/comprar-snacks.webp",
                       "alt": "Comprar snacks",
                       "variant": "horizontal"
                     },
@@ -1117,7 +1117,7 @@
                       "align": "center"
                     },
                     "media": {
-                      "src": "1/copias.jpeg",
+                      "src": "1/copias.webp",
                       "alt": "Tomar transporte extra",
                       "variant": "horizontal"
                     },
