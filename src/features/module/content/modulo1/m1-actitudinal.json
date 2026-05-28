@@ -32,7 +32,7 @@
           "align": "justify"
         },
         "media": {
-          "src": "1/pensando.webp",
+          "src": "1/pensar.webp",
           "alt": "Estudiante reflexionando antes de decidir",
           "variant": "vertical"
         }
@@ -174,7 +174,7 @@
           "align": "center"
         },
         "media": {
-          "src": "1/amigos-comida-rapida.webp",
+          "src": "1/compra-online-ahorro.webp",
           "alt": "Estudiante con amigos pensando si comprar comida rápida",
           "variant": "vertical"
         }
@@ -264,7 +264,7 @@
           "align": "center"
         },
         "media": {
-          "src": "1/compra-online-ahorro.webp",
+          "src": "1/saldo-recreo.webp",
           "alt": "Estudiante viendo una tienda en línea con una alcancía al lado",
           "variant": "square"
         }
@@ -354,7 +354,7 @@
           "align": "center"
         },
         "media": {
-          "src": "1/saldo-recreo.webp",
+          "src": "1/pensar.webp",
           "alt": "Estudiante pensando qué hacer con el dinero que sobró del recreo",
           "variant": "vertical"
         }

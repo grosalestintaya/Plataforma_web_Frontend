@@ -128,7 +128,7 @@
               {
                 "id": "m3-card-ingresos",
                 "media": {
-                  "src": "1/recibir-dinero.png",
+                  "src": "1/recibir-dinero.webp",
                   "alt": "Dinero que entra",
                   "variant": "horizontal"
                 },
@@ -146,7 +146,7 @@
               {
                 "id": "m3-card-gastos",
                 "media": {
-                  "src": "1/pagar-pasaje.png",
+                  "src": "1/pagar-pasaje.webp",
                   "alt": "Dinero que sale",
                   "variant": "horizontal"
                 },
@@ -333,7 +333,7 @@
           "align": "left"
         },
         "media": {
-          "src": "1/pensando.png",
+          "src": "1/pensando.webp",
           "alt": "Pensar antes de organizar el presupuesto",
           "variant": "vertical"
         }
@@ -521,7 +521,7 @@
                 "alt": "Fondo del crucigrama"
               },
               "sidebarImage": {
-                "src": "1/pensando.png",
+                "src": "1/pensando.webp",
                 "alt": "Imagen de apoyo del presupuesto"
               },
               "words": [
@@ -530,7 +530,7 @@
                   "answer": "PRESUPUESTO",
                   "clue": "Herramienta que organiza ingresos y gastos en un periodo.",
                   "image": {
-                    "src": "1/recibir-dinero.png",
+                    "src": "1/recibir-dinero.webp",
                     "alt": "Referencia de presupuesto"
                   }
                 },
@@ -539,7 +539,7 @@
                   "answer": "INGRESO",
                   "clue": "Dinero que entra o recibes.",
                   "image": {
-                    "src": "1/ganar-dinero.png",
+                    "src": "1/ganar-dinero.webp",
                     "alt": "Ejemplo de ingreso"
                   }
                 },
@@ -548,7 +548,7 @@
                   "answer": "GASTO",
                   "clue": "Dinero que sale cuando compras o pagas algo.",
                   "image": {
-                    "src": "1/pagar-pasaje.png",
+                    "src": "1/pagar-pasaje.webp",
                     "alt": "Ejemplo de gasto"
                   }
                 },
@@ -557,7 +557,7 @@
                   "answer": "AHORRO",
                   "clue": "Parte del dinero que decides guardar para despues.",
                   "image": {
-                    "src": "1/agua.png",
+                    "src": "1/agua.webp",
                     "alt": "Ejemplo de ahorro"
                   }
                 },
@@ -566,7 +566,7 @@
                   "answer": "SALDO",
                   "clue": "Diferencia entre ingresos y gastos.",
                   "image": {
-                    "src": "1/propina.png",
+                    "src": "1/propina.webp",
                     "alt": "Referencia de saldo"
                   }
                 }
