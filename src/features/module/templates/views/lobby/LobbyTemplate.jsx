@@ -370,7 +370,7 @@ function PreGame({ payload, isMobile }) {
           <div
             className="flex flex-col items-center px-4 pb-1.5 pt-0 min-h-0"
             style={{
-              background: "rgba(0,0,0,0.1)",
+              background: "#ffc600",
               justifyContent: "flex-end",
             }}>
             <MascotBubble message={getRandomMessage()} isMobile={false} />
