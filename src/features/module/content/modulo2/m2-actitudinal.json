@@ -1,11 +1,10 @@
 {
-  "missionId": "m2.3",
-  "missionName": "Mision 2.3. - Actitudinal",
-  "missionLabel": "Mision 2.3. - Actitudinal",
-  "headerTitle": "Mision 2.3. - Actitudinal",
-  "missionTitle": "Mision 2.3. - Actitudinal",
-  "activityId": "03",
+  "id": "actitudinal",
+  "activityId": "06",
+  "backendActivityId": "06",
   "activityKey": "m02-actitudinal",
+  "headerTitle": "Actitudinal",
+  "missionTitle": "Autocontrol y presión social",
   "views": [
     {
       "viewId": "m2_3_v1",
@@ -457,7 +456,10 @@
             "items": [
               {
                 "id": "reward-xp",
-                "title": { "text": "XP", "variant": "label" },
+                "title": {
+                  "text": "XP",
+                  "variant": "label"
+                },
                 "text": {
                   "text": "+10",
                   "variant": "body1",
@@ -471,7 +473,10 @@
               },
               {
                 "id": "reward-intis",
-                "title": { "text": "INTIS", "variant": "label" },
+                "title": {
+                  "text": "INTIS",
+                  "variant": "label"
+                },
                 "text": {
                   "text": "+10",
                   "variant": "body1",

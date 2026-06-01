@@ -1,6 +1,7 @@
 {
   "id": "actitudinal",
-  "backendActivityId": null,
+  "activityId": "15",
+  "backendActivityId": "15",
   "activityKey": "m05-actitudinal",
   "headerTitle": "Actitudinal",
   "missionTitle": "Actitudinal",

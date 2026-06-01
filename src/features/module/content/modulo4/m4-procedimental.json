@@ -1,6 +1,7 @@
 {
   "id": "procedimental",
-  "backendActivityId": null,
+  "activityId": "11",
+  "backendActivityId": "11",
   "activityKey": "m04-procedimental",
   "headerTitle": "Procedimental",
   "missionTitle": "Procedimental",

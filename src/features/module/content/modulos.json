@@ -3,7 +3,10 @@
     {
       "id": "module-1",
       "code": "m01",
-      "legacyCodes": ["m0", "m1"],
+      "legacyCodes": [
+        "m0",
+        "m1"
+      ],
       "sortOrder": 1,
       "title": "modulo 1",
       "name": "El dinero y mis decisiones cotidianas",
@@ -96,7 +99,7 @@
       "code": "m03",
       "sortOrder": 3,
       "title": "Modulo 3",
-      "name": "Presupuesto personal y control del dinero",
+      "name": "Organizo mi presupuesto personal, familiar o escolar",
       "theme": {
         "tone": "orange",
         "color": "#FFA500",
@@ -113,19 +116,24 @@
           ],
           "outcome": "Comprenderás el presupuesto como una herramienta de organización que te ayudará a planificar mejor tus ingresos y gastos.."
         },
-
         "procedimental": {
           "title": "elaboración de un presupuesto personal",
           "backendActivityId": null,
           "activityKey": "m03-procedimental",
-          "learn": ["Elaborar un presupuesto  para organizar de manera clara los ingresos y gastos personales.","Ajustar el presupuesto según las necesidades y metas, tomando decisiones más responsables con el dinero."],
+          "learn": [
+            "Elaborar un presupuesto  para organizar de manera clara los ingresos y gastos personales.",
+            "Ajustar el presupuesto según las necesidades y metas, tomando decisiones más responsables con el dinero."
+          ],
           "outcome": "Elaborarás y ajustarás un presupuesto personal sencillo para organizar mejor tus ingresos, gastos y metas mensuales."
         },
         "actitudinal": {
           "title": "Organización y responsabilidad financiera",
           "backendActivityId": null,
           "activityKey": "m03-actitudinal",
-          "learn": ["Fomentar hábitos de orden y planificación para administrar mejor el dinero en la vida diaria.","Aprender a organizar gastos e ingresos de forma responsable, pensando en metas y necesidades futuras."],
+          "learn": [
+            "Fomentar hábitos de orden y planificación para administrar mejor el dinero en la vida diaria.",
+            "Aprender a organizar gastos e ingresos de forma responsable, pensando en metas y necesidades futuras."
+          ],
           "outcome": "Fomentarás hábitos de orden y planificación para organizar mejor tu dinero y tomar decisiones financieras más responsables."
         }
       }
@@ -200,7 +208,7 @@
         }
       }
     },
-       {
+    {
       "id": "module-6",
       "code": "m06",
       "sortOrder": 6,

@@ -241,7 +241,7 @@ export const THEORY_CONFIG = {
         areas: ["title", "body1", "media"],
       },
       fit: {
-        rows: "auto auto minmax(0,1fr)",
+        rows: "auto minmax(0,1.35fr) minmax(9rem,0.8fr)",
         areas: ["title", "body1", "media"],
       },
     },
