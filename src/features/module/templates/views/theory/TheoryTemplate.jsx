@@ -5,6 +5,24 @@ import { normalizeLayout } from "../../_core/layouts.helpers";
 import { getTheoryRuntime } from "./theory.config";
 import * as Blocks from "@/features/module/blocks";
 
+function getSlotAreaClassName(slot) {
+  if (!slot?.slotId) return "";
+
+  if (
+    slot.slotId === "bodyGroup" ||
+    slot.slotId === "bodyTitle" ||
+    slot.slotId === "supportGroup"
+  ) {
+    return "items-start justify-start lg:overflow-y-auto";
+  }
+
+  if (slot.slotId === "subtitle") {
+    return "items-start justify-start";
+  }
+
+  return "";
+}
+
 /**
  * TheoryTemplate:
  * - No decide estilos visuales.
@@ -46,7 +64,11 @@ export default function TheoryTemplate({
         if (!renderedSlot) return null;
 
         return (
-          <HeroArea key={`${slot.area}-${slot.slotId ?? index}`} area={slot.area}>
+          <HeroArea
+            key={`${slot.area}-${slot.slotId ?? index}`}
+            area={slot.area}
+            className={getSlotAreaClassName(slot)}
+          >
             {renderedSlot}
           </HeroArea>
         );

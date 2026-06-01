@@ -1,8 +1,9 @@
 {
   "id": "actitudinal",
-  "backendActivityId": null,
+  "activityId": "09",
+  "backendActivityId": "09",
   "activityKey": "m03-actitudinal",
   "headerTitle": "Actitudinal",
-  "missionTitle": "Actitudinal",
+  "missionTitle": "Organización y responsabilidad financiera",
   "views": []
 }

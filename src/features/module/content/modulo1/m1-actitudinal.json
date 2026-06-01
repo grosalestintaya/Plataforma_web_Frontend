@@ -1,11 +1,10 @@
 {
-  "missionId": "m1.3",
-  "missionName": "Misión 1.3 - Actitudinal",
-  "missionLabel": "Misión 1.3 - Actitudinal",
-  "headerTitle": "Misión 1.3 - Actitudinal",
-  "missionTitle": "Misión 1.3 - Actitudinal",
+  "id": "actitudinal",
   "activityId": "03",
+  "backendActivityId": "03",
   "activityKey": "m01-actitudinal",
+  "headerTitle": "Actitudinal",
+  "missionTitle": "Reconozco cómo mis decisiones afectan mi dinero",
   "views": [
     {
       "viewId": "m1_3_v1",

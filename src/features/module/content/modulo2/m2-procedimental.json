@@ -4,7 +4,7 @@
   "backendActivityId": "05",
   "activityKey": "m02-procedimental",
   "headerTitle": "Procedimental",
-  "missionTitle": "Clasificacion y priorizacion de gastos",
+  "missionTitle": "Clasificación y priorización de gastos",
   "views": [
     {
       "viewId": "m2_2_v1",

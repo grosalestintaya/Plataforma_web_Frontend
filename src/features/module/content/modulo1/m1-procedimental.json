@@ -1,11 +1,10 @@
 {
-  "missionId": "m1.2",
-  "missionName": "Misión 1.2 – Procedimental",
-  "missionLabel": "Misión 1.2 – Procedimental",
-  "headerTitle": "Misión 1.2 – Procedimental",
-  "missionTitle": "Misión 1.2 – Procedimental",
+  "id": "procedimental",
   "activityId": "02",
+  "backendActivityId": "02",
   "activityKey": "m01-procedimental",
+  "headerTitle": "Procedimental",
+  "missionTitle": "Identificación de ingresos y gastos personales",
   "views": [
     {
       "viewId": "m1_2_v1",
@@ -300,7 +299,7 @@
                 },
                 "price": 2.5
               },
-                            {
+              {
                 "id": "ensalada-fruta",
                 "title": {
                   "text": "Ensalada de fruta",
@@ -393,7 +392,11 @@
         "dependsOn": {
           "viewId": "m1_2_v3",
           "stateKey": "selectedProductIds",
-          "includesAny": ["agua", "gaseosa", "jugo-botella"]
+          "includesAny": [
+            "agua",
+            "gaseosa",
+            "jugo-botella"
+          ]
         }
       },
       "template": "decisionDailySpending",

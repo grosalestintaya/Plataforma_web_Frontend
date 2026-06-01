@@ -1,8 +1,9 @@
 {
   "id": "procedimental",
-  "backendActivityId": null,
+  "activityId": "08",
+  "backendActivityId": "08",
   "activityKey": "m03-procedimental",
   "headerTitle": "Procedimental",
-  "missionTitle": "Procedimental",
+  "missionTitle": "Elaboración de un presupuesto personal",
   "views": []
 }

@@ -1,9 +1,10 @@
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/shared/libs/utils";
 
 /**
  * Typography:
  * - Sistema tipográfico centralizado.
- * - No recibe className ni containerClassName desde componentes padres.
+ * - Acepta ajustes finos declarativos desde content cuando el contrato lo permite.
  * - Usa principalmente la configuración declarada en el JSON.
  * - Normaliza variantes legacy como body1/body2/subtitle1/etc.
  */
@@ -11,43 +12,43 @@ import { cn } from "@/shared/libs/utils";
 export const TYPOGRAPHY = {
   scale: {
     eyebrow:
-      "text-[clamp(0.7rem,0.62rem+0.35cqw,0.95rem)] font-semibold uppercase tracking-[0.12em] leading-[1.3]",
+      "[font-size:calc(clamp(0.68rem,0.6rem+min(0.4cqw,0.7vmin),0.98rem)*var(--qy-type-scale,1))] font-semibold uppercase tracking-[0.12em] leading-[1.28]",
 
     h1:
-      "text-[clamp(1.8rem,1.05rem+3.2cqw,4.2rem)] font-extrabold leading-[1.12]",
+      "[font-size:calc(clamp(1.55rem,0.9rem+min(2.9cqw,5.2vmin),4rem)*var(--qy-type-scale,1))] font-extrabold leading-[1.08]",
 
     h2:
-      "text-[clamp(1.45rem,0.95rem+2.6cqw,3.2rem)] font-extrabold leading-[1.14]",
+      "[font-size:calc(clamp(1.22rem,0.82rem+min(2.15cqw,3.8vmin),3rem)*var(--qy-type-scale,1))] font-extrabold leading-[1.1]",
 
     h3:
-      "text-[clamp(1.15rem,0.9rem+1.6cqw,2.1rem)] font-bold leading-[1.18]",
+      "[font-size:calc(clamp(1rem,0.76rem+min(1.45cqw,2.4vmin),2.05rem)*var(--qy-type-scale,1))] font-bold leading-[1.14]",
 
     body:
-      "text-[clamp(0.95rem,0.78rem+0.9cqw,1.45rem)] font-medium leading-[1.42]",
+      "[font-size:calc(clamp(0.82rem,0.7rem+min(0.85cqw,1.35vmin),1.28rem)*var(--qy-type-scale,1))] font-medium leading-[1.34]",
 
     bodySm:
-      "text-[clamp(0.82rem,0.72rem+0.55cqw,1.05rem)] font-medium leading-[1.45]",
+      "[font-size:calc(clamp(0.74rem,0.64rem+min(0.62cqw,1.02vmin),1.08rem)*var(--qy-type-scale,1))] font-medium leading-[1.38]",
 
     label:
-      "text-[clamp(0.86rem,0.74rem+0.6cqw,1.15rem)] font-bold leading-[1.28]",
+      "[font-size:calc(clamp(0.78rem,0.68rem+min(0.6cqw,0.92vmin),1.08rem)*var(--qy-type-scale,1))] font-bold leading-[1.24]",
 
     helper:
-      "text-[clamp(0.76rem,0.68rem+0.42cqw,0.98rem)] font-medium leading-[1.38]",
+      "[font-size:calc(clamp(0.7rem,0.62rem+min(0.5cqw,0.82vmin),0.98rem)*var(--qy-type-scale,1))] font-medium leading-[1.32]",
 
     caption:
-      "text-[clamp(0.66rem,0.6rem+0.3cqw,0.84rem)] font-medium leading-[1.35]",
+      "[font-size:calc(clamp(0.62rem,0.56rem+min(0.3cqw,0.56vmin),0.84rem)*var(--qy-type-scale,1))] font-medium leading-[1.28]",
 
     cardTitle:
-      "text-[clamp(0.9rem,0.75rem+0.95cqw,1.35rem)] font-extrabold leading-[1.15]",
+      "[font-size:calc(clamp(0.84rem,0.72rem+min(0.95cqw,1.35vmin),1.38rem)*var(--qy-type-scale,1))] font-extrabold leading-[1.12]",
 
     cardText:
-      "text-[clamp(0.72rem,0.64rem+0.55cqw,0.95rem)] font-semibold leading-[1.28]",
+      "[font-size:calc(clamp(0.68rem,0.6rem+min(0.5cqw,0.8vmin),0.98rem)*var(--qy-type-scale,1))] font-semibold leading-[1.22]",
 
     cardBackTitle:
-      "text-[clamp(1rem,0.82rem+1cqw,1.45rem)] font-extrabold leading-[1.16]",
+      "[font-size:calc(clamp(0.94rem,0.76rem+min(1.05cqw,1.5vmin),1.48rem)*var(--qy-type-scale,1))] font-extrabold leading-[1.12]",
 
     cardBackText:
-      "text-[clamp(0.8rem,0.68rem+0.7cqw,1.05rem)] font-medium leading-[1.34]",
+      "[font-size:calc(clamp(0.74rem,0.64rem+min(0.62cqw,0.94vmin),1.06rem)*var(--qy-type-scale,1))] font-medium leading-[1.28]",
   },
 
   tone: {
@@ -82,6 +83,58 @@ export const TYPOGRAPHY = {
     3: "line-clamp-3",
     4: "line-clamp-4",
     5: "line-clamp-5",
+  },
+};
+
+const ADAPTIVE_SCALE_CONFIG = {
+  body: {
+    min: 0.92,
+    max: 1.18,
+    baseWidth: 920,
+    baseHeight: 210,
+    extraLineHeight: 34,
+  },
+  bodySm: {
+    min: 0.92,
+    max: 1.16,
+    baseWidth: 860,
+    baseHeight: 190,
+    extraLineHeight: 30,
+  },
+  label: {
+    min: 0.94,
+    max: 1.1,
+    baseWidth: 720,
+    baseHeight: 92,
+    extraLineHeight: 18,
+  },
+  helper: {
+    min: 0.92,
+    max: 1.12,
+    baseWidth: 760,
+    baseHeight: 96,
+    extraLineHeight: 18,
+  },
+  caption: {
+    min: 0.94,
+    max: 1.08,
+    baseWidth: 680,
+    baseHeight: 70,
+    extraLineHeight: 14,
+  },
+  cardText: {
+    min: 0.92,
+    max: 1.12,
+    baseWidth: 340,
+    baseHeight: 120,
+    extraLineHeight: 18,
+  },
+  cardBackText: {
+    min: 0.92,
+    max: 1.14,
+    baseWidth: 420,
+    baseHeight: 150,
+    extraLineHeight: 22,
   },
 };
 
@@ -130,6 +183,10 @@ function normalizeWidth(width) {
 function normalizeClamp(clamp) {
   if (clamp === undefined || clamp === null) return "none";
   return TYPOGRAPHY.clamp[clamp] !== undefined ? clamp : "none";
+}
+
+function clampNumber(value, min, max) {
+  return Math.min(max, Math.max(min, value));
 }
 
 function resolveDefaultTag(variant) {
@@ -186,10 +243,12 @@ function resolveOptions({
     width: resolvedWidth,
     clamp: resolvedClamp,
     as: resolvedAs,
+    className: content?.className ?? "",
+    containerClassName: content?.containerClassName ?? "",
   };
 }
 
-function getTextClassName({ variant, tone, align, clamp }) {
+function getTextClassName({ variant, tone, align, clamp, className }) {
   return cn(
     TYPOGRAPHY.scale[variant] ?? TYPOGRAPHY.scale.body,
     TYPOGRAPHY.tone[tone] ?? TYPOGRAPHY.tone.secondary,
@@ -210,10 +269,11 @@ function getTextClassName({ variant, tone, align, clamp }) {
      * Permite cortes de línea naturales.
      */
     "whitespace-normal break-words [overflow-wrap:anywhere]",
+    className,
   );
 }
 
-function getOuterWrapperClassName() {
+function getOuterWrapperClassName(containerClassName) {
   return cn(
     /**
      * Siempre ocupa todo el ancho del slot.
@@ -224,12 +284,14 @@ function getOuterWrapperClassName() {
      * Necesario para que cqw mida según el ancho real disponible.
      */
     "[container-type:inline-size]",
+    "min-h-0 max-h-full",
+    containerClassName,
   );
 }
 
 function getInnerWrapperClassName(width, align) {
   return cn(
-    "block w-full min-w-0",
+    "block w-full min-w-0 min-h-0 max-h-full",
     TYPOGRAPHY.width[width] ?? TYPOGRAPHY.width.full,
 
     /**
@@ -253,6 +315,8 @@ export default function Typography({
   as,
 }) {
   const text = extractText(content, children);
+  const outerRef = useRef(null);
+  const [adaptiveScale, setAdaptiveScale] = useState(1);
 
   const options = resolveOptions({
     content,
@@ -266,6 +330,60 @@ export default function Typography({
   });
 
   if (text === undefined || text === null || text === "") return null;
+  const paragraphCount = Array.isArray(text) ? text.length : 1;
+
+  useEffect(() => {
+    const config = ADAPTIVE_SCALE_CONFIG[options.variant];
+
+    if (!config) {
+      setAdaptiveScale(1);
+      return undefined;
+    }
+
+    const slotElement = outerRef.current?.parentElement;
+
+    if (!slotElement || typeof ResizeObserver === "undefined") {
+      setAdaptiveScale(1);
+      return undefined;
+    }
+
+    function updateScale() {
+      const { width, height } = slotElement.getBoundingClientRect();
+
+      if (!width || !height) {
+        setAdaptiveScale(1);
+        return;
+      }
+
+      const widthFactor = width / config.baseWidth;
+      const targetHeight =
+        config.baseHeight +
+        Math.max(0, paragraphCount - 1) * config.extraLineHeight;
+      const heightFactor = height / targetHeight;
+
+      const nextScale = clampNumber(
+        Number(Math.min(widthFactor, heightFactor).toFixed(3)),
+        config.min,
+        config.max,
+      );
+
+      setAdaptiveScale((previous) =>
+        Math.abs(previous - nextScale) < 0.01 ? previous : nextScale,
+      );
+    }
+
+    updateScale();
+
+    const observer = new ResizeObserver(() => {
+      updateScale();
+    });
+
+    observer.observe(slotElement);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [options.variant, paragraphCount]);
 
   if (Array.isArray(text)) {
     const parts = text.map((item) => String(item).trim()).filter(Boolean);
@@ -273,11 +391,15 @@ export default function Typography({
     if (parts.length === 0) return null;
 
     return (
-      <div className={getOuterWrapperClassName()}>
+      <div
+        ref={outerRef}
+        className={getOuterWrapperClassName(options.containerClassName)}
+        style={{ "--qy-type-scale": adaptiveScale }}
+      >
         <div
           className={cn(
             getInnerWrapperClassName(options.width, options.align),
-            "flex flex-col gap-4",
+            "flex min-h-0 flex-col gap-2.5 sm:gap-3",
           )}
         >
           {parts.map((part, index) => (
@@ -293,7 +415,11 @@ export default function Typography({
   const Tag = options.as;
 
   return (
-    <div className={getOuterWrapperClassName()}>
+    <div
+      ref={outerRef}
+      className={getOuterWrapperClassName(options.containerClassName)}
+      style={{ "--qy-type-scale": adaptiveScale }}
+    >
       <div className={getInnerWrapperClassName(options.width, options.align)}>
         <Tag className={getTextClassName(options)}>{text}</Tag>
       </div>

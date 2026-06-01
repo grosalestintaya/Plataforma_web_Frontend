@@ -1,11 +1,10 @@
 {
-  "missionId": "m1.1",
-  "missionName": "Misión 1.1 - Conceptual",
-  "missionLabel": "Misión 1.1 - Conceptual",
-  "headerTitle": "Misión 1.1 - Conceptual",
-  "missionTitle": "El dinero en la vida cotidiana",
+  "id": "conceptual",
   "activityId": "01",
+  "backendActivityId": "01",
   "activityKey": "m01-conceptual",
+  "headerTitle": "Conceptual",
+  "missionTitle": "El dinero en la vida cotidiana",
   "views": [
     {
       "viewId": "m1_1_v1",

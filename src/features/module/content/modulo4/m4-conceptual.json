@@ -1,6 +1,7 @@
 {
   "id": "conceptual",
-  "backendActivityId": null,
+  "activityId": "10",
+  "backendActivityId": "10",
   "activityKey": "m04-conceptual",
   "headerTitle": "Conceptual",
   "missionTitle": "Conceptual",

@@ -1,16 +1,17 @@
 {
   "id": "conceptual",
-  "backendActivityId": "7",
+  "activityId": "07",
+  "backendActivityId": "07",
   "activityKey": "m03-conceptual",
   "headerTitle": "Conceptual",
-  "missionTitle": "Presupuesto personal y control del dinero",
+  "missionTitle": "Organizo mi presupuesto personal, familiar o escolar",
   "views": [
     {
       "viewId": "m3_1_v1",
       "order": 1,
       "name": "VISTA 1 - Inicio: Antes de empezar",
       "viewType": "Inicio",
-      "objective": "Presentar la mision conceptual sobre presupuesto personal.",
+      "objective": "Presentar la mision conceptual sobre organizacion del presupuesto.",
       "template": "preGameLobby",
       "variant": "preGame",
       "slots": {
@@ -21,15 +22,15 @@
         },
         "body": {
           "paragraphs": [
-            "En esta mision aprenderas que es un presupuesto y por que sirve para organizar mejor tu dinero.",
-            "Veras ideas clave, un ejemplo sencillo y al final resolveras un crucigrama para repasar lo mas importante.",
-            "Cuando presiones Empezar comenzara el recorrido conceptual."
+            "En muchas familias y actividades escolares el dinero no alcanza porque no se registran los ingresos y gastos.",
+            "En esta mision aprenderas a organizar un presupuesto simple para saber cuanto dinero entra, cuanto sale y que ajustes puedes hacer.",
+            "Al final resolveras un crucigrama para repasar las ideas clave del modulo."
           ],
           "variant": "body1",
           "align": "left"
         },
         "media": {
-          "src": "activity/inicio-conceptual2.jpeg",
+          "src": "activity/inicio-conceptual2.webp",
           "alt": "Inicio de la mision de presupuesto",
           "variant": "vertical"
         }
@@ -71,7 +72,7 @@
       "order": 2,
       "name": "VISTA 2 - Teoria: Que es un presupuesto",
       "viewType": "Teoria",
-      "objective": "Explicar el presupuesto como herramienta para organizar ingresos y gastos.",
+      "objective": "Explicar el presupuesto como herramienta para organizar ingresos, gastos y saldo.",
       "template": "simpleTheory",
       "variant": "simple",
       "slots": {
@@ -82,16 +83,16 @@
         },
         "body": {
           "paragraphs": [
-            "Un presupuesto es un plan para organizar el dinero que tienes durante un periodo, por ejemplo una semana.",
-            "Te ayuda a comparar cuanto dinero entra, cuanto dinero sale y cuanto te queda disponible despues de tus gastos."
+            "Un presupuesto es un plan simple que registra ingresos, gastos y saldo durante un periodo.",
+            "Sirve para organizar dinero personal, familiar o escolar y responder una pregunta clave: el dinero alcanza o no alcanza?"
           ],
           "variant": "body1",
           "align": "center"
         },
         "feedback": {
           "paragraphs": [
-            "Piensa en el presupuesto como un mapa del dinero.",
-            "No busca prohibirte gastar, sino ayudarte a decidir mejor."
+            "El presupuesto no solo anota numeros. Tambien ayuda a decidir mejor antes de gastar.",
+            "Cuando sabes cuanto entra y cuanto sale, puedes actuar con mas claridad."
           ],
           "variant": "body2",
           "align": "center"
@@ -129,7 +130,7 @@
                 "id": "m3-card-ingresos",
                 "media": {
                   "src": "1/recibir-dinero.webp",
-                  "alt": "Dinero que entra",
+                  "alt": "Ejemplo de ingreso",
                   "variant": "horizontal"
                 },
                 "title": {
@@ -138,7 +139,7 @@
                   "align": "center"
                 },
                 "text": {
-                  "text": "Dinero que recibes.",
+                  "text": "Dinero que entra o recibes.",
                   "variant": "bodySm",
                   "align": "center"
                 }
@@ -147,7 +148,7 @@
                 "id": "m3-card-gastos",
                 "media": {
                   "src": "1/pagar-pasaje.webp",
-                  "alt": "Dinero que sale",
+                  "alt": "Ejemplo de gasto",
                   "variant": "horizontal"
                 },
                 "title": {
@@ -156,7 +157,25 @@
                   "align": "center"
                 },
                 "text": {
-                  "text": "Dinero que usas para pagar.",
+                  "text": "Dinero que sale cuando pagas o compras.",
+                  "variant": "bodySm",
+                  "align": "center"
+                }
+              },
+              {
+                "id": "m3-card-saldo",
+                "media": {
+                  "src": "1/saldo-recreo.webp",
+                  "alt": "Ejemplo de saldo disponible",
+                  "variant": "horizontal"
+                },
+                "title": {
+                  "text": "Saldo",
+                  "variant": "label",
+                  "align": "center"
+                },
+                "text": {
+                  "text": "Lo que queda despues de restar gastos.",
                   "variant": "bodySm",
                   "align": "center"
                 }
@@ -175,32 +194,40 @@
     {
       "viewId": "m3_1_v3",
       "order": 3,
-      "name": "VISTA 3 - Teoria: Por que hacer un presupuesto",
+      "name": "VISTA 3 - Teoria: Para que sirve organizarlo",
       "viewType": "Teoria",
-      "objective": "Mostrar por que el presupuesto mejora las decisiones con el dinero.",
+      "objective": "Explicar por que un presupuesto ayuda a tomar mejores decisiones con el dinero.",
       "template": "simpleTheory",
       "variant": "simple",
       "slots": {
         "title": {
-          "text": "Por que deberias crear un presupuesto?",
+          "text": "Para que sirve organizar el presupuesto?",
           "variant": "h1",
           "align": "center"
         },
         "body": {
           "paragraphs": [
-            "Porque un presupuesto te permite ver tu situacion con mas claridad y detectar si estas gastando mas de lo que tienes.",
-            "Tambien te ayuda a priorizar, ajustar gastos innecesarios y reservar dinero para algo importante."
+            "Organizar el presupuesto permite ver con claridad en que se usa el dinero y detectar si hace falta ajustarlo.",
+            "Tambien ayuda a planear metas, prevenir faltantes y evitar decisiones improvisadas que luego afectan necesidades importantes."
           ],
           "variant": "body1",
           "align": "center"
         },
         "feedback": {
-          "paragraphs": [
-            "Si sabes en que se te va el dinero, puedes corregir a tiempo.",
-            "Si te sobra, puedes ahorrar o guardarlo para una emergencia."
+          "title": {
+            "text": "Aprendizajes clave",
+            "variant": "label",
+            "align": "left"
+          },
+          "items": [
+            "Presupuesto",
+            "Ingresos",
+            "Gastos",
+            "Saldo",
+            "Ajustes al presupuesto"
           ],
-          "variant": "body2",
-          "align": "center"
+          "variant": "bodySm",
+          "align": "left"
         }
       },
       "elements": {
@@ -216,12 +243,6 @@
             "slot": "body",
             "area": "body1",
             "order": 20
-          },
-          {
-            "component": "text",
-            "slot": "feedback",
-            "area": "feedback",
-            "order": 30
           }
         ],
         "compound": []
@@ -236,31 +257,23 @@
     {
       "viewId": "m3_1_v4",
       "order": 4,
-      "name": "VISTA 4 - Teoria: Quien necesita un presupuesto",
+      "name": "VISTA 4 - Teoria: Donde puedes usar un presupuesto",
       "viewType": "Teoria",
-      "objective": "Explicar que cualquier persona puede beneficiarse de un presupuesto.",
+      "objective": "Mostrar que el presupuesto se puede aplicar en contextos personales, familiares y escolares.",
       "template": "simpleTheory",
       "variant": "simple",
       "slots": {
         "title": {
-          "text": "Quien necesita un presupuesto?",
+          "text": "Donde puedes usar un presupuesto?",
           "variant": "h1",
           "align": "center"
         },
         "body": {
           "paragraphs": [
-            "Todas las personas pueden usar un presupuesto, no solo quienes tienen problemas con el dinero.",
-            "Si recibes dinero para la semana, para el recreo o para una actividad, ya puedes organizarlo con un presupuesto sencillo."
+            "El presupuesto no sirve solo para grandes compras. Tambien funciona cuando administras dinero para tu semana, para tu casa o para una actividad del colegio.",
+            "La idea es la misma en todos los casos: anotar, comparar y ajustar."
           ],
           "variant": "body1",
-          "align": "center"
-        },
-        "feedback": {
-          "paragraphs": [
-            "El presupuesto te sirve para evitar errores pequeños que luego se acumulan.",
-            "Tambien te ayuda a planificar compras y metas."
-          ],
-          "variant": "body2",
           "align": "center"
         }
       },
@@ -277,15 +290,57 @@
             "slot": "body",
             "area": "body1",
             "order": 20
-          },
-          {
-            "component": "text",
-            "slot": "feedback",
-            "area": "feedback",
-            "order": 30
           }
         ],
-        "compound": []
+        "compound": [
+          {
+            "type": "showCard",
+            "component": "showCard",
+            "category": "grouper",
+            "area": "media",
+            "items": [
+              {
+                "id": "m3-personal",
+                "title": {
+                  "text": "Personal",
+                  "variant": "label",
+                  "align": "center"
+                },
+                "text": {
+                  "text": "Para organizar propina, recreo, pasajes o ahorro.",
+                  "variant": "bodySm",
+                  "align": "center"
+                }
+              },
+              {
+                "id": "m3-familiar",
+                "title": {
+                  "text": "Familiar",
+                  "variant": "label",
+                  "align": "center"
+                },
+                "text": {
+                  "text": "Para revisar ingresos del hogar y gastos necesarios.",
+                  "variant": "bodySm",
+                  "align": "center"
+                }
+              },
+              {
+                "id": "m3-escolar",
+                "title": {
+                  "text": "Escolar",
+                  "variant": "label",
+                  "align": "center"
+                },
+                "text": {
+                  "text": "Para materiales, copias, cuotas o actividades del aula.",
+                  "variant": "bodySm",
+                  "align": "center"
+                }
+              }
+            ]
+          }
+        ]
       },
       "navigation": {
         "mode": "normal"
@@ -297,21 +352,160 @@
     {
       "viewId": "m3_1_v5",
       "order": 5,
-      "name": "VISTA 5 - Teoria: Pasos para armar un presupuesto",
+      "name": "VISTA 5 - Teoria: Tipos de gastos",
       "viewType": "Teoria",
-      "objective": "Mostrar los pasos basicos para construir un presupuesto personal.",
+      "objective": "Reconocer gastos frecuentes, variables, ocasionales e imprevistos dentro del presupuesto.",
       "template": "splitTheory",
       "variant": "split",
       "slots": {
         "title": {
-          "text": "Pasos para armar un presupuesto",
+          "text": "Tipos de gastos que debes reconocer",
+          "variant": "h1",
+          "align": "center"
+        },
+        "subtitle": {
+          "text": "No todos los gastos aparecen con la misma frecuencia ni con el mismo impacto.",
+          "variant": "body1",
+          "align": "center"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "heading",
+            "slot": "subtitle",
+            "area": "subtitle",
+            "order": 20
+          }
+        ],
+        "compound": [
+          {
+            "type": "composeGroup",
+            "component": "composeGroup",
+            "category": "grouper",
+            "area": "media",
+            "groups": [
+              {
+                "id": "predictable-expenses",
+                "className": "h-full",
+                "items": [
+                  {
+                    "block": "Typography",
+                    "props": {
+                      "content": {
+                        "paragraphs": [
+                          "Gastos fijos o frecuentes",
+                          "- Suelen repetirse y pueden anticiparse.",
+                          "- Ejemplos: pasaje, lonchera, recarga o materiales de uso constante."
+                        ],
+                        "variant": "body1",
+                        "align": "left"
+                      }
+                    }
+                  },
+                  {
+                    "block": "Card",
+                    "grow": true,
+                    "wrapperClassName": "flex min-h-0 items-center justify-center",
+                    "props": {
+                      "className": "max-w-[18rem]",
+                      "title": {
+                        "text": "Se pueden anticipar",
+                        "variant": "h3",
+                        "align": "center"
+                      },
+                      "text": {
+                        "text": "Si los registras primero, tu presupuesto empieza con orden.",
+                        "variant": "bodySm",
+                        "align": "center"
+                      },
+                      "media": {
+                        "src": "1/pagar-pasaje.webp",
+                        "alt": "Gasto frecuente como el pasaje",
+                        "variant": "horizontal"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "changing-expenses",
+                "className": "h-full",
+                "items": [
+                  {
+                    "block": "Typography",
+                    "props": {
+                      "content": {
+                        "paragraphs": [
+                          "Gastos variables, ocasionales e imprevistos",
+                          "- Cambian, aparecen algunas veces o surgen sin aviso.",
+                          "- Ejemplos: copias, una cuota especial o una pequena emergencia."
+                        ],
+                        "variant": "body1",
+                        "align": "left"
+                      }
+                    }
+                  },
+                  {
+                    "block": "Card",
+                    "grow": true,
+                    "wrapperClassName": "flex min-h-0 items-center justify-center",
+                    "props": {
+                      "className": "max-w-[18rem]",
+                      "title": {
+                        "text": "Piden revision",
+                        "variant": "h3",
+                        "align": "center"
+                      },
+                      "text": {
+                        "text": "Conviene dejar margen para que no desordenen todo tu plan.",
+                        "variant": "bodySm",
+                        "align": "center"
+                      },
+                      "media": {
+                        "src": "1/copias.webp",
+                        "alt": "Gasto ocasional como copias escolares",
+                        "variant": "horizontal"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "normal"
+      },
+      "completionCriteria": {
+        "type": "reading"
+      }
+    },
+    {
+      "viewId": "m3_1_v6",
+      "order": 6,
+      "name": "VISTA 6 - Teoria: Pasos para organizar el presupuesto",
+      "viewType": "Teoria",
+      "objective": "Presentar un proceso simple para registrar ingresos, gastos y saldo.",
+      "template": "splitTheory",
+      "variant": "split",
+      "slots": {
+        "title": {
+          "text": "Pasos para organizar el presupuesto",
           "variant": "h1",
           "align": "center"
         },
         "body": {
           "paragraphs": [
-            "Para hacer un presupuesto no necesitas formulas complicadas. Solo debes ordenar la informacion del dinero que entra y del dinero que sale.",
-            "Si sigues estos pasos, podras revisar tu situacion antes de gastar y decidir mejor."
+            "Primero anota cuanto dinero entra. Luego registra todo lo que sale, aunque parezca pequeno.",
+            "Despues clasifica tus gastos, calcula el saldo y revisa si debes ajustar algo para que el dinero alcance."
           ],
           "variant": "body1",
           "align": "left"
@@ -319,22 +513,22 @@
         "feedback": {
           "title": {
             "text": "Pasos clave",
-            "variant": "body",
+            "variant": "label",
             "align": "left"
           },
           "items": [
-            "1. Anota tus ingresos.",
-            "2. Registra tus gastos.",
-            "3. Clasifica en que gastas.",
-            "4. Calcula tu saldo.",
-            "5. Ajusta si gastas mas de lo que tienes."
+            "Anota tus ingresos.",
+            "Registra tus gastos.",
+            "Separa gastos necesarios y ocasionales.",
+            "Calcula tu saldo.",
+            "Ajusta si falta dinero."
           ],
           "variant": "bodySm",
           "align": "left"
         },
         "media": {
-          "src": "1/pensando.webp",
-          "alt": "Pensar antes de organizar el presupuesto",
+          "src": "1/pensar.webp",
+          "alt": "Estudiante pensando antes de organizar el presupuesto",
           "variant": "vertical"
         }
       },
@@ -375,25 +569,33 @@
       }
     },
     {
-      "viewId": "m3_1_v6",
-      "order": 6,
-      "name": "VISTA 6 - Teoria: Ejemplo rapido de presupuesto",
+      "viewId": "m3_1_v7",
+      "order": 7,
+      "name": "VISTA 7 - Teoria: Ajustes responsables",
       "viewType": "Teoria",
-      "objective": "Mostrar un ejemplo rapido de ingresos, gastos y saldo semanal.",
+      "objective": "Explicar como ajustar el presupuesto cuando los gastos superan el dinero disponible.",
       "template": "simpleTheory",
       "variant": "simple",
       "slots": {
         "title": {
-          "text": "Ejemplo rapido: una semana",
+          "text": "Que hacer si el dinero no alcanza?",
           "variant": "h1",
           "align": "center"
         },
         "body": {
           "paragraphs": [
-            "Imagina que recibes S/ 20 para la semana. Si gastas S/ 5 en pasajes y S/ 5 en el recreo, todavia te quedan S/ 10.",
-            "Ese resultado final es tu saldo. Si el saldo es positivo, aun tienes dinero disponible. Si fuera negativo, tendrias que ajustar."
+            "Si los gastos superan tus ingresos, toca ajustar el presupuesto con responsabilidad.",
+            "La idea no es dejar de cubrir lo importante, sino recortar, mover o postergar lo menos urgente para proteger necesidades y metas."
           ],
           "variant": "body1",
+          "align": "center"
+        },
+        "feedback": {
+          "paragraphs": [
+            "Empieza por revisar pequenos gastos acumulados, compras por impulso y consumos que pueden esperar.",
+            "Si sobra algo, tambien puedes reservar una parte para un imprevisto o una meta."
+          ],
+          "variant": "body2",
           "align": "center"
         }
       },
@@ -410,6 +612,12 @@
             "slot": "body",
             "area": "body1",
             "order": 20
+          },
+          {
+            "component": "text",
+            "slot": "feedback",
+            "area": "feedback",
+            "order": 30
           }
         ],
         "compound": [
@@ -420,41 +628,41 @@
             "area": "media",
             "items": [
               {
-                "id": "m3-example-1",
+                "id": "m3-prioriza",
                 "title": {
-                  "text": "Ingresos",
+                  "text": "Prioriza",
                   "variant": "label",
                   "align": "center"
                 },
                 "text": {
-                  "text": "S/ 20.00",
-                  "variant": "body",
+                  "text": "Deja primero estudio, alimentacion y transporte.",
+                  "variant": "bodySm",
                   "align": "center"
                 }
               },
               {
-                "id": "m3-example-2",
+                "id": "m3-ajusta",
                 "title": {
-                  "text": "Gastos",
+                  "text": "Ajusta",
                   "variant": "label",
                   "align": "center"
                 },
                 "text": {
-                  "text": "S/ 10.00",
-                  "variant": "body",
+                  "text": "Reduce deseos o gastos que pueden esperar.",
+                  "variant": "bodySm",
                   "align": "center"
                 }
               },
               {
-                "id": "m3-example-3",
+                "id": "m3-reserva",
                 "title": {
-                  "text": "Saldo",
+                  "text": "Reserva",
                   "variant": "label",
                   "align": "center"
                 },
                 "text": {
-                  "text": "S/ 10.00",
-                  "variant": "body",
+                  "text": "Guarda una parte si queda saldo para una meta o un imprevisto.",
+                  "variant": "bodySm",
                   "align": "center"
                 }
               }
@@ -470,9 +678,9 @@
       }
     },
     {
-      "viewId": "m3_1_v7",
-      "order": 7,
-      "name": "VISTA 7 - Interaccion: Crucigrama del presupuesto",
+      "viewId": "m3_1_v8",
+      "order": 8,
+      "name": "VISTA 8 - Interaccion: Crucigrama del presupuesto",
       "viewType": "Interaccion",
       "objective": "Reforzar los conceptos clave del presupuesto con un crucigrama.",
       "template": "assessmentTheory",
@@ -517,18 +725,18 @@
             },
             "crossword": {
               "boardBackground": {
-                "src": "activity/inicio-conceptual2.jpeg",
+                "src": "activity/inicio-conceptual2.webp",
                 "alt": "Fondo del crucigrama"
               },
               "sidebarImage": {
-                "src": "1/pensando.webp",
+                "src": "1/pensar.webp",
                 "alt": "Imagen de apoyo del presupuesto"
               },
               "words": [
                 {
                   "id": "presupuesto",
                   "answer": "PRESUPUESTO",
-                  "clue": "Herramienta que organiza ingresos y gastos en un periodo.",
+                  "clue": "Herramienta que organiza ingresos, gastos y saldo en un periodo.",
                   "image": {
                     "src": "1/recibir-dinero.webp",
                     "alt": "Referencia de presupuesto"
@@ -553,21 +761,21 @@
                   }
                 },
                 {
-                  "id": "ahorro",
-                  "answer": "AHORRO",
-                  "clue": "Parte del dinero que decides guardar para despues.",
-                  "image": {
-                    "src": "1/agua.webp",
-                    "alt": "Ejemplo de ahorro"
-                  }
-                },
-                {
                   "id": "saldo",
                   "answer": "SALDO",
                   "clue": "Diferencia entre ingresos y gastos.",
                   "image": {
-                    "src": "1/propina.webp",
+                    "src": "1/saldo-recreo.webp",
                     "alt": "Referencia de saldo"
+                  }
+                },
+                {
+                  "id": "ajuste",
+                  "answer": "AJUSTE",
+                  "clue": "Cambio que haces en el presupuesto cuando el dinero no alcanza.",
+                  "image": {
+                    "src": "1/kiosko-no-alcanza.webp",
+                    "alt": "Referencia de ajuste al presupuesto"
                   }
                 }
               ]
@@ -585,11 +793,11 @@
       }
     },
     {
-      "viewId": "m3_1_v8",
-      "order": 8,
-      "name": "VISTA 8 - Final: Mision completada",
+      "viewId": "m3_1_v9",
+      "order": 9,
+      "name": "VISTA 9 - Final: Mision completada",
       "viewType": "Final",
-      "objective": "Cerrar la mision conceptual y mostrar el cierre del modulo.",
+      "objective": "Cerrar la mision conceptual y reforzar el aprendizaje principal.",
       "template": "postGameLobby",
       "variant": "postGame",
       "slots": {
@@ -599,7 +807,7 @@
           "align": "center"
         },
         "feedback": {
-          "text": "Ahora ya reconoces que es un presupuesto y para que sirve al organizar tu dinero.",
+          "text": "Ahora ya puedes organizar ingresos, gastos y saldo en un presupuesto simple para tomar decisiones mas responsables.",
           "variant": "label",
           "align": "center",
           "color": "accent"
