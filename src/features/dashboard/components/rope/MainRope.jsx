@@ -254,7 +254,7 @@ export default function MainRope({
         </g>
 
         <mask id={ropeMaskId}>
-          <rect x="0" y="0" width="820" height="470" fill="black" />
+          <rect x="0" y="0" width="780" height="470" fill="black" />
           <path
             d={path}
             fill="none"

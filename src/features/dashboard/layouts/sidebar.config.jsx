@@ -46,6 +46,11 @@ export const NAV_BY_ROLE = {
       icon: FaUsers,
     },
     {
+      name: "Modulos",
+      path: "teacher/Gest-Modules",
+      icon: FaThLarge,
+    },
+    {
       name: "Estadísticas",
       path: "teacher/statistics",
       icon: BarChart2,
