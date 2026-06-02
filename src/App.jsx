@@ -77,6 +77,9 @@ const ModuleMenuPage = lazy(
 const ModuleActivtyPage = lazy(
   () => import("./features/module/pages/ModuleActivtyPage.jsx"),
 );
+const GestModules = lazy(
+  () => import("./features/dashboard/pages/teacher/GestModules.jsx"),
+);
 
 // -----------------------------
 // UI helpers
@@ -209,12 +212,10 @@ function App() {
           <Route path="ajustes" element={withSuspense(<Ajustes />)} />
           <Route path="logout" element={withSuspense(<LogOut />)} />
           <Route path="store" element={withSuspense(<Store />)} />
-
           {/* admin */}
           <Route path="users" element={withSuspense(<Users />)} />
           <Route path="add_user" element={withSuspense(<AddUsers />)} />
           <Route path="admin" element={withSuspense(<GestSystem />)} />
-
           {/* teacher */}
           <Route path="teacher/graphs" element={withSuspense(<Graficos />)} />
           <Route
@@ -233,8 +234,11 @@ function App() {
           <Route
             path="teacher/students/view/:id_user"
             element={withSuspense(<StudentDetails />)}
+          />{" "}
+          <Route
+            path="teacher/Gest-Modules"
+            element={withSuspense(<GestModules />)}
           />
-
           {/* manage */}
           <Route
             path="manage/college"
