@@ -34,7 +34,7 @@ export default function SelectableCard({
       aria-pressed={selected}
       className={cn(
         "absolute inset-0 z-10 rounded-2xl bg-transparent",
-        "cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-300/80",
+        "cursor-pointer focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--color-gold-100)]/85 focus-visible:ring-offset-2 focus-visible:ring-offset-black/20",
       )}
     />
   );
@@ -51,9 +51,8 @@ export default function SelectableCard({
       overlay={overlay}
       className={cn(
         selected && [
-          "border-yellow-300/90",
-          "ring-2 ring-yellow-300/90",
-          "bg-yellow-300/10",
+          "border-4 border-[var(--color-gold-200)]",
+          "bg-gradient-to-br from-[var(--color-gold-100)]/30 via-[var(--color-gold-200)]/18 to-white/10",
         ],
       )}
     />

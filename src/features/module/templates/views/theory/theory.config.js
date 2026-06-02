@@ -237,7 +237,7 @@ export const THEORY_CONFIG = {
     simple: {
       base: {
         cols: "1fr",
-        rows: "auto auto auto",
+        rows: "auto auto 1fr",
         areas: ["title", "body1", "media"],
       },
       fit: {

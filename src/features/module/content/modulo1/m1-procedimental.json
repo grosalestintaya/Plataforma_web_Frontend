@@ -87,7 +87,7 @@
         },
         "assessment": {
           "text": "Saliste tarde al colegio. Puedes pagar pasaje o caminar para llegar.",
-          "variant": "h3",
+          "variant": "h2",
           "align": "left"
         }
       },
@@ -245,7 +245,7 @@
               {
                 "id": "agua",
                 "title": {
-                  "text": "Botella de agua",
+                  "text": "Agua",
                   "variant": "helper",
                   "align": "center"
                 },
@@ -411,7 +411,7 @@
         },
         "assessment": {
           "text": "Te quedó una botella plástica. Puedes canjearla o seguir tu camino.",
-          "variant": "h3",
+          "variant": "h2",
           "align": "left"
         }
       },
@@ -524,7 +524,7 @@
         },
         "assessment": {
           "text": "Ya terminó el día. Para volver a casa puedes pagar pasaje o caminar.",
-          "variant": "h3",
+          "variant": "h2",
           "align": "left"
         }
       },

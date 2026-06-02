@@ -396,7 +396,6 @@
             "groups": [
               {
                 "id": "income-panel",
-                "className": "h-full",
                 "items": [
                   {
                     "block": "Typography",
@@ -416,9 +415,7 @@
                   {
                     "block": "Card",
                     "grow": true,
-                    "wrapperClassName": "flex min-h-0 items-center justify-center",
                     "props": {
-                      "className": "max-w-[18rem]",
                       "title": {
                         "text": "Ingreso",
                         "variant": "h3",
@@ -433,14 +430,14 @@
                         "src": "1/recibir-dinero.webp",
                         "alt": "Ejemplo de ingreso",
                         "variant": "horizontal"
-                      }
+                      },
+                      "size": "compact"
                     }
                   }
                 ]
               },
               {
                 "id": "expense-panel",
-                "className": "h-full",
                 "items": [
                   {
                     "block": "Typography",
@@ -460,9 +457,7 @@
                   {
                     "block": "Card",
                     "grow": true,
-                    "wrapperClassName": "flex min-h-0 items-center justify-center",
                     "props": {
-                      "className": "max-w-[18rem]",
                       "title": {
                         "text": "Gasto",
                         "variant": "h3",
@@ -477,7 +472,8 @@
                         "src": "1/pagar-pasaje.webp",
                         "alt": "Ejemplo de gasto",
                         "variant": "horizontal"
-                      }
+                      },
+                      "size": "compact"
                     }
                   }
                 ]
@@ -548,12 +544,9 @@
                 },
                 "text": {
                   "paragraphs": [
-                    "Son pagos que casi siempre tienen el mismo monto y se realizan constantemente.",
+                    "Son pagos que casi siempre tienen el mismo monto y son constantes.",
                     "Ejemplos:",
-                    "- Internet",
-                    "- Pasajes",
-                    "- Pensión",
-                    "- Recarga semanal",
+                    "- Internet - Pasajes - Pensión - Recarga semanal",
                     "👉 “Ya sabes que tendrás que pagarlos.”"
                   ],
                   "variant": "bodySm",
@@ -571,10 +564,7 @@
                   "paragraphs": [
                     "Son gastos que cambian según la situación o necesidad.",
                     "Ejemplos:",
-                    "- Comida",
-                    "- Útiles",
-                    "- Salidas",
-                    "- Transporte extra",
+                    "- Comida - Útiles - Salidas - Transporte extra",
                     "👉 “A veces gastas más, a veces menos.”"
                   ],
                   "variant": "bodySm",
@@ -592,10 +582,7 @@
                   "paragraphs": [
                     "Son gastos relacionados con gustos o deseos personales.",
                     "Ejemplos:",
-                    "- Snacks",
-                    "- Videojuegos",
-                    "- Accesorios",
-                    "- Ropa que no necesitas urgentemente",
+                    "- Snacks - Videojuegos - Accesorios - Ropa que no necesitas urgentemente",
                     "👉 “Puedes decidir si gastar o no.”"
                   ],
                   "variant": "bodySm",
@@ -672,6 +659,7 @@
                 "interaction": {
                   "type": "flipCard",
                   "backCard": {
+                    "color": "red",
                     "title": {
                       "text": "Gasto fijo",
                       "variant": "h3",
@@ -700,6 +688,7 @@
                 "interaction": {
                   "type": "flipCard",
                   "backCard": {
+                    "color": "green",
                     "title": {
                       "text": "Ingreso",
                       "variant": "h3",
@@ -728,6 +717,7 @@
                 "interaction": {
                   "type": "flipCard",
                   "backCard": {
+                    "color": "red",
                     "title": {
                       "text": "Gasto fijo",
                       "variant": "h3",
@@ -756,6 +746,7 @@
                 "interaction": {
                   "type": "flipCard",
                   "backCard": {
+                    "color": "red",
                     "title": {
                       "text": "Gasto variable",
                       "variant": "h3",
@@ -784,6 +775,7 @@
                 "interaction": {
                   "type": "flipCard",
                   "backCard": {
+                    "color": "red",
                     "title": {
                       "text": "Gasto variable",
                       "variant": "h3",
@@ -812,6 +804,7 @@
                 "interaction": {
                   "type": "flipCard",
                   "backCard": {
+                    "color": "red",
                     "title": {
                       "text": "Gasto discrecional",
                       "variant": "h3",
@@ -840,6 +833,7 @@
                 "interaction": {
                   "type": "flipCard",
                   "backCard": {
+                    "color": "red",
                     "title": {
                       "text": "Gasto discrecional",
                       "variant": "h3",
@@ -868,6 +862,7 @@
                 "interaction": {
                   "type": "flipCard",
                   "backCard": {
+                    "color": "green",
                     "title": {
                       "text": "Ingreso",
                       "variant": "h3",
@@ -906,11 +901,6 @@
         "title": {
           "text": "¡Pon a prueba lo aprendido!",
           "variant": "h1",
-          "align": "center"
-        },
-        "subtitle": {
-          "text": "Elige la opción correcta. Si te equivocas, podrás intentarlo una vez más.",
-          "variant": "body1",
           "align": "center"
         }
       },
@@ -1134,7 +1124,8 @@
         ]
       },
       "navigation": {
-        "mode": "lockedUntilComplete"
+        "mode": "lockedUntilComplete",
+        "label": "Escoge la opcion correcta para continuar"
       },
       "completionCriteria": {
         "type": "interaction",

@@ -277,7 +277,7 @@
         },
         "assessment": {
           "text": "Acompanas a comprar alimentos con tu mama.",
-          "variant": "h3",
+          "variant": "h1",
           "align": "center"
         }
       },
@@ -471,7 +471,7 @@
         },
         "assessment": {
           "text": "Tienes que hacer una maqueta como la imagen.",
-          "variant": "h3",
+          "variant": "h1",
           "align": "center"
         },
         "media": {
@@ -673,7 +673,7 @@
         },
         "assessment": {
           "text": "Tienes que preparar una presentacion del colegio como la imagen",
-          "variant": "h3",
+          "variant": "h1",
           "align": "center"
         },
         "media": {

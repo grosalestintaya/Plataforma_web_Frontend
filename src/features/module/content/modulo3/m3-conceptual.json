@@ -393,7 +393,6 @@
             "groups": [
               {
                 "id": "predictable-expenses",
-                "className": "h-full",
                 "items": [
                   {
                     "block": "Typography",
@@ -412,9 +411,7 @@
                   {
                     "block": "Card",
                     "grow": true,
-                    "wrapperClassName": "flex min-h-0 items-center justify-center",
                     "props": {
-                      "className": "max-w-[18rem]",
                       "title": {
                         "text": "Se pueden anticipar",
                         "variant": "h3",
@@ -429,14 +426,14 @@
                         "src": "1/pagar-pasaje.webp",
                         "alt": "Gasto frecuente como el pasaje",
                         "variant": "horizontal"
-                      }
+                      },
+                      "size": "compact"
                     }
                   }
                 ]
               },
               {
                 "id": "changing-expenses",
-                "className": "h-full",
                 "items": [
                   {
                     "block": "Typography",
@@ -455,9 +452,7 @@
                   {
                     "block": "Card",
                     "grow": true,
-                    "wrapperClassName": "flex min-h-0 items-center justify-center",
                     "props": {
-                      "className": "max-w-[18rem]",
                       "title": {
                         "text": "Piden revision",
                         "variant": "h3",
@@ -472,7 +467,8 @@
                         "src": "1/copias.webp",
                         "alt": "Gasto ocasional como copias escolares",
                         "variant": "horizontal"
-                      }
+                      },
+                      "size": "compact"
                     }
                   }
                 ]
