@@ -344,6 +344,33 @@ function getFeedback({ data, selectedItem, sequenceMode, completed }) {
   return null;
 }
 
+function getFeedbackVisualState({ hasSelection, requireCorrect, selectedIsCorrect }) {
+  if (!hasSelection || !requireCorrect) return "neutral";
+  return selectedIsCorrect ? "correct" : "error";
+}
+
+function getFeedbackClassName(state) {
+  const stateClass = {
+    neutral: "border-white/18 bg-black/5 text-white/85",
+    correct:
+      "border-2 border-green-100 bg-green-500 text-white shadow-[0_0_28px_rgba(51,245,131,0.28)] [&_*]:!text-white",
+    error:
+      "border-2 border-lila-200 bg-lila-500 text-white shadow-[0_0_28px_rgba(255,99,159,0.3)] [&_*]:!text-white",
+  };
+
+  return cn(
+    "min-h-[2.75rem] rounded-2xl border px-4 py-3 text-center transition-colors duration-200",
+    stateClass[state] ?? stateClass.neutral,
+  );
+}
+
+function getFeedbackTone(state, feedback) {
+  if (feedback?.color) return feedback.color;
+  if (state === "correct") return "success";
+  if (state === "error") return "danger";
+  return "secondary";
+}
+
 /**
  * Traduce el payload interno al shape que espera heroApi.setInteractiveState.
  */
@@ -461,6 +488,11 @@ export default function ChooseOne({
     selectedItem,
     sequenceMode,
     completed,
+  });
+  const feedbackVisualState = getFeedbackVisualState({
+    hasSelection,
+    requireCorrect,
+    selectedIsCorrect,
   });
 
   const showFeedback = Boolean(feedback) || feedbackReserve;
@@ -680,14 +712,17 @@ export default function ChooseOne({
   return (
     <section
       className={cn(
-        "grid min-h-full w-full min-w-0 grid-rows-[auto_minmax(0,1fr)_auto] gap-3 overflow-visible text-white",
+        "grid min-h-full w-full min-w-0 gap-3 overflow-visible text-white",
+        currentPrompt
+          ? "grid-rows-[auto_minmax(0,1fr)_auto]"
+          : "grid-rows-[minmax(0,1fr)_auto]",
         "lg:h-full lg:min-h-0 lg:overflow-hidden",
         className,
       )}
     >
-      <header className="min-w-0">
-        {currentPrompt ? (
-          <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-center">
+      {currentPrompt ? (
+        <header className="min-w-0">
+          <div className="rounded-2xl border border-white/10 px-4 py-3 text-center">
             <Typography
               content={currentPrompt}
               variant={currentPrompt?.variant ?? "h3"}
@@ -695,8 +730,8 @@ export default function ChooseOne({
               color={currentPrompt?.color}
             />
           </div>
-        ) : null}
-      </header>
+        </header>
+      ) : null}
 
       <main className="min-h-0 min-w-0 overflow-visible lg:overflow-hidden">
         <ShowCard
@@ -715,35 +750,15 @@ export default function ChooseOne({
         )}
       >
         {showFeedback ? (
-          <div
-            className={cn(
-              "min-h-[2.75rem] rounded-2xl border px-4 py-3 text-center",
-              selectedItem && requireCorrect && !selectedIsCorrect
-                ? "border-rose-300/30 bg-rose-500/10"
-                : "border-white/10 bg-white/5",
-            )}
-          >
+          <div className={getFeedbackClassName(feedbackVisualState)}>
             {feedback ? (
               <Typography
                 content={feedback}
                 variant={feedback?.variant ?? "helper"}
                 align={feedback?.align ?? "center"}
-                color={feedback?.color}
+                color={getFeedbackTone(feedbackVisualState, feedback)}
               />
             ) : null}
-          </div>
-        ) : null}
-
-        {!showFeedback && feedbackReserve ? (
-          <div
-            className="min-h-[2.75rem] rounded-2xl border border-white/10 bg-white/5 px-4 py-3"
-            aria-hidden="true"
-          />
-        ) : null}
-
-        {showCompletedBadge && !showActionButton ? (
-          <div className="min-h-[2.75rem] rounded-2xl border border-emerald-300/40 bg-emerald-300/10 px-4 py-3 text-center font-bold text-emerald-100">
-            COMPLETADO
           </div>
         ) : null}
 
@@ -754,7 +769,7 @@ export default function ChooseOne({
             onClick={handleContinue}
             disabled={actionDisabled}
             className={cn(
-              "min-h-[2.75rem] min-w-[10rem]",
+              "min-h-[2.75rem] min-w-[10rem] border-2 border-gold-200 bg-amber-500 font-black text-white hover:bg-gold-200 active:translate-y-0 disabled:border-white/20 disabled:bg-white/10 disabled:shadow-none",
               actionButton?.className,
             )}
           />

@@ -88,7 +88,15 @@ function renderGroupItem(item, index) {
 
   if (blockName === "ComposeGroup") {
     return (
-      <div key={itemKey} className={cn("w-full min-w-0", wrapperClassName)}>
+      <div
+        key={itemKey}
+        className={cn(
+          "w-full min-w-0",
+          grow && "flex min-h-0 flex-1",
+          !shrink && "shrink-0",
+          wrapperClassName,
+        )}
+      >
         <ComposeGroup {...rest} {...props}>
           {children}
         </ComposeGroup>
@@ -111,7 +119,7 @@ function renderGroupItem(item, index) {
       key={itemKey}
       className={cn(
         "w-full min-w-0",
-        grow && "flex-1",
+        grow && "flex min-h-0 flex-1",
         !shrink && "shrink-0",
         wrapperClassName,
       )}
@@ -136,7 +144,7 @@ export default function ComposeGroup({
   return (
     <section
       className={cn(
-        "flex min-h-0 min-w-0 w-full items-stretch",
+        "flex h-full min-h-0 min-w-0 w-full items-stretch",
         DIRECTION_CLASS[direction] ?? DIRECTION_CLASS.column,
         resolveGapClass(gap),
         className,

@@ -1,19 +1,24 @@
 import { useRef, useState } from "react";
 import CardBase from "../../container/CardBase";
 import { cn } from "@/shared/libs/utils";
-const FLIP_COLOR = {
-  income: "bg-emerald-500/100",
-  expense: "bg-red-500/90",
-  default: "bg-black/30",
-  orange: "bg-orange-500/90",
+
+const FLIP_SURFACE_BY_COLOR = {
+  smoke:  "border-white/18 bg-neutral-700/20",
+  red:    "border-[var(--color-lila-200)]/55 bg-[var(--color-lila-400)]",
+  gold:   "border-[var(--color-gold-100)]/55 bg-[var(--color-gold-400)]",
+  blue:   "border-[var(--color-blue-100)]/55 bg-[var(--color-blue-400)]",
+  green:  "border-[var(--color-green-100)]/55 bg-green-600",
+  orange: "border-[var(--color-orange-100)]/55 bg-[var(--color-orange-400)]",
+  pink:   "border-[var(--color-lila-100)]/55 bg-[var(--color-lila-300)]",
+  purple: "border-[var(--color-purple-100)]/55 bg-[var(--color-purple-300)]",
 };
-const BACK_TONE_CLASS = {
-  income:
-    "border-emerald-300/40 FLIP_COLOR text-white shadow-[0_0_24px_rgba(16,185,129,0.18)]",
-  expense:
-    "border-rose-300/40 FLIP_COLOR text-rose-50 shadow-[0_0_24px_rgba(244,63,94,0.18)]",
-  default: "border-white/15 FLIP_COLOR text-white",
-};
+
+function resolveSurfaceClass(color) {
+  const surfaceColor = String(color ?? "smoke").trim().toLowerCase();
+
+  return FLIP_SURFACE_BY_COLOR[surfaceColor]
+
+}
 
 function getBackCard(interaction) {
   const backCard = interaction?.backCard ?? interaction?.back ?? null;
@@ -47,33 +52,8 @@ function getBackCard(interaction) {
     contentClassName: backCard?.contentClassName,
     titleClassName: backCard?.titleClassName,
     textClassName: backCard?.textClassName,
-    color: backCard?.color,
+    color: backCard?.color ?? null,
   };
-}
-
-function getBackTone(backCard) {
-  const title = backCard?.title;
-  const explicitColor = title?.color ?? backCard?.color;
-
-  const titleText = String(
-    title?.text ?? (typeof title === "string" ? title : ""),
-  )
-    .trim()
-    .toLowerCase();
-
-  if (explicitColor === "success" || titleText.includes("ingreso")) {
-    return "income";
-  }
-
-  if (
-    explicitColor === "danger" ||
-    explicitColor === "error" ||
-    titleText.includes("gasto")
-  ) {
-    return "expense";
-  }
-
-  return "default";
 }
 
 function getFlipFrameWidthClass(media, size = "normal") {
@@ -104,7 +84,6 @@ function getFlipFrameWidthClass(media, size = "normal") {
 export default function FlipCard({
   title,
   text,
-  color,
   media,
   interaction,
   selected = false,
@@ -114,9 +93,13 @@ export default function FlipCard({
 }) {
   const completedRef = useRef(false);
   const [isFlipped, setIsFlipped] = useState(false);
-  const colortone = color ? (FLIP_COLOR[color] ?? FLIP_COLOR.default) : null;
   const backCard = getBackCard(interaction);
-  const backTone = getBackTone(backCard);
+  const frontSurfaceClass = resolveSurfaceClass(
+    interaction?.frontColor ?? interaction?.color,
+  );
+  const backSurfaceClass = resolveSurfaceClass(
+    interaction?.backColor ?? backCard?.color,
+  );
 
   function completeOnce() {
     if (completedRef.current) return;
@@ -156,7 +139,7 @@ export default function FlipCard({
               variant={variant}
               selected={selected}
               size={size}
-              className="h-full w-full"
+              className={cn("h-full w-full", frontSurfaceClass)}
             />
           </div>
 
@@ -175,7 +158,7 @@ export default function FlipCard({
               isBackFace
               className={cn(
                 "h-full w-full",
-                BACK_TONE_CLASS[backTone],
+                backSurfaceClass,
                 backCard.className,
               )}
               contentClassName={cn(

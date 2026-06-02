@@ -166,26 +166,36 @@
   --qy-purple: #7c4dff;
   --qy-orange: #ff890a;
 
-  /* Escalas (3 niveles) - sin valores vacíos */
-  --color-green1: #00c853;
-  --color-green2: #1fc16b;
-  --color-green3: #0ea75a;
+  /* Escalas de paleta principal*/
+  --color-green-100: #33f583;
+  --color-green-200: #09de61;
+  --color-green-400: #049140;
+  --color-green-500: #0a7136;
 
-  --color-blue1: #2962ff;
-  --color-blue2: #1e4fd6;
-  --color-blue3: #163aa3;
+  --color-blue-100: #bcd3ff;
+  --color-blue-200: #5991ff;
+  --color-blue-400: #1b46f5;
+  --color-blue-500: #1433e1;
 
-  --color-gold1: #ffc400;
-  --color-gold2: #ffb300;
-  --color-gold3: #ff9800;
+  --color-gold-100: #fff146;
+  --color-gold-200: #ffe31b;
+  --color-gold-400: #e29800;
+  --color-gold-500: #bb6c02;
 
-  --color-lilac1: #c4b5fd;
-  --color-lilac2: #a78bfa;
-  --color-lilac3: #7c4dff;
+  --color-lila-100: #ff9fc6;
+  --color-lila-200: #ff639f;
+  --color-lila-400: #f01253;
+  --color-lila-500: #d1053b;
 
-  --color-purple1: #7c4dff;
-  --color-purple2: #6a3cff;
-  --color-purple3: #5522ff;
+  --color-purple-100: #bfb1ff;
+  --color-purple-200: #9f85ff;
+  --color-purple-400: #7130f7;
+  --color-purple-500: #631ee3;
+
+  --color-orange-100: #ffc86d;
+  --color-orange-200: #ffa532;
+  --color-orange-400: #ff7000;
+  --color-orange-500: #cc5102;
 }
 
 /* Utilidad */

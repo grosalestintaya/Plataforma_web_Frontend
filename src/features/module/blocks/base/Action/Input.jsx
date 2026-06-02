@@ -21,8 +21,8 @@ function TextInput({
       onChange={(event) => onChange?.(event.target.value, event)}
       placeholder={placeholder}
       className={[
-        "w-full rounded-xl border border-white/20 bg-black/10 px-4 py-2.5 text-sm text-white",
-        "outline-none placeholder:text-white/40 focus:border-white/35",
+        "w-full rounded-xl border border-white/20 bg-neutral-200/70 px-4 py-2.5 text-sm text-black",
+        "outline-none placeholder:text-black/60 focus:border-white/35",
         className,
       ].join(" ")}
     />

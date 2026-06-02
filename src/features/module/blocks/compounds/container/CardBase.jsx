@@ -2,6 +2,7 @@ import Typography from "../../base/Typography";
 import Image from "../../base/Media/Image";
 import { cn } from "@/shared/libs/utils";
 
+// Para revisar si eliminar o no
 const CARD_VARIANT_CLASS = {
   default: "border border-white/15 bg-white/5",
   ghost: "border border-white/10 bg-transparent",

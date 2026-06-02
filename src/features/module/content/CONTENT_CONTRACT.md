@@ -185,8 +185,11 @@ Campos:
 - `color`: tono de color.
 - `align`: alineacion.
 - `component`: tag HTML opcional.
-- `className`: ajuste fino.
-- `containerClassName`: ajuste del wrapper.
+
+Regla:
+
+- el contenido no debe inyectar clases CSS o Tailwind
+- la presentacion debe resolverse con variantes y componentes del sistema
 
 ### Variantes oficiales
 
@@ -235,7 +238,6 @@ Campos:
 - `fit`: `contain` o `cover`.
 - `ratio`: relacion visual sugerida.
 - `caption`: texto asociado a la imagen.
-- `className`: ajuste visual puntual.
 
 Convencion recomendada:
 
@@ -321,6 +323,34 @@ Los bloques interactivos deben separar tres capas:
 - `openText`
 - `sortOrder`
 - `dragDrop`
+- `flipCard`
+
+### Payload recomendado para `flipCard`
+
+```json
+{
+  "interaction": {
+    "type": "flipCard",
+    "color": "smoke",
+    "frontColor": "smoke",
+    "backColor": "green",
+    "backCard": {
+      "color": "red",
+      "title": { "text": "Gasto fijo", "variant": "h3" },
+      "text": { "text": "Es un pago que suele repetirse.", "variant": "body2" }
+    }
+  }
+}
+```
+
+Reglas:
+
+- `color`: color compartido para ambas caras.
+- `frontColor`: override solo para la cara frontal.
+- `backColor`: override solo para la cara posterior.
+- `backCard.color`: override local del reverso, con mayor prioridad.
+- colores admitidos: `smoke`, `green`, `red`, `orange`.
+- aliases aceptados por compatibilidad: `income`, `expense`, `success`, `danger`, `error`, `warning`.
 
 ### Contrato recomendado para `activity`
 
