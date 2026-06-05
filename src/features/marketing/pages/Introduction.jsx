@@ -29,7 +29,7 @@ const styles = `
     overflow-x: hidden;
   }
 
-  /* ── TOP BAR con logo + steps ── */
+  /* ── TOP BAR con logo + steps + nav buttons ── */
   .intro-topbar {
     display: flex;
     align-items: center;
@@ -39,7 +39,7 @@ const styles = `
     border-bottom: 1px solid rgba(255,255,255,0.12);
     flex-wrap: wrap;
   }
-  .intro-logo { height: 44px; flex-shrink: 0; }
+  .intro-logo { height: 44px; flex-shrink: 0; cursor: pointer; transition: opacity 0.15s; }
 
   /* Steps strip */
   .intro-steps {
@@ -47,6 +47,7 @@ const styles = `
     align-items: center;
     gap: 6px;
     flex-wrap: wrap;
+    flex: 1;
   }
   .intro-step {
     width: 52px; height: 52px;
@@ -80,6 +81,21 @@ const styles = `
     border-radius: 2px;
   }
   .intro-step-connector.done-line { background: rgba(255,255,255,0.45); }
+
+  /* ── Nav actions in topbar ── */
+  .intro-topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+  .intro-topbar-info {
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.55);
+    white-space: nowrap;
+  }
 
   /* ── MAIN content ── */
   .intro-main {
@@ -133,8 +149,7 @@ const styles = `
   }
 
   .intro-card-title {
-
-  font-weight: 900;
+    font-weight: 900;
     font-size: 42px;
     color: #fff;
     line-height: 1.05;
@@ -206,25 +221,7 @@ const styles = `
     font-size: 14px;
   }
 
-  /* ── Footer nav ── */
-  .intro-footer {
-    position: sticky;
-    bottom: 0;
-    background: rgba(0,0,0,0.18);
-    border-top: 1px solid rgba(255,255,255,0.12);
-    padding: 16px 32px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    backdrop-filter: blur(8px);
-  }
-  .intro-footer-info {
-    font-size: 13px;
-    font-weight: 700;
-    color: rgba(255,255,255,0.55);
-  }
-  .intro-footer-actions { display: flex; gap: 10px; }
-
+  /* ── Buttons ── */
   .intro-btn-back {
     background: rgba(255,255,255,0.12);
     border: 1.5px solid rgba(255,255,255,0.2);
@@ -256,7 +253,7 @@ const styles = `
     cursor: not-allowed;
     transform: none;
   }
-  .intro-btn-finish {<
+  .intro-btn-finish {
     background: #FFC400;
     color: #1A1100;
     font-size: 15px;
@@ -269,20 +266,19 @@ const styles = `
   }
   .intro-btn-finish:hover { opacity: 0.88; }
   .intro-btn-finish:disabled { opacity: 0.45; cursor: not-allowed; }
-  .intro-logo { height: 44px; flex-shrink: 0; cursor: pointer; transition: opacity 0.15s; }
 
   @media (max-width: 600px) {
-    .intro-topbar { padding: 14px 16px; gap: 14px; }
+    .intro-topbar { padding: 14px 16px; gap: 10px; }
     .intro-step { width: 44px; height: 44px; }
     .intro-step-num { font-size: 17px; }
     .intro-step-connector { width: 12px; }
+    .intro-topbar-info { display: none; }
     .intro-card { padding: 28px 20px; border-radius: 20px; }
     .intro-card-title { font-size: 30px; }
     .intro-card-text { font-size: 16px; }
     .intro-card-img { width: 160px; height: 160px; }
     .intro-avatars { grid-template-columns: 1fr 1fr; gap: 10px; }
     .intro-avatar-img-wrap { width: 110px; height: 110px; }
-    .intro-footer { padding: 12px 16px; }
   }
 `;
 
@@ -444,6 +440,33 @@ export default function Introduccion() {
               </>
             ))}
           </div>
+
+          {/* ── NAV ACTIONS (antes en el footer) ── */}
+          <div className="intro-topbar-actions">
+            {currentCard > 0 && (
+              <button
+                className="intro-btn-back"
+                onClick={handleBack}
+                disabled={loading}>
+                ← Atrás
+              </button>
+            )}
+            {!isLastCard ? (
+              <button
+                className="intro-btn-next"
+                onClick={handleNext}
+                disabled={loading}>
+                Siguiente →
+              </button>
+            ) : (
+              <button
+                className="intro-btn-finish"
+                onClick={handleNext}
+                disabled={loading}>
+                {loading ? "Procesando..." : "¡Comenzar!"}
+              </button>
+            )}
+          </div>
         </div>
 
         {/* ── MAIN ── */}
@@ -494,38 +517,6 @@ export default function Introduccion() {
                   );
                 })}
               </div>
-            )}
-          </div>
-        </div>
-
-        {/* ── FOOTER NAV ── */}
-        <div className="intro-footer">
-          <span className="intro-footer-info">
-            {currentCard + 1} / {cards.length} — {STEP_LABELS[currentCard]}
-          </span>
-          <div className="intro-footer-actions">
-            {currentCard > 0 && (
-              <button
-                className="intro-btn-back"
-                onClick={handleBack}
-                disabled={loading}>
-                ← Atrás
-              </button>
-            )}
-            {!isLastCard ? (
-              <button
-                className="intro-btn-next"
-                onClick={handleNext}
-                disabled={loading}>
-                Siguiente →
-              </button>
-            ) : (
-              <button
-                className="intro-btn-finish"
-                onClick={handleNext}
-                disabled={loading}>
-                {loading ? "Procesando..." : "¡Comenzar! "}
-              </button>
             )}
           </div>
         </div>
