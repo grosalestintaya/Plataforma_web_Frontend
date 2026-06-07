@@ -1,3 +1,4 @@
+import { isValidElement } from "react";
 import { cn } from "@/shared/libs/utils";
 
 const BUTTON_VARIANT_CLASS = {
@@ -40,6 +41,7 @@ export default function Button({
     BUTTON_VARIANT_CLASS[variant] ?? BUTTON_VARIANT_CLASS.simple;
 
   const sizeClass = BUTTON_SIZE_CLASS[size] ?? BUTTON_SIZE_CLASS.normal;
+  const hasComplexContent = isValidElement(content);
 
   return (
     <button
@@ -47,7 +49,7 @@ export default function Button({
       onClick={onClick}
       disabled={disabled}
       className={cn(
-        "inline-flex min-w-0 cursor-pointer items-center justify-center",
+        "box-border flex min-w-0 max-w-full cursor-pointer items-center justify-center overflow-hidden",
         "rounded-xl border font-medium transition duration-200",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60",
         "focus-visible:ring-offset-2 focus-visible:ring-offset-black/30",
@@ -60,9 +62,13 @@ export default function Button({
         className,
       )}
     >
-      <span className="min-w-0 truncate text-center leading-tight">
-        {content}
-      </span>
+      {hasComplexContent ? (
+        <div className="min-w-0 w-full">{content}</div>
+      ) : (
+        <span className="min-w-0 truncate text-center leading-tight">
+          {content}
+        </span>
+      )}
     </button>
   );
 }

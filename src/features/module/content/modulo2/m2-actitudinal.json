@@ -16,15 +16,15 @@
       "variant": "preGame",
       "slots": {
         "title": {
-          "text": "Hora de practicar",
+          "text": "Antes de empezar",
           "variant": "h1",
           "align": "center"
         },
         "body": {
           "paragraphs": [
-            "╰› En esta mision pensaras en decisiones cotidianas relacionadas con necesidades, deseos y uso responsable del dinero.",
-            "╰› La idea es reconocer cuando una eleccion prioriza lo importante y cuida mejor tu bienestar.",
-            "╰› Lee cada situacion, elige una opcion y, si quieres, explica por que."
+            "Muchas veces queremos comprar algo por emoción, impulso o porque otras personas también lo tienen.",
+            "Las redes sociales, las ofertas o la presión de otras personas pueden influir en nuestras decisiones.",
+            "En esta misión aprenderás a pensar antes de gastar y tomar decisiones más conscientes con tu dinero."
           ],
           "variant": "body1",
           "align": "justify"
