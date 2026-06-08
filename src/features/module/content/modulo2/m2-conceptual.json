@@ -1,4 +1,4 @@
-{
+﻿{
   "id": "conceptual",
   "activityId": "04",
   "backendActivityId": "04",
@@ -11,7 +11,7 @@
       "order": 1,
       "name": "VISTA 1 - Inicio: Antes de empezar",
       "viewType": "Inicio",
-      "objective": "Presentar la mision conceptual sobre necesidades y deseos.",
+      "objective": "Presentar la misión conceptual sobre necesidades y deseos.",
       "template": "preGameLobby",
       "variant": "preGame",
       "slots": {
@@ -22,16 +22,17 @@
         },
         "body": {
           "paragraphs": [
-            "╰› En esta mision aprenderas a diferenciar necesidades y deseos para tomar mejores decisiones cuando tu dinero es limitado.",
-            "╰› Veras ejemplos claros, compararas situaciones cotidianas y terminaras con un juego de memoria para reforzar la idea principal.",
-            "╰› Cuando presiones Empezar avanzaras a la primera vista del recorrido."
+            "En esta misión aprenderás a diferenciar necesidades y deseos para tomar mejores decisiones cuando tu dinero es limitado.",
+            "Verás ejemplos y situaciones cotidianas que te ayudarán a reconocer qué es realmente importante y qué puede esperar.",
+            "También participarás en actividades y un juego de memoria para reforzar lo aprendido.",
+            "Cuando presiones “Empezar”, iniciarás el recorrido de esta misión."
           ],
           "variant": "body1",
           "align": "left"
         },
         "media": {
           "src": "1/inicio-conceptual.webp",
-          "alt": "Inicio de la mision necesidades y deseos",
+          "alt": "Inicio de la misión necesidades y deseos",
           "variant": "vertical"
         }
       },
@@ -70,26 +71,25 @@
     {
       "viewId": "m2_1_v2",
       "order": 2,
-      "name": "VISTA 2 - Teoria: Que es una necesidad",
+      "name": "VISTA 2 - Teoría: Qué es una necesidad",
       "viewType": "Teoria",
-      "objective": "Explicar que es una necesidad con ejemplos concretos.",
+      "objective": "Explicar qué es una necesidad con ejemplos concretos.",
       "template": "simpleTheory",
       "variant": "simple",
       "slots": {
         "title": {
-          "text": "Que es una necesidad?",
+          "text": "¿Qué es una necesidad?",
           "variant": "h1",
           "align": "center"
         },
         "body": {
-          "text": "Las necesidades son bienes o servicios indispensables para vivir, desarrollarse y realizar actividades basicas como estudiar, movilizarse y cuidar la salud. Si no se cubren, se afecta el bienestar o el funcionamiento normal de la vida diaria.",
+          "text": "Las necesidades son cosas importantes para vivir, estudiar y sentirnos bien en nuestra vida diaria. Si no las cubrimos, pueden afectar nuestra salud, bienestar o responsabilidades.",
           "variant": "body1",
           "align": "center"
         },
         "feedback": {
           "paragraphs": [
-            "Una necesidad no es algo que me gusta, sino algo que me permite estar bien o cumplir con algo importante como salud, estudio o seguridad.",
-            "Si no lo tengo, si pasa algo: me complica el dia, me afecta en el colegio o incluso la salud."
+            "💡 Las necesidades son gastos importantes porque ayudan a cuidar nuestro bienestar y responsabilidades."
           ],
           "variant": "body2",
           "align": "center"
@@ -126,12 +126,12 @@
               {
                 "id": "need-food",
                 "media": {
-                  "src": "1/comprar-comida.webp",
-                  "alt": "Comida como ejemplo de necesidad",
+                  "src": "2/alimentacion.jpeg",
+                  "alt": "Alimentación como ejemplo de necesidad",
                   "variant": "square"
                 },
                 "title": {
-                  "text": "Comida",
+                  "text": "Alimentación",
                   "variant": "label",
                   "align": "center"
                 }
@@ -139,25 +139,12 @@
               {
                 "id": "need-water",
                 "media": {
-                  "src": "1/agua.webp",
-                  "alt": "Agua como ejemplo de necesidad",
+                  "src": "2/salud.jpeg",
+                  "alt": "Salud como ejemplo de necesidad",
                   "variant": "square"
                 },
                 "title": {
-                  "text": "Agua",
-                  "variant": "label",
-                  "align": "center"
-                }
-              },
-              {
-                "id": "need-transport",
-                "media": {
-                  "src": "1/ir-en-combi.webp",
-                  "alt": "Transporte como ejemplo de necesidad",
-                  "variant": "square"
-                },
-                "title": {
-                  "text": "Transporte",
+                  "text": "Salud",
                   "variant": "label",
                   "align": "center"
                 }
@@ -165,12 +152,12 @@
               {
                 "id": "need-fare",
                 "media": {
-                  "src": "1/pagar-pasaje.webp",
-                  "alt": "Pasaje como ejemplo de necesidad",
+                  "src": "2/materiales-de-estudio.jpeg",
+                  "alt": "Materiales de estudio como ejemplo de necesidad",
                   "variant": "square"
                 },
                 "title": {
-                  "text": "Pasaje",
+                  "text": "Materiales",
                   "variant": "label",
                   "align": "center"
                 }
@@ -189,26 +176,25 @@
     {
       "viewId": "m2_1_v3",
       "order": 3,
-      "name": "VISTA 3 - Teoria: Que es un deseo",
+      "name": "VISTA 3 - Teoría: Qué es un deseo",
       "viewType": "Teoria",
-      "objective": "Explicar que es un deseo con ejemplos concretos.",
+      "objective": "Explicar qué es un deseo con ejemplos concretos.",
       "template": "simpleTheory",
       "variant": "simple",
       "slots": {
         "title": {
-          "text": "Que es un deseo?",
+          "text": "¿Qué es un deseo?",
           "variant": "h1",
           "align": "center"
         },
         "body": {
-          "text": "Los deseos se refieren a mejoras, gustos u otras cosas que seria bueno tener, pero que no son necesarias para vivir, estudiar, obtener ingresos o proteger lo que se tiene. Generalmente pueden postergarse.",
+          "text": "Los deseos son cosas que queremos porque nos gustan, nos entretienen o nos hacen sentir bien por un momento, pero no son indispensables para vivir o estudiar. Cuando el dinero es limitado, los deseos pueden esperar y no suelen ser la prioridad.",
           "variant": "body1",
           "align": "center"
         },
         "feedback": {
           "paragraphs": [
-            "Un deseo es algo que quieres porque te gusta, te entretiene o te hace sentir bien un rato.",
-            "Si no lo compras hoy, no pasa nada grave. No es malo, pero no es prioridad cuando el dinero es limitado."
+            "💡 Un deseo puede hacernos felices por un momento, pero no siempre es lo más importante cuando el dinero es limitado."
           ],
           "variant": "body2",
           "align": "center"
@@ -245,12 +231,12 @@
               {
                 "id": "desire-soda",
                 "media": {
-                  "src": "1/botella-gaseosa.webp",
-                  "alt": "Gaseosa como ejemplo de deseo",
+                  "src": "2/entretenimiento.jpeg",
+                  "alt": "Entretenimiento como ejemplo de deseo",
                   "variant": "square"
                 },
                 "title": {
-                  "text": "Gaseosa",
+                  "text": "Entretenimiento",
                   "variant": "label",
                   "align": "center"
                 }
@@ -258,12 +244,12 @@
               {
                 "id": "desire-cookie",
                 "media": {
-                  "src": "1/galleta.webp",
-                  "alt": "Galleta como ejemplo de deseo",
+                  "src": "2/gustos.jpeg",
+                  "alt": "Gustos como ejemplo de deseo",
                   "variant": "square"
                 },
                 "title": {
-                  "text": "Galleta",
+                  "text": "Gustos",
                   "variant": "label",
                   "align": "center"
                 }
@@ -271,25 +257,12 @@
               {
                 "id": "desire-candy",
                 "media": {
-                  "src": "1/caramelo.webp",
-                  "alt": "Caramelo como ejemplo de deseo",
+                  "src": "2/antojos.jpeg",
+                  "alt": "Antojos como ejemplo de deseo",
                   "variant": "square"
                 },
                 "title": {
-                  "text": "Caramelo",
-                  "variant": "label",
-                  "align": "center"
-                }
-              },
-              {
-                "id": "desire-sweetdrink",
-                "media": {
-                  "src": "1/gaseosa.webp",
-                  "alt": "Bebida dulce como ejemplo de deseo",
-                  "variant": "square"
-                },
-                "title": {
-                  "text": "Bebida dulce",
+                  "text": "Antojos",
                   "variant": "label",
                   "align": "center"
                 }
@@ -308,9 +281,9 @@
     {
       "viewId": "m2_1_v4",
       "order": 4,
-      "name": "VISTA 4 - Teoria: Necesidad VS Deseo",
+      "name": "VISTA 4 - Teoría: Necesidad VS Deseo",
       "viewType": "Teoria",
-      "objective": "Comparar necesidades y deseos segun prioridad y consecuencia.",
+      "objective": "Comparar necesidades y deseos según prioridad y consecuencia.",
       "template": "simpleTheory",
       "variant": "simple",
       "slots": {
@@ -321,8 +294,9 @@
         },
         "body": {
           "paragraphs": [
-            "La diferencia principal es la prioridad: las necesidades son indispensables para el bienestar y el desarrollo; los deseos son opcionales y pueden postergarse.",
-            "Hazte esta pregunta: Que pasa si no lo compro hoy?"
+            "La principal diferencia está en la prioridad.",
+            "✅ Las necesidades son importantes para vivir, estudiar y cuidar nuestro bienestar.",
+            "✨ Los deseos son cosas que nos gustan, pero que pueden esperar."
           ],
           "variant": "body1",
           "align": "center"
@@ -353,12 +327,12 @@
               {
                 "id": "compare-need",
                 "media": {
-                  "src": "1/comprar-comida.webp",
-                  "alt": "Comida como ejemplo de necesidad",
+                  "src": "2/necesidad-desayuno.jpeg",
+                  "alt": "Desayuno como ejemplo de necesidad",
                   "variant": "square"
                 },
                 "title": {
-                  "text": "Comida",
+                  "text": "Desayuno",
                   "variant": "label",
                   "align": "center"
                 },
@@ -374,12 +348,12 @@
               {
                 "id": "compare-desire",
                 "media": {
-                  "src": "1/botella-gaseosa.webp",
-                  "alt": "Gaseosa como ejemplo de deseo",
+                  "src": "2/deseo-celular-caro.jpeg",
+                  "alt": "Celular caro como ejemplo de deseo",
                   "variant": "square"
                 },
                 "title": {
-                  "text": "Gaseosa",
+                  "text": "Celular caro",
                   "variant": "label",
                   "align": "center"
                 },
@@ -404,22 +378,17 @@
       }
     },
     {
-      "viewId": "m2_1_v5",
+      "viewId": "m2_1_v5_test",
       "order": 5,
-      "name": "VISTA 5 - Teoria: Consumo responsable",
+      "name": "VISTA 5 - Teoría: Consumo responsable",
       "viewType": "Teoria",
       "objective": "Introducir la idea de consumo responsable antes del juego.",
-      "template": "simpleTheory",
-      "variant": "simple",
+      "template": "explanationTheory",
+      "variant": "explanation",
       "slots": {
         "title": {
-          "text": "Consumo responsable",
+          "text": "Antes de comprar, pregúntate…",
           "variant": "h1",
-          "align": "center"
-        },
-        "body": {
-          "text": "El consumo responsable es tomar decisiones de compra considerando prioridad, presupuesto y consecuencias, evitando el gasto impulsivo y priorizando necesidades sobre deseos cuando el dinero es limitado. Consumir responsablemente no significa no comprar nada; significa:",
-          "variant": "body1",
           "align": "center"
         }
       },
@@ -440,48 +409,124 @@
         ],
         "compound": [
           {
-            "type": "showCard",
-            "component": "showCard",
+            "type": "collageCard",
+            "component": "collageCard",
             "category": "grouper",
             "area": "media",
+            "columns": 2,
+            "rows": 2,
+            "gridClassName": "mx-auto max-w-4xl",
             "items": [
               {
                 "id": "responsible-priority",
                 "media": {
-                  "src": "1/agua.webp",
-                  "alt": "Comprar lo importante primero",
-                  "variant": "horizontal"
+                  "src": "2/compras-basicas.jpeg",
+                  "alt": "Pensar si una compra es necesaria",
+                  "variant": "square"
                 },
                 "title": {
-                  "text": "Comprar lo importante primero",
-                  "variant": "label",
+                  "text": "¿Lo necesito?",
+                  "variant": "h2",
                   "align": "center"
+                },
+                "interaction": {
+                  "type": "flipCard",
+                  "backCard": {
+                    "title": {
+                      "text": "¿Lo necesito?",
+                      "variant": "h2",
+                      "align": "center"
+                    },
+                    "text": {
+                      "text": "Piensa si es algo importante para tu bienestar, tus estudios o tu vida diaria.",
+                      "variant": "bodySm",
+                      "align": "center"
+                    }
+                  }
                 }
               },
               {
                 "id": "responsible-impulse",
                 "media": {
-                  "src": "1/caramelo.webp",
-                  "alt": "No gastar por impulso",
-                  "variant": "horizontal"
+                  "src": "2/deseo-audifono-barato.jpeg",
+                  "alt": "Pensar si el dinero alcanza para comprarlo",
+                  "variant": "square"
                 },
                 "title": {
-                  "text": "No gastar por impulso",
-                  "variant": "label",
+                  "text": "¿Me alcanza?",
+                  "variant": "h2",
                   "align": "center"
+                },
+                "interaction": {
+                  "type": "flipCard",
+                  "backCard": {
+                    "title": {
+                      "text": "¿Me alcanza?",
+                      "variant": "h2",
+                      "align": "center"
+                    },
+                    "text": {
+                      "text": "Mira cuánto dinero tienes antes de decidir si puedes comprarlo.",
+                      "variant": "bodySm",
+                      "align": "center"
+                    }
+                  }
                 }
               },
               {
                 "id": "responsible-balance",
                 "media": {
-                  "src": "1/recibir-dinero.webp",
-                  "alt": "Mirar tu saldo antes de decidir",
-                  "variant": "horizontal"
+                  "src": "2/materiales-de-estudio.jpeg",
+                  "alt": "Pensar si la compra es prioridad",
+                  "variant": "square"
                 },
                 "title": {
-                  "text": "Mirar tu saldo antes de decidir",
-                  "variant": "label",
+                  "text": "¿Es prioridad?",
+                  "variant": "h2",
                   "align": "center"
+                },
+                "interaction": {
+                  "type": "flipCard",
+                  "backCard": {
+                    "title": {
+                      "text": "¿Es prioridad?",
+                      "variant": "h2",
+                      "align": "center"
+                    },
+                    "text": {
+                      "text": "Pregúntate si es más importante que otros gastos como materiales, pasaje o comida.",
+                      "variant": "bodySm",
+                      "align": "center"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "esperar-student",
+                "media": {
+                  "src": "2/deseo-celular-caro.jpeg",
+                  "alt": "Pensar si la compra puede esperar",
+                  "variant": "square"
+                },
+                "title": {
+                  "text": "¿Puede esperar?",
+                  "variant": "h2",
+                  "align": "center"
+                },
+                "interaction": {
+                  "type": "flipCard",
+                  "backCard": {
+                    "title": {
+                      "text": "¿Puede esperar?",
+                      "variant": "h2",
+                      "align": "center"
+                    },
+                    "text": {
+                      "text": "Si no es urgente, puedes esperar un poco y pensarlo mejor antes de gastar.",
+                      "variant": "bodySm",
+                      "align": "center"
+                    }
+                  }
                 }
               }
             ]
@@ -489,17 +534,19 @@
         ]
       },
       "navigation": {
-        "mode": "normal"
+        "mode": "lockedUntilComplete",
+        "label": "Haz clic en todas las tarjetas para continuar"
       },
       "completionCriteria": {
-        "type": "reading"
+        "type": "interaction",
+        "required": "reviewCards"
       }
     },
     {
       "viewId": "m2_1_v6",
       "order": 6,
       "name": "VISTA 6 - Juego de memoria: Necesidad o deseo",
-      "viewType": "Interaccion",
+      "viewType": "Interacción",
       "objective": "Reforzar la diferencia entre necesidad y deseo con un juego de memoria.",
       "template": "assessmentTheory",
       "variant": "assessment",
@@ -552,12 +599,12 @@
                     "id": "m2-memory-01",
                     "pairId": "pair-food",
                     "media": {
-                      "src": "1/comprar-comida.webp",
-                      "alt": "Comida",
+                      "src": "2/alimentacion.jpeg",
+                      "alt": "Alimentación",
                       "variant": "square"
                     },
                     "label": {
-                      "text": "Comida",
+                      "text": "Alimentación",
                       "variant": "subtitle2",
                       "align": "center"
                     }
@@ -566,12 +613,12 @@
                     "id": "m2-memory-02",
                     "pairId": "pair-food",
                     "media": {
-                      "src": "1/comprar-comida.webp",
-                      "alt": "Comida",
+                      "src": "2/alimentacion.jpeg",
+                      "alt": "Alimentación",
                       "variant": "square"
                     },
                     "label": {
-                      "text": "Comida",
+                      "text": "Alimentación",
                       "variant": "subtitle2",
                       "align": "center"
                     }
@@ -580,12 +627,12 @@
                     "id": "m2-memory-03",
                     "pairId": "pair-water",
                     "media": {
-                      "src": "1/agua.webp",
-                      "alt": "Agua",
+                      "src": "2/salud.jpeg",
+                      "alt": "Salud",
                       "variant": "square"
                     },
                     "label": {
-                      "text": "Agua",
+                      "text": "Salud",
                       "variant": "subtitle2",
                       "align": "center"
                     }
@@ -594,12 +641,12 @@
                     "id": "m2-memory-04",
                     "pairId": "pair-water",
                     "media": {
-                      "src": "1/agua.webp",
-                      "alt": "Agua",
+                      "src": "2/salud.jpeg",
+                      "alt": "Salud",
                       "variant": "square"
                     },
                     "label": {
-                      "text": "Agua",
+                      "text": "Salud",
                       "variant": "subtitle2",
                       "align": "center"
                     }
@@ -608,12 +655,12 @@
                     "id": "m2-memory-05",
                     "pairId": "pair-transport",
                     "media": {
-                      "src": "1/ir-en-combi.webp",
-                      "alt": "Transporte",
+                      "src": "2/materiales-de-estudio.jpeg",
+                      "alt": "Materiales",
                       "variant": "square"
                     },
                     "label": {
-                      "text": "Transporte",
+                      "text": "Materiales",
                       "variant": "subtitle2",
                       "align": "center"
                     }
@@ -622,12 +669,12 @@
                     "id": "m2-memory-06",
                     "pairId": "pair-transport",
                     "media": {
-                      "src": "1/ir-en-combi.webp",
-                      "alt": "Transporte",
+                      "src": "2/materiales-de-estudio.jpeg",
+                      "alt": "Materiales",
                       "variant": "square"
                     },
                     "label": {
-                      "text": "Transporte",
+                      "text": "Materiales",
                       "variant": "subtitle2",
                       "align": "center"
                     }
@@ -636,12 +683,12 @@
                     "id": "m2-memory-13",
                     "pairId": "pair-fare",
                     "media": {
-                      "src": "1/pagar-pasaje.webp",
-                      "alt": "Pasaje",
+                      "src": "2/compras-basicas.jpeg",
+                      "alt": "Compras básicas",
                       "variant": "square"
                     },
                     "label": {
-                      "text": "Pasaje",
+                      "text": "Compras básicas",
                       "variant": "subtitle2",
                       "align": "center"
                     }
@@ -650,12 +697,12 @@
                     "id": "m2-memory-14",
                     "pairId": "pair-fare",
                     "media": {
-                      "src": "1/pagar-pasaje.webp",
-                      "alt": "Pasaje",
+                      "src": "2/compras-basicas.jpeg",
+                      "alt": "Compras básicas",
                       "variant": "square"
                     },
                     "label": {
-                      "text": "Pasaje",
+                      "text": "Compras básicas",
                       "variant": "subtitle2",
                       "align": "center"
                     }
@@ -664,12 +711,12 @@
                     "id": "m2-memory-15",
                     "pairId": "pair-walk",
                     "media": {
-                      "src": "1/ir-caminando.webp",
-                      "alt": "Llegar al colegio",
+                      "src": "2/necesidad-desayuno.jpeg",
+                      "alt": "Desayuno",
                       "variant": "square"
                     },
                     "label": {
-                      "text": "Llegar al colegio",
+                      "text": "Desayuno",
                       "variant": "subtitle2",
                       "align": "center"
                     }
@@ -678,12 +725,12 @@
                     "id": "m2-memory-16",
                     "pairId": "pair-walk",
                     "media": {
-                      "src": "1/ir-caminando.webp",
-                      "alt": "Llegar al colegio",
+                      "src": "2/necesidad-desayuno.jpeg",
+                      "alt": "Desayuno",
                       "variant": "square"
                     },
                     "label": {
-                      "text": "Llegar al colegio",
+                      "text": "Desayuno",
                       "variant": "subtitle2",
                       "align": "center"
                     }
@@ -692,12 +739,12 @@
                     "id": "m2-memory-17",
                     "pairId": "pair-return",
                     "media": {
-                      "src": "1/regresar-combi.webp",
-                      "alt": "Volver a casa",
+                      "src": "2/necesidad-comrpando-mochila.jpeg",
+                      "alt": "Comprar mochila",
                       "variant": "square"
                     },
                     "label": {
-                      "text": "Volver a casa",
+                      "text": "Mochila",
                       "variant": "subtitle2",
                       "align": "center"
                     }
@@ -706,12 +753,12 @@
                     "id": "m2-memory-18",
                     "pairId": "pair-return",
                     "media": {
-                      "src": "1/regresar-combi.webp",
-                      "alt": "Volver a casa",
+                      "src": "2/necesidad-comrpando-mochila.jpeg",
+                      "alt": "Comprar mochila",
                       "variant": "square"
                     },
                     "label": {
-                      "text": "Volver a casa",
+                      "text": "Mochila",
                       "variant": "subtitle2",
                       "align": "center"
                     }
@@ -734,12 +781,12 @@
                     "id": "m2-memory-07",
                     "pairId": "pair-soda",
                     "media": {
-                      "src": "1/botella-gaseosa.webp",
-                      "alt": "Gaseosa",
+                      "src": "2/entretenimiento.jpeg",
+                      "alt": "Entretenimiento",
                       "variant": "square"
                     },
                     "label": {
-                      "text": "Gaseosa",
+                      "text": "Entretenimiento",
                       "variant": "subtitle2",
                       "align": "center"
                     }
@@ -748,12 +795,12 @@
                     "id": "m2-memory-08",
                     "pairId": "pair-soda",
                     "media": {
-                      "src": "1/botella-gaseosa.webp",
-                      "alt": "Gaseosa",
+                      "src": "2/entretenimiento.jpeg",
+                      "alt": "Entretenimiento",
                       "variant": "square"
                     },
                     "label": {
-                      "text": "Gaseosa",
+                      "text": "Entretenimiento",
                       "variant": "subtitle2",
                       "align": "center"
                     }
@@ -762,12 +809,12 @@
                     "id": "m2-memory-09",
                     "pairId": "pair-cookie",
                     "media": {
-                      "src": "1/galleta.webp",
-                      "alt": "Galleta",
+                      "src": "2/gustos.jpeg",
+                      "alt": "Gustos",
                       "variant": "square"
                     },
                     "label": {
-                      "text": "Galleta",
+                      "text": "Gustos",
                       "variant": "subtitle2",
                       "align": "center"
                     }
@@ -776,12 +823,12 @@
                     "id": "m2-memory-10",
                     "pairId": "pair-cookie",
                     "media": {
-                      "src": "1/galleta.webp",
-                      "alt": "Galleta",
+                      "src": "2/gustos.jpeg",
+                      "alt": "Gustos",
                       "variant": "square"
                     },
                     "label": {
-                      "text": "Galleta",
+                      "text": "Gustos",
                       "variant": "subtitle2",
                       "align": "center"
                     }
@@ -790,12 +837,12 @@
                     "id": "m2-memory-11",
                     "pairId": "pair-candy",
                     "media": {
-                      "src": "1/caramelo.webp",
-                      "alt": "Caramelo",
+                      "src": "2/antojos.jpeg",
+                      "alt": "Antojos",
                       "variant": "square"
                     },
                     "label": {
-                      "text": "Caramelo",
+                      "text": "Antojos",
                       "variant": "subtitle2",
                       "align": "center"
                     }
@@ -804,12 +851,12 @@
                     "id": "m2-memory-12",
                     "pairId": "pair-candy",
                     "media": {
-                      "src": "1/caramelo.webp",
-                      "alt": "Caramelo",
+                      "src": "2/antojos.jpeg",
+                      "alt": "Antojos",
                       "variant": "square"
                     },
                     "label": {
-                      "text": "Caramelo",
+                      "text": "Antojos",
                       "variant": "subtitle2",
                       "align": "center"
                     }
@@ -818,12 +865,12 @@
                     "id": "m2-memory-19",
                     "pairId": "pair-sweetdrink",
                     "media": {
-                      "src": "1/gaseosa.webp",
-                      "alt": "Bebida dulce",
+                      "src": "2/deseo-audifono-barato.jpeg",
+                      "alt": "Audífonos",
                       "variant": "square"
                     },
                     "label": {
-                      "text": "Bebida dulce",
+                      "text": "Audífonos",
                       "variant": "subtitle2",
                       "align": "center"
                     }
@@ -832,12 +879,12 @@
                     "id": "m2-memory-20",
                     "pairId": "pair-sweetdrink",
                     "media": {
-                      "src": "1/gaseosa.webp",
-                      "alt": "Bebida dulce",
+                      "src": "2/deseo-audifono-barato.jpeg",
+                      "alt": "Audífonos",
                       "variant": "square"
                     },
                     "label": {
-                      "text": "Bebida dulce",
+                      "text": "Audífonos",
                       "variant": "subtitle2",
                       "align": "center"
                     }
@@ -846,12 +893,12 @@
                     "id": "m2-memory-21",
                     "pairId": "pair-snackextra",
                     "media": {
-                      "src": "1/extra-canje.webp",
-                      "alt": "Snack extra",
+                      "src": "2/deseo-celular-caro.jpeg",
+                      "alt": "Celular caro",
                       "variant": "square"
                     },
                     "label": {
-                      "text": "Snack extra",
+                      "text": "Celular caro",
                       "variant": "subtitle2",
                       "align": "center"
                     }
@@ -860,12 +907,12 @@
                     "id": "m2-memory-22",
                     "pairId": "pair-snackextra",
                     "media": {
-                      "src": "1/extra-canje.webp",
-                      "alt": "Snack extra",
+                      "src": "2/deseo-celular-caro.jpeg",
+                      "alt": "Celular caro",
                       "variant": "square"
                     },
                     "label": {
-                      "text": "Snack extra",
+                      "text": "Celular caro",
                       "variant": "subtitle2",
                       "align": "center"
                     }
@@ -874,12 +921,12 @@
                     "id": "m2-memory-23",
                     "pairId": "pair-prize",
                     "media": {
-                      "src": "1/canjear-botella.webp",
-                      "alt": "Premio pequeño",
+                      "src": "2/deseo-vestido-caro.jpeg",
+                      "alt": "Vestido caro",
                       "variant": "square"
                     },
                     "label": {
-                      "text": "Premio pequeño",
+                      "text": "Vestido caro",
                       "variant": "subtitle2",
                       "align": "center"
                     }
@@ -888,12 +935,12 @@
                     "id": "m2-memory-24",
                     "pairId": "pair-prize",
                     "media": {
-                      "src": "1/canjear-botella.webp",
-                      "alt": "Premio pequeno",
+                      "src": "2/deseo-vestido-caro.jpeg",
+                      "alt": "Vestido caro",
                       "variant": "square"
                     },
                     "label": {
-                      "text": "Premio pequeno",
+                      "text": "Vestido caro",
                       "variant": "subtitle2",
                       "align": "center"
                     }
@@ -915,19 +962,19 @@
     {
       "viewId": "m2_1_v7",
       "order": 7,
-      "name": "VISTA 7 - Final: Mision completada",
+      "name": "VISTA 7 - Final: Misión completada",
       "viewType": "Final",
-      "objective": "Cerrar la mision y mostrar la recompensa final.",
+      "objective": "Cerrar la misión y mostrar la recompensa final.",
       "template": "postGameLobby",
       "variant": "postGame",
       "slots": {
         "title": {
-          "text": "Mision cumplida",
+          "text": "Misión cumplida",
           "variant": "h1",
           "align": "center"
         },
         "feedback": {
-          "text": "Ahora ya puedes distinguir necesidades, deseos y decisiones de consumo mas responsables.",
+          "text": "Ahora ya puedes distinguir necesidades, deseos y decisiones de consumo más responsables.",
           "variant": "label",
           "align": "center",
           "color": "accent"
@@ -992,3 +1039,4 @@
     }
   ]
 }
+
