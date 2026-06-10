@@ -16,8 +16,10 @@ const QUIZ_VARIANT_BY_TEMPLATE = {
 
 const FORM_OPTION_COLOR_CLASSES = [
   "border-[var(--color-gold-100)] bg-[var(--color-gold-400)] text-white hover:bg-[var(--color-gold-500)] [&_*]:!text-white",
-  "border-[var(--color-green-100)] bg-[var(--color-green-400)] text-white hover:bg-[var(--color-green-500)] [&_*]:!text-white",
+  "border-[var(--color-lila-100)] bg-[var(--color-lila-400)] text-white hover:bg-[var(--color-lila-500)] [&_*]:!text-white",
+  "border-[var(--color-orange-100)] bg-[var(--color-orange-400)] text-white hover:bg-[var(--color-orange-500)] [&_*]:!text-white",
   "border-[var(--color-blue-100)] bg-[var(--color-blue-400)] text-white hover:bg-[var(--color-blue-500)] [&_*]:!text-white",
+  "border-[var(--color-green-100)] bg-[var(--color-green-400)] text-white hover:bg-[var(--color-green-500)] [&_*]:!text-white",
   "border-[var(--color-orange-100)] bg-[var(--color-orange-400)] text-white hover:bg-[var(--color-orange-500)] [&_*]:!text-white",
   "border-[var(--color-lila-100)] bg-[var(--color-lila-400)] text-white hover:bg-[var(--color-lila-500)] [&_*]:!text-white",
   "border-[var(--color-purple-100)] bg-[var(--color-purple-400)] text-white hover:bg-[var(--color-purple-500)] [&_*]:!text-white",
@@ -101,9 +103,9 @@ function normalizeQuestion(rawQuestion, index, defaults = {}) {
     placeholder: question?.placeholder ?? "Escribe aqui tu razon...",
     reasonRequired: Boolean(
       question?.reasonRequired ??
-        question?.inputRequired ??
-        question?.requireReason ??
-        false,
+      question?.inputRequired ??
+      question?.requireReason ??
+      false,
     ),
     minReasonLength: Number(question?.minReasonLength ?? 8),
     media: question?.media ?? null,
@@ -189,13 +191,17 @@ function findQuestionOption(question, selectedOptionId) {
   return (
     question.options.find(
       (option, index) =>
-        String(option?.id ?? `option-${index + 1}`) === String(selectedOptionId),
+        String(option?.id ?? `option-${index + 1}`) ===
+        String(selectedOptionId),
     ) ?? null
   );
 }
 
 function getResolvedSelectedOption(question, answer) {
-  return answer?.selectedOption ?? findQuestionOption(question, answer?.selectedOptionId);
+  return (
+    answer?.selectedOption ??
+    findQuestionOption(question, answer?.selectedOptionId)
+  );
 }
 
 function getSelectedOptionLabel(option) {
@@ -471,7 +477,10 @@ export default function Form({ variant, data, heroApi, view, className = "" }) {
     reason: "",
   };
 
-  const selectedOption = getResolvedSelectedOption(currentQuestion, currentAnswer);
+  const selectedOption = getResolvedSelectedOption(
+    currentQuestion,
+    currentAnswer,
+  );
   const isCurrentComplete = isQuestionComplete(currentQuestion, currentAnswer);
 
   const allComplete = questions.every((question) =>
@@ -481,10 +490,7 @@ export default function Form({ variant, data, heroApi, view, className = "" }) {
     data?.score ?? view?.score ?? view?.rewardXp ?? 100,
   );
   const feedbackBonusCoins = Number(
-    data?.feedbackCoinsBonus ??
-      data?.awardedCoins ??
-      data?.coinsAward ??
-      5,
+    data?.feedbackCoinsBonus ?? data?.awardedCoins ?? data?.coinsAward ?? 5,
   );
   const canEarnFeedbackCoins = questions.some(hasFeedbackPrompt);
   const earnedFeedbackCoins = questions.some((question) =>
@@ -649,8 +655,7 @@ export default function Form({ variant, data, heroApi, view, className = "" }) {
         className={cn(
           getSideNavClass("left"),
           !canGoBack && "cursor-not-allowed opacity-40",
-        )}
-      >
+        )}>
         {"<"}
       </button>
 
@@ -765,8 +770,7 @@ export default function Form({ variant, data, heroApi, view, className = "" }) {
         className={cn(
           getSideNavClass("right"),
           !canAdvance && "cursor-not-allowed opacity-40",
-        )}
-      >
+        )}>
         {">"}
       </button>
     </section>
