@@ -62,25 +62,25 @@
       },
       "missions": {
         "conceptual": {
-          "title": "Necesidades y deseos",
+          "title": "Diferencia entre necesidades y deseos",
           "backendActivityId": null,
           "activityKey": "m02-conceptual",
           "learn": [
             "Diferenciar las prioridades personales para tomar decisiones de gasto más conscientes y responsables.",
-            "Priorizar gastos relacionados con el estudio, el bienestar y la vida diaria de manera responsable."
+            "Tomar decisiones de compra más responsables y conscientes."
           ],
-          "outcome": "Distinguirás entre lo que necesitas para vivir, estudiar o cuidar tu bienestar y aquello que puede esperar o no es urgente"
+          "outcome": "Comprenderas que el dinero es limitado y que algunas decisiones deben priorizarse antes que otras."
         },
         "procedimental": {
-          "title": "Clasificación y priorización de gastos",
+          "title": "Priorización y toma de decisiones de compra",
           "activityId": "05",
           "backendActivityId": "05",
           "activityKey": "m02-procedimental",
           "learn": [
-            "Organizar los gastos cuando el dinero no alcanza para todo, priorizando lo más importante y necesario.",
-            "Aprender a tomar decisiones responsables para distribuir mejor el dinero disponible."
+            "Organizar tus gastos cuando el dinero no alcance para todo.",
+            "Priorizar lo más importante antes de gastar en otras cosas."
           ],
-          "outcome": "Ordenarás tus gastos cuando el dinero no alcance para todo, priorizando lo más importante y necesario."
+          "outcome": "Ordenarás tus gastos según su importancia y tomarás decisiones más responsables cuando el dinero sea limitado."
         },
         "actitudinal": {
           "title": "Autocontrol y presión social",
