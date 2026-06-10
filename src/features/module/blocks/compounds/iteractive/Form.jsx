@@ -14,6 +14,32 @@ const QUIZ_VARIANT_BY_TEMPLATE = {
   extendedQuiz: "extended",
 };
 
+const FORM_OPTION_COLOR_CLASSES = [
+  "border-[var(--color-gold-100)] bg-[var(--color-gold-400)] text-white hover:bg-[var(--color-gold-500)] [&_*]:!text-white",
+  "border-[var(--color-green-100)] bg-[var(--color-green-400)] text-white hover:bg-[var(--color-green-500)] [&_*]:!text-white",
+  "border-[var(--color-blue-100)] bg-[var(--color-blue-400)] text-white hover:bg-[var(--color-blue-500)] [&_*]:!text-white",
+  "border-[var(--color-orange-100)] bg-[var(--color-orange-400)] text-white hover:bg-[var(--color-orange-500)] [&_*]:!text-white",
+  "border-[var(--color-lila-100)] bg-[var(--color-lila-400)] text-white hover:bg-[var(--color-lila-500)] [&_*]:!text-white",
+  "border-[var(--color-purple-100)] bg-[var(--color-purple-400)] text-white hover:bg-[var(--color-purple-500)] [&_*]:!text-white",
+];
+
+function getFormOptionColorClass(index) {
+  return FORM_OPTION_COLOR_CLASSES[index % FORM_OPTION_COLOR_CLASSES.length];
+}
+
+function getFormOptionInteraction(option, index) {
+  const interaction =
+    option?.interaction && typeof option.interaction === "object"
+      ? option.interaction
+      : {};
+
+  return {
+    ...interaction,
+    type: option?.interaction?.type ?? option?.interaction ?? "selectable",
+    className: cn(getFormOptionColorClass(index), interaction.className),
+  };
+}
+
 function toTextNode(value, fallbackVariant = "bodySm") {
   if (!value) return null;
 
@@ -56,7 +82,7 @@ function normalizeOptionForChooseOne(option, index) {
     label: null,
     caption: null,
     name: null,
-    interaction: option?.interaction ?? { type: "selectable" },
+    interaction: getFormOptionInteraction(option, index),
     zoomable: false,
   };
 }

@@ -6,6 +6,7 @@ export default function SelectableCard({
   title,
   text,
   media,
+  interaction,
   selected = false,
   variant = "default",
   size = "normal",
@@ -44,15 +45,15 @@ export default function SelectableCard({
       title={title}
       text={text}
       media={media}
-      variant={selected ? "solid" : variant}
+      variant={variant}
       selected={selected}
       size={size}
       interactive
       overlay={overlay}
       className={cn(
+        interaction?.className,
         selected && [
           "border-4 border-[var(--color-gold-200)]",
-          "bg-gradient-to-br from-[var(--color-gold-100)]/30 via-[var(--color-gold-200)]/18 to-white/10",
         ],
       )}
     />
