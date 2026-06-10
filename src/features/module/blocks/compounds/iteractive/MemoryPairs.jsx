@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "@/shared/libs/utils";
 import { getMediaVariant } from "../../base/Media/mediaVariant";
 import Typography from "../../base/Typography";
@@ -268,6 +268,8 @@ export default function MemoryPairs({
     useState(previewDurationMs);
   const [previewCycle, setPreviewCycle] = useState(0);
   const [restartRemaining, setRestartRemaining] = useState(restartLimit);
+  const [completedSectionScores, setCompletedSectionScores] = useState([]);
+  const reportedCompletionRef = useRef(null);
 
   const activeSection = sections[activeSectionIndex] ?? {
     sectionTitle: null,
@@ -293,10 +295,29 @@ export default function MemoryPairs({
   const isPreviewActive = previewRemainingMs > 0;
   const previewSecondsLeft = Math.ceil(previewRemainingMs / 1000);
   const isLastSection = activeSectionIndex >= sections.length - 1;
+  const mistakes = Math.max(0, turns - totalPairs);
   const score =
     totalPairs && turns
-      ? Math.max(0, Math.min(100, Math.round((totalPairs / turns) * 100)))
+      ? Math.max(0, Math.min(100, Math.round(100 - mistakes * 3)))
       : 0;
+  const sectionScores = useMemo(() => {
+    const nextScores = [...completedSectionScores];
+
+    if (isComplete) {
+      nextScores[activeSectionIndex] = score;
+    }
+
+    return nextScores;
+  }, [activeSectionIndex, completedSectionScores, isComplete, score]);
+  const completedScoreValues = sectionScores.filter((value) =>
+    Number.isFinite(value),
+  );
+  const accumulatedScore = completedScoreValues.length
+    ? Math.round(
+        completedScoreValues.reduce((sum, value) => sum + value, 0) /
+          completedScoreValues.length,
+      )
+    : 0;
 
   useEffect(() => {
     setActiveSectionIndex(0);
@@ -306,6 +327,8 @@ export default function MemoryPairs({
     setPreviewRemainingMs(previewDurationMs);
     setPreviewCycle((prev) => prev + 1);
     setRestartRemaining(restartLimit);
+    setCompletedSectionScores([]);
+    reportedCompletionRef.current = null;
   }, [previewDurationMs, restartLimit, sectionsConfigKey]);
 
   useEffect(() => {
@@ -343,13 +366,21 @@ export default function MemoryPairs({
       totalPairs,
       matchedPairs: matchedPairsInSection,
       turns,
-      score: isComplete && isLastSection ? score : 0,
+      score: isComplete && isLastSection ? accumulatedScore : 0,
       sectionIndex: activeSectionIndex,
       sectionCount: sections.length,
       type: "memoryGame",
     });
 
     if (!isComplete) return undefined;
+
+    setCompletedSectionScores((prev) => {
+      if (prev[activeSectionIndex] === score) return prev;
+
+      const nextScores = [...prev];
+      nextScores[activeSectionIndex] = score;
+      return nextScores;
+    });
 
     if (!isLastSection) {
       const timeoutId = window.setTimeout(() => {
@@ -361,12 +392,18 @@ export default function MemoryPairs({
       return () => window.clearTimeout(timeoutId);
     }
 
+    const completionKey = `${viewId}:${activeSectionIndex}:${accumulatedScore}:${turns}`;
+    if (reportedCompletionRef.current === completionKey) {
+      return undefined;
+    }
+    reportedCompletionRef.current = completionKey;
+
     const result = {
       completed: true,
       totalPairs,
       matchedPairs: matchedPairsInSection,
       turns,
-      score,
+      score: accumulatedScore,
       sectionIndex: activeSectionIndex,
       sectionCount: sections.length,
     };
@@ -375,6 +412,7 @@ export default function MemoryPairs({
     return undefined;
   }, [
     activeSectionIndex,
+    accumulatedScore,
     heroApi,
     isComplete,
     isLastSection,
