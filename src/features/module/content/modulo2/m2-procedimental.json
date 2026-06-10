@@ -16,13 +16,13 @@
       "variant": "preGame",
       "slots": {
         "title": {
-          "text": "Hora de practicar",
+          "text": "Antes de empezar",
           "variant": "h1",
           "align": "center"
         },
         "body": {
           "paragraphs": [
-            "╰› En esta practica clasificaras distintos objetos segun si son una necesidad o un deseo dentro de situaciones cotidianas.",
+            "╰› A veces el dinero no alcanza para todo.",
             "╰› Lee cada escenario con atencion y piensa que objetos son importantes para cumplir una meta o cubrir algo necesario.",
             "╰› Cuando presiones Iniciar comenzaras con la primera situacion."
           ],
@@ -139,7 +139,7 @@
               {
                 "id": "s1-cuaderno",
                 "media": {
-                  "src": "1/botella-gaseosa.webp",
+                  "src": "2/cuaderno.webp",
                   "alt": "Cuaderno",
                   "variant": "square"
                 },
@@ -153,7 +153,7 @@
               {
                 "id": "s1-lapiz",
                 "media": {
-                  "src": "image001.webp",
+                  "src": "2/lapiz.webp",
                   "alt": "Lapiz",
                   "variant": "square"
                 },
@@ -167,7 +167,7 @@
               {
                 "id": "s1-borrador",
                 "media": {
-                  "src": "image001.webp",
+                  "src": "2/borrador.webp",
                   "alt": "Borrador",
                   "variant": "square"
                 },
@@ -181,7 +181,7 @@
               {
                 "id": "s1-regla",
                 "media": {
-                  "src": "image001.webp",
+                  "src": "2/regla.webp",
                   "alt": "Regla",
                   "variant": "square"
                 },
@@ -195,7 +195,7 @@
               {
                 "id": "s1-pegamento",
                 "media": {
-                  "src": "image001.webp",
+                  "src": "2/pegamento.webp",
                   "alt": "Pegamento",
                   "variant": "square"
                 },
@@ -209,7 +209,7 @@
               {
                 "id": "s1-stickers",
                 "media": {
-                  "src": "image001.webp",
+                  "src": "2/stikers.webp",
                   "alt": "Stickers",
                   "variant": "square"
                 },
@@ -223,7 +223,7 @@
               {
                 "id": "s1-plumones",
                 "media": {
-                  "src": "image001.webp",
+                  "src": "2/plumones.webp",
                   "alt": "Plumones",
                   "variant": "square"
                 },
@@ -237,7 +237,7 @@
               {
                 "id": "s1-juguete",
                 "media": {
-                  "src": "image001.webp",
+                  "src": "2/juguete.webp",
                   "alt": "Juguete",
                   "variant": "square"
                 },
@@ -333,7 +333,7 @@
               {
                 "id": "s2-arroz",
                 "media": {
-                  "src": "image001.webp",
+                  "src": "2/arroz.webp",
                   "alt": "Arroz",
                   "variant": "square"
                 },
@@ -347,7 +347,7 @@
               {
                 "id": "s2-leche",
                 "media": {
-                  "src": "image001.webp",
+                  "src": "2/leche.webp",
                   "alt": "Leche",
                   "variant": "square"
                 },
@@ -361,7 +361,7 @@
               {
                 "id": "s2-aceite",
                 "media": {
-                  "src": "image001.webp",
+                  "src": "2/aceite.webp",
                   "alt": "Aceite",
                   "variant": "square"
                 },
@@ -375,7 +375,7 @@
               {
                 "id": "s2-galletas",
                 "media": {
-                  "src": "image001.webp",
+                  "src": "2/galletas.webp",
                   "alt": "Galletas",
                   "variant": "square"
                 },
@@ -389,7 +389,7 @@
               {
                 "id": "s2-gaseosaddd",
                 "media": {
-                  "src": "image001.webp",
+                  "src": "2/gaseosa.webp",
                   "alt": "Gaseosa",
                   "variant": "square"
                 },
@@ -403,7 +403,7 @@
               {
                 "id": "s2-chocolateasas",
                 "media": {
-                  "src": "image001.webp",
+                  "src": "2/chocolate.webp",
                   "alt": "Chocolate",
                   "variant": "square"
                 },
@@ -417,26 +417,26 @@
               {
                 "id": "s2-gaseosa",
                 "media": {
-                  "src": "image001.webp",
-                  "alt": "Gaseosa",
+                  "src": "2/atun.webp",
+                  "alt": "Atún",
                   "variant": "square"
                 },
                 "title": {
-                  "text": "Gaseosa",
+                  "text": "atun",
                   "variant": "caption",
                   "align": "center"
                 },
-                "correctCategoryId": "desire"
+                "correctCategoryId": "need"
               },
               {
                 "id": "s2-chocolate",
                 "media": {
-                  "src": "image001.webp",
-                  "alt": "Chocolate",
+                  "src": "2/caramelo.webp",
+                  "alt": "Caramelo",
                   "variant": "square"
                 },
                 "title": {
-                  "text": "Chocolate",
+                  "text": "caramelo",
                   "variant": "caption",
                   "align": "center"
                 },
@@ -475,9 +475,9 @@
           "align": "center"
         },
         "media": {
-          "src": "1/uso-del-dinero-2.webp",
+          "src": "2/maqueta.webp",
           "alt": "Referencia de maqueta escolar",
-          "variant": "horizontal"
+          "variant": "vertical"
         }
       },
       "elements": {
@@ -535,7 +535,7 @@
               {
                 "id": "s3-cartulina",
                 "media": {
-                  "src": "image001.webp",
+                  "src": "2/cartulina.webp",
                   "alt": "Cartulina",
                   "variant": "square"
                 },
@@ -549,7 +549,7 @@
               {
                 "id": "s3-tijera",
                 "media": {
-                  "src": "image001.webp",
+                  "src": "2/tijera.webp",
                   "alt": "Tijera",
                   "variant": "square"
                 },
@@ -563,7 +563,7 @@
               {
                 "id": "s3-pegamento",
                 "media": {
-                  "src": "image001.webp",
+                  "src": "2/pegamento.webp",
                   "alt": "Pegamento",
                   "variant": "square"
                 },
@@ -577,7 +577,7 @@
               {
                 "id": "s3-regla",
                 "media": {
-                  "src": "image001.webp",
+                  "src": "2/regla.webp",
                   "alt": "Regla",
                   "variant": "square"
                 },
@@ -591,7 +591,7 @@
               {
                 "id": "s3-lapiz",
                 "media": {
-                  "src": "image001.webp",
+                  "src": "2/lapiz.webp",
                   "alt": "Lapiz",
                   "variant": "square"
                 },
@@ -605,7 +605,7 @@
               {
                 "id": "s3-escarcha",
                 "media": {
-                  "src": "image001.webp",
+                  "src": "2/escarcha.webp",
                   "alt": "Escarcha",
                   "variant": "square"
                 },
@@ -619,7 +619,7 @@
               {
                 "id": "s3-stickers",
                 "media": {
-                  "src": "image001.webp",
+                  "src": "2/stikers.webp",
                   "alt": "Stickers",
                   "variant": "square"
                 },
@@ -633,7 +633,7 @@
               {
                 "id": "s3-cinta",
                 "media": {
-                  "src": "image001.webp",
+                  "src": "2/cinta.webp",
                   "alt": "Cinta",
                   "variant": "square"
                 },
@@ -672,13 +672,13 @@
           "align": "left"
         },
         "assessment": {
-          "text": "Tienes que preparar una presentacion del colegio como la imagen",
+          "text": "Tu salón realizará una excursión y tienes dinero limitado. ¿Qué deberías priorizar?",
           "variant": "h1",
           "align": "center"
         },
         "media": {
-          "src": "1/uso-dinero.webp",
-          "alt": "Referencia de presentacion escolar",
+          "src": "2/excursion.webp",
+          "alt": "Referencia de excursion escolar",
           "variant": "horizontal"
         }
       },
@@ -735,84 +735,111 @@
             ],
             "items": [
               {
-                "id": "s4-folder",
+                "id": "s4-agua",
                 "media": {
-                  "src": "image001.webp",
-                  "alt": "Folder",
+                  "src": "1/agua.webp",
+                  "alt": "Agua",
                   "variant": "square"
                 },
                 "title": {
-                  "text": "Folder",
+                  "text": "Agua",
                   "variant": "caption",
                   "align": "center"
                 },
                 "correctCategoryId": "need"
               },
               {
-                "id": "s4-hojas",
+                "id": "s4-helado",
                 "media": {
-                  "src": "image001.webp",
-                  "alt": "Hojas",
+                  "src": "2/helado.webp",
+                  "alt": "Helado",
                   "variant": "square"
                 },
                 "title": {
-                  "text": "Hojas",
+                  "text": "Helado",
+                  "variant": "caption",
+                  "align": "center"
+                },
+                "correctCategoryId": "desire"
+              },
+              {
+                "id": "s4-Protector_solar.",
+                "media": {
+                  "src": "2/protector_solar.webp",
+                  "alt": "Protector solar",
+                  "variant": "square"
+                },
+                "title": {
+                  "text": "Protector solar",
                   "variant": "caption",
                   "align": "center"
                 },
                 "correctCategoryId": "need"
               },
               {
-                "id": "s4-impresiones",
+                "id": "s4-refrigerio",
                 "media": {
-                  "src": "image001.webp",
-                  "alt": "Impresiones",
+                  "src": "2/refrigerio.webp",
+                  "alt": "Refrigerio",
                   "variant": "square"
                 },
                 "title": {
-                  "text": "Impresiones",
+                  "text": "Refrigerio",
                   "variant": "caption",
                   "align": "center"
                 },
                 "correctCategoryId": "need"
               },
               {
-                "id": "s4-cinta",
+                "id": "s4-Pasaje",
                 "media": {
-                  "src": "image001.webp",
-                  "alt": "Cinta",
+                  "src": "2/trasporte.webp",
+                  "alt": "Pasaje",
                   "variant": "square"
                 },
                 "title": {
-                  "text": "Cinta",
+                  "text": "Pasaje",
                   "variant": "caption",
                   "align": "center"
                 },
                 "correctCategoryId": "need"
               },
               {
-                "id": "s4-carton",
+                "id": "s4-Selfie stick.",
                 "media": {
-                  "src": "image001.webp",
-                  "alt": "Carton",
+                  "src": "2/stick.webp",
+                  "alt": "Selfie stick",
                   "variant": "square"
                 },
                 "title": {
-                  "text": "Carton",
+                  "text": "palo Selfie ",
                   "variant": "caption",
                   "align": "center"
                 },
-                "correctCategoryId": "need"
-              },
-              {
-                "id": "s4-led",
+                "correctCategoryId": "desire"
+              },          {
+                "id": "s4-lentes.",
                 "media": {
-                  "src": "image001.webp",
-                  "alt": "Luces",
+                  "src": "2/gafas.webp",
+                  "alt": "Lentes de sol",
                   "variant": "square"
                 },
                 "title": {
-                  "text": "Luces",
+                  "text": "Lentes de sol",
+                  "variant": "caption",
+                  "align": "center"
+                },
+                "correctCategoryId": "desire"
+              },
+              {
+                "id": "s4-audifonos.",
+                "media": {
+                  "src": "2/audifonos.webp",
+                  "alt": "Audifonos",
+                  "variant": "square"
+                },
+                "title": {
+                  "text": "Audifonos",
                   "variant": "caption",
                   "align": "center"
                 },

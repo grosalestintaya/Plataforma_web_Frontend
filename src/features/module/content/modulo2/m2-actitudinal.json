@@ -82,7 +82,7 @@
           "align": "center"
         },
         "media": {
-          "src": "1/comprar-comida.webp",
+          "src": "2/acto1.webp",
           "alt": "Situacion sobre decidir entre gastar o guardar dinero",
           "variant": "horizontal"
         }
@@ -109,7 +109,7 @@
             "category": "interactive",
             "area": "action",
             "question": {
-              "text": "Tienes S/ 10. Lo gastas todo en dulces o guardas una parte para algo que podrias necesitar despues?",
+              "text": "Quieres comprar algo que viste en redes sociales, pero realmente no lo necesitabas antes.¿Qué está influyendo más en esta decisión?",
               "variant": "body1",
               "align": "center"
             },
@@ -117,26 +117,26 @@
               {
                 "id": "spend_all",
                 "label": {
-                  "text": "a) Lo gasto todo en dulces",
-                  "variant": "body2"
-                },
-                "score": 60
-              },
-              {
-                "id": "save_part",
-                "label": {
-                  "text": "b) Guardo una parte para algo importante",
+                  "text": "a) Redes sociales",
                   "variant": "body2"
                 },
                 "score": 100
               },
               {
-                "id": "split_money",
+                "id": "save_part",
                 "label": {
-                  "text": "c) Compro algo pequeno y guardo el resto",
+                  "text": "b) Presión de amigos",
                   "variant": "body2"
                 },
                 "score": 85
+              },
+              {
+                "id": "split_money",
+                "label": {
+                  "text": "c) Necesidad real",
+                  "variant": "body2"
+                },
+                "score": 70
               }
             ],
             "prompt": {
@@ -172,7 +172,7 @@
           "align": "center"
         },
         "media": {
-          "src": "1/botella-gaseosa.webp",
+          "src": "2/acto2.webp",
           "alt": "Compra impulsiva en la tienda",
           "variant": "square"
         }
@@ -199,7 +199,7 @@
             "category": "interactive",
             "area": "action",
             "question": {
-              "text": "Acompanias a comprar con tu familia y ves una gaseosa que te gusta, pero primero falta comprar pan y jabon. Que harias?",
+              "text": "Tus amigos compraron un accesorio que está de moda. Ahora sientes ganas de comprarlo también, aunque antes no pensabas hacerlo.¿Qué está influyendo más en tu decisión?",
               "variant": "body1",
               "align": "center"
             },
@@ -207,15 +207,23 @@
               {
                 "id": "want_first",
                 "label": {
-                  "text": "a) Insisto en comprar la gaseosa primero",
+                  "text": "a) Quiero tenerlo porque mis amigos lo tienen.",
                   "variant": "body2"
                 },
-                "score": 60
+                "score": 70
               },
               {
                 "id": "need_first",
                 "label": {
-                  "text": "b) Priorizo el pan y el jabon porque son mas necesarios",
+                  "text": "b) Realmente lo necesito.",
+                  "variant": "body2"
+                },
+                "score": 85
+              },
+              {
+                "id": "consider_before",
+                "label": {
+                  "text": "c) Estoy pensando si vale la pena comprarlo.",
                   "variant": "body2"
                 },
                 "score": 100
@@ -254,7 +262,7 @@
           "align": "center"
         },
         "media": {
-          "src": "1/regresar-combi.webp",
+          "src": "2/acto3.webp",
           "alt": "Dinero para utiles y deseos",
           "variant": "horizontal"
         }
@@ -292,7 +300,7 @@
                   "text": "a) Compro stickers y luego veo si alcanza para lo demas",
                   "variant": "body2"
                 },
-                "score": 60
+                "score": 70
               },
               {
                 "id": "needs_first",
@@ -329,9 +337,99 @@
         "required": "selectOption"
       }
     },
+      {
+      "viewId": "m2_3_v4",
+      "order": 5,
+      "name": "VISTA 4 - Practica: Situacion 3",
+      "viewType": "Practica",
+      "objective": "Reflexionar sobre comprar primero lo necesario antes que un gusto.",
+      "template": "simpleQuiz",
+      "variant": "simple",
+      "slots": {
+        "title": {
+          "text": "Situacion 3",
+          "variant": "h1",
+          "align": "center"
+        },
+        "media": {
+          "src": "2/acto4.webp",
+          "alt": "Dinero para utiles y deseos",
+          "variant": "horizontal"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "image",
+            "slot": "media",
+            "area": "media",
+            "order": 20
+          }
+        ],
+        "compound": [
+          {
+            "type": "formQuestion",
+            "component": "formQuestion",
+            "category": "interactive",
+            "area": "action",
+            "question": {
+              "text": "Después de ver varios videos en redes sociales, ahora quieres comprar un producto que antes no conocías. ¿Qué podría estar influyendo en tu decisión?",
+              "variant": "body1",
+              "align": "center"
+            },
+            "options": [
+              {
+                "id": "only_stickers",
+                "label": {
+                  "text": "a) Redes sociales",
+                  "variant": "body2"
+                },
+                "score": 100
+              },
+              {
+                "id": "needs_first",
+                "label": {
+                  "text": "b) Ofertas y promociones",
+                  "variant": "body2"
+                },
+                "score": 85
+              },
+              {
+                "id": "small_desire",
+                "label": {
+                  "text": "c) La opinión deotras personas.",
+                  "variant": "body2"
+                },
+                "score": 85
+              }
+            ],
+            "prompt": {
+              "text": "Si quieres, explica como esa eleccion te ayudaria. (Opcional)",
+              "variant": "helper"
+            },
+            "placeholder": "Describe tu razon...",
+            "minReasonLength": 12,
+            "reasonRequired": false
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "lockedUntilComplete"
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "selectOption"
+      }
+    },
     {
       "viewId": "m2_3_v5",
-      "order": 5,
+      "order": 6,
       "name": "VISTA 5 - Practica: Situacion 4",
       "viewType": "Practica",
       "objective": "Reflexionar sobre guardar dinero cuando todavia puede hacer falta mas adelante.",
@@ -344,7 +442,7 @@
           "align": "center"
         },
         "media": {
-          "src": "1/agua.webp",
+          "src": "2/acto5.webp",
           "alt": "Elegir entre gastar o reservar dinero",
           "variant": "square"
         }
@@ -371,7 +469,7 @@
             "category": "interactive",
             "area": "action",
             "question": {
-              "text": "Te queda poco dinero y aun no sabes si lo necesitaras para el pasaje o para agua. Que harias?",
+              "text": "Has estado ahorrando para algo importante, pero hoy viste algo que te gustó mucho y podrías gastar parte de tu ahorro. ¿Qué decisión demuestra mayor autocontrol?",
               "variant": "body1",
               "align": "center"
             },
@@ -379,15 +477,23 @@
               {
                 "id": "impulse_buy",
                 "label": {
-                  "text": "a) Lo gasto por antojo antes de pensarlo",
+                  "text": "a) Gastar una parte del ahorro sin pensarlo.",
                   "variant": "body2"
                 },
-                "score": 60
+                "score": 70
               },
               {
                 "id": "save_for_need",
                 "label": {
-                  "text": "b) Guardo el dinero por si luego lo necesito",
+                  "text": "b) Reflexionar antes de decidir.",
+                  "variant": "body2"
+                },
+                "score": 95
+              },
+              {
+                "id": "small_spend",
+                "label": {
+                  "text": "c) Mantener el ahorro para la meta.",
                   "variant": "body2"
                 },
                 "score": 100
@@ -413,7 +519,7 @@
     },
     {
       "viewId": "m2_3_v6",
-      "order": 6,
+      "order": 7,
       "name": "VISTA 6 - Final: Lo lograste",
       "viewType": "Final",
       "objective": "Cerrar la mision actitudinal y mostrar la recompensa final.",
