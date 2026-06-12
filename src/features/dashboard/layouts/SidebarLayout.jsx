@@ -2,13 +2,21 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { createPortal } from "react-dom";
 import { Menu } from "lucide-react";
-import bg from "@/assets/dashboard/bg4.webp";
+import bg from "@/assets/dashboard/bgGreen.webp";
+import bg2 from "@/assets/dashboard/bgBlue.webp";
+import bg3 from "@/assets/dashboard/bgLilac.webp";
+
 import { useAuth } from "../../auth/components/AuthContext";
 import LogoutModal from "../../auth/pages/LogOut";
 import SidebarPanel from "./SidebarPanel";
 import { getMenuItemsByRole } from "./sidebar.config";
 import useIsDesktop from "./useIsDesktop";
-
+// Después de los imports, fuera del componente:
+const BG_BY_STYLE = {
+  green: bg,
+  blue: bg2,
+  lila: bg3,
+};
 export default function SidebarLayout() {
   const { user } = useAuth();
   const location = useLocation();
@@ -22,6 +30,7 @@ export default function SidebarLayout() {
     () => `theme-${user?.style ?? "green"}`,
     [user?.style],
   );
+  const bgImage = BG_BY_STYLE[user?.style ?? "green"];
 
   const roleName = user?.role?.name;
   const menuItems = useMemo(() => getMenuItemsByRole(roleName), [roleName]);
@@ -66,7 +75,7 @@ export default function SidebarLayout() {
       className={`flex min-h-screen w-full ${themeClass} transition-colors duration-300`}
       style={{
         backgroundColor: "var(--app-bg)",
-        backgroundImage: isAppHome ? `url(${bg})` : "none",
+        backgroundImage: isAppHome ? `url(${bgImage})` : "none",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
