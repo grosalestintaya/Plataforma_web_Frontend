@@ -7,7 +7,6 @@ import ModulesRope from "../../components/maincard";
 
 import { useProgressOverview } from "../../hooks/useProgressOverview";
 
-import bg from "@/assets/dashboard/bg3.webp";
 const Inicio = () => {
   const { data, loading } = useProgressOverview();
   console.log("Home user data:", data?.modules || []);

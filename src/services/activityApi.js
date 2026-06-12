@@ -24,6 +24,7 @@ export async function startActivityAttempt(activityId) {
 // POST /api/attempts/:attemptId/complete  body: { score, durationMs, payload }
 export async function completeAttempt(tokenActivity, body) {
   const res = await fetch(
+    
     `${API_BASE}/api/attempts/${tokenActivity}/complete`,
     {
       method: "POST",
