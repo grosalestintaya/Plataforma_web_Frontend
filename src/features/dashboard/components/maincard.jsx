@@ -69,7 +69,9 @@ export default function ModulesRope({
           xl:grid-cols-[minmax(0,1.45fr)_minmax(320px,420px)] xl:gap-6
         ">
         <div className="min-w-0">
-          <div className="w-full overflow-x-auto overflow-y-visible pb-1">
+          <div
+            className="w-full overflow-x-auto overflow-y-visible pb-1"
+            id="main-rope">
             <svg
               viewBox="50 0 720 470"
               preserveAspectRatio="xMidYMin meet"
@@ -198,7 +200,7 @@ export default function ModulesRope({
           </div>
         </div>
 
-        <div className="min-w-0 pr-10 xl:pt-3">
+        <div className="min-w-0 pr-10 xl:pt-3" id="last-module-panel">
           <div className="mx-auto max-w-[430px]">
             <FinalModuleUnlockPanel modules={modules || []} />
           </div>

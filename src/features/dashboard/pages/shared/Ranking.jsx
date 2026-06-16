@@ -80,7 +80,7 @@ export default function Ranking() {
 
         <div className="grid flex-1 min-h-0 w-full gap-6 overflow-hidden lg:grid-cols-[minmax(0,1fr)_550px]">
           {/* Panel izquierdo */}
-          <div className="min-h-0 w-full overflow-hidden">
+          <div className="min-h-0 w-full overflow-hidden" id="ranking-list">
             <BoardCard
               rankingState={{ ...rankingState, myRank }}
               onRefresh={refreshAll}
@@ -91,7 +91,9 @@ export default function Ranking() {
           <div className="min-h-0 w-full overflow-hidden">
             <Card className="relative flex h-full min-h-0 w-full flex-col overflow-hidden border border-border bg-gradient-to-br from-card via-card to-primary/5 shadow-2xl">
               <div className="absolute inset-0 bg-grid-white/[0.02]" />
-              <div className="relative flex-1 min-h-0 overflow-y-auto">
+              <div
+                className="relative flex-1 min-h-0 overflow-y-auto"
+                id="ranking-nav">
                 <UserProfileCard
                   me={rankingState.me}
                   myRank={myRank}

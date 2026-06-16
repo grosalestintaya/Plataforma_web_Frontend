@@ -32,6 +32,7 @@ export default function SidebarPanel({
 
   return (
     <aside
+      id="nav-bar"
       className={rootClass}
       style={{
         backgroundColor: "var(--sidebar)",

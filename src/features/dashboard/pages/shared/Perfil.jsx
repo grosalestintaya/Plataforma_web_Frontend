@@ -2,6 +2,8 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import ShowDashboardTitle from "../../components/ShowDashboardTitle";
 import { UserService } from "../../services/user.service";
 import { useAuth } from "../../../auth/components/AuthContext";
+import { ONBOARDING_BY_ROLE } from "@/features/dashboard/layouts/onboarding.config.js"; // ajusta el path
+import { useTour } from "@/features/tours/hooks/useTour";
 
 const getAvatarPath = (imgKey) => `/avatars/${imgKey}.webp`;
 const getgifPath = (imgKey) => `/activity/avatars/${imgKey}.webp`;
@@ -521,6 +523,15 @@ function EmptyView() {
 }
 
 const Perfil = () => {
+  const { startTour } = useTour();
+  const handleResetOnboarding = () => {
+    const roleName = authUser?.role?.name;
+    const key = ONBOARDING_BY_ROLE[roleName]?.storageKey;
+    if (key) {
+      localStorage.removeItem(key);
+      window.location.reload();
+    }
+  };
   const { user: authUser, updateStyle } = useAuth();
 
   const [showPasswordModal, setShowPasswordModal] = useState(false);
@@ -547,6 +558,7 @@ const Perfil = () => {
   const updateStyleRef = useRef(updateStyle);
   const savedStyleRef = useRef(savedStyle);
   const draftStyleRef = useRef(draftStyle);
+  const { resetTour, totalSteps } = useTour();
 
   useEffect(() => {
     updateStyleRef.current = updateStyle;
@@ -807,7 +819,7 @@ const Perfil = () => {
   return (
     <div className="flex h-full min-h-0 w-full min-w-0 flex-col gap-3 overflow-hidden">
       <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 overflow-hidden xl:grid-cols-[minmax(0,1.45fr)_minmax(300px,0.8fr)] xl:grid-rows-[minmax(0,1fr)_auto]">
-        <div className="min-h-0 xl:row-span-1">
+        <div className="min-h-0 xl:row-span-1" id="nav-profile">
           <PanelShell
             color={currentStyleMeta.color}
             className="p-4 lg:p-4 xl:p-5">
@@ -936,6 +948,46 @@ const Perfil = () => {
                       </div>
                     </div>
                   </button>
+                  {totalSteps > 0 && (
+                    <button
+                      type="button"
+                      onClick={startTour}
+                      className={cn(
+                        "group relative overflow-hidden rounded-2xl px-5 py-4",
+                        "transition-all duration-200",
+                        "hover:scale-[1.02] active:scale-[0.98]",
+                        "cursor-pointer",
+                      )}
+                      style={{
+                        border: `1px solid ${hexToRgba(currentStyleMeta.color, 0.2)}`,
+                        background: `linear-gradient(180deg, ${hexToRgba(currentStyleMeta.color, 0.7)}, rgba(255,255,255,0.95))`,
+                      }}>
+                      <div className="flex items-center gap-3">
+                        <div
+                          className="flex h-11 w-11 items-center justify-center rounded-2xl text-lg"
+                          style={{
+                            background: hexToRgba(currentStyleMeta.color, 0.14),
+                            border: `1px solid ${hexToRgba(currentStyleMeta.color, 0.2)}`,
+                          }}>
+                          🗺️
+                        </div>
+                        <div className="text-left">
+                          <p
+                            className="text-sm font-black"
+                            style={{ color: "var(--card-text, #0f172a)" }}>
+                            Ver tutorial
+                          </p>
+                          <p
+                            className="text-[12px]"
+                            style={{
+                              color: "var(--card-muted, rgba(15,23,42,0.62))",
+                            }}>
+                            Repetir bienvenida
+                          </p>
+                        </div>
+                      </div>
+                    </button>
+                  )}
                 </div>
               </div>
 
@@ -1025,7 +1077,7 @@ const Perfil = () => {
           </PanelShell>
         </div>
 
-        <div className="min-h-0">
+        <div className="min-h-0" id="edit-avatar">
           <PanelShell
             color={currentStyleMeta.color}
             className="p-4 lg:p-4 xl:p-5">
@@ -1206,7 +1258,7 @@ const Perfil = () => {
           </PanelShell>
         </div>
 
-        <div className="min-h-0 xl:col-span-2">
+        <div className="min-h-0 xl:col-span-2" id="personalization-options">
           <PanelShell
             color={currentStyleMeta.color}
             className="p-4 lg:p-4 xl:p-5">

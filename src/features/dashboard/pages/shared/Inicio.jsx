@@ -44,6 +44,7 @@ const Inicio = () => {
 
   return (
     <div
+      id="nav-inicio"
       className="flex h-full w-full min-w-0 flex-col overflow-hidden pb-0 "
       style={{
         backgroundSize: "cover",
@@ -57,7 +58,7 @@ const Inicio = () => {
         <ModulesRope modules={data?.modules || []} className="h-full" />
       </div>
 
-      <div className="shrink-0 -pb-0">
+      <div className="shrink-0 -pb-0" id="nav-insignias">
         <InsigniasCard />
       </div>
     </div>

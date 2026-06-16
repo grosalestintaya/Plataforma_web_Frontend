@@ -264,7 +264,8 @@ const UserCard = ({ user, isFirst = false }) => {
         className="
           relative grid h-full items-center gap-12
           xl:grid-cols-[minmax(320px,1fr)_340px]
-        ">
+        "
+        id="nav-user">
         <section className="min-w-0">
           <div className="flex h-full min-w-0 items-center gap-3">
             <div className="relative shrink-1">
