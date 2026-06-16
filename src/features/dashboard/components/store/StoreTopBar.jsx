@@ -15,6 +15,7 @@ function StatChip({
   return (
     <div
       className="relative overflow-hidden rounded-[14px] border flex items-center gap-2 px-3 py-1.5"
+      id="store-nav"
       style={{
         background: isCoin
           ? "linear-gradient(135deg, color-mix(in srgb, var(--coin-panel-bg) 85%, white) 0%, var(--coin-panel-bg) 100%)"

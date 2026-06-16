@@ -5,13 +5,14 @@ import { Menu } from "lucide-react";
 import bg from "@/assets/dashboard/bgGreen.webp";
 import bg2 from "@/assets/dashboard/bgBlue.webp";
 import bg3 from "@/assets/dashboard/bgLilac.webp";
-
 import { useAuth } from "../../auth/components/AuthContext";
 import LogoutModal from "../../auth/pages/LogOut";
 import SidebarPanel from "./SidebarPanel";
 import { getMenuItemsByRole } from "./sidebar.config";
 import useIsDesktop from "./useIsDesktop";
-// Después de los imports, fuera del componente:
+//imports para el tour onboarding
+import TourProvider from "@/features/tours/TourProvider";
+
 const BG_BY_STYLE = {
   green: bg,
   blue: bg2,
@@ -69,8 +70,9 @@ export default function SidebarLayout() {
 
   const desktopMainClass = "flex-1 min-w-0 ml-37 p-5 pt-4 pr-3 pb-3";
   const mobileMainClass = "min-h-screen w-full min-w-0 p-4 pt-16";
+  const TOUR_ENABLED = import.meta.env.VITE_TOUR_ENABLED === "true";
 
-  return (
+  const content = (
     <div
       className={`flex min-h-screen w-full ${themeClass} transition-colors duration-300`}
       style={{
@@ -91,13 +93,10 @@ export default function SidebarLayout() {
           mode="desktop"
         />
       )}
-
       {!isDesktop && <MobileMenuButton onClick={() => setMobileOpen(true)} />}
-
       <main className={isDesktop ? desktopMainClass : mobileMainClass}>
         <Outlet />
       </main>
-
       {!isDesktop &&
         mobileOpen &&
         createPortal(
@@ -112,10 +111,11 @@ export default function SidebarLayout() {
           />,
           document.body,
         )}
-
       <LogoutModal open={openLogout} onClose={() => setOpenLogout(false)} />
     </div>
   );
+
+  return TOUR_ENABLED ? <TourProvider>{content}</TourProvider> : content;
 }
 
 function MobileMenuButton({ onClick }) {

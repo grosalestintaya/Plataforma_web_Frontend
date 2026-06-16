@@ -1,0 +1,189 @@
+/* ── Popover base ── */
+.driver-popover {
+  background: #051a0f !important;
+  border: 1.5px solid #00c853 !important;
+  border-radius: 14px !important;
+  box-shadow:
+    0 0 0 1px rgba(0, 200, 83, 0.12),
+    0 0 28px rgba(0, 200, 83, 0.06),
+    0 20px 40px rgba(0, 0, 0, 0.55) !important;
+  padding: 20px 22px !important;
+  min-width: 280px !important;
+  max-width: 340px !important;
+}
+
+/* ── Título ── */
+.driver-popover-title {
+  font-size: 18px !important;
+  font-weight: 800 !important;
+  color: #ffffff !important;
+  margin-bottom: 8px !important;
+  letter-spacing: 0.01em !important;
+}
+.driver-popover-close-btn {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: absolute !important;
+  top: 12px !important;
+  right: 12px !important;
+  color: rgb(255, 0, 0) !important;
+  font-size: 20px !important;
+  cursor: pointer !important;
+  transition: color 0.15s !important;
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  line-height: 1 !important;
+}
+.driver-popover-close-btn:hover {
+  color: #ffffff !important;
+  font-size: 30px !important;
+}
+/* ── Descripción ── */
+.driver-popover-description {
+  font-size: 16px !important;
+  color: rgba(255, 255, 255, 0.95) !important;
+  line-height: 1.65 !important;
+}
+
+/* ── Progreso ── */
+.driver-popover-progress-text {
+  font-size: 12px !important;
+  color: #00c853 !important;
+  font-weight: 700 !important;
+}
+
+/* ── Footer ── */
+.driver-popover-footer {
+  margin-top: 16px !important;
+  gap: 8px !important;
+  border-top: 1px solid rgba(0, 200, 83, 0.1) !important;
+  padding-top: 14px !important;
+}
+
+/* ── Botón Siguiente ── */
+.driver-popover-next-btn {
+  background: #00c853 !important;
+  color: #000000 !important;
+  font-weight: 800 !important;
+  font-size: 13px !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 8px 16px !important;
+  cursor: pointer !important;
+  transition: all 0.15s !important;
+  box-shadow: 0 4px 12px rgba(0, 200, 83, 0.3) !important;
+}
+.driver-popover-next-btn:hover {
+  background: #00e65e !important;
+  box-shadow: 0 6px 18px rgba(0, 200, 83, 0.45) !important;
+}
+
+/* ── Botón Anterior ── */
+.driver-popover-prev-btn {
+  background: transparent !important;
+  color: rgba(255, 255, 255, 0.6) !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 8px !important;
+  padding: 8px 16px !important;
+  cursor: pointer !important;
+  transition: all 0.15s !important;
+}
+.driver-popover-prev-btn:hover {
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  color: #ffffff !important;
+}
+
+/* ── Botón Cerrar ── */
+.driver-popover-close-btn {
+  color: rgba(255, 255, 255, 0.35) !important;
+  font-size: 18px !important;
+  transition: color 0.15s !important;
+}
+.driver-popover-close-btn:hover {
+  color: #ffffff !important;
+}
+
+/* ── Flechas ── */
+.driver-popover-arrow-side-left.driver-popover-arrow {
+  border-right-color: #051a0f !important;
+}
+.driver-popover-arrow-side-right.driver-popover-arrow {
+  border-left-color: #051a0f !important;
+}
+.driver-popover-arrow-side-top.driver-popover-arrow {
+  border-bottom-color: #051a0f !important;
+}
+.driver-popover-arrow-side-bottom.driver-popover-arrow {
+  border-top-color: #051a0f !important;
+}
+
+/* ── Bienvenida — imagen centrada ── */
+.driver-popover-title img {
+  display: block !important;
+  margin: 0 auto 8px !important;
+}
+/* ── Botón Siguiente ── */
+.driver-popover-next-btn,
+.driver-popover-next-btn:focus {
+  all: unset !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: #00c853 !important;
+  color: #000000 !important;
+  font-weight: 800 !important;
+  font-size: 13px !important;
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  border-radius: 8px !important;
+  padding: 8px 16px !important;
+  cursor: pointer !important;
+  transition: all 0.15s !important;
+  box-shadow: 0 4px 12px rgba(0, 200, 83, 0.3) !important;
+}
+.driver-popover-next-btn:hover {
+  background: #00e65e !important;
+  box-shadow: 0 6px 18px rgba(0, 200, 83, 0.45) !important;
+}
+
+/* ── Botón Anterior ── */
+.driver-popover-prev-btn,
+.driver-popover-prev-btn:focus {
+  all: unset !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: transparent !important;
+  color: rgba(255, 255, 255, 0.6) !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 8px !important;
+  padding: 8px 16px !important;
+  cursor: pointer !important;
+  transition: all 0.15s !important;
+}
+.driver-popover-prev-btn:hover {
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  color: #ffffff !important;
+}
+/* ── Footer ── */
+.driver-popover-footer {
+  margin-top: 16px !important;
+  gap: 10px !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+  padding-top: 14px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+.driver-popover-navigation-btns {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
