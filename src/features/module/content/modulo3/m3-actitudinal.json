@@ -4,6 +4,518 @@
   "backendActivityId": "09",
   "activityKey": "m03-actitudinal",
   "headerTitle": "Actitudinal",
-  "missionTitle": "Organización y responsabilidad financiera",
-  "views": []
+  "missionTitle": "Decisiones responsables con mi presupuesto",
+  "views": [
+    {
+      "viewId": "m3_3_v1",
+      "order": 1,
+      "name": "VISTA 1 - Inicio: Antes de empezar",
+      "viewType": "Inicio",
+      "objective": "Presentar la mision actitudinal sobre decisiones responsables con el presupuesto.",
+      "template": "preGameLobby",
+      "variant": "preGame",
+      "slots": {
+        "title": {
+          "text": "Antes de empezar",
+          "variant": "h1",
+          "align": "center"
+        },
+        "body": {
+          "paragraphs": [
+            "No siempre las cosas salen como las planeamos y pueden aparecer gastos inesperados.",
+            "Antes de gastar, es importante revisar el dinero disponible y pensar en nuestras prioridades.",
+            "En esta misión analizarás situaciones que te ayudarán a tomar decisiones más responsables con tu presupuesto."
+          ],
+          "variant": "body1",
+          "align": "justify"
+        },
+        "media": {
+          "src": "3/inicio-actitudinal.webp",
+          "alt": "Estudiante reflexionando sobre su presupuesto",
+          "variant": "vertical"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "text",
+            "slot": "body",
+            "area": "body",
+            "order": 20
+          },
+          {
+            "component": "image",
+            "slot": "media",
+            "area": "media",
+            "order": 30
+          }
+        ],
+        "compound": []
+      },
+      "navigation": {
+        "mode": "cta",
+        "label": "Empezar",
+        "action": "startMissionAttempt"
+      },
+      "completionCriteria": {
+        "type": "manualStart"
+      }
+    },
+    {
+      "viewId": "m3_3_v2",
+      "order": 2,
+      "name": "VISTA 2 - Practica: Situacion 1",
+      "viewType": "Practica",
+      "objective": "Reflexionar sobre como reaccionar ante un gasto inesperado cuando el presupuesto ya esta distribuido.",
+      "template": "simpleQuiz",
+      "variant": "simple",
+      "slots": {
+        "title": {
+          "text": "Situación 1",
+          "variant": "h1",
+          "align": "center"
+        },
+        "media": {
+          "src": "3/estudiante-revisando-presupuesto-impresion.webp",
+          "alt": "Un estudiante revisando su presupuesto mientras descubre que necesita pagar una impresion urgente para una tarea.",
+          "variant": "horizontal"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "image",
+            "slot": "media",
+            "area": "media",
+            "order": 20
+          }
+        ],
+        "compound": [
+          {
+            "type": "formQuestion",
+            "component": "formQuestion",
+            "category": "interactive",
+            "area": "action",
+            "question": {
+              "text": "Organizaste tu presupuesto para la semana y ya habías distribuido todo tu dinero. Sin embargo, aparece un gasto inesperado que no habías considerado. ¿Qué harías en esta situación?",
+              "variant": "body1",
+              "align": "justify"
+            },
+            "options": [
+              {
+                "id": "review_budget",
+                "label": {
+                  "text": "a) Revisaría mi presupuesto para ver qué gasto puedo reducir o ajustar.",
+                  "variant": "body2"
+                },
+                "score": 100
+              },
+              {
+                "id": "use_all_money",
+                "label": {
+                  "text": "b) Utilizaría todo el dinero que me queda sin revisar mi presupuesto.",
+                  "variant": "body2"
+                },
+                "score": 70
+              },
+              {
+                "id": "ask_more_money",
+                "label": {
+                  "text": "c) Pediría más dinero inmediatamente sin analizar otras opciones.",
+                  "variant": "body2"
+                },
+                "score": 70
+              }
+            ],
+            "prompt": {
+              "text": "¿Por qué elegirías esa opción? (Opcional)",
+              "variant": "helper"
+            },
+            "placeholder": "Cada persona puede reaccionar de manera diferente ante un gasto inesperado...",
+            "minReasonLength": 12,
+            "reasonRequired": false
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "lockedUntilComplete"
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "selectOption"
+      }
+    },
+    {
+      "viewId": "m3_3_v3",
+      "order": 3,
+      "name": "VISTA 3 - Practica: Situacion 2",
+      "viewType": "Practica",
+      "objective": "Reflexionar sobre compras impulsivas y la importancia de revisar el dinero disponible antes de decidir.",
+      "template": "extendedQuiz",
+      "variant": "extended",
+      "slots": {
+        "title": {
+          "text": "Situación 2",
+          "variant": "h1",
+          "align": "center"
+        },
+        "media": {
+          "src": "3/estudiante-viendo-accesorio-presupuesto.webp",
+          "alt": "Un estudiante viendo un accesorio o videojuego que le gusta mucho mientras revisa el dinero que le queda para la semana.",
+          "variant": "horizontal"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "image",
+            "slot": "media",
+            "area": "media",
+            "order": 20
+          }
+        ],
+        "compound": [
+          {
+            "type": "formQuestion",
+            "component": "formQuestion",
+            "category": "interactive",
+            "area": "action",
+            "question": {
+              "text": "Ya organizaste tu presupuesto para la semana. Sin embargo, encuentras un producto que te gusta mucho y sientes ganas de comprarlo en ese momento. ¿Qué harías?",
+              "variant": "body1",
+              "align": "justify"
+            },
+            "options": [
+              {
+                "id": "check_money_first",
+                "label": {
+                  "text": "a) Revisaría cuánto dinero tengo disponible antes de decidir.",
+                  "variant": "body2"
+                },
+                "score": 100
+              },
+              {
+                "id": "buy_immediately",
+                "label": {
+                  "text": "b) Lo compraría inmediatamente porque me gusta.",
+                  "variant": "body2"
+                },
+                "score": 70
+              },
+              {
+                "id": "wait_and_think",
+                "label": {
+                  "text": "c) Esperaría unos días para pensar si realmente lo necesito.",
+                  "variant": "body2"
+                },
+                "score": 100
+              }
+            ],
+            "prompt": {
+              "text": "¿Por qué elegirías esa opción? (Opcional)",
+              "variant": "helper"
+            },
+            "placeholder": "Antes de realizar una compra, es importante considerar cómo puede afectar el dinero disponible para otras necesidades o planes...",
+            "minReasonLength": 12,
+            "reasonRequired": false
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "lockedUntilComplete"
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "selectOption"
+      }
+    },
+    {
+      "viewId": "m3_3_v4",
+      "order": 4,
+      "name": "VISTA 4 - Practica: Situacion 3",
+      "viewType": "Practica",
+      "objective": "Reflexionar sobre como priorizar gastos cuando el dinero disponible no alcanza para todo.",
+      "template": "simpleQuiz",
+      "variant": "simple",
+      "slots": {
+        "title": {
+          "text": "Situación 3",
+          "variant": "h1",
+          "align": "center"
+        },
+        "media": {
+          "src": "3/estudiante-presupuesto-gastos-pendientes.webp",
+          "alt": "Un adolescente con una libreta o aplicacion de presupuesto observando varios gastos pendientes con expresion de analisis.",
+          "variant": "square"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "image",
+            "slot": "media",
+            "area": "media",
+            "order": 20
+          }
+        ],
+        "compound": [
+          {
+            "type": "formQuestion",
+            "component": "formQuestion",
+            "category": "interactive",
+            "area": "action",
+            "question": {
+              "text": "Esta semana el dinero que tienes disponible no alcanza para cubrir todo lo que te gustaría hacer. Debes decidir qué mantener y qué podría esperar. ¿Qué harías?",
+              "variant": "body1",
+              "align": "justify"
+            },
+            "options": [
+              {
+                "id": "review_priorities",
+                "label": {
+                  "text": "a) Revisaría cuáles gastos son más importantes antes de decidir.",
+                  "variant": "body2"
+                },
+                "score": 100
+              },
+              {
+                "id": "spend_on_likes",
+                "label": {
+                  "text": "b) Utilizaría el dinero en lo que más me gusta en ese momento.",
+                  "variant": "body2"
+                },
+                "score": 70
+              },
+              {
+                "id": "reorganize_expenses",
+                "label": {
+                  "text": "c) Buscaría una forma de reorganizar mis gastos para que el dinero alcance mejor.",
+                  "variant": "body2"
+                },
+                "score": 100
+              }
+            ],
+            "prompt": {
+              "text": "¿Por qué elegirías esa opción? (Opcional)",
+              "variant": "helper"
+            },
+            "placeholder": "Cuando el dinero es limitado, revisar las prioridades puede ayudar a tomar decisiones más conscientes...",
+            "minReasonLength": 12,
+            "reasonRequired": false
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "lockedUntilComplete"
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "selectOption"
+      }
+    },
+    {
+      "viewId": "m3_3_v5",
+      "order": 5,
+      "name": "VISTA 5 - Practica: Situacion 4",
+      "viewType": "Practica",
+      "objective": "Reflexionar sobre como usar el dinero restante de forma responsable pensando en gastos futuros.",
+      "template": "extendedQuiz",
+      "variant": "extended",
+      "slots": {
+        "title": {
+          "text": "Situación 4",
+          "variant": "h1",
+          "align": "center"
+        },
+        "media": {
+          "src": "3/estudiante-presupuesto-fin-semana.webp",
+          "alt": "Un estudiante revisando su presupuesto antes del fin de semana con salida a comer, cine, material escolar y dinero ahorrado sobre la mesa.",
+          "variant": "horizontal"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "image",
+            "slot": "media",
+            "area": "media",
+            "order": 20
+          }
+        ],
+        "compound": [
+          {
+            "type": "formQuestion",
+            "component": "formQuestion",
+            "category": "interactive",
+            "area": "action",
+            "question": {
+              "text": "Has organizado tu dinero para la semana y todavía te queda una parte disponible. Antes de decidir cómo utilizarla, revisas tu presupuesto y piensas en tus próximos gastos. ¿Qué harías?",
+              "variant": "body1",
+              "align": "justify"
+            },
+            "options": [
+              {
+                "id": "review_future_expenses",
+                "label": {
+                  "text": "a) Revisaría mis gastos futuros antes de decidir en qué gastar el dinero restante.",
+                  "variant": "body2"
+                },
+                "score": 100
+              },
+              {
+                "id": "spend_all_available",
+                "label": {
+                  "text": "b) Gastaría todo el dinero que queda porque aún está disponible.",
+                  "variant": "body2"
+                },
+                "score": 70
+              },
+              {
+                "id": "save_for_later",
+                "label": {
+                  "text": "c) Guardaría una parte por si surge alguna necesidad más adelante.",
+                  "variant": "body2"
+                },
+                "score": 100
+              }
+            ],
+            "prompt": {
+              "text": "¿Por qué elegirías esa opción? (Opcional)",
+              "variant": "helper"
+            },
+            "placeholder": "Planificar no significa dejar de gastar, sino tomar decisiones pensando en el presente y en lo que podría necesitarse más adelante...",
+            "minReasonLength": 12,
+            "reasonRequired": false
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "lockedUntilComplete"
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "selectOption"
+      }
+    },
+    {
+      "viewId": "m3_3_v6",
+      "order": 6,
+      "name": "VISTA 6 - Final: Mision completada",
+      "viewType": "Final",
+      "objective": "Cerrar la mision actitudinal y mostrar la recompensa final.",
+      "template": "postGameLobby",
+      "variant": "postGame",
+      "slots": {
+        "title": {
+          "text": "Misión cumplida",
+          "variant": "h1",
+          "align": "center"
+        },
+        "feedback": {
+          "text": "Analizaste situaciones reales y tomaste decisiones más conscientes sobre tu presupuesto.",
+          "variant": "label",
+          "align": "center",
+          "color": "accent"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "text",
+            "slot": "feedback",
+            "area": "feedback",
+            "order": 20
+          }
+        ],
+        "compound": [
+          {
+            "type": "showCard",
+            "component": "showCard",
+            "category": "grouper",
+            "area": "rewards",
+            "items": [
+              {
+                "id": "reward-xp",
+                "title": {
+                  "text": "XP",
+                  "variant": "label"
+                },
+                "text": {
+                  "text": "+10",
+                  "variant": "body1",
+                  "color": "secondary"
+                },
+                "media": {
+                  "src": "",
+                  "alt": "Recompensa de XP",
+                  "variant": "square"
+                }
+              },
+              {
+                "id": "reward-intis",
+                "title": {
+                  "text": "INTIS",
+                  "variant": "label"
+                },
+                "text": {
+                  "text": "+10",
+                  "variant": "body1",
+                  "color": "secondary"
+                },
+                "media": {
+                  "src": "",
+                  "alt": "Recompensa de INTIS",
+                  "variant": "square"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "cta",
+        "label": "Continuar",
+        "action": "goToNextMissionMenu"
+      },
+      "completionCriteria": {
+        "type": "endOfMission"
+      }
+    }
+  ]
 }
