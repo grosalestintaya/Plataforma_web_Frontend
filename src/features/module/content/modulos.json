@@ -42,8 +42,7 @@
           "activityKey": "m01-actitudinal",
           "learn": [
             "Valorar el dinero y reconocer el esfuerzo que implica conseguirlo.",
-            "Pensar antes de gastar y tomar decisiones más responsables.",
-            "Reflexionar sobre cómo tus decisiones afectan tus metas y bienestar."
+            "Pensar antes de gastar y tomar decisiones más responsables."
           ],
           "outcome": "Tomarás decisiones más responsables con tu dinero, priorizando lo que realmente necesitas y pensando antes de gastar."
         }
@@ -99,7 +98,7 @@
       "code": "m03",
       "sortOrder": 3,
       "title": "Modulo 3",
-      "name": "Organizo mi presupuesto personal, familiar o escolar",
+      "name": "Mi presupuesto en accion",
       "theme": {
         "tone": "orange",
         "color": "#FFA500",
@@ -107,14 +106,14 @@
       },
       "missions": {
         "conceptual": {
-          "title": "¿Qué es un presupuesto?",
+          "title": "El presupuesto como herramienta de organización",
           "backendActivityId": null,
           "activityKey": "m03-conceptual",
           "learn": [
-            "Comprender el presupuesto como una herramienta útil para organizar el dinero de manera clara y responsable.",
-            "Aprender a planificar ingresos y gastos para tomar mejores decisiones y alcanzar metas personales."
+            "Comprender qué es un presupuesto y para que sirve.",
+            "Identificar los elementos básicos de un presupuesto: ingresos, gastos y ahorro."
           ],
-          "outcome": "Comprenderás el presupuesto como una herramienta de organización que te ayudará a planificar mejor tus ingresos y gastos.."
+          "outcome": "Comprenderás el presupuesto como una herramienta de organización que te ayudará a planificar mejor tus  ingresos, gastos y ahorro."
         },
         "procedimental": {
           "title": "elaboración de un presupuesto personal",
@@ -131,10 +130,10 @@
           "backendActivityId": null,
           "activityKey": "m03-actitudinal",
           "learn": [
-            "Fomentar hábitos de orden y planificación para administrar mejor el dinero en la vida diaria.",
-            "Aprender a organizar gastos e ingresos de forma responsable, pensando en metas y necesidades futuras."
+            "Pensar sobre cómo tomas decisiones cuando organizas tu dinero.",
+            "Reconocer la importancia de planificar antes de gastar."
           ],
-          "outcome": "Fomentarás hábitos de orden y planificación para organizar mejor tu dinero y tomar decisiones financieras más responsables."
+          "outcome": "Reflexionarás sobre tus decisiones al organizar un presupuesto y comprenderás cómo estas pueden influir en el uso responsable del dinero."
         }
       }
     },
