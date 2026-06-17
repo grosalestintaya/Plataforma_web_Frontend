@@ -45,6 +45,7 @@ export default function CollageCard({
   onSelect,
   onComplete,
   slotCount,
+  renderItem,
   renderEmptySlot,
   className,
   gridClassName,
@@ -128,18 +129,29 @@ export default function CollageCard({
               )}
             >
               <div className="group/collage relative h-full w-full min-w-0">
-                <Card
-                  title={item?.title}
-                  text={getItemText(item)}
-                  media={item?.media}
-                  interaction={item?.interaction}
-                  selected={isSelected}
-                  zoomable={getItemZoomable(item)}
-                  variant={item?.cardVariant ?? item?.variant}
-                  size={item?.size}
-                  onSelect={() => onSelect?.(item, index)}
-                  onComplete={() => onComplete?.(itemId, item, index)}
-                />
+                {renderItem ? (
+                  renderItem({
+                    item,
+                    index,
+                    itemId,
+                    isSelected,
+                    onSelect: () => onSelect?.(item, index),
+                    onComplete: () => onComplete?.(itemId, item, index),
+                  })
+                ) : (
+                  <Card
+                    title={item?.title}
+                    text={getItemText(item)}
+                    media={item?.media}
+                    interaction={item?.interaction}
+                    selected={isSelected}
+                    zoomable={getItemZoomable(item)}
+                    variant={item?.cardVariant ?? item?.variant}
+                    size={item?.size}
+                    onSelect={() => onSelect?.(item, index)}
+                    onComplete={() => onComplete?.(itemId, item, index)}
+                  />
+                )}
 
                 {item?.hoverLabel ? (
                   <div className="pointer-events-none absolute inset-x-3 bottom-3 z-20 translate-y-3 opacity-0 transition duration-200 group-hover/collage:translate-y-0 group-hover/collage:opacity-100 group-focus-within/collage:translate-y-0 group-focus-within/collage:opacity-100">

@@ -178,6 +178,8 @@ export default function Crossword({ data = {}, heroApi, view, className = "" }) 
   const {
     boardBackground = data?.boardBackground ?? null,
     sidebarImage = data?.sidebarImage ?? null,
+    minimumScore = 60,
+    maximumScore = 100,
   } = crossword;
   const viewId = view?.id ?? view?.viewId;
   const {
@@ -197,6 +199,10 @@ export default function Crossword({ data = {}, heroApi, view, className = "" }) 
     viewId,
     preparedWords,
     sidebarImage,
+    scoreConfig: {
+      minimumScore,
+      maximumScore,
+    },
   });
 
   const { boardCellSize, letterSize, numberSize } = useMemo(() => {

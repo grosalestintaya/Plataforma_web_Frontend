@@ -720,6 +720,8 @@
               "align": "left"
             },
             "crossword": {
+              "minimumScore": 60,
+              "maximumScore": 100,
               "boardBackground": {
                 "src": "activity/inicio-conceptual2.webp",
                 "alt": "Fondo del crucigrama"
