@@ -61,7 +61,9 @@ Campos principales:
     sidebarImage: {
       src: "activity/imagen-default.png",
       alt: "Imagen lateral"
-    }
+    },
+    minimumScore: 60,
+    maximumScore: 100
   }
 }
 ```
@@ -77,6 +79,8 @@ Campos principales:
 - Las letras ya resueltas por cruces quedan bloqueadas, pero no interrumpen la escritura de la palabra activa.
 - Si una palabra esta mal, se marca temporalmente y se limpia para volver a intentarla.
 - Si una palabra esta bien, queda fija en el tablero y sus letras alimentan los cruces de las demas.
+- Mientras el crucigrama no este completo, el score representa progreso y se mantiene por debajo del minimo de aprobacion.
+- Al completarlo, el score final queda entre `minimumScore` y `maximumScore`: resolver una palabra al primer intento conserva el bonus; corregirla despues de un error deja solo el puntaje base.
 
 ### Integracion
 

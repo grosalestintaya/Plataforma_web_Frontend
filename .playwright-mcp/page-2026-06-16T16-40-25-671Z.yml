@@ -1,0 +1,200 @@
+- generic [ref=e269]:
+  - generic:
+    - img
+  - generic [ref=e271]:
+    - banner [ref=e272]:
+      - generic [ref=e273]:
+        - generic [ref=e274]:
+          - generic [ref=e275]:
+            - button "Salir de la actividad" [ref=e276] [cursor=pointer]:
+              - img [ref=e277]
+            - heading "Elaboracion de un presupuesto personal" [level=1] [ref=e286]
+          - button "Configuracion" [ref=e288] [cursor=pointer]
+        - img [ref=e291]
+    - main [ref=e426]:
+      - generic [ref=e430]:
+        - generic [ref=e432]:
+          - generic [ref=e433]:
+            - paragraph [ref=e436]: Proyecto emprendedor
+            - heading "Registro y organizo mi presupuesto" [level=1] [ref=e439]
+            - paragraph [ref=e443]: Selecciona las tarjetas necesarias para que tu proyecto funcione sin quedarte sin saldo.
+          - generic [ref=e444]:
+            - img [ref=e445]
+            - text: Presupuesto del proyecto
+        - generic [ref=e449]:
+          - generic [ref=e451]:
+            - generic [ref=e452]:
+              - generic [ref=e726]:
+                - paragraph [ref=e729]: Tarjetas disponibles
+                - paragraph [ref=e732]: Haz click en las tarjetas para agregarlas o quitarlas del presupuesto.
+              - generic [ref=e453]:
+                - generic [ref=e454]: 11 por elegir
+                - button "Limpiar" [disabled] [ref=e455]:
+                  - generic [ref=e456]: Limpiar
+            - generic [ref=e734]:
+              - generic [ref=e736]:
+                - article [ref=e458]:
+                  - generic [ref=e460]:
+                    - paragraph [ref=e463]: Frutas e insumos
+                    - paragraph [ref=e466]: Necesario | S/30
+                - generic:
+                  - generic: Base del producto principal del proyecto.
+              - generic [ref=e738]:
+                - article [ref=e467]:
+                  - generic [ref=e469]:
+                    - paragraph [ref=e472]: Vasos
+                    - paragraph [ref=e475]: Necesario | S/12
+                - generic:
+                  - generic: Sirven para entregar las porciones.
+              - generic [ref=e740]:
+                - article [ref=e476]:
+                  - generic [ref=e478]:
+                    - paragraph [ref=e481]: Hielo
+                    - paragraph [ref=e484]: Necesario | S/6
+                - generic:
+                  - generic: Ayuda a conservar las bebidas frias.
+              - generic [ref=e742]:
+                - article [ref=e485]:
+                  - generic [ref=e487]:
+                    - paragraph [ref=e490]: Cartel
+                    - paragraph [ref=e493]: Opcional | S/8
+                - generic:
+                  - generic: Se ve mejor, pero no es indispensable.
+              - generic [ref=e744]:
+                - article [ref=e494]:
+                  - generic [ref=e496]:
+                    - paragraph [ref=e499]: Decoracion
+                    - paragraph [ref=e502]: Opcional | S/12
+                - generic:
+                  - generic: Puede esperar si el dinero es justo.
+              - generic [ref=e746]:
+                - article [ref=e503]:
+                  - generic [ref=e505]:
+                    - paragraph [ref=e508]: Snacks
+                    - paragraph [ref=e511]: Opcional | S/9
+                - generic:
+                  - generic: Atraen, pero no sostienen el proyecto.
+              - generic [ref=e748]:
+                - article [ref=e512]:
+                  - generic [ref=e514]:
+                    - paragraph [ref=e517]: Imprevistos
+                    - paragraph [ref=e520]: Recomendado | S/10
+                - generic:
+                  - generic: Dejar margen te protege si algo cambia.
+              - generic [ref=e750]:
+                - article [ref=e521]:
+                  - generic [ref=e523]:
+                    - paragraph [ref=e526]: Cartel a mano
+                    - paragraph [ref=e529]: Necesario | S/4
+                - generic:
+                  - generic: Cumple la funcion de avisar sin gastar tanto.
+              - generic [ref=e752]:
+                - article [ref=e530]:
+                  - generic [ref=e532]:
+                    - paragraph [ref=e535]: Decoracion simple
+                    - paragraph [ref=e538]: Opcional | S/6
+                - generic:
+                  - generic: Version mas ligera de la decoracion.
+              - generic [ref=e754]:
+                - article [ref=e539]:
+                  - generic [ref=e541]:
+                    - paragraph [ref=e544]: Botellas
+                    - paragraph [ref=e547]: Opcional | S/15
+                - generic:
+                  - generic: No hace falta si ya usas vasos.
+              - generic [ref=e756]:
+                - article [ref=e548]:
+                  - generic [ref=e550]:
+                    - paragraph [ref=e553]: Etiquetas
+                    - paragraph [ref=e556]: Opcional | S/5
+                - generic:
+                  - generic: Suman detalle, pero pueden esperar.
+          - generic [ref=e557]:
+            - generic [ref=e559]:
+              - article [ref=e561]:
+                - generic [ref=e563]:
+                  - heading "Observa ingresos, gastos y saldo" [level=3] [ref=e566]
+                  - generic [ref=e568]:
+                    - paragraph [ref=e569]: Empieza por lo necesario y evita cargar el presupuesto con compras que pueden esperar.
+                    - paragraph [ref=e570]: Si el estado llega a Bueno, el footer te dejara avanzar.
+              - generic [ref=e572]:
+                - generic [ref=e574]:
+                  - article [ref=e575]:
+                    - generic [ref=e577]:
+                      - paragraph [ref=e580]: Ingreso base
+                      - paragraph [ref=e583]: S/80 disponibles
+                  - generic:
+                    - generic: Todo gasto debe salir de este monto.
+                - generic [ref=e585]:
+                  - article [ref=e586]:
+                    - generic [ref=e588]:
+                      - paragraph [ref=e591]: Prioriza
+                      - paragraph [ref=e594]: 4 gastos son clave para operar
+                  - generic:
+                    - generic: Cubre primero lo que hace funcionar el proyecto.
+                - generic [ref=e596]:
+                  - article [ref=e597]:
+                    - generic [ref=e599]:
+                      - paragraph [ref=e602]: Margen sano
+                      - paragraph [ref=e605]: Deja al menos S/10
+                  - generic:
+                    - generic: Ese margen te da aire para un cambio o imprevisto.
+            - generic [ref=e607]:
+              - generic [ref=e608]:
+                - generic [ref=e614]:
+                  - article [ref=e617]:
+                    - generic [ref=e619]:
+                      - paragraph [ref=e622]: Ingresos
+                      - heading "S/80" [level=2] [ref=e625]
+                  - button [ref=e630]:
+                    - article [ref=e631]:
+                      - generic [ref=e633]:
+                        - paragraph [ref=e636]: Ingreso inicial
+                        - paragraph [ref=e639]: S/80
+                - generic [ref=e642]:
+                  - article [ref=e645]:
+                    - generic [ref=e647]:
+                      - paragraph [ref=e650]: Gastos
+                      - heading "S/0" [level=2] [ref=e653]
+                  - generic [ref=e658]: Agrega tarjetas aqui
+              - generic [ref=e661]:
+                - paragraph [ref=e664]: Saldo
+                - heading "S/80" [level=1] [ref=e667]
+              - generic [ref=e668]:
+                - generic [ref=e669]:
+                  - img [ref=e671]
+                  - generic:
+                    - generic:
+                      - generic:
+                        - paragraph: "Estado: Explorando"
+                    - generic:
+                      - generic:
+                        - paragraph: Aun no has armado tu presupuesto. Empieza por los gastos necesarios.
+                - generic [ref=e674]: "Posibles estados: Equilibrado, Riesgo y Bueno"
+            - generic [ref=e675]:
+              - generic [ref=e676]:
+                - generic [ref=e757]:
+                  - paragraph [ref=e760]: Resumen rapido
+                  - paragraph [ref=e763]: Cuando cubras lo necesario y dejes margen, el footer se habilitara.
+                - generic [ref=e677]:
+                  - img [ref=e678]
+                  - text: 0 tarjetas elegidas
+              - generic [ref=e683]:
+                - article [ref=e685]:
+                  - generic [ref=e687]:
+                    - paragraph [ref=e690]: Ingresos
+                    - heading "S/80" [level=2] [ref=e693]
+                - article [ref=e695]:
+                  - generic [ref=e697]:
+                    - paragraph [ref=e700]: Gastos
+                    - heading "S/0" [level=2] [ref=e703]
+                - article [ref=e705]:
+                  - generic [ref=e707]:
+                    - paragraph [ref=e710]: Saldo
+                    - heading "S/80" [level=2] [ref=e713]
+    - contentinfo [ref=e714]:
+      - generic [ref=e716]:
+        - generic [ref=e719]: Selecciona las tarjetas necesarias y deja un saldo saludable para continuar.
+        - button "Finalizar" [disabled] [ref=e721]:
+          - generic [ref=e722]: Finalizar
+          - img [ref=e724]
