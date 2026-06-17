@@ -11,14 +11,70 @@ const getWordId = (word, index) => word?.id ?? `word-${index}`;
 const getCellKey = (row, col) => `${row}-${col}`;
 const getIsPortraitViewport = () =>
   typeof window !== "undefined" && window.innerWidth < window.innerHeight;
+const DEFAULT_MINIMUM_SCORE = 60;
+const DEFAULT_MAXIMUM_SCORE = 100;
 const EMPTY_BOUNDS = { minRow: 0, maxRow: 0, minCol: 0, maxCol: 0 };
 const EMPTY_WORD_STATE = {
   values: [],
   lockedIndexes: new Set(),
   firstEditableIndex: 0,
 };
+const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 const normalizeDrafts = (drafts) =>
   drafts && typeof drafts === "object" ? drafts : {};
+const normalizeWordIdList = (value) =>
+  Array.isArray(value)
+    ? [...new Set(value.filter((item) => item !== null && item !== undefined))]
+    : [];
+
+function getScoreConfig(scoreConfig) {
+  const minimumScore = clamp(
+    Number(scoreConfig?.minimumScore ?? DEFAULT_MINIMUM_SCORE) || 0,
+    0,
+    DEFAULT_MAXIMUM_SCORE,
+  );
+  const maximumScore = clamp(
+    Number(scoreConfig?.maximumScore ?? DEFAULT_MAXIMUM_SCORE) || minimumScore,
+    minimumScore,
+    DEFAULT_MAXIMUM_SCORE,
+  );
+
+  return {
+    minimumScore,
+    maximumScore,
+  };
+}
+
+function calculateCrosswordScore({
+  completed,
+  solvedWordIds,
+  retriedWordIds,
+  totalWords,
+  minimumScore,
+  maximumScore,
+}) {
+  const safeTotalWords = Math.max(0, Number(totalWords) || 0);
+  if (!safeTotalWords) return 0;
+
+  const solvedCount = solvedWordIds.length;
+
+  if (!completed) {
+    return clamp(
+      Math.round((solvedCount / safeTotalWords) * Math.max(minimumScore - 1, 0)),
+      0,
+      Math.max(minimumScore - 1, 0),
+    );
+  }
+
+  const retriedSet = new Set(retriedWordIds);
+  const minimumPerWord = minimumScore / safeTotalWords;
+  const bonusPerWord = (maximumScore - minimumScore) / safeTotalWords;
+  const totalScore = solvedWordIds.reduce((sum, wordId) => {
+    return sum + minimumPerWord + (retriedSet.has(wordId) ? 0 : bonusPerWord);
+  }, 0);
+
+  return clamp(Math.round(totalScore), minimumScore, maximumScore);
+}
 
 const getNextPendingWordId = (words, solvedWordIds) => {
   const solvedSet = new Set(solvedWordIds ?? []);
@@ -465,7 +521,12 @@ export function useCrosswordController({
   viewId,
   preparedWords,
   sidebarImage,
+  scoreConfig,
 }) {
+  const { minimumScore, maximumScore } = useMemo(
+    () => getScoreConfig(scoreConfig),
+    [scoreConfig],
+  );
   const wordSignature = useMemo(
     () =>
       preparedWords
@@ -481,10 +542,12 @@ export function useCrosswordController({
     ? persistedState.solvedWordIds
     : [];
   const initialDrafts = normalizeDrafts(persistedState?.drafts);
+  const initialRetriedWordIds = normalizeWordIdList(persistedState?.retriedWordIds);
 
   const [isPortraitViewport, setIsPortraitViewport] = useState(getIsPortraitViewport);
   const [solvedWordIds, setSolvedWordIds] = useState(() => initialSolvedWordIds);
   const [drafts, setDrafts] = useState(() => initialDrafts);
+  const [retriedWordIds, setRetriedWordIds] = useState(() => initialRetriedWordIds);
   const [activeWordId, setActiveWordId] = useState(() =>
     getNextPendingWordId(preparedWords, initialSolvedWordIds),
   );
@@ -553,9 +616,25 @@ export function useCrosswordController({
 
   const completed =
     layout.words.length > 0 && solvedWordIds.length === layout.words.length;
-  const score = layout.words.length
-    ? Math.round((solvedWordIds.length / layout.words.length) * 100)
-    : 0;
+  const score = useMemo(
+    () =>
+      calculateCrosswordScore({
+        completed,
+        solvedWordIds,
+        retriedWordIds,
+        totalWords: layout.words.length,
+        minimumScore,
+        maximumScore,
+      }),
+    [
+      completed,
+      layout.words.length,
+      maximumScore,
+      minimumScore,
+      retriedWordIds,
+      solvedWordIds,
+    ],
+  );
   const wordLength = activeWord?.answer.length ?? 0;
   const visibleCursorIndex = getVisibleCursorIndex(
     cursorIndex,
@@ -600,6 +679,9 @@ export function useCrosswordController({
       return;
     }
 
+    setRetriedWordIds((current) =>
+      current.includes(activeWord.id) ? current : [...current, activeWord.id],
+    );
     setIncorrectWordIds((current) =>
       current.includes(activeWord.id) ? current : [...current, activeWord.id],
     );
@@ -779,11 +861,13 @@ export function useCrosswordController({
     hydrationKeyRef.current = nextHydrationKey;
     setSolvedWordIds(initialSolvedWordIds);
     setDrafts(initialDrafts);
+    setRetriedWordIds(initialRetriedWordIds);
     setActiveWordId(getNextPendingWordId(preparedWords, initialSolvedWordIds));
     setCursorIndex(0);
     setIncorrectWordIds([]);
   }, [
     initialDrafts,
+    initialRetriedWordIds,
     initialSolvedWordIds,
     preparedWords,
     viewId,
@@ -827,13 +911,14 @@ export function useCrosswordController({
     heroApi?.setInteractiveState?.(viewId, {
       completed,
       type: "crossword",
-      score: completed ? 100 : score,
+      score,
       solvedWords: solvedWordIds.length,
       totalWords: layout.words.length,
       payload: {
         solvedWordIds,
         drafts,
         activeWordId,
+        retriedWordIds,
       },
     });
   }, [
@@ -842,6 +927,7 @@ export function useCrosswordController({
     drafts,
     heroApi,
     layout.words.length,
+    retriedWordIds,
     score,
     solvedWordIds,
     viewId,

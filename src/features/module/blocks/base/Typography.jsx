@@ -252,6 +252,7 @@ export default function Typography({
   width,
   clamp,
   as,
+  className = "",
 }) {
   const text = extractText(content, children);
 
@@ -282,7 +283,10 @@ export default function Typography({
           )}
         >
           {parts.map((part, index) => (
-            <p key={`${part}-${index}`} className={getTextClassName(options)}>
+            <p
+              key={`${part}-${index}`}
+              className={cn(getTextClassName(options), className)}
+            >
               {part}
             </p>
           ))}
@@ -296,7 +300,7 @@ export default function Typography({
   return (
     <div className={getOuterWrapperClassName()}>
       <div className={getInnerWrapperClassName(options.width, options.align)}>
-        <Tag className={getTextClassName(options)}>{text}</Tag>
+        <Tag className={cn(getTextClassName(options), className)}>{text}</Tag>
       </div>
     </div>
   );

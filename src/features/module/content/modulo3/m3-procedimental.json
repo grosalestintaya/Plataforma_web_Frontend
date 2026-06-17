@@ -4,6 +4,631 @@
   "backendActivityId": "08",
   "activityKey": "m03-procedimental",
   "headerTitle": "Procedimental",
-  "missionTitle": "Elaboración de un presupuesto personal",
-  "views": []
+  "missionTitle": "Elaboracion de un presupuesto personal",
+  "views": [
+    {
+      "viewId": "m3_2_v1",
+      "order": 1,
+      "name": "VISTA 1 - Inicio: Hora de organizar",
+      "viewType": "Inicio",
+      "objective": "Presentar la practica de presupuesto escolar y activar el intento.",
+      "template": "preGameLobby",
+      "variant": "preGame",
+      "slots": {
+        "title": {
+          "text": "Antes de empezar",
+          "variant": "h1",
+          "align": "center"
+        },
+        "body": {
+          "paragraphs": [
+            "En esta practica armaras el presupuesto de un proyecto escolar con dinero limitado.",
+            "Debes cubrir lo necesario, revisar la balanza y dejar un saldo saludable antes de continuar.",
+            "Cuando el presupuesto quede en buen estado, el footer se habilitara automaticamente."
+          ],
+          "variant": "body1",
+          "align": "left"
+        },
+        "media": {
+          "src": "activity/inicio-conceptual2.webp",
+          "alt": "Inicio de la practica de presupuesto",
+          "variant": "vertical"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "text",
+            "slot": "body",
+            "area": "body",
+            "order": 20
+          },
+          {
+            "component": "image",
+            "slot": "media",
+            "area": "media",
+            "order": 30
+          }
+        ],
+        "compound": []
+      },
+      "navigation": {
+        "mode": "cta",
+        "label": "Empezar",
+        "action": "startMissionAttempt"
+      },
+      "completionCriteria": {
+        "type": "manualStart"
+      }
+    },
+    {
+      "viewId": "m3_2_v2",
+      "order": 2,
+      "name": "VISTA 2 - Practica: Registro del presupuesto",
+      "viewType": "Practica",
+      "objective": "Construir un presupuesto escolar y validar que el saldo quede saludable.",
+      "template": "budgetAdjustment",
+      "variant": "schoolProject",
+      "data": {
+        "eyebrow": {
+          "text": "Proyecto emprendedor",
+          "variant": "eyebrow",
+          "align": "center",
+          "color": "primary"
+        },
+        "title": {
+          "text": "Registro y organizo mi presupuesto",
+          "variant": "h1",
+          "align": "center",
+          "color": "primary"
+        },
+        "subtitle": {
+          "text": "Selecciona las tarjetas necesarias para que tu proyecto funcione sin quedarte sin saldo.",
+          "variant": "body",
+          "align": "left",
+          "color": "primary"
+        },
+        "coach": {
+          "title": {
+            "text": "Observa ingresos, gastos y saldo",
+            "variant": "h3",
+            "align": "left",
+            "color": "primary"
+          },
+          "text": {
+            "paragraphs": [
+              "Empieza por lo necesario y evita cargar el presupuesto con compras que pueden esperar.",
+              "Si el estado llega a Bueno, el footer te dejara avanzar."
+            ],
+            "variant": "bodySm",
+            "align": "left",
+            "color": "primary"
+          },
+          "feedback": {
+            "idle": {
+              "title": "Construye el presupuesto",
+              "text": "Selecciona las tarjetas necesarias y revisa la balanza."
+            },
+            "overBudget": {
+              "title": "Te pasaste del presupuesto",
+              "text": "Quita o cambia una tarjeta para recuperar saldo."
+            },
+            "missingEssential": {
+              "title": "Aun faltan gastos clave",
+              "text": "Falta una tarjeta necesaria o una alternativa obligatoria."
+            },
+            "good": {
+              "title": "Buen trabajo, tu presupuesto va bien",
+              "text": "Cubriste lo necesario y queda saldo."
+            },
+            "balanced": {
+              "title": "Vas equilibrando el presupuesto",
+              "text": "El presupuesto funciona, pero queda poco saldo."
+            }
+          }
+        },
+        "budget": {
+          "situations": [
+            {
+              "id": "refrescos-naturales",
+              "projectName": "Refrescos naturales para la feria escolar",
+              "prompt": "Elabora el presupuesto para preparar 20 refrescos naturales.",
+              "income": 80,
+              "targetBalanceMin": 10,
+              "essentialIds": [
+                "frutas-insumos"
+              ],
+              "requiredGroups": [
+                {
+                  "id": "presentacion",
+                  "ids": [
+                    "vasos",
+                    "botellas"
+                  ],
+                  "min": 1,
+                  "max": 1
+                },
+                {
+                  "id": "publicidad",
+                  "ids": [
+                    "cartel",
+                    "cartel-a-mano"
+                  ],
+                  "min": 1,
+                  "max": 1
+                }
+              ],
+              "exclusiveGroups": [
+                {
+                  "id": "decoracion",
+                  "ids": [
+                    "decoracion",
+                    "decoracion-simple"
+                  ],
+                  "max": 1
+                }
+              ],
+              "coach": {
+                "feedback": {
+                  "idle": {
+                    "title": "Preparamos refrescos naturales",
+                    "text": "Selecciona ingredientes, envase para servir y publicidad."
+                  },
+                  "overBudget": {
+                    "title": "Los gastos superan el ingreso",
+                    "text": "Retira o reemplaza una tarjeta costosa."
+                  },
+                  "missingEssential": {
+                    "title": "Revisa los requisitos minimos",
+                    "text": "Falta ingrediente, envase o publicidad."
+                  },
+                  "good": {
+                    "title": "Presupuesto bien organizado",
+                    "text": "Cubriste lo necesario y queda saldo."
+                  },
+                  "balanced": {
+                    "title": "Presupuesto ajustado",
+                    "text": "Funciona, pero queda poco saldo."
+                  }
+                }
+              },
+              "items": [
+                {
+                  "id": "frutas-insumos",
+                  "label": "Frutas e insumos",
+                  "amount": 30,
+                  "tag": "Necesario",
+                  "hint": "Frutas, azucar, agua y otros ingredientes para preparar 20 refrescos.",
+                  "variant": "sun",
+                  "image": {
+                    "src": "1/ensalada-de-fruta.webp",
+                    "alt": "Frutas para preparar refrescos"
+                  }
+                },
+                {
+                  "id": "vasos",
+                  "label": "Vasos",
+                  "amount": 12,
+                  "tag": "Necesario",
+                  "hint": "Vasos descartables para servir los 20 refrescos.",
+                  "variant": "ocean",
+                  "image": {
+                    "src": "1/agua.webp",
+                    "alt": "Vaso con bebida"
+                  }
+                },
+                {
+                  "id": "botellas",
+                  "label": "Botellas",
+                  "amount": 15,
+                  "tag": "Necesario",
+                  "hint": "Botellas sencillas para presentar y transportar mejor los refrescos.",
+                  "variant": "sky",
+                  "image": {
+                    "src": "1/botella-gaseosa.webp",
+                    "alt": "Botella para bebida"
+                  }
+                },
+                {
+                  "id": "hielo",
+                  "label": "Hielo",
+                  "amount": 6,
+                  "tag": "Conveniente",
+                  "hint": "Permite mantener los refrescos frios durante la feria.",
+                  "variant": "sky",
+                  "image": {
+                    "src": "2/helado.webp",
+                    "alt": "Producto frio para representar hielo"
+                  }
+                },
+                {
+                  "id": "cartel",
+                  "label": "Cartel impreso",
+                  "amount": 8,
+                  "tag": "Promocion",
+                  "hint": "Cartel impreso con el nombre y precio del producto.",
+                  "variant": "rose",
+                  "image": {
+                    "src": "2/cartulina.webp",
+                    "alt": "Cartel para promocionar"
+                  }
+                },
+                {
+                  "id": "cartel-a-mano",
+                  "label": "Cartel a mano",
+                  "amount": 4,
+                  "tag": "Promocion",
+                  "hint": "Cartel elaborado por el equipo con cartulina y plumones.",
+                  "variant": "forest",
+                  "image": {
+                    "src": "2/plumones.webp",
+                    "alt": "Materiales para cartel a mano"
+                  }
+                },
+                {
+                  "id": "decoracion",
+                  "label": "Decoracion completa",
+                  "amount": 12,
+                  "tag": "Opcional",
+                  "hint": "Globos, banderines y adornos para hacer mas llamativo el puesto.",
+                  "variant": "violet",
+                  "image": {
+                    "src": "2/escarcha.webp",
+                    "alt": "Decoracion completa"
+                  }
+                },
+                {
+                  "id": "decoracion-simple",
+                  "label": "Decoracion simple",
+                  "amount": 6,
+                  "tag": "Opcional",
+                  "hint": "Banderines y un mantel para ordenar el puesto.",
+                  "variant": "violet",
+                  "image": {
+                    "src": "2/cinta.webp",
+                    "alt": "Decoracion simple"
+                  }
+                },
+                {
+                  "id": "etiquetas",
+                  "label": "Etiquetas",
+                  "amount": 5,
+                  "tag": "Opcional",
+                  "hint": "Etiquetas con el nombre o sabor de cada refresco.",
+                  "variant": "rose",
+                  "image": {
+                    "src": "2/stikers.webp",
+                    "alt": "Etiquetas para refrescos"
+                  }
+                },
+                {
+                  "id": "snacks",
+                  "label": "Snacks",
+                  "amount": 9,
+                  "tag": "Discrecional",
+                  "hint": "Alimentos para consumir durante la preparacion.",
+                  "variant": "pumpkin",
+                  "image": {
+                    "src": "1/comprar-snacks.webp",
+                    "alt": "Snacks"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "macetas-recicladas",
+              "projectName": "Macetas recicladas decoradas",
+              "prompt": "Elabora el presupuesto para preparar 15 macetas recicladas.",
+              "income": 90,
+              "targetBalanceMin": 15,
+              "essentialIds": [
+                "plantas",
+                "tierra-abono"
+              ],
+              "requiredGroups": [
+                {
+                  "id": "recipiente",
+                  "ids": [
+                    "envases-reciclados",
+                    "macetas-compradas"
+                  ],
+                  "min": 1,
+                  "max": 1
+                },
+                {
+                  "id": "pintura",
+                  "ids": [
+                    "pinturas-basicas",
+                    "kit-pintura"
+                  ],
+                  "min": 1,
+                  "max": 1
+                },
+                {
+                  "id": "etiquetas",
+                  "ids": [
+                    "etiquetas-simples",
+                    "etiquetas-impresas"
+                  ],
+                  "min": 1,
+                  "max": 1
+                },
+                {
+                  "id": "publicidad",
+                  "ids": [
+                    "cartel-a-mano",
+                    "cartel"
+                  ],
+                  "min": 1,
+                  "max": 1
+                }
+              ],
+              "coach": {
+                "feedback": {
+                  "idle": {
+                    "title": "Preparamos macetas recicladas",
+                    "text": "Selecciona plantas, recipiente, pintura, etiquetas y cartel."
+                  },
+                  "overBudget": {
+                    "title": "El presupuesto quedo en riesgo",
+                    "text": "Retira o reemplaza una tarjeta costosa."
+                  },
+                  "missingEssential": {
+                    "title": "Faltan materiales clave",
+                    "text": "Falta material o alternativa obligatoria."
+                  },
+                  "good": {
+                    "title": "Presupuesto responsable",
+                    "text": "Cubriste lo necesario y queda saldo."
+                  },
+                  "balanced": {
+                    "title": "Presupuesto ajustado",
+                    "text": "Funciona, pero queda poco saldo."
+                  }
+                }
+              },
+              "items": [
+                {
+                  "id": "plantas",
+                  "label": "Plantas pequenas",
+                  "amount": 30,
+                  "tag": "Necesario",
+                  "hint": "Plantas pequenas para colocar en las 15 macetas.",
+                  "variant": "forest",
+                  "image": {
+                    "src": "1/reciclando.webp",
+                    "alt": "Plantas pequenas"
+                  }
+                },
+                {
+                  "id": "tierra-abono",
+                  "label": "Tierra y abono",
+                  "amount": 15,
+                  "tag": "Necesario",
+                  "hint": "Tierra preparada y abono para conservar las plantas.",
+                  "variant": "mint",
+                  "image": {
+                    "src": "2/compras-basicas.webp",
+                    "alt": "Materiales basicos para plantas"
+                  }
+                },
+                {
+                  "id": "envases-reciclados",
+                  "label": "Envases reciclados",
+                  "amount": 5,
+                  "tag": "Necesario",
+                  "hint": "Recojo, limpieza y preparacion de recipientes reutilizados.",
+                  "variant": "sky",
+                  "image": {
+                    "src": "1/canjear-botella.webp",
+                    "alt": "Envases reciclados"
+                  }
+                },
+                {
+                  "id": "macetas-compradas",
+                  "label": "Macetas compradas",
+                  "amount": 25,
+                  "tag": "Alternativa",
+                  "hint": "Macetas nuevas listas para utilizar.",
+                  "variant": "pumpkin",
+                  "image": {
+                    "src": "2/maqueta.webp",
+                    "alt": "Macetas compradas"
+                  }
+                },
+                {
+                  "id": "pinturas-basicas",
+                  "label": "Pinturas basicas",
+                  "amount": 10,
+                  "tag": "Necesario",
+                  "hint": "Pinturas de colores basicos para decorar las macetas.",
+                  "variant": "ocean",
+                  "image": {
+                    "src": "2/plumones.webp",
+                    "alt": "Pinturas basicas"
+                  }
+                },
+                {
+                  "id": "kit-pintura",
+                  "label": "Kit de pintura",
+                  "amount": 18,
+                  "tag": "Alternativa",
+                  "hint": "Pinturas variadas, pinceles y materiales decorativos.",
+                  "variant": "violet",
+                  "image": {
+                    "src": "2/materiales-de-estudio.webp",
+                    "alt": "Kit de pintura"
+                  }
+                },
+                {
+                  "id": "etiquetas-simples",
+                  "label": "Etiquetas simples",
+                  "amount": 5,
+                  "tag": "Presentacion",
+                  "hint": "Etiquetas a mano con el nombre de la planta y sus cuidados.",
+                  "variant": "rose",
+                  "image": {
+                    "src": "2/stikers.webp",
+                    "alt": "Etiquetas simples"
+                  }
+                },
+                {
+                  "id": "etiquetas-impresas",
+                  "label": "Etiquetas impresas",
+                  "amount": 10,
+                  "tag": "Presentacion",
+                  "hint": "Etiquetas impresas a color con cuidados de la planta.",
+                  "variant": "rose",
+                  "image": {
+                    "src": "1/copias.webp",
+                    "alt": "Etiquetas impresas"
+                  }
+                },
+                {
+                  "id": "cartel-a-mano",
+                  "label": "Cartel a mano",
+                  "amount": 4,
+                  "tag": "Promocion",
+                  "hint": "Cartel elaborado con cartulina y plumones.",
+                  "variant": "forest",
+                  "image": {
+                    "src": "2/cartulina.webp",
+                    "alt": "Cartel a mano"
+                  }
+                },
+                {
+                  "id": "cartel",
+                  "label": "Cartel impreso",
+                  "amount": 8,
+                  "tag": "Promocion",
+                  "hint": "Cartel impreso con imagenes, nombre del proyecto y precios.",
+                  "variant": "rose",
+                  "image": {
+                    "src": "1/copias.webp",
+                    "alt": "Cartel impreso"
+                  }
+                },
+                {
+                  "id": "decoracion-puesto",
+                  "label": "Decoracion del puesto",
+                  "amount": 12,
+                  "tag": "Opcional",
+                  "hint": "Mantel y adornos para hacer mas llamativo el espacio de venta.",
+                  "variant": "violet",
+                  "image": {
+                    "src": "2/escarcha.webp",
+                    "alt": "Decoracion del puesto"
+                  }
+                },
+                {
+                  "id": "cajas-transporte",
+                  "label": "Cajas de transporte",
+                  "amount": 8,
+                  "tag": "Conveniente",
+                  "hint": "Cajas para trasladar las macetas sin danarlas.",
+                  "variant": "sky",
+                  "image": {
+                    "src": "2/trasporte.webp",
+                    "alt": "Cajas de transporte"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "navigation": {
+        "mode": "lockedUntilComplete",
+        "label": "Selecciona las tarjetas necesarias y deja un saldo saludable para continuar."
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "buildHealthyBudget"
+      }
+    },
+    {
+      "viewId": "m3_2_v3",
+      "order": 3,
+      "name": "VISTA 3 - Final: Presupuesto listo",
+      "viewType": "Final",
+      "objective": "Cerrar la practica reforzando el uso responsable del presupuesto.",
+      "template": "postGameLobby",
+      "variant": "postGame",
+      "slots": {
+        "title": {
+          "text": "Mision cumplida",
+          "variant": "h1",
+          "align": "center"
+        },
+        "feedback": {
+          "text": "Ya puedes ajustar un presupuesto simple, cubrir lo necesario y dejar un saldo mas responsable para tu proyecto.",
+          "variant": "label",
+          "align": "center",
+          "color": "accent"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "text",
+            "slot": "feedback",
+            "area": "feedback",
+            "order": 20
+          }
+        ],
+        "compound": [
+          {
+            "type": "showCard",
+            "component": "showCard",
+            "category": "grouper",
+            "area": "rewards",
+            "items": [
+              {
+                "id": "reward-xp",
+                "title": {
+                  "text": "XP",
+                  "variant": "label"
+                },
+                "text": {
+                  "text": "+ 10",
+                  "variant": "bodySm"
+                }
+              },
+              {
+                "id": "reward-intis",
+                "title": {
+                  "text": "INTIS",
+                  "variant": "label"
+                },
+                "text": {
+                  "text": "+ 10",
+                  "variant": "bodySm"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "cta",
+        "label": "Continuar",
+        "action": "goToNextMissionMenu"
+      },
+      "completionCriteria": {
+        "type": "endOfMission"
+      }
+    }
+  ]
 }

@@ -775,6 +775,8 @@
               "align": "left"
             },
             "crossword": {
+              "minimumScore": 60,
+              "maximumScore": 100,
               "boardBackground": {
                 "src": "3/v8x1c.webp",
                 "alt": "Fondo del crucigrama"
