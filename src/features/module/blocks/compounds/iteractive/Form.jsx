@@ -15,14 +15,15 @@ const QUIZ_VARIANT_BY_TEMPLATE = {
 };
 
 const FORM_OPTION_COLOR_CLASSES = [
-  "border-[var(--color-gold-100)] bg-[var(--color-gold-400)] text-white hover:bg-[var(--color-gold-500)] [&_*]:!text-white",
+  "border-[var(--color-green-100)] bg-[var(--color-green-400)] text-white hover:bg-[var(--color-green-500)] [&_*]:!text-white",
+  "border-[var(--color-purple-100)] bg-[var(--color-purple-400)] text-white hover:bg-[var(--color-purple-500)] [&_*]:!text-white",
   "border-[var(--color-lila-100)] bg-[var(--color-lila-400)] text-white hover:bg-[var(--color-lila-500)] [&_*]:!text-white",
   "border-[var(--color-orange-100)] bg-[var(--color-orange-400)] text-white hover:bg-[var(--color-orange-500)] [&_*]:!text-white",
   "border-[var(--color-blue-100)] bg-[var(--color-blue-400)] text-white hover:bg-[var(--color-blue-500)] [&_*]:!text-white",
   "border-[var(--color-green-100)] bg-[var(--color-green-400)] text-white hover:bg-[var(--color-green-500)] [&_*]:!text-white",
   "border-[var(--color-orange-100)] bg-[var(--color-orange-400)] text-white hover:bg-[var(--color-orange-500)] [&_*]:!text-white",
-  "border-[var(--color-lila-100)] bg-[var(--color-lila-400)] text-white hover:bg-[var(--color-lila-500)] [&_*]:!text-white",
   "border-[var(--color-purple-100)] bg-[var(--color-purple-400)] text-white hover:bg-[var(--color-purple-500)] [&_*]:!text-white",
+  "border-[var(--color-gold-100)] bg-[var(--color-gold-400)] text-white hover:bg-[var(--color-gold-500)] [&_*]:!text-white",
 ];
 
 function getFormOptionColorClass(index) {

@@ -126,7 +126,7 @@
               {
                 "id": "m3-card-ingresos",
                 "media": {
-                  "src": "1/recibir-dinero.webp",
+                  "src": "3/v2x1c.webp",
                   "alt": "Ejemplo de ingreso",
                   "variant": "horizontal"
                 },
@@ -143,7 +143,7 @@
               },    {
                 "id": "m3.5-card-organizacion",
                 "media": {
-                  "src": "1/recibir-dinero.webp",
+                  "src": "3/v2x2c.webp",
                   "alt": "Ejemplo de ingreso",
                   "variant": "horizontal"
                 },
@@ -153,7 +153,7 @@
                   "align": "center"
                 },
                 "text": {
-                  "text": "Dinero que entra o recibes.",
+                  "text": "Es lo usas para planificar y organizar tus gastos.",
                   "variant": "bodySm",
                   "align": "center"
                 }
@@ -161,7 +161,7 @@
               {
                 "id": "m3-card-gastos",
                 "media": {
-                  "src": "1/pagar-pasaje.webp",
+                  "src": "3/v2x3c.webp",
                   "alt": "Ejemplo de gasto",
                   "variant": "horizontal"
                 },
@@ -179,7 +179,7 @@
               {
                 "id": "m3-card-saldo",
                 "media": {
-                  "src": "1/saldo-recreo.webp",
+                  "src": "3/v2x4c.webp",
                   "alt": "Ejemplo de saldo disponible",
                   "variant": "horizontal"
                 },
@@ -253,7 +253,7 @@
       {
         "id": "budget-control",
         "media": {
-          "src": "2/control-presupuesto.webp",
+          "src": "3/v3x1c.webp",
           "alt": "Control del dinero con un presupuesto",
           "variant": "square"
         },
@@ -273,7 +273,7 @@
       {
         "id": "budget-organization",
         "media": {
-          "src": "2/organizacion-gastos.webp",
+          "src": "3/v3x2c.webp",
           "alt": "Organización de los gastos",
           "variant": "square"
         },
@@ -292,7 +292,7 @@
       {
         "id": "budget-goals",
         "media": {
-          "src": "2/alcanzar-metas.webp",
+          "src": "3/v3x3c.webp",
           "alt": "Alcanzar metas con un presupuesto",
           "variant": "square"
         },
@@ -311,7 +311,7 @@
       {
         "id": "budget-decisions",
         "media": {
-          "src": "2/tomar-decisiones.webp",
+          "src": "3/v3x4c.webp",
           "alt": "Tomar mejores decisiones financieras",
           "variant": "square"
         },
@@ -367,7 +367,7 @@
       "align": "center"
     },
     "media": {
-      "src": "3/estudiante-revisando-lista.webp",
+      "src": "3/v4x1c.webp",
       "alt": "Un estudiante revisando una lista antes de gastar dinero.",
       "variant": "horizontal"
     }
@@ -437,7 +437,7 @@
       "align": "center"
     },
     "media": {
-      "src": "3/estudiante-meta-ahorro.webp",
+      "src": "3/v5x1c.webp",
       "alt": "Un estudiante observando una meta mientras guarda dinero.",
       "variant": "horizontal"
     }
@@ -488,8 +488,8 @@
   "variant": "assessment",
   "slots": {
     "title": {
-      "text": "¿Para qué sirve un presupuesto?",
-      "variant": "h1",
+      "text": "¿Cuál de estas opciones NO es una función del presupuesto?",
+      "variant": "h2",
       "align": "center"
     },
     "subtitle": {
@@ -502,15 +502,9 @@
     "base": [
       {
         "component": "heading",
-        "slot": "title",
-        "area": "title",
-        "order": 10
-      },
-      {
-        "component": "heading",
         "slot": "subtitle",
         "area": "subtitle",
-        "order": 20
+        "order": 10
       }
     ],
     "compound": [
@@ -523,11 +517,7 @@
         "items": [
           {
             "id": "q1-no-sirve",
-            "prompt": {
-              "text": "¿Cuál de estas opciones NO es una función del presupuesto?",
-              "variant": "h3",
-              "align": "center"
-            },
+          
             "options": [
               {
                 "id": "opt-organizar",
@@ -537,7 +527,7 @@
                   "align": "center"
                 },
                 "media": {
-                  "src": "3/estudiante-anotando-dinero.webp",
+                  "src": "3/v6x1c.webp",
                   "alt": "Un estudiante anotando cuánto dinero tiene y cuánto va a gastar.",
                   "variant": "horizontal"
                 },
@@ -556,7 +546,7 @@
                   "align": "center"
                 },
                 "media": {
-                  "src": "3/estudiante-revisando-lista-compra.webp",
+                  "src": "3/v6x2c.webp",
                   "alt": "Un estudiante revisando una lista de gastos antes de realizar una compra.",
                   "variant": "horizontal"
                 },
@@ -575,7 +565,7 @@
                   "align": "center"
                 },
                 "media": {
-                  "src": "3/estudiante-guardando-dinero-meta.webp",
+                  "src": "3/v6x3c.webp",
                   "alt": "Un estudiante guardando dinero en una alcancía o frasco para una meta.",
                   "variant": "horizontal"
                 },
@@ -594,7 +584,7 @@
                   "align": "center"
                 },
                 "media": {
-                  "src": "3/estudiante-comprando-sin-revisar.webp",
+                  "src": "3/v6x4c.webp",
                   "alt": "Un estudiante comprando cosas sin revisar cuánto dinero tiene.",
                   "variant": "horizontal"
                 },
@@ -632,11 +622,6 @@
     "title": {
       "text": "Encuentra el presupuesto",
       "variant": "h1",
-      "align": "center"
-    },
-    "subtitle": {
-      "text": "¿Cuál de estas imágenes representa un presupuesto?",
-      "variant": "body1",
       "align": "center"
     }
   },
@@ -679,7 +664,7 @@
                   "align": "center"
                 },
                 "media": {
-                  "src": "3/hoja-presupuesto-sencilla.webp",
+                  "src": "3/v7x1c.webp",
                   "alt": "Una hoja con dinero disponible, transporte, refrigerio y ahorro registrados.",
                   "variant": "horizontal"
                 },
@@ -698,7 +683,7 @@
                   "align": "center"
                 },
                 "media": {
-                  "src": "3/lista-de-deseos.webp",
+                  "src": "3/v7x2c.webp",
                   "alt": "Una lista con audífonos, zapatillas y videojuego.",
                   "variant": "horizontal"
                 },
@@ -717,7 +702,7 @@
                   "align": "center"
                 },
                 "media": {
-                  "src": "3/carrito-de-compras.webp",
+                  "src": "3/v7x3c.webp",
                   "alt": "Un carrito de compras lleno de productos.",
                   "variant": "horizontal"
                 },
@@ -791,7 +776,7 @@
             },
             "crossword": {
               "boardBackground": {
-                "src": "activity/inicio-conceptual2.webp",
+                "src": "3/v8x1c.webp",
                 "alt": "Fondo del crucigrama"
               },
               "sidebarImage": {
@@ -802,27 +787,27 @@
                 {
                   "id": "presupuesto",
                   "answer": "PRESUPUESTO",
-                  "clue": "Herramienta que organiza ingresos, gastos y saldo en un periodo.",
+                  "clue": "Herramienta que ayuda a organizar el dinero y planificar cómo utilizarlo.",
                   "image": {
-                    "src": "1/recibir-dinero.webp",
+                    "src": "3/v8x2c.webp",
                     "alt": "Referencia de presupuesto"
                   }
                 },
                 {
                   "id": "ingreso",
                   "answer": "INGRESO",
-                  "clue": "Dinero que entra o recibes.",
+                  "clue": "Dinero que recibes para utilizar, gastar o ahorrar.",
                   "image": {
-                    "src": "1/ganar-dinero.webp",
+                    "src": "1/recibir-dinero.webp",
                     "alt": "Ejemplo de ingreso"
                   }
                 },
                 {
                   "id": "gasto",
                   "answer": "GASTO",
-                  "clue": "Dinero que sale cuando compras o pagas algo.",
+                  "clue": "Dinero que utilizas para comprar productos o pagar servicios.",
                   "image": {
-                    "src": "1/pagar-pasaje.webp",
+                    "src": "3/v8x3c.webp",
                     "alt": "Ejemplo de gasto"
                   }
                 },
@@ -831,16 +816,16 @@
                   "answer": "SALDO",
                   "clue": "Diferencia entre ingresos y gastos.",
                   "image": {
-                    "src": "1/saldo-recreo.webp",
+                    "src": "3/v8x4c.webp",
                     "alt": "Referencia de saldo"
                   }
                 },
                 {
-                  "id": "ajuste",
-                  "answer": "AJUSTE",
-                  "clue": "Cambio que haces en el presupuesto cuando el dinero no alcanza.",
+                  "id": "ahorro",
+                  "answer": "AHORRO",
+                  "clue": "Dinero que guardas para una necesidad o meta futura. ",
                   "image": {
-                    "src": "1/kiosko-no-alcanza.webp",
+                    "src": "3/v3x3c.webp",
                     "alt": "Referencia de ajuste al presupuesto"
                   }
                 }

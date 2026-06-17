@@ -82,7 +82,7 @@
           "align": "center"
         },
         "media": {
-          "src": "3/estudiante-revisando-presupuesto-impresion.webp",
+          "src": "3/v2x1a.webp",
           "alt": "Un estudiante revisando su presupuesto mientras descubre que necesita pagar una impresion urgente para una tarea.",
           "variant": "horizontal"
         }
@@ -172,7 +172,7 @@
           "align": "center"
         },
         "media": {
-          "src": "3/estudiante-viendo-accesorio-presupuesto.webp",
+          "src": "3/v3x1a.webp",
           "alt": "Un estudiante viendo un accesorio o videojuego que le gusta mucho mientras revisa el dinero que le queda para la semana.",
           "variant": "horizontal"
         }
@@ -210,7 +210,7 @@
                   "text": "a) Revisaría cuánto dinero tengo disponible antes de decidir.",
                   "variant": "body2"
                 },
-                "score": 100
+                "score": 85
               },
               {
                 "id": "buy_immediately",
@@ -262,7 +262,7 @@
           "align": "center"
         },
         "media": {
-          "src": "3/estudiante-presupuesto-gastos-pendientes.webp",
+          "src": "3/v4x1a.webp",
           "alt": "Un adolescente con una libreta o aplicacion de presupuesto observando varios gastos pendientes con expresion de analisis.",
           "variant": "square"
         }
@@ -300,7 +300,7 @@
                   "text": "a) Revisaría cuáles gastos son más importantes antes de decidir.",
                   "variant": "body2"
                 },
-                "score": 100
+                "score": 90
               },
               {
                 "id": "spend_on_likes",
@@ -352,7 +352,7 @@
           "align": "center"
         },
         "media": {
-          "src": "3/estudiante-presupuesto-fin-semana.webp",
+          "src": "3/v5x1a.webp",
           "alt": "Un estudiante revisando su presupuesto antes del fin de semana con salida a comer, cine, material escolar y dinero ahorrado sobre la mesa.",
           "variant": "horizontal"
         }
