@@ -703,87 +703,360 @@
             "category": "interactive",
             "area": "assessment",
             "feedbackReserve": true,
-            "title": {
-              "text": "Cual opcion describe mejor el ahorro?",
-              "variant": "h3",
-              "align": "center"
-            },
             "items": [
               {
-                "id": "m4-v7-correct",
-                "title": {
-                  "text": "Guardar una parte cada semana",
-                  "variant": "label",
+                "id": "m4-v7-q1",
+                "prompt": {
+                  "text": "Cual opcion describe mejor el ahorro?",
+                  "variant": "h3",
                   "align": "center"
                 },
-                "media": {
-                  "src": "1/ahorrar.webp",
-                  "alt": "Guardar dinero cada semana",
-                  "variant": "horizontal"
-                },
-                "correct": true,
-                "feedback": {
-                  "text": "Correcto. Ahorrar es separar una parte del dinero para usarla despues en una meta.",
-                  "variant": "helper",
-                  "align": "center"
-                }
+                "options": [
+                  {
+                    "id": "m4-v7-correct",
+                    "title": {
+                      "text": "Guardar una parte cada semana",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "1/ahorrar.webp",
+                      "alt": "Guardar dinero cada semana",
+                      "variant": "horizontal"
+                    },
+                    "correct": true,
+                    "feedback": {
+                      "text": "Correcto. Ahorrar es separar una parte del dinero para usarla despues en una meta.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m4-v7-opt2",
+                    "title": {
+                      "text": "Gastar todo hoy",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "1/comprar-snacks.webp",
+                      "alt": "Gastar dinero de inmediato",
+                      "variant": "horizontal"
+                    },
+                    "correct": false,
+                    "feedback": {
+                      "text": "No. Si gastas todo hoy no estas separando dinero para una meta futura.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m4-v7-opt3",
+                    "title": {
+                      "text": "Comprar por impulso",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "1/impulso.webp",
+                      "alt": "Compra por impulso",
+                      "variant": "horizontal"
+                    },
+                    "correct": false,
+                    "feedback": {
+                      "text": "No. Esa decision prioriza el momento y no una meta planificada.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m4-v7-opt4",
+                    "title": {
+                      "text": "Usar todo sin plan",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "1/decidir-pasaje-snacks-ahorro.webp",
+                      "alt": "Uso de dinero sin plan",
+                      "variant": "horizontal"
+                    },
+                    "correct": false,
+                    "feedback": {
+                      "text": "No. El ahorro necesita orden y una decision de guardar parte del dinero.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  }
+                ]
               },
               {
-                "id": "m4-v7-opt2",
-                "title": {
-                  "text": "Gastar todo hoy",
-                  "variant": "label",
+                "id": "m4-v8-q1",
+                "prompt": {
+                  "text": "Cual opcion describe mejor una inversion basica?",
+                  "variant": "h3",
                   "align": "center"
                 },
-                "media": {
-                  "src": "1/comprar-snacks.webp",
-                  "alt": "Gastar dinero de inmediato",
-                  "variant": "horizontal"
-                },
-                "correct": false,
-                "feedback": {
-                  "text": "No. Si gastas todo hoy no estas separando dinero para una meta futura.",
-                  "variant": "helper",
-                  "align": "center"
-                }
+                "options": [
+                  {
+                    "id": "m4-v8-correct",
+                    "title": {
+                      "text": "Usar una parte del dinero en una pequena iniciativa",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "2/maqueta.webp",
+                      "alt": "Pequena iniciativa escolar",
+                      "variant": "horizontal"
+                    },
+                    "correct": true,
+                    "feedback": {
+                      "text": "Correcto. Una inversion basica usa parte del dinero para intentar obtener un beneficio.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m4-v8-opt2",
+                    "title": {
+                      "text": "Guardar el dinero sin moverlo",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "1/ahorro.webp",
+                      "alt": "Dinero guardado",
+                      "variant": "horizontal"
+                    },
+                    "correct": false,
+                    "feedback": {
+                      "text": "No. Eso corresponde al ahorro, no a una inversion basica.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m4-v8-opt3",
+                    "title": {
+                      "text": "Gastar en un gusto del momento",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "1/comprar-snacks.webp",
+                      "alt": "Gasto por gusto",
+                      "variant": "horizontal"
+                    },
+                    "correct": false,
+                    "feedback": {
+                      "text": "No. Gastar por gusto no busca un beneficio planificado para la meta.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  }
+                ]
               },
               {
-                "id": "m4-v7-opt3",
-                "title": {
-                  "text": "Comprar por impulso",
-                  "variant": "label",
+                "id": "m4-v9-q1",
+                "prompt": {
+                  "text": "Si quieres una meta con poco riesgo y puedes esperar, que conviene mas?",
+                  "variant": "h3",
                   "align": "center"
                 },
-                "media": {
-                  "src": "1/impulso.webp",
-                  "alt": "Compra por impulso",
-                  "variant": "horizontal"
-                },
-                "correct": false,
-                "feedback": {
-                  "text": "No. Esa decision prioriza el momento y no una meta planificada.",
-                  "variant": "helper",
-                  "align": "center"
-                }
+                "options": [
+                  {
+                    "id": "m4-v9-correct",
+                    "title": {
+                      "text": "Ahorrar poco a poco",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "1/ahorrar.webp",
+                      "alt": "Ahorro constante",
+                      "variant": "horizontal"
+                    },
+                    "correct": true,
+                    "feedback": {
+                      "text": "Correcto. El ahorro suele ser la opcion mas segura cuando puedes avanzar con tiempo.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m4-v9-opt2",
+                    "title": {
+                      "text": "Gastar todo de una vez",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "1/comprar-juegos.webp",
+                      "alt": "Gasto inmediato",
+                      "variant": "horizontal"
+                    },
+                    "correct": false,
+                    "feedback": {
+                      "text": "No. Gastar todo de una vez aleja la meta en lugar de acercarla.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m4-v9-opt3",
+                    "title": {
+                      "text": "Invertir todo sin revisar",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "1/ganar-dinero.webp",
+                      "alt": "Decision apresurada con dinero",
+                      "variant": "horizontal"
+                    },
+                    "correct": false,
+                    "feedback": {
+                      "text": "No. Una inversion sin evaluacion aumenta el riesgo innecesariamente.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  }
+                ]
               },
               {
-                "id": "m4-v7-opt4",
-                "title": {
-                  "text": "Usar todo sin plan",
-                  "variant": "label",
+                "id": "m4-v10-q1",
+                "prompt": {
+                  "text": "Que debes evaluar antes de usar tu dinero para una meta?",
+                  "variant": "h3",
                   "align": "center"
                 },
-                "media": {
-                  "src": "1/decidir-pasaje-snacks-ahorro.webp",
-                  "alt": "Uso de dinero sin plan",
-                  "variant": "horizontal"
-                },
-                "correct": false,
-                "feedback": {
-                  "text": "No. El ahorro necesita orden y una decision de guardar parte del dinero.",
-                  "variant": "helper",
+                "options": [
+                  {
+                    "id": "m4-v10-correct",
+                    "title": {
+                      "text": "Beneficio, tiempo y riesgo",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "1/pensar.webp",
+                      "alt": "Evaluar beneficio tiempo y riesgo",
+                      "variant": "horizontal"
+                    },
+                    "correct": true,
+                    "feedback": {
+                      "text": "Correcto. Esos tres criterios ayudan a decidir con mas responsabilidad.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m4-v10-opt2",
+                    "title": {
+                      "text": "Solo si se ve bonito",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "2/stikers.webp",
+                      "alt": "Elegir por apariencia",
+                      "variant": "horizontal"
+                    },
+                    "correct": false,
+                    "feedback": {
+                      "text": "No. La apariencia no basta para decidir sobre una meta financiera.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m4-v10-opt3",
+                    "title": {
+                      "text": "Solo lo que digan los amigos",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "1/amigos-comida-rapida.webp",
+                      "alt": "Opinion de amigos",
+                      "variant": "horizontal"
+                    },
+                    "correct": false,
+                    "feedback": {
+                      "text": "No. Escuchar a otros puede ayudar, pero la decision requiere analizar tu propia meta.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "m4-v11-q1",
+                "prompt": {
+                  "text": "Cual opcion muestra una decision responsable para alcanzar una meta cercana?",
+                  "variant": "h3",
                   "align": "center"
-                }
+                },
+                "options": [
+                  {
+                    "id": "m4-v11-correct",
+                    "title": {
+                      "text": "Separar dinero y comparar si conviene ahorrar o una pequena iniciativa",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "1/pensar.webp",
+                      "alt": "Decision responsable y planificada",
+                      "variant": "horizontal"
+                    },
+                    "correct": true,
+                    "feedback": {
+                      "text": "Correcto. Esa opcion muestra planificacion, comparacion y uso responsable del dinero.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m4-v11-opt2",
+                    "title": {
+                      "text": "Gastar primero y pensar despues",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "1/comprar-juegos.webp",
+                      "alt": "Gastar antes de planificar",
+                      "variant": "horizontal"
+                    },
+                    "correct": false,
+                    "feedback": {
+                      "text": "No. Una meta no se alcanza mejor cuando el dinero se gasta sin plan.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m4-v11-opt3",
+                    "title": {
+                      "text": "Usar todo el dinero en una sola idea sin revisar",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "1/ganar-dinero.webp",
+                      "alt": "Usar todo el dinero sin evaluar",
+                      "variant": "horizontal"
+                    },
+                    "correct": false,
+                    "feedback": {
+                      "text": "No. Una decision responsable no arriesga todo sin evaluar el resultado posible.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  }
+                ]
               }
             ]
           }
@@ -829,68 +1102,73 @@
             "category": "interactive",
             "area": "assessment",
             "feedbackReserve": true,
-            "title": {
-              "text": "Cual opcion describe mejor una inversion basica?",
-              "variant": "h3",
-              "align": "center"
-            },
             "items": [
               {
-                "id": "m4-v8-correct",
-                "title": {
-                  "text": "Usar una parte del dinero en una pequena iniciativa",
-                  "variant": "label",
+                "id": "m4-v8-q1",
+                "prompt": {
+                  "text": "Cual opcion describe mejor una inversion basica?",
+                  "variant": "h3",
                   "align": "center"
                 },
-                "media": {
-                  "src": "2/maqueta.webp",
-                  "alt": "Pequena iniciativa escolar",
-                  "variant": "horizontal"
-                },
-                "correct": true,
-                "feedback": {
-                  "text": "Correcto. Una inversion basica usa parte del dinero para intentar obtener un beneficio.",
-                  "variant": "helper",
-                  "align": "center"
-                }
-              },
-              {
-                "id": "m4-v8-opt2",
-                "title": {
-                  "text": "Guardar el dinero sin moverlo",
-                  "variant": "label",
-                  "align": "center"
-                },
-                "media": {
-                  "src": "1/ahorro.webp",
-                  "alt": "Dinero guardado",
-                  "variant": "horizontal"
-                },
-                "correct": false,
-                "feedback": {
-                  "text": "No. Eso corresponde al ahorro, no a una inversion basica.",
-                  "variant": "helper",
-                  "align": "center"
-                }
-              },
-              {
-                "id": "m4-v8-opt3",
-                "title": {
-                  "text": "Gastar en un gusto del momento",
-                  "variant": "label",
-                  "align": "center"
-                },
-                "media": {
-                  "src": "1/comprar-snacks.webp",
-                  "alt": "Gasto por gusto",
-                  "variant": "horizontal"
-                },
-                "correct": false,
-                "feedback": {
-                  "text": "No. Gastar por gusto no busca un beneficio planificado para la meta.",
-                  "variant": "helper",
-                  "align": "center"
-                }
+                "options": [
+                  {
+                    "id": "m4-v8-correct",
+                    "title": {
+                      "text": "Usar una parte del dinero en una pequena iniciativa",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "2/maqueta.webp",
+                      "alt": "Pequena iniciativa escolar",
+                      "variant": "horizontal"
+                    },
+                    "correct": true,
+                    "feedback": {
+                      "text": "Correcto. Una inversion basica usa parte del dinero para intentar obtener un beneficio.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m4-v8-opt2",
+                    "title": {
+                      "text": "Guardar el dinero sin moverlo",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "1/ahorro.webp",
+                      "alt": "Dinero guardado",
+                      "variant": "horizontal"
+                    },
+                    "correct": false,
+                    "feedback": {
+                      "text": "No. Eso corresponde al ahorro, no a una inversion basica.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m4-v8-opt3",
+                    "title": {
+                      "text": "Gastar en un gusto del momento",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "1/comprar-snacks.webp",
+                      "alt": "Gasto por gusto",
+                      "variant": "horizontal"
+                    },
+                    "correct": false,
+                    "feedback": {
+                      "text": "No. Gastar por gusto no busca un beneficio planificado para la meta.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  }
+                ]
               }
             ]
           }
@@ -903,6 +1181,13 @@
       "completionCriteria": {
         "type": "interaction",
         "required": "selectCorrectOption"
+      },
+      "availability": {
+        "dependsOn": {
+          "viewId": "m4_1_v7",
+          "stateKey": "__never",
+          "equals": true
+        }
       }
     },
     {
@@ -936,68 +1221,73 @@
             "category": "interactive",
             "area": "assessment",
             "feedbackReserve": true,
-            "title": {
-              "text": "Si quieres una meta con poco riesgo y puedes esperar, que conviene mas?",
-              "variant": "h3",
-              "align": "center"
-            },
             "items": [
               {
-                "id": "m4-v9-correct",
-                "title": {
-                  "text": "Ahorrar poco a poco",
-                  "variant": "label",
+                "id": "m4-v9-q1",
+                "prompt": {
+                  "text": "Si quieres una meta con poco riesgo y puedes esperar, que conviene mas?",
+                  "variant": "h3",
                   "align": "center"
                 },
-                "media": {
-                  "src": "1/ahorrar.webp",
-                  "alt": "Ahorro constante",
-                  "variant": "horizontal"
-                },
-                "correct": true,
-                "feedback": {
-                  "text": "Correcto. El ahorro suele ser la opcion mas segura cuando puedes avanzar con tiempo.",
-                  "variant": "helper",
-                  "align": "center"
-                }
-              },
-              {
-                "id": "m4-v9-opt2",
-                "title": {
-                  "text": "Gastar todo de una vez",
-                  "variant": "label",
-                  "align": "center"
-                },
-                "media": {
-                  "src": "1/comprar-juegos.webp",
-                  "alt": "Gasto inmediato",
-                  "variant": "horizontal"
-                },
-                "correct": false,
-                "feedback": {
-                  "text": "No. Gastar todo de una vez aleja la meta en lugar de acercarla.",
-                  "variant": "helper",
-                  "align": "center"
-                }
-              },
-              {
-                "id": "m4-v9-opt3",
-                "title": {
-                  "text": "Invertir todo sin revisar",
-                  "variant": "label",
-                  "align": "center"
-                },
-                "media": {
-                  "src": "1/ganar-dinero.webp",
-                  "alt": "Decision apresurada con dinero",
-                  "variant": "horizontal"
-                },
-                "correct": false,
-                "feedback": {
-                  "text": "No. Una inversion sin evaluacion aumenta el riesgo innecesariamente.",
-                  "variant": "helper",
-                  "align": "center"
-                }
+                "options": [
+                  {
+                    "id": "m4-v9-correct",
+                    "title": {
+                      "text": "Ahorrar poco a poco",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "1/ahorrar.webp",
+                      "alt": "Ahorro constante",
+                      "variant": "horizontal"
+                    },
+                    "correct": true,
+                    "feedback": {
+                      "text": "Correcto. El ahorro suele ser la opcion mas segura cuando puedes avanzar con tiempo.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m4-v9-opt2",
+                    "title": {
+                      "text": "Gastar todo de una vez",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "1/comprar-juegos.webp",
+                      "alt": "Gasto inmediato",
+                      "variant": "horizontal"
+                    },
+                    "correct": false,
+                    "feedback": {
+                      "text": "No. Gastar todo de una vez aleja la meta en lugar de acercarla.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m4-v9-opt3",
+                    "title": {
+                      "text": "Invertir todo sin revisar",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "1/ganar-dinero.webp",
+                      "alt": "Decision apresurada con dinero",
+                      "variant": "horizontal"
+                    },
+                    "correct": false,
+                    "feedback": {
+                      "text": "No. Una inversion sin evaluacion aumenta el riesgo innecesariamente.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  }
+                ]
               }
             ]
           }
@@ -1010,6 +1300,13 @@
       "completionCriteria": {
         "type": "interaction",
         "required": "selectCorrectOption"
+      },
+      "availability": {
+        "dependsOn": {
+          "viewId": "m4_1_v7",
+          "stateKey": "__never",
+          "equals": true
+        }
       }
     },
     {
@@ -1043,68 +1340,73 @@
             "category": "interactive",
             "area": "assessment",
             "feedbackReserve": true,
-            "title": {
-              "text": "Que debes evaluar antes de usar tu dinero para una meta?",
-              "variant": "h3",
-              "align": "center"
-            },
             "items": [
               {
-                "id": "m4-v10-correct",
-                "title": {
-                  "text": "Beneficio, tiempo y riesgo",
-                  "variant": "label",
+                "id": "m4-v10-q1",
+                "prompt": {
+                  "text": "Que debes evaluar antes de usar tu dinero para una meta?",
+                  "variant": "h3",
                   "align": "center"
                 },
-                "media": {
-                  "src": "1/pensar.webp",
-                  "alt": "Evaluar beneficio tiempo y riesgo",
-                  "variant": "horizontal"
-                },
-                "correct": true,
-                "feedback": {
-                  "text": "Correcto. Esos tres criterios ayudan a decidir con mas responsabilidad.",
-                  "variant": "helper",
-                  "align": "center"
-                }
-              },
-              {
-                "id": "m4-v10-opt2",
-                "title": {
-                  "text": "Solo si se ve bonito",
-                  "variant": "label",
-                  "align": "center"
-                },
-                "media": {
-                  "src": "2/stikers.webp",
-                  "alt": "Elegir por apariencia",
-                  "variant": "horizontal"
-                },
-                "correct": false,
-                "feedback": {
-                  "text": "No. La apariencia no basta para decidir sobre una meta financiera.",
-                  "variant": "helper",
-                  "align": "center"
-                }
-              },
-              {
-                "id": "m4-v10-opt3",
-                "title": {
-                  "text": "Solo lo que digan los amigos",
-                  "variant": "label",
-                  "align": "center"
-                },
-                "media": {
-                  "src": "1/amigos-comida-rapida.webp",
-                  "alt": "Opinion de amigos",
-                  "variant": "horizontal"
-                },
-                "correct": false,
-                "feedback": {
-                  "text": "No. Escuchar a otros puede ayudar, pero la decision requiere analizar tu propia meta.",
-                  "variant": "helper",
-                  "align": "center"
-                }
+                "options": [
+                  {
+                    "id": "m4-v10-correct",
+                    "title": {
+                      "text": "Beneficio, tiempo y riesgo",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "1/pensar.webp",
+                      "alt": "Evaluar beneficio tiempo y riesgo",
+                      "variant": "horizontal"
+                    },
+                    "correct": true,
+                    "feedback": {
+                      "text": "Correcto. Esos tres criterios ayudan a decidir con mas responsabilidad.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m4-v10-opt2",
+                    "title": {
+                      "text": "Solo si se ve bonito",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "2/stikers.webp",
+                      "alt": "Elegir por apariencia",
+                      "variant": "horizontal"
+                    },
+                    "correct": false,
+                    "feedback": {
+                      "text": "No. La apariencia no basta para decidir sobre una meta financiera.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m4-v10-opt3",
+                    "title": {
+                      "text": "Solo lo que digan los amigos",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "1/amigos-comida-rapida.webp",
+                      "alt": "Opinion de amigos",
+                      "variant": "horizontal"
+                    },
+                    "correct": false,
+                    "feedback": {
+                      "text": "No. Escuchar a otros puede ayudar, pero la decision requiere analizar tu propia meta.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  }
+                ]
               }
             ]
           }
@@ -1117,6 +1419,13 @@
       "completionCriteria": {
         "type": "interaction",
         "required": "selectCorrectOption"
+      },
+      "availability": {
+        "dependsOn": {
+          "viewId": "m4_1_v7",
+          "stateKey": "__never",
+          "equals": true
+        }
       }
     },
     {
@@ -1150,68 +1459,73 @@
             "category": "interactive",
             "area": "assessment",
             "feedbackReserve": true,
-            "title": {
-              "text": "Cual opcion muestra una decision responsable para alcanzar una meta cercana?",
-              "variant": "h3",
-              "align": "center"
-            },
             "items": [
               {
-                "id": "m4-v11-correct",
-                "title": {
-                  "text": "Separar dinero y comparar si conviene ahorrar o una pequena iniciativa",
-                  "variant": "label",
+                "id": "m4-v11-q1",
+                "prompt": {
+                  "text": "Cual opcion muestra una decision responsable para alcanzar una meta cercana?",
+                  "variant": "h3",
                   "align": "center"
                 },
-                "media": {
-                  "src": "1/pensar.webp",
-                  "alt": "Decision responsable y planificada",
-                  "variant": "horizontal"
-                },
-                "correct": true,
-                "feedback": {
-                  "text": "Correcto. Esa opcion muestra planificacion, comparacion y uso responsable del dinero.",
-                  "variant": "helper",
-                  "align": "center"
-                }
-              },
-              {
-                "id": "m4-v11-opt2",
-                "title": {
-                  "text": "Gastar primero y pensar despues",
-                  "variant": "label",
-                  "align": "center"
-                },
-                "media": {
-                  "src": "1/comprar-juegos.webp",
-                  "alt": "Gastar antes de planificar",
-                  "variant": "horizontal"
-                },
-                "correct": false,
-                "feedback": {
-                  "text": "No. Una meta no se alcanza mejor cuando el dinero se gasta sin plan.",
-                  "variant": "helper",
-                  "align": "center"
-                }
-              },
-              {
-                "id": "m4-v11-opt3",
-                "title": {
-                  "text": "Usar todo el dinero en una sola idea sin revisar",
-                  "variant": "label",
-                  "align": "center"
-                },
-                "media": {
-                  "src": "1/ganar-dinero.webp",
-                  "alt": "Usar todo el dinero sin evaluar",
-                  "variant": "horizontal"
-                },
-                "correct": false,
-                "feedback": {
-                  "text": "No. Una decision responsable no arriesga todo sin evaluar el resultado posible.",
-                  "variant": "helper",
-                  "align": "center"
-                }
+                "options": [
+                  {
+                    "id": "m4-v11-correct",
+                    "title": {
+                      "text": "Separar dinero y comparar si conviene ahorrar o una pequena iniciativa",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "1/pensar.webp",
+                      "alt": "Decision responsable y planificada",
+                      "variant": "horizontal"
+                    },
+                    "correct": true,
+                    "feedback": {
+                      "text": "Correcto. Esa opcion muestra planificacion, comparacion y uso responsable del dinero.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m4-v11-opt2",
+                    "title": {
+                      "text": "Gastar primero y pensar despues",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "1/comprar-juegos.webp",
+                      "alt": "Gastar antes de planificar",
+                      "variant": "horizontal"
+                    },
+                    "correct": false,
+                    "feedback": {
+                      "text": "No. Una meta no se alcanza mejor cuando el dinero se gasta sin plan.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "m4-v11-opt3",
+                    "title": {
+                      "text": "Usar todo el dinero en una sola idea sin revisar",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "1/ganar-dinero.webp",
+                      "alt": "Usar todo el dinero sin evaluar",
+                      "variant": "horizontal"
+                    },
+                    "correct": false,
+                    "feedback": {
+                      "text": "No. Una decision responsable no arriesga todo sin evaluar el resultado posible.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  }
+                ]
               }
             ]
           }
@@ -1224,6 +1538,13 @@
       "completionCriteria": {
         "type": "interaction",
         "required": "selectCorrectOption"
+      },
+      "availability": {
+        "dependsOn": {
+          "viewId": "m4_1_v7",
+          "stateKey": "__never",
+          "equals": true
+        }
       }
     },
     {
