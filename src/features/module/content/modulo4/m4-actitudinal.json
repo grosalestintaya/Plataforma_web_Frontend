@@ -4,6 +4,518 @@
   "backendActivityId": "12",
   "activityKey": "m04-actitudinal",
   "headerTitle": "Actitudinal",
-  "missionTitle": "Actitudinal",
-  "views": []
+  "missionTitle": "Perseverancia y compromiso con las metas",
+  "views": [
+    {
+      "viewId": "m4_3_v1",
+      "order": 1,
+      "name": "VISTA 1 - Inicio: Antes de empezar",
+      "viewType": "Inicio",
+      "objective": "Presentar la mision actitudinal como un espacio de reflexion sobre constancia, autocontrol y compromiso con las metas.",
+      "template": "preGameLobby",
+      "variant": "preGame",
+      "slots": {
+        "title": {
+          "text": "Perseverancia y compromiso con las metas",
+          "variant": "h1",
+          "align": "center"
+        },
+        "body": {
+          "paragraphs": [
+            "En esta mision reflexionaras sobre decisiones que pueden acercarte o alejarte de una meta.",
+            "A veces no es facil ahorrar, esperar o decir que no a un gasto del momento, pero hacerlo puede ayudarte a cumplir algo importante.",
+            "Lee cada situacion, elige la opcion que mejor represente una decision responsable y, si quieres, explica por que la elegirias."
+          ],
+          "variant": "body1",
+          "align": "justify"
+        },
+        "media": {
+          "src": "1/pensar.webp",
+          "alt": "Estudiante reflexionando sobre una meta",
+          "variant": "vertical"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "text",
+            "slot": "body",
+            "area": "body",
+            "order": 20
+          },
+          {
+            "component": "image",
+            "slot": "media",
+            "area": "media",
+            "order": 30
+          }
+        ],
+        "compound": []
+      },
+      "navigation": {
+        "mode": "cta",
+        "label": "Iniciar",
+        "action": "startMissionAttempt"
+      },
+      "completionCriteria": {
+        "type": "manualStart"
+      }
+    },
+    {
+      "viewId": "m4_3_v2",
+      "order": 2,
+      "name": "VISTA 2 - Practica: Situacion 1",
+      "viewType": "Practica",
+      "objective": "Reflexionar sobre la importancia de no gastar dinero destinado a una meta por impulso.",
+      "template": "simpleQuiz",
+      "variant": "simple",
+      "slots": {
+        "title": {
+          "text": "Situacion 1",
+          "variant": "h1",
+          "align": "center"
+        },
+        "media": {
+          "src": "1/compra-online-ahorro.webp",
+          "alt": "Estudiante tentado a gastar dinero ahorrado",
+          "variant": "horizontal"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "image",
+            "slot": "media",
+            "area": "media",
+            "order": 20
+          }
+        ],
+        "compound": [
+          {
+            "type": "formQuestion",
+            "component": "formQuestion",
+            "category": "interactive",
+            "area": "action",
+            "question": {
+              "text": "Has estado ahorrando para comprar algo importante, pero hoy viste una oferta que te gusto mucho. Que decision muestra mas compromiso con tu meta?",
+              "variant": "body1",
+              "align": "justify"
+            },
+            "options": [
+              {
+                "id": "m4a_s1_impulse",
+                "label": {
+                  "text": "a) Gastar una parte del ahorro sin pensarlo mucho.",
+                  "variant": "body2"
+                },
+                "score": 70
+              },
+              {
+                "id": "m4a_s1_compare",
+                "label": {
+                  "text": "b) Revisar si esa compra afecta tu meta antes de decidir.",
+                  "variant": "body2"
+                },
+                "score": 100
+              },
+              {
+                "id": "m4a_s1_delay",
+                "label": {
+                  "text": "c) Esperar un poco y pensar si realmente lo necesitas.",
+                  "variant": "body2"
+                },
+                "score": 90
+              }
+            ],
+            "prompt": {
+              "text": "Por que elegirias esa opcion? (Opcional)",
+              "variant": "helper"
+            },
+            "placeholder": "Escribe tu razon...",
+            "minReasonLength": 12,
+            "reasonRequired": false
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "lockedUntilComplete"
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "selectOption"
+      }
+    },
+    {
+      "viewId": "m4_3_v3",
+      "order": 3,
+      "name": "VISTA 3 - Practica: Situacion 2",
+      "viewType": "Practica",
+      "objective": "Reflexionar sobre la constancia en el ahorro aunque los avances parezcan pequenos.",
+      "template": "extendedQuiz",
+      "variant": "extended",
+      "slots": {
+        "title": {
+          "text": "Situacion 2",
+          "variant": "h1",
+          "align": "center"
+        },
+        "media": {
+          "src": "1/ahorrar.webp",
+          "alt": "Ahorro constante para una meta",
+          "variant": "vertical"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "image",
+            "slot": "media",
+            "area": "media",
+            "order": 20
+          }
+        ],
+        "compound": [
+          {
+            "type": "formQuestion",
+            "component": "formQuestion",
+            "category": "interactive",
+            "area": "action",
+            "question": {
+              "text": "Llevas varias semanas ahorrando, pero sientes que avanzas muy lento. Que actitud te ayuda mas a cumplir la meta?",
+              "variant": "body1",
+              "align": "justify"
+            },
+            "options": [
+              {
+                "id": "m4a_s2_quit",
+                "label": {
+                  "text": "a) Dejar de ahorrar porque todavia falta mucho.",
+                  "variant": "body2"
+                },
+                "score": 70
+              },
+              {
+                "id": "m4a_s2_keep",
+                "label": {
+                  "text": "b) Seguir ahorrando poco a poco aunque el avance sea lento.",
+                  "variant": "body2"
+                },
+                "score": 100
+              },
+              {
+                "id": "m4a_s2_spend",
+                "label": {
+                  "text": "c) Gastar una parte porque igual falta bastante.",
+                  "variant": "body2"
+                },
+                "score": 75
+              }
+            ],
+            "prompt": {
+              "text": "Si quieres, explica que pensarias en ese momento. (Opcional)",
+              "variant": "helper"
+            },
+            "placeholder": "Cuenta tu reflexion...",
+            "minReasonLength": 12,
+            "reasonRequired": false
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "lockedUntilComplete"
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "selectOption"
+      }
+    },
+    {
+      "viewId": "m4_3_v4",
+      "order": 4,
+      "name": "VISTA 4 - Practica: Situacion 3",
+      "viewType": "Practica",
+      "objective": "Reflexionar sobre priorizar una meta frente a la presion del entorno o el deseo momentaneo.",
+      "template": "simpleQuiz",
+      "variant": "simple",
+      "slots": {
+        "title": {
+          "text": "Situacion 3",
+          "variant": "h1",
+          "align": "center"
+        },
+        "media": {
+          "src": "1/amigos-comida-rapida.webp",
+          "alt": "Presion de amigos para gastar dinero",
+          "variant": "horizontal"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "image",
+            "slot": "media",
+            "area": "media",
+            "order": 20
+          }
+        ],
+        "compound": [
+          {
+            "type": "formQuestion",
+            "component": "formQuestion",
+            "category": "interactive",
+            "area": "action",
+            "question": {
+              "text": "Tus amigos quieren que gastes tu dinero en algo del momento, pero tu estas ahorrando para una meta. Que decision muestra mayor autocontrol?",
+              "variant": "body1",
+              "align": "justify"
+            },
+            "options": [
+              {
+                "id": "m4a_s3_group",
+                "label": {
+                  "text": "a) Gastar para no sentirte fuera del grupo.",
+                  "variant": "body2"
+                },
+                "score": 70
+              },
+              {
+                "id": "m4a_s3_balance",
+                "label": {
+                  "text": "b) Explicar que prefieres cuidar tu ahorro y decidir con calma.",
+                  "variant": "body2"
+                },
+                "score": 100
+              },
+              {
+                "id": "m4a_s3_half",
+                "label": {
+                  "text": "c) Usar parte del ahorro solo para no quedar mal.",
+                  "variant": "body2"
+                },
+                "score": 80
+              }
+            ],
+            "prompt": {
+              "text": "Por que te parece la mejor decision? (Opcional)",
+              "variant": "helper"
+            },
+            "placeholder": "Explica tu respuesta...",
+            "minReasonLength": 12,
+            "reasonRequired": false
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "lockedUntilComplete"
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "selectOption"
+      }
+    },
+    {
+      "viewId": "m4_3_v5",
+      "order": 5,
+      "name": "VISTA 5 - Practica: Situacion 4",
+      "viewType": "Practica",
+      "objective": "Reflexionar sobre pensar antes de usar dinero cuando una decision apresurada puede alejar una meta.",
+      "template": "extendedQuiz",
+      "variant": "extended",
+      "slots": {
+        "title": {
+          "text": "Situacion 4",
+          "variant": "h1",
+          "align": "center"
+        },
+        "media": {
+          "src": "1/decidir-pasaje-snacks-ahorro.webp",
+          "alt": "Elegir entre gastar ahora o cuidar una meta",
+          "variant": "vertical"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "image",
+            "slot": "media",
+            "area": "media",
+            "order": 20
+          }
+        ],
+        "compound": [
+          {
+            "type": "formQuestion",
+            "component": "formQuestion",
+            "category": "interactive",
+            "area": "action",
+            "question": {
+              "text": "Tienes dinero para cubrir algo necesario, pero tambien te provoca gastarlo en algo que no planeaste. Que decision refleja mas responsabilidad?",
+              "variant": "body1",
+              "align": "justify"
+            },
+            "options": [
+              {
+                "id": "m4a_s4_need",
+                "label": {
+                  "text": "a) Cubrir primero lo necesario y revisar despues si puedes gastar en otra cosa.",
+                  "variant": "body2"
+                },
+                "score": 100
+              },
+              {
+                "id": "m4a_s4_rush",
+                "label": {
+                  "text": "b) Comprar rapido antes de arrepentirte.",
+                  "variant": "body2"
+                },
+                "score": 70
+              },
+              {
+                "id": "m4a_s4_guess",
+                "label": {
+                  "text": "c) Gastar ahora y pensar luego como resolver lo importante.",
+                  "variant": "body2"
+                },
+                "score": 75
+              }
+            ],
+            "prompt": {
+              "text": "Si quieres, escribe por que elegirias esa opcion. (Opcional)",
+              "variant": "helper"
+            },
+            "placeholder": "Comparte tu razon...",
+            "minReasonLength": 12,
+            "reasonRequired": false
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "lockedUntilComplete"
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "selectOption"
+      }
+    },
+    {
+      "viewId": "m4_3_v6",
+      "order": 6,
+      "name": "VISTA 6 - Final: Cierre reflexivo",
+      "viewType": "Final",
+      "objective": "Cerrar la mision actitudinal reforzando la constancia, el autocontrol y el compromiso con las metas.",
+      "template": "postGameLobby",
+      "variant": "postGame",
+      "slots": {
+        "title": {
+          "text": "Reflexion completada",
+          "variant": "h1",
+          "align": "center"
+        },
+        "feedback": {
+          "text": "Completaste una mision de reflexion sobre perseverancia y compromiso con tus metas: +10 INTIS",
+          "variant": "label",
+          "align": "center",
+          "color": "accent"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "text",
+            "slot": "feedback",
+            "area": "feedback",
+            "order": 20
+          }
+        ],
+        "compound": [
+          {
+            "type": "showCard",
+            "component": "showCard",
+            "category": "grouper",
+            "area": "rewards",
+            "items": [
+              {
+                "id": "reward-xp",
+                "title": {
+                  "text": "XP",
+                  "variant": "label"
+                },
+                "text": {
+                  "text": "+10",
+                  "variant": "body1",
+                  "color": "secondary"
+                },
+                "media": {
+                  "src": "",
+                  "alt": "Recompensa de XP",
+                  "variant": "square"
+                }
+              },
+              {
+                "id": "reward-intis",
+                "title": {
+                  "text": "INTIS",
+                  "variant": "label"
+                },
+                "text": {
+                  "text": "+10",
+                  "variant": "body1",
+                  "color": "secondary"
+                },
+                "media": {
+                  "src": "",
+                  "alt": "Recompensa de INTIS",
+                  "variant": "square"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "cta",
+        "label": "Continuar",
+        "action": "goToNextMissionMenu"
+      },
+      "completionCriteria": {
+        "type": "endOfMission"
+      }
+    }
+  ]
 }

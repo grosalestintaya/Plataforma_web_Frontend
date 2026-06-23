@@ -4,6 +4,270 @@
   "backendActivityId": "11",
   "activityKey": "m04-procedimental",
   "headerTitle": "Procedimental",
-  "missionTitle": "Procedimental",
-  "views": []
+  "missionTitle": "Comparo ahorro e inversion para una meta",
+  "views": [
+    {
+      "viewId": "m4_2_v1",
+      "order": 1,
+      "name": "VISTA 1 - Inicio: Antes de empezar",
+      "viewType": "Inicio",
+      "objective": "Presentar la practica del modulo 4 y explicar que el estudiante reunira ingresos para acercarse a una meta.",
+      "template": "preGameLobby",
+      "variant": "preGame",
+      "slots": {
+        "title": {
+          "text": "Antes de empezar",
+          "variant": "h1",
+          "align": "center"
+        },
+        "body": {
+          "paragraphs": [
+            "En esta practica reuniras ingresos para acercarte a una meta personal.",
+            "Deberas mover la canasta para atrapar los ingresos que caen y asi completar el monto necesario.",
+            "La idea es reconocer que una meta se alcanza reuniendo recursos poco a poco, con esfuerzo y planificacion."
+          ],
+          "variant": "body1",
+          "align": "left"
+        },
+        "media": {
+          "src": "1/ganar-dinero.webp",
+          "alt": "Reunir ingresos para una meta",
+          "variant": "vertical"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "text",
+            "slot": "body",
+            "area": "body",
+            "order": 20
+          },
+          {
+            "component": "image",
+            "slot": "media",
+            "area": "media",
+            "order": 30
+          }
+        ],
+        "compound": []
+      },
+      "navigation": {
+        "mode": "cta",
+        "label": "Empezar",
+        "action": "startMissionAttempt"
+      },
+      "completionCriteria": {
+        "type": "manualStart"
+      }
+    },
+    {
+      "viewId": "m4_2_v2",
+      "order": 2,
+      "name": "VISTA 2 - Practica: Atrapo ingresos para mi meta",
+      "viewType": "Practica",
+      "objective": "Reunir ingresos hasta alcanzar una meta economica sencilla mediante un juego de recoleccion.",
+      "template": "collectObjects",
+      "variant": "catchIncome",
+      "data": {
+        "title": {
+          "text": "Comparo ahorro e inversion para una meta",
+          "variant": "h1",
+          "align": "center"
+        },
+        "sidebarTitle": {
+          "text": "Atrapa los ingresos",
+          "variant": "h2",
+          "align": "center"
+        },
+        "goalLabel": {
+          "text": "Meta",
+          "variant": "h3",
+          "align": "center"
+        },
+        "target": {
+          "title": {
+            "text": "Bicicleta",
+            "variant": "h3",
+            "align": "center"
+          },
+          "amount": 100,
+          "media": {
+            "src": "1/ganar-dinero.webp",
+            "alt": "Meta de ahorrar para una bicicleta",
+            "variant": "square"
+          }
+        },
+        "collectedLabel": {
+          "text": "Recolectado:",
+          "variant": "h3",
+          "align": "center"
+        },
+        "instruction": {
+          "text": "Mueve la canasta con el cursor o las teclas para atrapar los ingresos que caen.",
+          "variant": "h3",
+          "align": "center"
+        },
+        "basket": {
+          "label": "INGRESO",
+          "width": 136,
+          "height": 88
+        },
+        "game": {
+          "spawnEveryMs": 1200,
+          "maxActiveItems": 5,
+          "basketSpeedPx": 28,
+          "itemFallMin": 2.3,
+          "itemFallMax": 3.8,
+          "pointsToComplete": 100,
+          "items": [
+            {
+              "id": "m4-income-tip",
+              "label": "Propina",
+              "amount": 10,
+              "media": {
+                "src": "1/ganar-dinero.webp",
+                "alt": "Propina",
+                "variant": "square"
+              }
+            },
+            {
+              "id": "m4-income-work",
+              "label": "Pago por trabajo",
+              "amount": 20,
+              "media": {
+                "src": "1/ganar-dinero.webp",
+                "alt": "Pago por trabajo",
+                "variant": "square"
+              }
+            },
+            {
+              "id": "m4-income-sale",
+              "label": "Venta",
+              "amount": 15,
+              "media": {
+                "src": "1/ahorrar.webp",
+                "alt": "Venta para reunir dinero",
+                "variant": "square"
+              }
+            },
+            {
+              "id": "m4-income-help",
+              "label": "Apoyo familiar",
+              "amount": 25,
+              "media": {
+                "src": "1/recibir-dinero.webp",
+                "alt": "Apoyo familiar",
+                "variant": "square"
+              }
+            }
+          ]
+        }
+      },
+      "navigation": {
+        "mode": "lockedUntilComplete",
+        "label": "Mueve la canasta con el cursor o las teclas para atrapar los ingresos que caen."
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "reachGoalByCollectingIncome"
+      }
+    },
+    {
+      "viewId": "m4_2_v3",
+      "order": 3,
+      "name": "VISTA 3 - Final: Meta alcanzada",
+      "viewType": "Final",
+      "objective": "Cerrar la practica reforzando que las metas requieren reunir recursos con constancia y decision.",
+      "template": "postGameLobby",
+      "variant": "postGame",
+      "slots": {
+        "title": {
+          "text": "Mision cumplida",
+          "variant": "h1",
+          "align": "center"
+        },
+        "feedback": {
+          "text": "Reuniste ingresos para acercarte a una meta y comprobaste que alcanzar un objetivo requiere organizacion, constancia y buenas decisiones con el dinero.",
+          "variant": "label",
+          "align": "center",
+          "color": "accent"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "text",
+            "slot": "feedback",
+            "area": "feedback",
+            "order": 20
+          }
+        ],
+        "compound": [
+          {
+            "type": "showCard",
+            "component": "showCard",
+            "category": "grouper",
+            "area": "rewards",
+            "items": [
+              {
+                "id": "reward-xp",
+                "title": {
+                  "text": "XP",
+                  "variant": "label"
+                },
+                "text": {
+                  "text": "+10",
+                  "variant": "body1",
+                  "color": "secondary"
+                },
+                "media": {
+                  "src": "",
+                  "alt": "Recompensa de XP",
+                  "variant": "square"
+                }
+              },
+              {
+                "id": "reward-intis",
+                "title": {
+                  "text": "INTIS",
+                  "variant": "label"
+                },
+                "text": {
+                  "text": "+10",
+                  "variant": "body1",
+                  "color": "secondary"
+                },
+                "media": {
+                  "src": "",
+                  "alt": "Recompensa de INTIS",
+                  "variant": "square"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "cta",
+        "label": "Continuar",
+        "action": "goToNextMissionMenu"
+      },
+      "completionCriteria": {
+        "type": "endOfMission"
+      }
+    }
+  ]
 }

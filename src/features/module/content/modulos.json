@@ -150,25 +150,37 @@
       },
       "missions": {
         "conceptual": {
-          "title": "Conceptual",
-          "backendActivityId": null,
+          "title": "Ahorro, inversion basica y metas",
+          "activityId": "10",
+          "backendActivityId": "10",
           "activityKey": "m04-conceptual",
-          "learn": [],
-          "outcome": ""
+          "learn": [
+            "Diferenciar ahorro e inversion basica para alcanzar una meta cercana.",
+            "Evaluar beneficio, tiempo y riesgo antes de usar recursos para una meta."
+          ],
+          "outcome": "Comprenderas que una meta puede alcanzarse ahorrando poco a poco o usando una inversion basica responsable, segun el beneficio, el tiempo y el riesgo."
         },
         "procedimental": {
-          "title": "Procedimental",
-          "backendActivityId": null,
+          "title": "Comparo ahorro e inversion para una meta",
+          "activityId": "11",
+          "backendActivityId": "11",
           "activityKey": "m04-procedimental",
-          "learn": [],
-          "outcome": ""
+          "learn": [
+            "Comparar dos caminos para una meta cercana: ahorrar progresivamente o usar parte del dinero en una pequena iniciativa.",
+            "Evaluar beneficio, tiempo y riesgo para elegir la opcion mas conveniente."
+          ],
+          "outcome": "Compararas alternativas de ahorro e inversion basica para decidir con mas claridad que opcion conviene segun la meta."
         },
         "actitudinal": {
-          "title": "Actitudinal",
-          "backendActivityId": null,
+          "title": "Perseverancia y compromiso con las metas",
+          "activityId": "12",
+          "backendActivityId": "12",
           "activityKey": "m04-actitudinal",
-          "learn": [],
-          "outcome": ""
+          "learn": [
+            "Reflexionar sobre la importancia de ahorrar con constancia y planificar antes de usar el dinero.",
+            "Evitar decisiones apresuradas que puedan afectar recursos o alejar una meta."
+          ],
+          "outcome": "Fortaleceras la constancia y el compromiso con tus metas, tomando decisiones mas responsables antes de usar tu dinero."
         }
       }
     },
