@@ -142,10 +142,10 @@
       "code": "m04",
       "sortOrder": 4,
       "title": "Modulo 4",
-      "name": "Ahorro, metas y planificación personal",
+      "name": "Planifico metas con ahorro e inversión básica",
       "theme": {
         "tone": "violet",
-        "color": "#00ffff",
+        "color": "#1969B9",
         "accent": "#22d3ee"
       },
       "missions": {
@@ -155,10 +155,10 @@
           "backendActivityId": "10",
           "activityKey": "m04-conceptual",
           "learn": [
-            "Diferenciar ahorro e inversion basica para alcanzar una meta cercana.",
-            "Evaluar beneficio, tiempo y riesgo antes de usar recursos para una meta."
+            " Comprender la importancia del ahorro en la vida diaria.",
+            "Reconocer cómo el ahorro ayuda a alcanzar metas y prepararse para el futuro."
           ],
-          "outcome": "Comprenderas que una meta puede alcanzarse ahorrando poco a poco o usando una inversion basica responsable, segun el beneficio, el tiempo y el riesgo."
+          "outcome": "Reconocerás el ahorro como una herramienta útil para alcanzar metas y afrontar necesidades futuras."
         },
         "procedimental": {
           "title": "Comparo ahorro e inversion para una meta",
@@ -177,10 +177,10 @@
           "backendActivityId": "12",
           "activityKey": "m04-actitudinal",
           "learn": [
-            "Reflexionar sobre la importancia de ahorrar con constancia y planificar antes de usar el dinero.",
-            "Evitar decisiones apresuradas que puedan afectar recursos o alejar una meta."
+            "Reconocer la importancia de mantener el esfuerzo para alcanzar una meta.",
+            "Reflexionar sobre cómo las decisiones diarias pueden influir en el logro de un objetivo"
           ],
-          "outcome": "Fortaleceras la constancia y el compromiso con tus metas, tomando decisiones mas responsables antes de usar tu dinero."
+          "outcome": "Reflexionarás sobre la importancia de la perseverancia y el compromiso para mantenerte enfocado en una meta y trabajar para alcanzarla."
         }
       }
     },

@@ -22,15 +22,16 @@
         },
         "body": {
           "paragraphs": [
-            "En esta mision aprenderas que una meta puede alcanzarse ahorrando poco a poco o con una inversion basica pensada con responsabilidad.",
-            "Veras la diferencia entre ahorro e inversion basica y por que antes de usar tu dinero conviene evaluar beneficio, tiempo y riesgo.",
-            "Tambien compararas opciones para una meta personal, familiar o escolar cercana a tu realidad."
+              "A veces queremos lograr algo importante, pero no siempre contamos con el dinero necesario en ese momento, en cada oración o párrafo.",
+  "Ahorrar consiste en reservar una parte de nuestro dinero para utilizarla más adelante cuando la necesitemos, en cada oración o párrafo.",
+  "En esta misión descubrirás cómo el ahorro puede ayudarte a alcanzar metas y prepararte para situaciones futuras, en cada oración o párrafo."
+
           ],
           "variant": "body1",
           "align": "left"
         },
         "media": {
-          "src": "1/ahorro.webp",
+          "src": "4/v1x1c.webp",
           "alt": "Ahorro para alcanzar una meta"
         }
       },
@@ -76,20 +77,26 @@
       "variant": "simple",
       "slots": {
         "title": {
-          "text": "Que es el ahorro?",
+          "text": "¿Que es el ahorro?",
           "variant": "h1",
           "align": "center"
         },
         "body": {
           "paragraphs": [
-            "El ahorro consiste en guardar una parte del dinero para utilizarla mas adelante. Permite prepararse para metas, necesidades o situaciones futuras.",
-            "Ahorrar es reservar una parte de tu dinero para el futuro."
+            "El ahorro consiste en guardar una parte del dinero para utilizarla mas adelante. Permite prepararse para metas, necesidades o situaciones futuras."
+          
           ],
           "variant": "body1",
           "align": "center"
+        },     "feedback": {
+          "paragraphs": [
+            "Ahorrar es reservar una parte de tu dinero para el futuro."
+          ],
+          "variant": "body2",
+          "align": "center"
         },
         "media": {
-          "src": "1/pensar.webp",
+          "src": "4/v2x1c.webp",
           "alt": "Planificacion del ahorro",
           "variant": "horizontal"
         }
@@ -134,7 +141,7 @@
       "variant": "explanation",
       "slots": {
         "title": {
-          "text": "Para que sirve ahorrar?",
+          "text": "¿Para qué sirve ahorrar?",
           "variant": "h1",
           "align": "center"
         }
@@ -165,7 +172,7 @@
                   "align": "center"
                 },
                 "media": {
-                  "src": "2/maqueta.webp",
+                  "src": "4/v3x1c.webp",
                   "alt": "Meta escolar o personal"
                 },
                 "interaction": {
@@ -192,7 +199,7 @@
                   "align": "center"
                 },
                 "media": {
-                  "src": "1/ahorrar.webp",
+                  "src": "4/v3x2c.webp",
                   "alt": "Guardar dinero poco a poco"
                 },
                 "interaction": {
@@ -219,7 +226,7 @@
                   "align": "center"
                 },
                 "media": {
-                  "src": "1/ganar-dinero.webp",
+                  "src": "4/v3x3c.webp",
                   "alt": "Prepararse para un gasto inesperado"
                 },
                 "interaction": {
@@ -246,7 +253,7 @@
                   "align": "center"
                 },
                 "media": {
-                  "src": "1/compra-online-ahorro.webp",
+                  "src": "4/v3x4c.webp",
                   "alt": "Planificar necesidades futuras"
                 },
                 "interaction": {
@@ -294,11 +301,16 @@
         },
         "body": {
           "paragraphs": [
-            "Muchas metas requieren tiempo y planificacion. Cuando ahorramos de manera constante, nos acercamos paso a paso a lo que queremos lograr.",
-            "Una meta es mas facil de alcanzar cuando existe un plan.",
+            "Muchas metas requieren tiempo y planificacion."," Cuando ahorramos de manera constante, nos acercamos paso a paso a lo que queremos lograr.",
             "Ejemplos de metas de ahorro:"
           ],
           "variant": "body1",
+          "align": "center"
+        },     "feedback": {
+          "paragraphs": [
+             "Una meta es mas facil de alcanzar cuando existe un plan."
+          ],
+          "variant": "body2",
           "align": "center"
         }
       },
@@ -337,7 +349,7 @@
                   "align": "center"
                 },
                 "media": {
-                  "src": "1/ahorrar.webp",
+                  "src": "4/v4x1c.webp",
                   "alt": "Ahorro progresivo",
                   "variant": "horizontal"
                 }
@@ -355,7 +367,7 @@
                   "align": "center"
                 },
                 "media": {
-                  "src": "1/pensar.webp",
+                  "src": "4/v4x2c.webp",
                   "alt": "Planificacion del ahorro",
                   "variant": "horizontal"
                 }
@@ -373,7 +385,7 @@
                   "align": "center"
                 },
                 "media": {
-                  "src": "1/ahorro.webp",
+                  "src": "4/v4x3c.webp",
                   "alt": "Control del dinero ahorrado",
                   "variant": "horizontal"
                 }
@@ -391,7 +403,7 @@
                   "align": "center"
                 },
                 "media": {
-                  "src": "1/decidir-pasaje-snacks-ahorro.webp",
+                  "src": "4/v4x4c.webp",
                   "alt": "Decision de esperar para ahorrar",
                   "variant": "horizontal"
                 }
@@ -423,8 +435,9 @@
         },
         "body": {
           "paragraphs": [
-            "No siempre sabemos cuando necesitaremos dinero. Por eso, ahorrar tambien puede ayudarnos a enfrentar situaciones inesperadas.",
-            "Para que puede servir un ahorro?"
+       "No siempre sabemos cuándo necesitaremos dinero. Por eso, ahorrar también puede ayudarnos a enfrentar situaciones inesperadas.",
+"¿Para qué puede servir el ahorro?"
+
           ],
           "variant": "body1",
           "align": "center"
@@ -455,73 +468,73 @@
               {
                 "id": "m4-invest-money",
                 "title": {
-                  "text": "Emergencias",
+                  "text": "",
                   "variant": "label",
                   "align": "center"
                 },
                 "text": {
-                  "text": "Un ahorro puede ayudarte si aparece un gasto inesperado.",
+                  "text": "Puedes reemplazar algo que se dañó",
                   "variant": "bodySm",
                   "align": "center"
                 },
                 "media": {
-                  "src": "1/pensar.webp",
+                  "src": "4/v5x1c.webp",
                   "alt": "Prepararse para una emergencia",
-                  "variant": "horizontal"
+                  "variant": "square"
                 }
               },
               {
                 "id": "m4-invest-benefit",
                 "title": {
-                  "text": "Salud",
+                  "text": "",
                   "variant": "label",
                   "align": "center"
                 },
                 "text": {
-                  "text": "Puede servir para medicinas, consultas o cuidados necesarios.",
+                  "text": "Comprar materiales escolares",
                   "variant": "bodySm",
                   "align": "center"
                 },
                 "media": {
-                  "src": "2/salud.webp",
+                  "src": "4/v5x2c.webp",
                   "alt": "Ahorro para necesidades de salud",
-                  "variant": "horizontal"
+                  "variant": "square"
                 }
               },
               {
                 "id": "m4-invest-time",
                 "title": {
-                  "text": "Estudios",
+                  "text": "",
                   "variant": "label",
                   "align": "center"
                 },
                 "text": {
-                  "text": "Tambien puede apoyar materiales, cuotas o herramientas para aprender.",
+                  "text": "Cubrir gastos inesperados",
                   "variant": "bodySm",
                   "align": "center"
                 },
                 "media": {
-                  "src": "2/materiales-de-estudio.webp",
+                  "src": "4/v5x3c.webp",
                   "alt": "Ahorro para estudios",
-                  "variant": "horizontal"
+                  "variant": "square"
                 }
               },
               {
                 "id": "m4-invest-risk",
                 "title": {
-                  "text": "Hogar",
+                  "text": "",
                   "variant": "label",
                   "align": "center"
                 },
                 "text": {
-                  "text": "El ahorro tambien puede usarse en necesidades familiares o del hogar.",
+                  "text": "Resolver una necesidad de transporte",
                   "variant": "bodySm",
                   "align": "center"
                 },
                 "media": {
-                  "src": "2/compras-basicas.webp",
+                  "src": "4/v5x4c.webp",
                   "alt": "Ahorro para necesidades del hogar",
-                  "variant": "horizontal"
+                  "variant": "square"
                 }
               }
             ]
@@ -535,146 +548,384 @@
         "type": "reading"
       }
     },
-    {
-      "viewId": "m4_1_v6",
-      "order": 6,
-      "name": "VISTA 6 - Teoria: Ahorro o inversion para una meta",
-      "viewType": "Teoria",
-      "objective": "Comparar ahorro e inversion basica como dos caminos posibles para una meta cercana.",
-      "template": "splitTheory",
-      "variant": "split",
-      "slots": {
-        "title": {
-          "text": "Ahorro o inversion para una meta?",
-          "variant": "h1",
-          "align": "center"
-        },
-        "subtitle": {
-          "text": "Ambos caminos pueden servir, pero no ofrecen lo mismo en tiempo, beneficio y riesgo.",
-          "variant": "body1",
-          "align": "center"
-        }
+ {
+  "viewId": "m4_1_v6",
+  "order": 6,
+  "name": "VISTA 6 - Teoría: Ahorro e inversión básica",
+  "viewType": "Interaccion",
+  "objective": "Comparar ahorro e inversión básica como dos caminos posibles para una meta cercana.",
+  "template": "explanationTheory",
+  "variant": "explanation",
+  "slots": {
+    "title": {
+      "text": "Ahorro e inversión básica",
+      "variant": "h1",
+      "align": "center"
+    },
+    "subtitle": {
+      "text": "La inversión busca que ese dinero pueda generar algún beneficio en el futuro, aunque también puede implicar riesgos",
+      "align": "center"
+    }
+  },
+  "elements": {
+    "base": [
+      {
+        "component": "heading",
+        "slot": "title",
+        "area": "title",
+        "order": 10
       },
-      "elements": {
-        "base": [
+      {
+        "component": "heading",
+        "slot": "subtitle",
+        "area": "subtitle",
+        "order": 20
+      }
+    ],
+    "compound": [
+      {
+        "type": "collageCard",
+        "component": "collageCard",
+        "category": "grouper",
+        "area": "media",
+        "columns": 2,
+        "rows": 1,
+        "items": [
           {
-            "component": "heading",
-            "slot": "title",
-            "area": "title",
-            "order": 10
+            "id": "ahorro-card",
+            "title": {
+              "text": "Ahorro",
+              "variant": "h2",
+              "align": "center"
+            },
+            "media": {
+              "src": "4/v2x1c.webp",
+              "alt": "Estudiante guardando dinero en una alcancía",
+              "variant": "horizontal"
+            },
+            "interaction": {
+              "type": "flipCard",
+              "backCard": {
+                "title": {
+                  "text": "Ahorro",
+                  "variant": "h2",
+                  "align": "center"
+                },
+                "text": {
+                  "text": "Guardas una parte del dinero poco a poco. Avanzas con más seguridad, aunque suele tomar más tiempo para llegar a la meta.",
+                  "variant": "bodySm",
+                  "align": "center"
+                }
+              }
+            }
           },
           {
-            "component": "heading",
-            "slot": "subtitle",
-            "area": "subtitle",
-            "order": 20
-          }
-        ],
-        "compound": [
-          {
-            "type": "composeGroup",
-            "component": "composeGroup",
-            "category": "grouper",
-            "area": "media",
-            "groups": [
-              {
-                "id": "m4-saving-panel",
-                "items": [
-                  {
-                    "block": "Typography",
-                    "props": {
-                      "content": {
-                        "paragraphs": [
-                          "Ahorro",
-                          "- Guardas una parte del dinero poco a poco.",
-                          "- Avanzas con mas seguridad.",
-                          "- Suele tomar mas tiempo para llegar a la meta."
-                        ],
-                        "variant": "body1",
-                        "align": "left"
-                      }
-                    }
-                  },
-                  {
-                    "block": "Card",
-                    "grow": true,
-                    "props": {
-                      "title": {
-                        "text": "Ahorro",
-                        "variant": "h3",
-                        "align": "center"
-                      },
-                      "text": {
-                        "text": "Conviene cuando quieres cuidar tu dinero y puedes esperar.",
-                        "variant": "bodySm",
-                        "align": "center"
-                      },
-                      "media": {
-                        "src": "1/ahorrar.webp",
-                        "alt": "Ahorro progresivo para una meta",
-                        "variant": "horizontal"
-                      },
-                      "size": "compact"
-                    }
-                  }
-                ]
-              },
-              {
-                "id": "m4-investment-panel",
-                "items": [
-                  {
-                    "block": "Typography",
-                    "props": {
-                      "content": {
-                        "paragraphs": [
-                          "Inversion basica",
-                          "- Usas una parte del dinero en una pequena iniciativa.",
-                          "- Puede generar beneficio y acercarte mas rapido.",
-                          "- Tambien implica riesgo y necesita evaluacion."
-                        ],
-                        "variant": "body1",
-                        "align": "left"
-                      }
-                    }
-                  },
-                  {
-                    "block": "Card",
-                    "grow": true,
-                    "props": {
-                      "title": {
-                        "text": "Inversion basica",
-                        "variant": "h3",
-                        "align": "center"
-                      },
-                      "text": {
-                        "text": "Puede ayudar mas rapido, pero no garantiza el resultado.",
-                        "variant": "bodySm",
-                        "align": "center"
-                      },
-                      "media": {
-                        "src": "1/ganar-dinero.webp",
-                        "alt": "Iniciativa con posible beneficio",
-                        "variant": "horizontal"
-                      },
-                      "size": "compact"
-                    }
-                  }
-                ]
+            "id": "inversion-card",
+            "title": {
+              "text": "Inversión básica",
+              "variant": "h2",
+              "align": "center"
+            },
+            "media": {
+              "src": "4/v6x1c.webp",
+              "alt": "Estudiante usando dinero en una pequeña iniciativa que puede generar beneficios",
+              "variant": "horizontal"
+            },
+            "interaction": {
+              "type": "flipCard",
+              "backCard": {
+                "title": {
+                  "text": "Inversión básica",
+                  "variant": "h2",
+                  "align": "center"
+                },
+                "text": {
+                  "text": "Usas una parte del dinero en una pequeña iniciativa. Puede acercarte más rápido a tu meta, pero también implica riesgo y necesita evaluación.",
+                  "variant": "bodySm",
+                  "align": "center"
+                }
               }
-            ]
+            }
           }
         ]
       },
-      "navigation": {
-        "mode": "normal"
-      },
-      "completionCriteria": {
-        "type": "reading"
+      {
+        "type": "showCard",
+        "component": "showCard",
+        "category": "grouper",
+        "area": "feedback",
+        "items": [
+          {
+            "id": "diff-ahorro",
+            "media": {
+              "src": "4/v7x1c.webp",
+              "alt": "Alcancía representando el ahorro",
+              "variant": "square"
+            },
+            "title": {
+              "text": "Ahorro",
+              "variant": "label",
+              "align": "center"
+            },
+            "text": {
+              "text": "Conviene cuando quieres cuidar tu dinero y puedes esperar.",
+              "variant": "bodySm",
+              "align": "center"
+            }
+          },
+          {
+            "id": "diff-inversion",
+            "media": {
+              "src": "4/v7x2c.webp",
+              "alt": "Planta creciendo a partir de monedas",
+              "variant": "square"
+            },
+            "title": {
+              "text": "Inversión",
+              "variant": "label",
+              "align": "center"
+            },
+            "text": {
+              "text": "Puede ayudar más rápido, pero no garantiza el resultado.",
+              "variant": "bodySm",
+              "align": "center"
+            }
+          },
+          {
+            "id": "diff-tiempo",
+            "media": {
+              "src": "4/tiempo.webp",
+              "alt": "Imagen de calendario representando el tiempo",
+              "variant": "square"
+            },
+            "title": {
+              "text": "Tiempo",
+              "variant": "label",
+              "align": "center"
+            },
+            "text": {
+              "text": "El ahorro es más lento pero seguro. La inversión puede ser más rápida con más riesgo.",
+              "variant": "bodySm",
+              "align": "center"
+            }
+          },
+          {
+            "id": "diff-objetivo",
+            "media": {
+              "src": "4/meta.webp",
+              "alt": "Imagen de una meta alcanzada",
+              "variant": "square"
+            },
+            "title": {
+              "text": "Objetivo",
+              "variant": "label",
+              "align": "center"
+            },
+            "text": {
+              "text": "Ambos buscan ayudarte a alcanzar una meta, pero por caminos distintos.",
+              "variant": "bodySm",
+              "align": "center"
+            }
+          }
+        ]
       }
+    ]
+  },
+  "navigation": {
+    "mode": "lockedUntilComplete",
+    "label": "Toca las dos tarjetas para continuar"
+  },
+  "completionCriteria": {
+    "type": "interaction",
+    "required": "reviewCards"
+  }
+},
+{
+  "viewId": "m4_1_v7",
+  "order": 7,
+  "name": "VISTA 7 - Teoría: Diferencias principales entre ahorro e inversión",
+  "viewType": "Interaccion",
+  "objective": "Identificar las diferencias clave entre ahorro e inversión básica mediante tarjetas interactivas.",
+  "template": "explanationTheory",
+  "variant": "explanation",
+  "slots": {
+    "title": {
+      "text": "Diferencias principales",
+      "variant": "h1",
+      "align": "center"
     },
+    "subtitle": {
+      "text": "Toca cada tarjeta para descubrir en qué se diferencian el ahorro y la inversión.",
+      "variant": "body1",
+      "align": "center"
+    },
+    "feedback": {
+      "paragraphs": [
+        "La inversión busca que ese dinero pueda generar algún beneficio en el futuro, aunque también puede implicar riesgos",
+        "Antes de invertir, es importante aprender a ahorrar y organizar el dinero correctamente."
+      ],
+      "variant": "body2",
+      "align": "center"
+    }
+  },
+  "elements": {
+    "base": [
+      {
+        "component": "heading",
+        "slot": "title",
+        "area": "title",
+        "order": 10
+      },
+      {
+        "component": "heading",
+        "slot": "subtitle",
+        "area": "subtitle",
+        "order": 20
+      },
+      {
+        "component": "text",
+        "slot": "feedback",
+        "area": "feedback",
+        "order": 30
+      }
+    ],
+    "compound": [
+      {
+        "type": "collageCard",
+        "component": "collageCard",
+        "category": "grouper",
+        "area": "media",
+        "columns": 4,
+        "rows": 1,
+        "items": [
+          {
+            "id": "diff-ahorro",
+            "title": {
+              "text": "Ahorro",
+              "variant": "h3",
+              "align": "center"
+            },
+            "media": {
+              "src": "4/v7x1c.webp",
+              "alt": "Alcancía representando el ahorro",
+              "variant": "square"
+            },
+            "interaction": {
+              "type": "flipCard",
+              "backCard": {
+                "title": {
+                  "text": "Ahorro",
+                  "variant": "h3",
+                  "align": "center"
+                },
+                "text": {
+                  "text": "Guardas dinero poco a poco con seguridad, sin arriesgar lo que tienes.",
+                  "variant": "bodySm",
+                  "align": "center"
+                }
+              }
+            }
+          },
+          {
+            "id": "diff-inversion",
+            "title": {
+              "text": "Inversión",
+              "variant": "h3",
+              "align": "center"
+            },
+            "media": {
+              "src": "4/v7x2c.webp",
+              "alt": "Planta pequeña creciendo a partir de monedas",
+              "variant": "square"
+            },
+            "interaction": {
+              "type": "flipCard",
+              "backCard": {
+                "title": {
+                  "text": "Inversión",
+                  "variant": "h3",
+                  "align": "center"
+                },
+                "text": {
+                  "text": "Usas tu dinero en algo que puede generar más dinero, aunque también puede implicar riesgos.",
+                  "variant": "bodySm",
+                  "align": "center"
+                }
+              }
+            }
+          },
+          {
+            "id": "diff-tiempo",
+            "title": {
+              "text": "Tiempo",
+              "variant": "h3",
+              "align": "center"
+            },
+            "media": {
+              "src": "4/v7x3c.webp",
+              "alt": "Calendario representando el tiempo",
+              "variant": "square"
+            },
+            "interaction": {
+              "type": "flipCard",
+              "backCard": {
+                "title": {
+                  "text": "Tiempo",
+                  "variant": "h3",
+                  "align": "center"
+                },
+                "text": {
+                  "text": "El ahorro es más lento pero seguro. La inversión puede acercarte más rápido a tu meta.",
+                  "variant": "bodySm",
+                  "align": "center"
+                }
+              }
+            }
+          },
+          {
+            "id": "diff-objetivo",
+            "title": {
+              "text": "Objetivo",
+              "variant": "h3",
+              "align": "center"
+            },
+            "media": {
+              "src": "4/v7x4c.webp",
+              "alt": "Meta alcanzada",
+              "variant": "square"
+            },
+            "interaction": {
+              "type": "flipCard",
+              "backCard": {
+                "title": {
+                  "text": "Objetivo",
+                  "variant": "h3",
+                  "align": "center"
+                },
+                "text": {
+                  "text": "Ambos buscan ayudarte a alcanzar una meta, pero por caminos distintos.",
+                  "variant": "bodySm",
+                  "align": "center"
+                }
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "navigation": {
+    "mode": "lockedUntilComplete",
+    "label": "Toca todas las tarjetas para continuar"
+  },
+  "completionCriteria": {
+    "type": "interaction",
+    "required": "reviewCards"
+  }
+},
     {
       "viewId": "m4_1_v7",
-      "order": 7,
+      "order": 8,
       "name": "VISTA 7 - Evaluacion: Reconocer el ahorro",
       "viewType": "Evaluacion",
       "objective": "Comprobar que el estudiante reconoce una situacion de ahorro.",
@@ -707,7 +958,7 @@
               {
                 "id": "m4-v7-q1",
                 "prompt": {
-                  "text": "Cual opcion describe mejor el ahorro?",
+                  "text": "¿Cuál de estas opciones NO representa una meta de ahorro?",
                   "variant": "h3",
                   "align": "center"
                 },
@@ -720,13 +971,13 @@
                       "align": "center"
                     },
                     "media": {
-                      "src": "1/ahorrar.webp",
+                      "src": "4/v8x1c.webp",
                       "alt": "Guardar dinero cada semana",
                       "variant": "horizontal"
                     },
-                    "correct": true,
+                    "correct": false,
                     "feedback": {
-                      "text": "Correcto. Ahorrar es separar una parte del dinero para usarla despues en una meta.",
+                      "text": "No. Ahorrar es separar una parte del dinero para usarla despues en una meta.",
                       "variant": "helper",
                       "align": "center"
                     }
@@ -734,18 +985,18 @@
                   {
                     "id": "m4-v7-opt2",
                     "title": {
-                      "text": "Gastar todo hoy",
+                      "text": "Invertir en algo que te interesa",
                       "variant": "label",
                       "align": "center"
                     },
                     "media": {
-                      "src": "1/comprar-snacks.webp",
-                      "alt": "Gastar dinero de inmediato",
+                      "src": "4/v8x2c.webp",
+                      "alt": "Invertir en algo que te interesa",
                       "variant": "horizontal"
                     },
                     "correct": false,
                     "feedback": {
-                      "text": "No. Si gastas todo hoy no estas separando dinero para una meta futura.",
+                      "text": "No. Invertir en algo que te interesa no es lo mismo que ahorrar pero es una forma de usar el dinero.",
                       "variant": "helper",
                       "align": "center"
                     }
@@ -753,18 +1004,18 @@
                   {
                     "id": "m4-v7-opt3",
                     "title": {
-                      "text": "Comprar por impulso",
+                      "text": "Analizar si gastar o guardar el dinero",
                       "variant": "label",
                       "align": "center"
                     },
                     "media": {
-                      "src": "1/impulso.webp",
-                      "alt": "Compra por impulso",
+                      "src": "4/v8x3c.webp",
+                      "alt": "Analizar si gastar o guardar el dinero",
                       "variant": "horizontal"
                     },
                     "correct": false,
                     "feedback": {
-                      "text": "No. Esa decision prioriza el momento y no una meta planificada.",
+                      "text": "No. Esa decision es correcta para ahorrar o invertir",
                       "variant": "helper",
                       "align": "center"
                     }
@@ -777,13 +1028,13 @@
                       "align": "center"
                     },
                     "media": {
-                      "src": "1/decidir-pasaje-snacks-ahorro.webp",
+                      "src": "4/v8x4c.webp",
                       "alt": "Uso de dinero sin plan",
                       "variant": "horizontal"
                     },
-                    "correct": false,
+                    "correct": true,
                     "feedback": {
-                      "text": "No. El ahorro necesita orden y una decision de guardar parte del dinero.",
+                      "text": "¡Muy bien! Una meta de ahorro requiere planificar y guardar dinero para alcanzarla.",
                       "variant": "helper",
                       "align": "center"
                     }
@@ -798,25 +1049,7 @@
                   "align": "center"
                 },
                 "options": [
-                  {
-                    "id": "m4-v8-correct",
-                    "title": {
-                      "text": "Usar una parte del dinero en una pequena iniciativa",
-                      "variant": "label",
-                      "align": "center"
-                    },
-                    "media": {
-                      "src": "2/maqueta.webp",
-                      "alt": "Pequena iniciativa escolar",
-                      "variant": "horizontal"
-                    },
-                    "correct": true,
-                    "feedback": {
-                      "text": "Correcto. Una inversion basica usa parte del dinero para intentar obtener un beneficio.",
-                      "variant": "helper",
-                      "align": "center"
-                    }
-                  },
+              
                   {
                     "id": "m4-v8-opt2",
                     "title": {
@@ -851,6 +1084,24 @@
                     "correct": false,
                     "feedback": {
                       "text": "No. Gastar por gusto no busca un beneficio planificado para la meta.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  }    ,{
+                    "id": "m4-v8-correct",
+                    "title": {
+                      "text": "Usar una parte del dinero en una pequena iniciativa",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "4/v9x1.webp",
+                      "alt": "Pequena iniciativa escolar",
+                      "variant": "horizontal"
+                    },
+                    "correct": true,
+                    "feedback": {
+                      "text": "Correcto. Una inversion basica usa parte del dinero para intentar obtener un beneficio.",
                       "variant": "helper",
                       "align": "center"
                     }
@@ -911,7 +1162,7 @@
                       "align": "center"
                     },
                     "media": {
-                      "src": "1/ganar-dinero.webp",
+                      "src": "4/v10x1c.webp",
                       "alt": "Decision apresurada con dinero",
                       "variant": "horizontal"
                     },
@@ -927,30 +1178,12 @@
               {
                 "id": "m4-v10-q1",
                 "prompt": {
-                  "text": "Que debes evaluar antes de usar tu dinero para una meta?",
+                  "text": "¿Que debes evaluar antes de usar tu dinero para una meta?",
                   "variant": "h3",
                   "align": "center"
                 },
                 "options": [
-                  {
-                    "id": "m4-v10-correct",
-                    "title": {
-                      "text": "Beneficio, tiempo y riesgo",
-                      "variant": "label",
-                      "align": "center"
-                    },
-                    "media": {
-                      "src": "1/pensar.webp",
-                      "alt": "Evaluar beneficio tiempo y riesgo",
-                      "variant": "horizontal"
-                    },
-                    "correct": true,
-                    "feedback": {
-                      "text": "Correcto. Esos tres criterios ayudan a decidir con mas responsabilidad.",
-                      "variant": "helper",
-                      "align": "center"
-                    }
-                  },
+               
                   {
                     "id": "m4-v10-opt2",
                     "title": {
@@ -959,13 +1192,31 @@
                       "align": "center"
                     },
                     "media": {
-                      "src": "2/stikers.webp",
+                      "src": "4/v4x2c.webp",
                       "alt": "Elegir por apariencia",
                       "variant": "horizontal"
                     },
                     "correct": false,
                     "feedback": {
                       "text": "No. La apariencia no basta para decidir sobre una meta financiera.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  },   {
+                    "id": "m4-v10-correct",
+                    "title": {
+                      "text": "Beneficio, tiempo y riesgo",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "4/v11x2c.webp",
+                      "alt": "Evaluar beneficio tiempo y riesgo",
+                      "variant": "horizontal"
+                    },
+                    "correct": true,
+                    "feedback": {
+                      "text": "Correcto. Esos tres criterios ayudan a decidir con mas responsabilidad.",
                       "variant": "helper",
                       "align": "center"
                     }
@@ -978,7 +1229,7 @@
                       "align": "center"
                     },
                     "media": {
-                      "src": "1/amigos-comida-rapida.webp",
+                      "src": "4/v11x1c.webp",
                       "alt": "Opinion de amigos",
                       "variant": "horizontal"
                     },
@@ -994,11 +1245,29 @@
               {
                 "id": "m4-v11-q1",
                 "prompt": {
-                  "text": "Cual opcion muestra una decision responsable para alcanzar una meta cercana?",
+                  "text": "¿Cual opcion muestra una decision responsable para alcanzar una meta cercana?",
                   "variant": "h3",
                   "align": "center"
                 },
-                "options": [
+                "options": [     {
+                    "id": "m4-v11-opt3",
+                    "title": {
+                      "text": "Usar todo el dinero en una sola idea sin revisar",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "4/v12x2c.webp",
+                      "alt": "Usar todo el dinero sin evaluar",
+                      "variant": "horizontal"
+                    },
+                    "correct": false,
+                    "feedback": {
+                      "text": "No. Una decision responsable no arriesga todo sin evaluar el resultado posible.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  },
                   {
                     "id": "m4-v11-correct",
                     "title": {
@@ -1007,7 +1276,7 @@
                       "align": "center"
                     },
                     "media": {
-                      "src": "1/pensar.webp",
+                      "src": "4/v12x1c.webp",
                       "alt": "Decision responsable y planificada",
                       "variant": "horizontal"
                     },
@@ -1036,26 +1305,8 @@
                       "variant": "helper",
                       "align": "center"
                     }
-                  },
-                  {
-                    "id": "m4-v11-opt3",
-                    "title": {
-                      "text": "Usar todo el dinero en una sola idea sin revisar",
-                      "variant": "label",
-                      "align": "center"
-                    },
-                    "media": {
-                      "src": "1/ganar-dinero.webp",
-                      "alt": "Usar todo el dinero sin evaluar",
-                      "variant": "horizontal"
-                    },
-                    "correct": false,
-                    "feedback": {
-                      "text": "No. Una decision responsable no arriesga todo sin evaluar el resultado posible.",
-                      "variant": "helper",
-                      "align": "center"
-                    }
                   }
+             
                 ]
               }
             ]
@@ -1073,7 +1324,7 @@
     },
     {
       "viewId": "m4_1_v8",
-      "order": 8,
+      "order": 9,
       "name": "VISTA 8 - Evaluacion: Reconocer la inversion basica",
       "viewType": "Evaluacion",
       "objective": "Comprobar que el estudiante reconoce una inversion basica.",
@@ -1192,7 +1443,7 @@
     },
     {
       "viewId": "m4_1_v9",
-      "order": 9,
+      "order": 10,
       "name": "VISTA 9 - Evaluacion: Elegir el camino mas seguro",
       "viewType": "Evaluacion",
       "objective": "Comprobar que el estudiante identifica cuando conviene ahorrar.",
@@ -1311,7 +1562,7 @@
     },
     {
       "viewId": "m4_1_v10",
-      "order": 10,
+      "order": 11,
       "name": "VISTA 10 - Evaluacion: Que debes evaluar",
       "viewType": "Evaluacion",
       "objective": "Comprobar que el estudiante reconoce los criterios para decidir entre ahorro e inversion.",
@@ -1430,7 +1681,7 @@
     },
     {
       "viewId": "m4_1_v11",
-      "order": 11,
+      "order": 12,
       "name": "VISTA 11 - Evaluacion: Decision responsable para una meta",
       "viewType": "Evaluacion",
       "objective": "Comprobar que el estudiante identifica una decision responsable para alcanzar una meta cercana.",
@@ -1449,7 +1700,7 @@
             "component": "heading",
             "slot": "title",
             "area": "title",
-            "order": 10
+            "order": 12
           }
         ],
         "compound": [
@@ -1549,7 +1800,7 @@
     },
     {
       "viewId": "m4_1_v12",
-      "order": 12,
+      "order": 13,
       "name": "VISTA 12 - Final: Mision completada",
       "viewType": "Final",
       "objective": "Cerrar la mision conceptual y reforzar el aprendizaje principal.",

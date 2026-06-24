@@ -36,7 +36,7 @@ export const BRANCH_COLORS = [
     labelBg: "rgba(19, 25, 43, 0.95)",
   },
   {
-    main: "#00ffff",
+    main: "#1969B9",
     /// dark: "#C76F1D",
     light: "#FFF0DF",
     glow: "rgba(255, 177, 93, 0.34)",

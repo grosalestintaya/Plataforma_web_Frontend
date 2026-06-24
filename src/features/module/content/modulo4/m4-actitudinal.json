@@ -22,9 +22,9 @@
         },
         "body": {
           "paragraphs": [
-            "En esta mision reflexionaras sobre decisiones que pueden acercarte o alejarte de una meta.",
-            "A veces no es facil ahorrar, esperar o decir que no a un gasto del momento, pero hacerlo puede ayudarte a cumplir algo importante.",
-            "Lee cada situacion, elige la opcion que mejor represente una decision responsable y, si quieres, explica por que la elegirias."
+    "Alcanzar una meta suele requerir tiempo, paciencia y constancia.",
+"En el camino pueden aparecer situaciones que nos hagan querer cambiar nuestros planes o abandonar nuestro objetivo.",
+"En esta misión analizarás distintas situaciones relacionadas con el compromiso y la perseverancia necesarios para alcanzar una meta."
           ],
           "variant": "body1",
           "align": "justify"
@@ -82,7 +82,7 @@
           "align": "center"
         },
         "media": {
-          "src": "1/compra-online-ahorro.webp",
+          "src": "4/v1x1a.webp",
           "alt": "Estudiante tentado a gastar dinero ahorrado",
           "variant": "horizontal"
         }
@@ -109,7 +109,7 @@
             "category": "interactive",
             "area": "action",
             "question": {
-              "text": "Has estado ahorrando para comprar algo importante, pero hoy viste una oferta que te gusto mucho. Que decision muestra mas compromiso con tu meta?",
+              "text": "Llevas varias semanas ahorrando para comprar unos audífonos que realmente deseas. Hoy encuentras unas zapatillas que te gustan mucho y cuestan casi todo el dinero que has logrado ahorrar. ¿Qué harías en esta situación?",
               "variant": "body1",
               "align": "justify"
             },
@@ -117,7 +117,7 @@
               {
                 "id": "m4a_s1_impulse",
                 "label": {
-                  "text": "a) Gastar una parte del ahorro sin pensarlo mucho.",
+                  "text": "a) Utilizaría mi ahorro para comprar las zapatillas",
                   "variant": "body2"
                 },
                 "score": 70
@@ -125,7 +125,7 @@
               {
                 "id": "m4a_s1_compare",
                 "label": {
-                  "text": "b) Revisar si esa compra afecta tu meta antes de decidir.",
+                  "text": "b) Evaluaría si la compra vale la pena antes de decidir.",
                   "variant": "body2"
                 },
                 "score": 100
@@ -133,7 +133,7 @@
               {
                 "id": "m4a_s1_delay",
                 "label": {
-                  "text": "c) Esperar un poco y pensar si realmente lo necesitas.",
+                  "text": "c) Continuaría ahorrando para alcanzar mi meta inicial.",
                   "variant": "body2"
                 },
                 "score": 90
@@ -172,7 +172,7 @@
           "align": "center"
         },
         "media": {
-          "src": "1/ahorrar.webp",
+          "src": "4/v2x1a.webp",
           "alt": "Ahorro constante para una meta",
           "variant": "vertical"
         }
@@ -199,7 +199,7 @@
             "category": "interactive",
             "area": "action",
             "question": {
-              "text": "Llevas varias semanas ahorrando, pero sientes que avanzas muy lento. Que actitud te ayuda mas a cumplir la meta?",
+              "text": "Has comenzado a ahorrar para una meta importante. Sin embargo, después de varias semanas sientes que todavía falta mucho para alcanzarla. ¿Qué harías?",
               "variant": "body1",
               "align": "justify"
             },
@@ -207,7 +207,7 @@
               {
                 "id": "m4a_s2_quit",
                 "label": {
-                  "text": "a) Dejar de ahorrar porque todavia falta mucho.",
+                  "text": "a) Continuaría ahorrando poco a poco.",
                   "variant": "body2"
                 },
                 "score": 70
@@ -215,7 +215,7 @@
               {
                 "id": "m4a_s2_keep",
                 "label": {
-                  "text": "b) Seguir ahorrando poco a poco aunque el avance sea lento.",
+                  "text": "b) Buscaría otras formas de acercarme a la meta sin abandonar mi ahorro.",
                   "variant": "body2"
                 },
                 "score": 100
@@ -223,7 +223,7 @@
               {
                 "id": "m4a_s2_spend",
                 "label": {
-                  "text": "c) Gastar una parte porque igual falta bastante.",
+                  "text": "c) Dejaría de ahorrar porque la meta parece difícil de alcanzar",
                   "variant": "body2"
                 },
                 "score": 75
@@ -262,7 +262,7 @@
           "align": "center"
         },
         "media": {
-          "src": "1/amigos-comida-rapida.webp",
+          "src": "4/v3x1a.webp",
           "alt": "Presion de amigos para gastar dinero",
           "variant": "horizontal"
         }
@@ -289,7 +289,7 @@
             "category": "interactive",
             "area": "action",
             "question": {
-              "text": "Tus amigos quieren que gastes tu dinero en algo del momento, pero tu estas ahorrando para una meta. Que decision muestra mayor autocontrol?",
+              "text": "Tus amigos decidieron gastar el dinero que recibieron esta semana. Tú habías pensado ahorrar una parte para alcanzar una meta que te importa. ¿Qué harías?",
               "variant": "body1",
               "align": "justify"
             },
@@ -297,7 +297,7 @@
               {
                 "id": "m4a_s3_group",
                 "label": {
-                  "text": "a) Gastar para no sentirte fuera del grupo.",
+                  "text": "a) Gastaría todo mi dinero para hacer lo mismo que mis amigos.",
                   "variant": "body2"
                 },
                 "score": 70
@@ -305,7 +305,7 @@
               {
                 "id": "m4a_s3_balance",
                 "label": {
-                  "text": "b) Explicar que prefieres cuidar tu ahorro y decidir con calma.",
+                  "text": "b) Ahorraría una parte y utilizaría el resto según mis posibilidades.",
                   "variant": "body2"
                 },
                 "score": 100
@@ -313,7 +313,7 @@
               {
                 "id": "m4a_s3_half",
                 "label": {
-                  "text": "c) Usar parte del ahorro solo para no quedar mal.",
+                  "text": "c) Mantendría mi plan de ahorro para seguir avanzando hacia mi meta.",
                   "variant": "body2"
                 },
                 "score": 80
@@ -352,7 +352,7 @@
           "align": "center"
         },
         "media": {
-          "src": "1/decidir-pasaje-snacks-ahorro.webp",
+          "src": "4/v4x1a.webp",
           "alt": "Elegir entre gastar ahora o cuidar una meta",
           "variant": "vertical"
         }
@@ -379,7 +379,7 @@
             "category": "interactive",
             "area": "action",
             "question": {
-              "text": "Tienes dinero para cubrir algo necesario, pero tambien te provoca gastarlo en algo que no planeaste. Que decision refleja mas responsabilidad?",
+              "text": "Después de varios meses de esfuerzo, ya has reunido gran parte del dinero necesario para alcanzar tu meta. ¿Qué harías?",
               "variant": "body1",
               "align": "justify"
             },
@@ -387,7 +387,7 @@
               {
                 "id": "m4a_s4_need",
                 "label": {
-                  "text": "a) Cubrir primero lo necesario y revisar despues si puedes gastar en otra cosa.",
+                  "text": "a) Continuaría con mi plan hasta completar la meta.",
                   "variant": "body2"
                 },
                 "score": 100
@@ -395,7 +395,7 @@
               {
                 "id": "m4a_s4_rush",
                 "label": {
-                  "text": "b) Comprar rapido antes de arrepentirte.",
+                  "text": "b) Utilizaría una parte del dinero ahorrado en otra cosa que me gusta.",
                   "variant": "body2"
                 },
                 "score": 70
@@ -403,7 +403,7 @@
               {
                 "id": "m4a_s4_guess",
                 "label": {
-                  "text": "c) Gastar ahora y pensar luego como resolver lo importante.",
+                  "text": "c) Cambiaría completamente de objetivo.",
                   "variant": "body2"
                 },
                 "score": 75
