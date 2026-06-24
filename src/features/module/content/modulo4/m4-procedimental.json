@@ -126,6 +126,7 @@
           "itemFallMin": 2.3,
           "itemFallMax": 3.8,
           "pointsToComplete": 300,
+          "minimumCompletionAmount": 310,
           "introTitle": "Como se juega",
           "introText": "Tienes 4 semanas para completar la meta y, si hace falta, 2 semanas extra. Mueve la canasta para atrapar ingresos y evita los gastos. Mientras menos semanas uses para llegar a S/. 300.00, mejor sera tu puntuacion.",
           "startButtonText": "Comenzar",
@@ -133,34 +134,23 @@
           "minimumCompletionScore": 60,
           "incomeItems": [
             {
-              "id": "tip-45",
-              "label": "Gran propina",
-              "amount": 45,
-              "kind": "income",
-              "media": {
-                "src": "1/ganar-dinero.webp",
-                "alt": "Gran propina",
-                "variant": "square"
-              }
-            },
-            {
-              "id": "tip-35",
-              "label": "Gran propina",
-              "amount": 35,
-              "kind": "income",
-              "media": {
-                "src": "1/ganar-dinero.webp",
-                "alt": "Gran propina",
-                "variant": "square"
-              }
-            },
-            {
               "id": "tip-40",
               "label": "Gran propina",
               "amount": 40,
               "kind": "income",
               "media": {
-                "src": "1/ganar-dinero.webp",
+                "src": "4/gran-propina.jpeg",
+                "alt": "Gran propina",
+                "variant": "square"
+              }
+            },
+            {
+              "id": "tip-45",
+              "label": "Gran propina",
+              "amount": 45,
+              "kind": "income",
+              "media": {
+                "src": "4/gran-propina.jpeg",
                 "alt": "Gran propina",
                 "variant": "square"
               }
@@ -171,84 +161,73 @@
               "amount": 50,
               "kind": "income",
               "media": {
-                "src": "1/ganar-dinero.webp",
+                "src": "4/gran-propina.jpeg",
                 "alt": "Gran propina",
                 "variant": "square"
               }
             },
             {
-              "id": "sell-apples",
-              "label": "Apoyo en tienda",
-              "amount": 8,
-              "kind": "income",
-              "media": {
-                "src": "1/ahorrar.webp",
-                "alt": "Apoyo en tienda",
-                "variant": "square"
-              }
-            },
-            {
-              "id": "recycle",
-              "label": "Reciclar botellas",
-              "amount": 4,
-              "kind": "income",
-              "media": {
-                "src": "1/ahorrar.webp",
-                "alt": "Reciclar botellas",
-                "variant": "square"
-              }
-            },
-            {
-              "id": "store-help",
+              "id": "store-help-12",
               "label": "Ayudar en tienda",
               "amount": 12,
               "kind": "income",
               "media": {
-                "src": "1/ganar-dinero.webp",
+                "src": "4/ayudar-tienda.jpeg",
                 "alt": "Ayudar en tienda",
                 "variant": "square"
               }
             },
             {
-              "id": "family-help",
-              "label": "Apoyo familiar",
-              "amount": 15,
+              "id": "store-help-14",
+              "label": "Ayudar en tienda",
+              "amount": 14,
               "kind": "income",
               "media": {
-                "src": "1/recibir-dinero.webp",
-                "alt": "Apoyo familiar",
+                "src": "4/ayudar-tienda.jpeg",
+                "alt": "Ayudar en tienda",
                 "variant": "square"
               }
             },
             {
-              "id": "work-pay",
-              "label": "Encargo familiar",
-              "amount": 18,
+              "id": "recycle-5",
+              "label": "Reciclar botellas",
+              "amount": 5,
               "kind": "income",
               "media": {
-                "src": "1/ganar-dinero.webp",
-                "alt": "Encargo familiar",
+                "src": "4/reciclar-botellas.jpeg",
+                "alt": "Reciclar botellas",
                 "variant": "square"
               }
             },
             {
-              "id": "notebooks",
-              "label": "Vender usado",
-              "amount": 10,
+              "id": "recycle-8",
+              "label": "Reciclar botellas",
+              "amount": 8,
               "kind": "income",
               "media": {
-                "src": "1/ahorrar.webp",
-                "alt": "Vender algo usado",
+                "src": "4/reciclar-botellas.jpeg",
+                "alt": "Reciclar botellas",
                 "variant": "square"
               }
             },
             {
-              "id": "dog-walk",
+              "id": "dog-walk-7",
               "label": "Pasear mascota",
-              "amount": 6,
+              "amount": 7,
               "kind": "income",
               "media": {
-                "src": "1/ganar-dinero.webp",
+                "src": "4/pasear-mascota.jpeg",
+                "alt": "Pasear mascota",
+                "variant": "square"
+              }
+            },
+            {
+              "id": "dog-walk-9",
+              "label": "Pasear mascota",
+              "amount": 9,
+              "kind": "income",
+              "media": {
+                "src": "4/pasear-mascota.jpeg",
                 "alt": "Pasear mascota",
                 "variant": "square"
               }
@@ -262,51 +241,40 @@
               "amount": 5,
               "kind": "expense",
               "media": {
-                "src": "1/comprar-snacks.webp",
+                "src": "4/golosinas.jpeg",
                 "alt": "Golosinas",
                 "variant": "square"
               }
             },
             {
               "id": "videogame",
-              "label": "Compra en juego",
+              "label": "Compra de videojuego",
               "amount": 12,
               "kind": "expense",
               "media": {
-                "src": "1/comprar-juegos.webp",
-                "alt": "Compra en juego",
+                "src": "4/compra-videojuego.jpeg",
+                "alt": "Compra de videojuego",
                 "variant": "square"
               }
             },
             {
-              "id": "drink",
-              "label": "Gaseosa",
-              "amount": 4,
-              "kind": "expense",
-              "media": {
-                "src": "1/gaseosa.webp",
-                "alt": "Gaseosa",
-                "variant": "square"
-              }
-            },
-            {
-              "id": "toy",
+              "id": "impulse-buy",
               "label": "Compra impulsiva",
               "amount": 10,
               "kind": "expense",
               "media": {
-                "src": "1/comprar-juegos.webp",
+                "src": "4/compra-impulsiva..jpeg",
                 "alt": "Compra impulsiva",
                 "variant": "square"
               }
             },
             {
-              "id": "movies",
+              "id": "friends-outing",
               "label": "Salida con amigos",
               "amount": 20,
               "kind": "expense",
               "media": {
-                "src": "1/comprar-juegos.webp",
+                "src": "4/salida-amigos.jpeg",
                 "alt": "Salida con amigos",
                 "variant": "square"
               }
@@ -315,56 +283,54 @@
           "weeklyRounds": [
             [
               "tip-45",
-              "work-pay",
-              "family-help",
-              "sell-apples",
-              "notebooks",
+              "tip-40",
+              "store-help-14",
+              "dog-walk-7",
+              "recycle-5",
               "candies",
               "videogame"
-            ],
-            [
-              "tip-35",
-              "work-pay",
-              "store-help",
-              "dog-walk",
-              "recycle",
-              "drink",
-              "toy"
-            ],
-            [
-              "tip-40",
-              "family-help",
-              "store-help",
-              "sell-apples",
-              "dog-walk",
-              "candies",
-              "movies"
             ],
             [
               "tip-50",
-              "work-pay",
-              "family-help",
-              "sell-apples",
-              "notebooks",
-              "drink",
-              "videogame"
-            ],
-            [
-              "tip-35",
-              "work-pay",
-              "store-help",
-              "recycle",
-              "sell-apples",
-              "candies"
+              "store-help-12",
+              "dog-walk-9",
+              "recycle-8",
+              "candies",
+              "impulse-buy"
             ],
             [
               "tip-40",
-              "family-help",
-              "dog-walk",
-              "notebooks",
-              "recycle",
-              "toy",
-              "drink"
+              "tip-45",
+              "store-help-14",
+              "dog-walk-7",
+              "recycle-5",
+              "candies",
+              "friends-outing"
+            ],
+            [
+              "tip-50",
+              "tip-40",
+              "store-help-12",
+              "dog-walk-9",
+              "recycle-8",
+              "videogame"
+            ],
+            [
+              "tip-45",
+              "store-help-14",
+              "dog-walk-7",
+              "recycle-8",
+              "candies",
+              "videogame"
+            ],
+            [
+              "tip-40",
+              "store-help-12",
+              "dog-walk-9",
+              "recycle-5",
+              "candies",
+              "impulse-buy",
+              "friends-outing"
             ]
           ]
         }
@@ -381,9 +347,341 @@
     {
       "viewId": "m4_2_v3",
       "order": 3,
-      "name": "VISTA 3 - Final: Meta alcanzada",
+      "name": "VISTA 3 - Practica: Haz crecer tu excedente",
+      "viewType": "Practica",
+      "objective": "Usar solo el excedente de la meta para decidir entre respaldo, inversion o un gasto que puede esperar.",
+      "template": "collectObjects",
+      "variant": "surplusDecision",
+      "data": {
+        "sidebarTitle": {
+          "text": "Haz crecer tu excedente",
+          "variant": "h2",
+          "align": "center"
+        },
+        "goalLabel": {
+          "text": "Meta protegida",
+          "variant": "h3",
+          "align": "center"
+        },
+        "target": {
+          "title": {
+            "text": "Bicicleta",
+            "variant": "h3",
+            "align": "center"
+          },
+          "amount": 300,
+          "media": {
+            "src": "4/bicicleta.jpeg",
+            "alt": "Bicicleta como meta de ahorro",
+            "variant": "horizontal"
+          }
+        },
+        "collectedLabel": {
+          "text": "Excedente disponible:",
+          "variant": "h3",
+          "align": "center"
+        },
+        "collectedStatusText": "Superaste el excedente inicial por {amount}",
+        "sourceViewId": "m4_2_v2",
+        "previewPayload": {
+          "targetAmount": 300,
+          "collectedAmount": 325,
+          "protectedGoalAmount": 300,
+          "surplusAmount": 25,
+          "target": {
+            "title": {
+              "text": "Bicicleta",
+              "variant": "h3",
+              "align": "center"
+            },
+            "media": {
+              "src": "4/bicicleta.jpeg",
+              "alt": "Bicicleta como meta de ahorro",
+              "variant": "horizontal"
+            }
+          }
+        },
+        "game": {
+          "mode": "surplusDecision",
+          "pointsToComplete": 25
+        },
+        "intro": {
+          "eyebrow": {
+            "text": "Haz crecer tu excedente",
+            "variant": "label",
+            "align": "left"
+          },
+          "title": {
+            "text": "Meta asegurada",
+            "variant": "h1",
+            "align": "left"
+          },
+          "description": {
+            "text": "Primero proteges el dinero de tu meta. Si te sobra un excedente, puedes decidir si guardarlo, hacerlo crecer o usar una parte en un gasto que puede esperar.",
+            "variant": "body",
+            "align": "left"
+          },
+          "statusTitle": {
+            "text": "META ASEGURADA",
+            "variant": "label",
+            "align": "center"
+          },
+          "statusText": {
+            "text": "Este dinero ya no se utiliza.",
+            "variant": "bodySm",
+            "align": "center"
+          },
+          "buttonText": "Decidir que hacer con mi excedente"
+        },
+        "noSurplus": {
+          "title": {
+            "text": "Meta alcanzada",
+            "variant": "h2",
+            "align": "center"
+          },
+          "description": {
+            "text": "Ya protegiste S/. 300.00 para tu bicicleta. Esta vez no quedo dinero extra para decidir que hacer con el.",
+            "variant": "body",
+            "align": "center"
+          },
+          "buttonText": "Continuar"
+        },
+        "opportunitiesSection": {
+          "title": {
+            "text": "Oportunidades disponibles",
+            "variant": "h2",
+            "align": "left"
+          },
+          "description": {
+            "text": "Compara monto necesario, tiempo, posible resultado y riesgo antes de elegir.",
+            "variant": "bodySm",
+            "align": "left"
+          },
+          "buttonText": "Continuar con esta opcion",
+          "backButtonText": "Volver"
+        },
+        "distributionSection": {
+          "title": {
+            "text": "Distribucion del excedente",
+            "variant": "h2",
+            "align": "left"
+          },
+          "description": {
+            "text": "Revisa como se distribuiria tu excedente entre respaldo, oportunidad y un gasto que puede esperar antes de ver el resultado.",
+            "variant": "bodySm",
+            "align": "left"
+          },
+          "helperText": {
+            "text": "Aqui ves el monto sugerido, el tiempo y el riesgo de la decision elegida.",
+            "variant": "bodySm",
+            "align": "left"
+          },
+          "buttonText": "Ver resultado",
+          "backButtonText": "Cambiar oportunidad",
+          "warningText": "Estas usando todo tu excedente. Podrias guardar una parte como respaldo antes de continuar."
+        },
+        "resultSection": {
+          "title": {
+            "text": "Resultado",
+            "variant": "h2",
+            "align": "left"
+          },
+          "finalizeButtonText": "Finalizar actividad",
+          "replayButtonText": "Intentar otra distribucion"
+        },
+        "summary": {
+          "targetLabel": "Meta protegida",
+          "collectedLabel": "Dinero reunido",
+          "protectedLabel": "Dinero protegido",
+          "surplusLabel": "Excedente disponible",
+          "backupLabel": "Respaldo",
+          "investmentLabel": "Oportunidad",
+          "optionalExpenseLabel": "Gasto extra",
+          "unusedLabel": "Dinero sin usar",
+          "selectedOpportunityLabel": "Oportunidad elegida",
+          "minAmountLabel": "Monto necesario",
+          "durationLabel": "Tiempo",
+          "resultLabel": "Posible resultado",
+          "riskLabel": "Riesgo",
+          "returnedLabel": "Monto recuperado",
+          "profitLabel": "Ganancia",
+          "finalSurplusLabel": "Nuevo dinero extra disponible",
+          "immediateLabel": "Inmediato",
+          "weekSingular": "semana",
+          "weekPlural": "semanas"
+        },
+        "states": {
+          "safe": {
+            "label": "Protegido",
+            "description": "Conservaste tu excedente disponible.",
+            "tone": "safe"
+          },
+          "balanced": {
+            "label": "En crecimiento",
+            "description": "Tu dinero puede crecer, pero requiere tiempo.",
+            "tone": "balanced"
+          },
+          "good": {
+            "label": "Decision equilibrada",
+            "description": "Protegiste una parte e invertiste otra con criterio.",
+            "tone": "good"
+          },
+          "risk": {
+            "label": "En riesgo",
+            "description": "La oportunidad no era clara o usaste demasiado excedente.",
+            "tone": "risk"
+          }
+        },
+        "opportunities": [
+          {
+            "id": "backup",
+            "type": "save",
+            "title": "Guardar como respaldo",
+            "description": "Reserva una parte del dinero para un imprevisto o una meta futura.",
+            "requiredAmount": 5,
+            "minAmount": 5,
+            "durationWeeks": 0,
+            "returnMultiplier": 1,
+            "score": 22,
+            "returnType": "fixed",
+            "risk": "low",
+            "riskLabel": "Bajo",
+            "possibleResult": "Tu dinero se mantiene disponible.",
+            "media": {
+              "src": "1/ahorro.webp",
+              "alt": "Guardar dinero como respaldo",
+              "variant": "horizontal"
+            },
+            "timeline": [
+              "Tu dinero queda guardado y listo para cualquier imprevisto."
+            ],
+            "outcome": {
+              "safe": {
+                "title": "Cuidar tu dinero tambien es una buena decision.",
+                "text": "Guardaste tu excedente y mantuviste tu meta protegida."
+              }
+            }
+          },
+          {
+            "id": "juice-stand",
+            "type": "investment",
+            "title": "Venta de refrescos",
+            "description": "Usa una parte del excedente para comprar fruta, vasos e hielo y vender bebidas en una actividad escolar.",
+            "requiredAmount": 15,
+            "minAmount": 15,
+            "maxAmount": 20,
+            "durationWeeks": 1,
+            "returnMultiplier": 1.6,
+            "score": 40,
+            "returnType": "range",
+            "returnMultiplierMin": 1.35,
+            "returnMultiplierMax": 1.55,
+            "risk": "medium",
+            "riskLabel": "Medio",
+            "possibleResult": "Podrias recuperar mas de lo invertido despues de una semana.",
+            "media": {
+              "src": "1/ensalada-de-fruta.webp",
+              "alt": "Venta de refrescos",
+              "variant": "horizontal"
+            },
+            "timeline": [
+              "Semana 1: compras insumos y preparas la venta.",
+              "Semana 2: vendes refrescos en una actividad escolar."
+            ],
+            "outcome": {
+              "good": {
+                "title": "Planificaste la inversion y guardaste un respaldo.",
+                "text": "Tu idea funciono y pudiste hacer crecer el excedente sin poner en riesgo la bicicleta."
+              },
+              "balanced": {
+                "title": "La venta funciono, pero dejaste poco respaldo.",
+                "text": "La ganancia existe, aunque tu plan podia ser mas equilibrado."
+              }
+            }
+          },
+          {
+            "id": "bracelets",
+            "type": "investment",
+            "title": "Pulseras y manualidades",
+            "description": "Compra materiales para crear productos simples y venderlos.",
+            "requiredAmount": 10,
+            "minAmount": 10,
+            "maxAmount": 15,
+            "durationWeeks": 2,
+            "returnMultiplier": 1.4,
+            "score": 30,
+            "returnType": "range",
+            "returnMultiplierMin": 1.3,
+            "returnMultiplierMax": 1.5,
+            "risk": "medium",
+            "riskLabel": "Medio",
+            "possibleResult": "Puedes obtener una ganancia si logras vender los productos.",
+            "media": {
+              "src": "1/ganar-dinero.webp",
+              "alt": "Pulseras y manualidades",
+              "variant": "horizontal"
+            },
+            "timeline": [
+              "Semana 1: compras materiales y preparas tus productos.",
+              "Semana 2: ofreces tus manualidades y recuperas lo invertido."
+            ],
+            "outcome": {
+              "balanced": {
+                "title": "La venta tomo mas tiempo, pero genero una ganancia moderada.",
+                "text": "Hiciste crecer tu dinero con paciencia y organizacion."
+              },
+              "good": {
+                "title": "Tu excedente crecio con una decision bien pensada.",
+                "text": "Combinaste respaldo con una oportunidad realista."
+              }
+            }
+          },
+          {
+            "id": "quick-money",
+            "type": "risky",
+            "title": "Oferta de dinero rapido",
+            "description": "Una persona promete devolverte el doble manana, pero no explica como lo hara.",
+            "requiredAmount": 10,
+            "minAmount": 10,
+            "durationWeeks": 0,
+            "returnMultiplier": 0.5,
+            "score": 5,
+            "risk": "high",
+            "riskLabel": "Alto",
+            "possibleResult": "No hay informacion suficiente para confiar.",
+            "media": {
+              "src": "1/compra-online-ahorro.webp",
+              "alt": "Oferta de dinero rapido",
+              "variant": "horizontal"
+            },
+            "timeline": [
+              "La propuesta no explicaba como iba a generar ganancia.",
+              "Recuperaste solo una parte de lo que arriesgaste."
+            ],
+            "outcome": {
+              "risk": {
+                "title": "La oferta no era clara.",
+                "text": "Cuidar tu dinero tambien implica desconfiar de promesas rapidas."
+              }
+            }
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "lockedUntilComplete",
+        "label": "Decide como usar el excedente sin tocar la meta protegida."
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "decideHowToUseSurplus"
+      }
+    },
+    {
+      "viewId": "m4_2_v4",
+      "order": 4,
+      "name": "VISTA 4 - Final: Meta alcanzada",
       "viewType": "Final",
-      "objective": "Cerrar la practica reforzando que las metas requieren reunir recursos con constancia y decision.",
+      "objective": "Cerrar la practica reforzando que una meta se protege y que el excedente puede usarse con criterio.",
       "template": "postGameLobby",
       "variant": "postGame",
       "slots": {
@@ -393,7 +691,7 @@
           "align": "center"
         },
         "feedback": {
-          "text": "Reuniste ingresos para acercarte a una meta y comprobaste que alcanzar un objetivo requiere organizacion, constancia y buenas decisiones con el dinero.",
+          "text": "Protegiste el dinero de tu meta y luego decidiste como usar el excedente con mas criterio. Ahorrar, guardar respaldo e invertir requieren tiempo, orden y buenas decisiones.",
           "variant": "label",
           "align": "center",
           "color": "accent"

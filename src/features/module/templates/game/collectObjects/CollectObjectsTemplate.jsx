@@ -14,6 +14,7 @@ import {
 
 import Typography from "@/features/module/blocks/base/Typography";
 import { cn } from "@/shared/libs/utils";
+import SurplusDecisionStage from "./SurplusDecisionStage";
 
 const DEFAULT_WAVE_PATTERNS = [
   ["income"],
@@ -65,6 +66,7 @@ const DEFAULT_GAME_DATA = {
     itemFallMin: 2.5,
     itemFallMax: 3.7,
     pointsToComplete: 100,
+    minimumCompletionAmount: 100,
     introTitle: "¿Cómo se juega?",
     introText:
       "Mueve la canasta con el cursor o con las teclas para atrapar los ingresos que caen. Evita los egresos para completar tu meta.",
@@ -105,6 +107,16 @@ const FLOOR_HEIGHT = 92;
 const BASKET_WIDTH_FALLBACK = 228;
 const BASKET_HEIGHT_FALLBACK = 120;
 const BASKET_MIN_WIDTH = 228;
+const DEFAULT_COLLECTED_STATUS_TEXT = "Superaste la meta por {amount}";
+const CAPTURE_SCORE_BY_WEEK = {
+  1: 60,
+  2: 60,
+  3: 60,
+  4: 60,
+  5: 45,
+  6: 30,
+};
+const RESTART_PENALTY = 10;
 
 function clamp(value, min, max) {
   return Math.max(min, Math.min(value, max));
@@ -117,6 +129,18 @@ function toNumber(value, fallback) {
 
 function formatCurrency(value) {
   return `S/. ${Number(value ?? 0).toFixed(2)}`;
+}
+
+function replaceAmountToken(text, amount) {
+  return String(text ?? DEFAULT_COLLECTED_STATUS_TEXT).replace(
+    "{amount}",
+    formatCurrency(amount),
+  );
+}
+
+function getCaptureScore(completionWeek, restartCount) {
+  const baseScore = CAPTURE_SCORE_BY_WEEK[completionWeek] ?? 0;
+  return Math.max(0, baseScore - Math.max(0, restartCount) * RESTART_PENALTY);
 }
 
 function resolveAssetSrc(src) {
@@ -232,6 +256,10 @@ function normalizeGameData(data) {
         incomingGame.pointsToComplete,
         incomingTarget.amount ?? DEFAULT_GAME_DATA.game.pointsToComplete,
       ),
+      minimumCompletionAmount: toNumber(
+        incomingGame.minimumCompletionAmount,
+        incomingTarget.amount ?? DEFAULT_GAME_DATA.game.minimumCompletionAmount,
+      ),
       roundLabelText:
         incomingGame.roundLabelText ?? DEFAULT_GAME_DATA.game.roundLabelText,
       weeklyRounds:
@@ -251,6 +279,30 @@ function normalizeGameData(data) {
 function pickRandom(items) {
   if (!items.length) return null;
   return items[Math.floor(Math.random() * items.length)];
+}
+
+function getSourcePayload({ heroApi, resolvedData, targetAmount }) {
+  const sourceViewId = resolvedData?.sourceViewId ?? resolvedData?.game?.sourceViewId;
+  const previousState = sourceViewId ? heroApi?.getInteractiveState?.(sourceViewId) : null;
+  const payload = previousState?.payload ?? resolvedData?.previewPayload ?? {};
+  const protectedGoalAmount = toNumber(
+    payload?.protectedGoalAmount,
+    targetAmount,
+  );
+  const collectedAmount = toNumber(payload?.collectedAmount, protectedGoalAmount);
+  const surplusAmount = Math.max(
+    0,
+    toNumber(payload?.surplusAmount, collectedAmount - protectedGoalAmount),
+  );
+
+  return {
+    sourceViewId,
+    targetAmount: toNumber(payload?.targetAmount, targetAmount),
+    collectedAmount,
+    protectedGoalAmount,
+    surplusAmount,
+    target: payload?.target ?? resolvedData?.target,
+  };
 }
 
 function shuffleArray(items) {
@@ -543,7 +595,16 @@ function Basket({ basketX, basketWidth, basketHeight }) {
 export default function CollectObjectsTemplate({ view, heroApi, data }) {
   const viewId = view?.id ?? view?.viewId;
   const resolvedData = useMemo(() => normalizeGameData(data), [data]);
+  const isSurplusMode = resolvedData.game?.mode === "surplusDecision";
   const targetAmount = resolvedData.game.pointsToComplete;
+  const minimumCompletionAmount = Math.max(
+    targetAmount,
+    toNumber(resolvedData.game.minimumCompletionAmount, targetAmount),
+  );
+  const sourcePayload = useMemo(
+    () => getSourcePayload({ heroApi, resolvedData, targetAmount }),
+    [heroApi, resolvedData, targetAmount],
+  );
   const basketWidth = Math.max(
     resolvedData.basket.width ?? BASKET_WIDTH_FALLBACK,
     BASKET_MIN_WIDTH,
@@ -577,9 +638,27 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
   const [isPaused, setIsPaused] = useState(false);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [currentRound, setCurrentRound] = useState(0);
+  const [restartCount, setRestartCount] = useState(0);
+  const [completionWeek, setCompletionWeek] = useState(null);
+  const [surplusStageState, setSurplusStageState] = useState({
+    completed: false,
+    score: 0,
+    displayAmount: 0,
+    progressValue: 0,
+    progressMax: 1,
+    details: [],
+    payload: null,
+  });
   const itemLookup = useMemo(
     () => getItemLookup(resolvedData.game.incomeItems, resolvedData.game.expenseItems),
     [resolvedData.game.expenseItems, resolvedData.game.incomeItems],
+  );
+  const captureScore = useMemo(
+    () =>
+      isCompleted && !isSurplusMode
+        ? getCaptureScore(completionWeek, restartCount)
+        : 0,
+    [completionWeek, isCompleted, isSurplusMode, restartCount],
   );
 
   useEffect(() => {
@@ -592,6 +671,8 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
     setIsPaused(false);
     setIsDetailsOpen(false);
     setCurrentRound(0);
+    setRestartCount(0);
+    setCompletionWeek(null);
     setSprites([]);
     spritesRef.current = [];
     collectedRef.current = 0;
@@ -606,7 +687,34 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
     waveCapacityRef.current = 1;
     keyboardRef.current = { left: false, right: false };
     lastFrameRef.current = 0;
+    setSurplusStageState({
+      completed: false,
+      score: 0,
+      displayAmount: 0,
+      progressValue: 0,
+      progressMax: 1,
+      details: [],
+      payload: null,
+    });
   }, [viewId]);
+
+  useEffect(() => {
+    if (!isSurplusMode) return;
+
+    setCollected(sourcePayload.surplusAmount);
+    setIsStarted(true);
+    setIsPaused(false);
+    setIsFailed(false);
+    setSprites([]);
+    spritesRef.current = [];
+    queueRef.current = [];
+    sessionInitializedRef.current = false;
+    waveIndexRef.current = 0;
+    waveCapacityRef.current = 1;
+    currentRoundRef.current = 0;
+    setCurrentRound(0);
+    lastFrameRef.current = 0;
+  }, [isSurplusMode, sourcePayload.surplusAmount]);
 
   useEffect(() => {
     function updateSize() {
@@ -650,22 +758,73 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
     collectedRef.current = collected;
     completedRef.current = isCompleted;
 
+    if (isSurplusMode) {
+      heroApi?.setInteractiveState?.(viewId, {
+        type: "collectObjects",
+        completed: surplusStageState.completed,
+        score: surplusStageState.score,
+        collected: surplusStageState.displayAmount,
+        payload: {
+          ...surplusStageState.payload,
+          targetAmount: sourcePayload.targetAmount,
+          collectedAmount: sourcePayload.collectedAmount,
+          protectedGoalAmount: sourcePayload.protectedGoalAmount,
+          surplusAmount: sourcePayload.surplusAmount,
+          target: sourcePayload.target,
+        },
+      });
+      return;
+    }
+
     heroApi?.setInteractiveState?.(viewId, {
       type: "collectObjects",
       completed: isCompleted,
       score: isCompleted
-        ? 100
-        : Math.round((collected / Math.max(targetAmount, 1)) * 100),
+        ? captureScore
+        : Math.round((collected / Math.max(minimumCompletionAmount, 1)) * 100),
       collected,
       payload: {
         targetAmount,
+        collectedAmount: collected,
+        protectedGoalAmount: targetAmount,
+        surplusAmount: Math.max(0, collected - targetAmount),
+        requiredAmount: minimumCompletionAmount,
+        canContinueToInvestment: collected >= minimumCompletionAmount,
+        completionWeek,
+        restartCount,
+        captureScore,
+        target: resolvedData.target,
         caughtItems,
         currentRound,
       },
     });
-  }, [caughtItems, collected, currentRound, heroApi, isCompleted, targetAmount, viewId]);
+  }, [
+    caughtItems,
+    collected,
+    currentRound,
+    heroApi,
+    isCompleted,
+    isSurplusMode,
+    captureScore,
+    completionWeek,
+    resolvedData.target,
+    restartCount,
+    sourcePayload.collectedAmount,
+    sourcePayload.protectedGoalAmount,
+    sourcePayload.surplusAmount,
+    sourcePayload.target,
+    sourcePayload.targetAmount,
+    surplusStageState.completed,
+    surplusStageState.displayAmount,
+    surplusStageState.payload,
+    surplusStageState.score,
+    targetAmount,
+    viewId,
+  ]);
 
   useEffect(() => {
+    if (isSurplusMode) return undefined;
+
     function handleKeyDown(event) {
       const key = event.key.toLowerCase();
 
@@ -695,9 +854,17 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
     };
-  }, []);
+  }, [isSurplusMode]);
 
   useEffect(() => {
+    if (isSurplusMode) {
+      setSprites([]);
+      spritesRef.current = [];
+      queueRef.current = [];
+      lastFrameRef.current = 0;
+      return undefined;
+    }
+
     if (!isStarted || isCompleted || isFailed) {
       setSprites([]);
       spritesRef.current = [];
@@ -864,8 +1031,12 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
           })),
         ]);
 
-        if (nextCollected >= targetAmount && !completedRef.current) {
+        if (
+          nextCollected >= minimumCompletionAmount &&
+          !completedRef.current
+        ) {
           completedRef.current = true;
+          setCompletionWeek(currentRoundRef.current);
           setIsCompleted(true);
         }
       }
@@ -932,13 +1103,17 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
     resolvedData.game.itemFallMax,
     resolvedData.game.itemFallMin,
     resolvedData.game.maxActiveItems,
+    resolvedData.game.minimumCompletionAmount,
     resolvedData.game.spawnEveryMs,
     resolvedData.game.weeklyRounds,
     resolvedData.game.wavePatterns,
+    minimumCompletionAmount,
+    isSurplusMode,
     targetAmount,
   ]);
 
   function handlePointerMove(event) {
+    if (isSurplusMode) return;
     const node = playfieldRef.current;
     if (!node || isCompleted || !isStarted || isPaused) return;
 
@@ -957,6 +1132,7 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
   }
 
   function handleStartGame() {
+    if (isSurplusMode) return;
     keyboardRef.current = { left: false, right: false };
     lastFrameRef.current = 0;
     setCollected(0);
@@ -969,6 +1145,7 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
     setIsPaused(false);
     setIsDetailsOpen(false);
     setCurrentRound(0);
+    setCompletionWeek(null);
     collectedRef.current = 0;
     completedRef.current = false;
     consumedSpriteIdsRef.current = new Set();
@@ -984,6 +1161,7 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
   }
 
   function handleTogglePause() {
+    if (isSurplusMode) return;
     if (!isStarted || isCompleted || isFailed) return;
     keyboardRef.current = { left: false, right: false };
     lastFrameRef.current = 0;
@@ -992,6 +1170,7 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
   }
 
   function handleRetryFromFailure() {
+    if (isSurplusMode) return;
     keyboardRef.current = { left: false, right: false };
     lastFrameRef.current = 0;
     setCollected(0);
@@ -1005,6 +1184,8 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
     setIsPaused(false);
     setIsDetailsOpen(false);
     setCurrentRound(0);
+    setCompletionWeek(null);
+    setRestartCount((current) => current + 1);
     collectedRef.current = 0;
     completedRef.current = false;
     consumedSpriteIdsRef.current = new Set();
@@ -1018,6 +1199,11 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
   }
 
   function handleOpenDetails() {
+    if (isSurplusMode) {
+      setIsDetailsOpen(true);
+      return;
+    }
+
     if (isStarted && !isCompleted && !isFailed && !isPaused) {
       autoPausedByDetailsRef.current = true;
       setIsPaused(true);
@@ -1029,6 +1215,11 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
   function handleCloseDetails() {
     setIsDetailsOpen(false);
 
+    if (isSurplusMode) {
+      playfieldRef.current?.focus?.();
+      return;
+    }
+
     if (autoPausedByDetailsRef.current) {
       autoPausedByDetailsRef.current = false;
       setIsPaused(false);
@@ -1038,13 +1229,19 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
     playfieldRef.current?.focus?.();
   }
 
+  const displayAmount = isSurplusMode
+    ? surplusStageState.displayAmount
+    : collected;
+  const progressBaseAmount = isSurplusMode
+    ? Math.max(surplusStageState.progressMax, 1)
+    : Math.max(targetAmount, 1);
   const progressPercent = clamp(
-    (collected / Math.max(targetAmount, 1)) * 100,
+    (displayAmount / progressBaseAmount) * 100,
     0,
     100,
   );
-  const hasExceededGoal = collected > targetAmount;
-  const exceededAmount = Math.max(0, collected - targetAmount);
+  const hasExceededGoal = displayAmount > progressBaseAmount;
+  const exceededAmount = Math.max(0, displayAmount - progressBaseAmount);
   const historyByWeek = useMemo(
     () =>
       movementHistory.reduce((accumulator, entry) => {
@@ -1055,10 +1252,21 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
       }, {}),
     [movementHistory],
   );
+  const collectedStatusText = replaceAmountToken(
+    resolvedData.collectedStatusText,
+    exceededAmount,
+  );
 
   return (
     <section className="mx-auto flex h-full min-h-0 w-full max-w-[98rem] flex-col overflow-hidden rounded-[2rem] border border-white/30 bg-[linear-gradient(180deg,#3e8cff_0%,#235fda_100%)] p-2 text-white shadow-[0_24px_60px_rgba(8,30,88,0.3)] sm:p-3 lg:min-h-0">
-      <div className="grid min-h-0 flex-1 gap-2 sm:gap-3 lg:grid-cols-[clamp(18rem,22vw,20rem)_minmax(0,1fr)] xl:grid-cols-[clamp(19rem,23vw,21rem)_minmax(0,1fr)]">
+      <div
+        className={cn(
+          "grid min-h-0 flex-1 gap-2 sm:gap-3",
+          isSurplusMode
+            ? "lg:grid-cols-[clamp(15.5rem,18vw,17rem)_minmax(0,1fr)] xl:grid-cols-[clamp(16rem,18vw,17.5rem)_minmax(0,1fr)]"
+            : "lg:grid-cols-[clamp(18rem,22vw,20rem)_minmax(0,1fr)] xl:grid-cols-[clamp(19rem,23vw,21rem)_minmax(0,1fr)]",
+        )}
+      >
         <aside className="relative flex min-h-0 flex-col overflow-hidden rounded-[1.7rem] border border-white/30 bg-[linear-gradient(180deg,#1b66de_0%,#0f4fb9_100%)] p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.2)] sm:p-3">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.16),transparent_46%)]" />
           <div className="pointer-events-none absolute inset-3 rounded-[1.4rem] border border-[#66beff]/40" />
@@ -1070,7 +1278,12 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
                   ...resolvedData.sidebarTitle,
                   align: "center",
                 }}
-                className="mx-auto max-w-[11rem] text-[clamp(1.55rem,1.05rem+1.2vw,2.4rem)] font-black leading-[0.94]"
+                className={cn(
+                  "mx-auto font-black leading-[0.94]",
+                  isSurplusMode
+                    ? "max-w-[12.5rem] text-[clamp(1.3rem,0.95rem+1vw,2rem)]"
+                    : "max-w-[11rem] text-[clamp(1.55rem,1.05rem+1.2vw,2.4rem)]",
+                )}
               />
             </div>
 
@@ -1099,13 +1312,13 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
                   <Wallet className="h-6 w-6 text-[#fff1b7] sm:h-7 sm:w-7" strokeWidth={2.4} />
                 </div>
                 <div className="min-w-0 text-[1.35rem] font-black leading-none text-white sm:text-[1.55rem] xl:text-[1.8rem]">
-                  {formatCurrency(collected)}
+                  {formatCurrency(displayAmount)}
                 </div>
               </div>
 
               {hasExceededGoal ? (
                 <div className="mt-2 text-[0.72rem] font-black uppercase tracking-[0.04em] text-[#ffd46b] sm:text-[0.78rem]">
-                  Superaste la meta por {formatCurrency(exceededAmount)}
+                  {collectedStatusText}
                 </div>
               ) : null}
 
@@ -1142,7 +1355,7 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
             />
           ))}
 
-          {isStarted && !isFailed ? (
+          {!isSurplusMode && isStarted && !isFailed ? (
             <div className="pointer-events-none absolute left-4 top-4 z-30 flex items-center gap-2 rounded-[1rem] bg-[linear-gradient(180deg,#2f61c8_0%,#234aa9_100%)] px-4 py-2 text-white shadow-[0_12px_22px_rgba(19,47,118,0.24)]">
               <BriefcaseBusiness
                 className="h-4.5 w-4.5 text-[#ffd96d]"
@@ -1158,7 +1371,7 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
             </div>
           ) : null}
 
-          {isStarted && !isCompleted && !isFailed ? (
+          {!isSurplusMode && isStarted && !isCompleted && !isFailed ? (
             <button
               type="button"
               onClick={handleTogglePause}
@@ -1176,21 +1389,31 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
             </button>
           ) : null}
 
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[92px] bg-[linear-gradient(180deg,#d98138_0%,#c66d23_100%)]">
-            <div className="absolute inset-0 bg-[repeating-linear-gradient(90deg,rgba(255,255,255,0.07)_0_28px,transparent_28px_56px)] opacity-75" />
-          </div>
+          {!isSurplusMode ? (
+            <>
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[92px] bg-[linear-gradient(180deg,#d98138_0%,#c66d23_100%)]">
+                <div className="absolute inset-0 bg-[repeating-linear-gradient(90deg,rgba(255,255,255,0.07)_0_28px,transparent_28px_56px)] opacity-75" />
+              </div>
 
-          {sprites.map((sprite) => (
-            <FallingCard key={sprite.runtimeId} sprite={sprite} />
-          ))}
+              {sprites.map((sprite) => (
+                <FallingCard key={sprite.runtimeId} sprite={sprite} />
+              ))}
 
-          <Basket
-            basketX={basketX}
-            basketWidth={basketWidth}
-            basketHeight={basketHeight}
-          />
+              <Basket
+                basketX={basketX}
+                basketWidth={basketWidth}
+                basketHeight={basketHeight}
+              />
+            </>
+          ) : (
+            <SurplusDecisionStage
+              data={resolvedData}
+              sourcePayload={sourcePayload}
+              onStateChange={setSurplusStageState}
+            />
+          )}
 
-          {!isStarted ? (
+          {!isSurplusMode && !isStarted ? (
             <div className="absolute inset-0 z-40 flex items-center justify-center px-5 py-6 sm:px-8">
               <div className="w-full max-w-[35rem] rounded-[1.6rem] border border-white/35 bg-[linear-gradient(180deg,rgba(20,76,180,0.78),rgba(14,55,143,0.86))] px-5 py-6 text-center shadow-[0_20px_40px_rgba(10,28,88,0.3)] backdrop-blur-[3px] sm:px-8 sm:py-8">
                 <Typography
@@ -1225,7 +1448,7 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
             </div>
           ) : null}
 
-          {isPaused && !isCompleted && !isFailed && !isDetailsOpen ? (
+          {!isSurplusMode && isPaused && !isCompleted && !isFailed && !isDetailsOpen ? (
             <div className="absolute inset-0 z-50 flex items-center justify-center px-5 py-6 sm:px-8">
               <div className="absolute inset-0 bg-[rgba(8,26,74,0.22)] backdrop-blur-[2px]" />
               <div className="relative w-full max-w-[31rem] rounded-[1.5rem] border border-white/28 bg-[linear-gradient(180deg,rgba(25,87,201,0.9),rgba(17,62,149,0.92))] px-6 py-7 text-center shadow-[0_24px_48px_rgba(7,22,69,0.28)]">
@@ -1257,7 +1480,7 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
             </div>
           ) : null}
 
-          {isFailed && !isCompleted ? (
+          {!isSurplusMode && isFailed && !isCompleted ? (
             <div className="absolute inset-0 z-50 flex items-center justify-center px-5 py-6 sm:px-8">
               <div className="absolute inset-0 bg-[rgba(8,26,74,0.3)] backdrop-blur-[2px]" />
               <div className="relative w-full max-w-[33rem] rounded-[1.5rem] border border-white/28 bg-[linear-gradient(180deg,rgba(25,87,201,0.94),rgba(17,62,149,0.96))] px-6 py-7 text-center shadow-[0_24px_48px_rgba(7,22,69,0.28)]">
@@ -1288,7 +1511,7 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
             </div>
           ) : null}
 
-          {isCompleted ? (
+          {!isSurplusMode && isCompleted ? (
             <div className="pointer-events-none absolute inset-0 z-40 flex flex-col items-center justify-center px-6 text-center">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.36),rgba(255,255,255,0.08)_54%,transparent_100%)]" />
               <Typography
@@ -1325,14 +1548,18 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
               <div>
                 <Typography
                   content={{
-                    text: "Detalle de lo recolectado",
+                    text: isSurplusMode
+                      ? "Detalle del excedente"
+                      : "Detalle de lo recolectado",
                     variant: "h2",
                     align: "left",
                   }}
                   className="font-black text-white"
                 />
                 <p className="mt-1 text-sm font-semibold text-white/75">
-                  Movimientos atrapados por semana y valor.
+                  {isSurplusMode
+                    ? "Resumen de la decision tomada con el dinero extra."
+                    : "Movimientos atrapados por semana y valor."}
                 </p>
               </div>
               <button
@@ -1345,7 +1572,31 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
             </div>
 
             <div className="max-h-[70vh] overflow-y-auto px-5 py-5 sm:px-6">
-              {Object.keys(historyByWeek).length ? (
+              {isSurplusMode ? (
+                surplusStageState.details?.length ? (
+                  <div className="space-y-3">
+                    {surplusStageState.details.map((entry) => (
+                      <div
+                        key={entry.label}
+                        className="flex items-center justify-between gap-3 rounded-[1rem] bg-[rgba(255,255,255,0.08)] px-4 py-3"
+                      >
+                        <div className="text-sm font-black text-white">
+                          {entry.label}
+                        </div>
+                        <div className="text-sm font-semibold text-white/82">
+                          {entry.value}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="rounded-[1.2rem] border border-dashed border-white/18 bg-white/6 px-5 py-8 text-center">
+                    <p className="text-sm font-semibold text-white/82">
+                      Aun no hay una decision registrada.
+                    </p>
+                  </div>
+                )
+              ) : Object.keys(historyByWeek).length ? (
                 <div className="space-y-4">
                   {Object.entries(historyByWeek)
                     .sort((left, right) => Number(left[0]) - Number(right[0]))
