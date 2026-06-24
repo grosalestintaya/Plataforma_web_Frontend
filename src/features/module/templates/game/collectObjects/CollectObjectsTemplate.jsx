@@ -301,6 +301,11 @@ function getSourcePayload({ heroApi, resolvedData, targetAmount }) {
     collectedAmount,
     protectedGoalAmount,
     surplusAmount,
+    requiredAmount: toNumber(payload?.requiredAmount, targetAmount),
+    canContinueToInvestment: Boolean(payload?.canContinueToInvestment),
+    completionWeek: toNumber(payload?.completionWeek, 0),
+    restartCount: Math.max(0, toNumber(payload?.restartCount, 0)),
+    captureScore: Math.max(0, toNumber(payload?.captureScore, 0)),
     target: payload?.target ?? resolvedData?.target,
   };
 }

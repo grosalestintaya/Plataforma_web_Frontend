@@ -786,6 +786,12 @@ export default function SurplusDecisionStage({
             ? resolvedData.summary.weekSingular
             : resolvedData.summary.weekPlural
         }`;
+  const suggestedAmount =
+    selectedOpportunity?.type === "save" ? backupAmount : investmentAmount;
+  const suggestedAmountLabel =
+    selectedOpportunity?.type === "save"
+      ? resolvedData.summary.backupLabel
+      : resolvedData.summary.investmentLabel;
 
   return (
     <div className="relative z-10 flex h-full min-h-0 flex-col overflow-y-auto px-4 py-4 sm:px-6 sm:py-5">
@@ -951,17 +957,31 @@ export default function SurplusDecisionStage({
 
           <div className="mt-4 grid gap-3 lg:grid-cols-[minmax(0,1.08fr)_minmax(18rem,0.92fr)]">
             <div className="rounded-[1.2rem] border border-white/24 bg-[linear-gradient(180deg,rgba(19,79,188,0.18),rgba(13,55,145,0.12))] p-3.5">
-              <div className="text-[0.76rem] font-black uppercase tracking-[0.05em] text-white/72">
-                {resolvedData.summary.selectedOpportunityLabel}
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div className="min-w-0 flex-1">
+                  <div className="text-[0.76rem] font-black uppercase tracking-[0.05em] text-white/72">
+                    {resolvedData.summary.selectedOpportunityLabel}
+                  </div>
+                  <div className="mt-1.5 text-[1.08rem] font-black leading-tight text-white sm:text-[1.16rem]">
+                    {selectedOpportunity?.title}
+                  </div>
+                </div>
+                <div className="inline-flex items-center gap-2 rounded-full border border-[#8ad7ff]/40 bg-[rgba(107,211,255,0.16)] px-3 py-1.5 text-[0.76rem] font-black uppercase tracking-[0.04em] text-[#d8f4ff]">
+                  <Sparkles className="h-3.5 w-3.5 text-[#8ee6ff]" strokeWidth={2.4} />
+                  Plan sugerido
+                </div>
               </div>
-              <div className="mt-1.5 text-[1.08rem] font-black leading-tight text-white sm:text-[1.16rem]">
-                {selectedOpportunity?.title}
-              </div>
-              <div className="mt-1.5 text-[0.84rem] font-semibold leading-relaxed text-white/84 sm:text-[0.88rem]">
+
+              <div className="mt-2 text-[0.84rem] font-semibold leading-relaxed text-white/84 sm:text-[0.88rem]">
                 {selectedOpportunity?.description}
               </div>
 
-              <div className="mt-3 grid gap-2 sm:grid-cols-2">
+              <div className="mt-3 grid gap-2 sm:grid-cols-3">
+                <StatCard
+                  label={resolvedData.summary.minAmountLabel}
+                  value={formatCurrency(requiredAmount)}
+                  tone="positive"
+                />
                 <StatCard
                   label={resolvedData.summary.durationLabel}
                   value={durationText}
@@ -972,27 +992,16 @@ export default function SurplusDecisionStage({
                 />
               </div>
 
-              <div className="mt-3 grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+              <div className="mt-3 grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
                 <SummaryItem
-                  label={resolvedData.summary.backupLabel}
-                  value={formatCurrency(backupAmount)}
-                  description="Dinero reservado por si aparece un imprevisto."
-                  tone="positive"
-                />
-                <SummaryItem
-                  label={resolvedData.summary.investmentLabel}
-                  value={formatCurrency(investmentAmount)}
+                  label={suggestedAmountLabel}
+                  value={formatCurrency(suggestedAmount)}
                   description={
                     selectedOpportunity?.type === "save"
                       ? "En esta opcion todo queda disponible como respaldo."
                       : `Monto sugerido para iniciar ${selectedOpportunity?.title?.toLowerCase?.() ?? "la oportunidad"}.`
                   }
-                />
-                <SummaryItem
-                  label={resolvedData.summary.optionalExpenseLabel}
-                  value={formatCurrency(optionalExpenseAmount)}
-                  description="Monto que puede esperar para no debilitar tu plan."
-                  tone={optionalExpenseAmount > 0 ? "negative" : "blue"}
+                  tone="positive"
                 />
                 <SummaryItem
                   label={resolvedData.summary.unusedLabel}
@@ -1000,11 +1009,23 @@ export default function SurplusDecisionStage({
                   description="Parte del excedente que todavia no necesitas usar."
                   tone="positive"
                 />
+                <SummaryItem
+                  label={resolvedData.summary.resultLabel}
+                  value={selectedOpportunity?.possibleResult ?? "-"}
+                  description="Asi se veria el resultado esperado de esta decision."
+                  tone="blue"
+                />
               </div>
             </div>
 
             <div className="rounded-[1.2rem] border border-white/24 bg-[linear-gradient(180deg,rgba(255,255,255,0.12),rgba(255,255,255,0.06))] p-3.5">
-              <div className="text-[0.88rem] font-semibold leading-relaxed text-[#234379] sm:text-[0.9rem]">
+              <div className="flex items-center gap-2 text-[#234379]">
+                <BriefcaseBusiness className="h-4.5 w-4.5 text-[#1f6dff]" strokeWidth={2.4} />
+                <div className="text-[0.9rem] font-black uppercase tracking-[0.04em]">
+                  Resumen de la decision
+                </div>
+              </div>
+              <div className="mt-2 text-[0.84rem] font-semibold leading-relaxed text-[#234379]/92 sm:text-[0.88rem]">
                 {resolvedData.distributionSection.helperText?.text ??
                   "Revisa el monto sugerido, el tiempo y el riesgo antes de ver el resultado."}
               </div>
@@ -1015,19 +1036,9 @@ export default function SurplusDecisionStage({
                   value={formatCurrency(sourcePayload?.surplusAmount)}
                 />
                 <StatCard
-                  label={resolvedData.summary.backupLabel}
-                  value={formatCurrency(backupAmount)}
-                />
-                {selectedOpportunity?.type !== "save" ? (
-                  <StatCard
-                    label={resolvedData.summary.investmentLabel}
-                    value={formatCurrency(investmentAmount)}
-                  />
-                ) : null}
-                <StatCard
-                  label={resolvedData.summary.optionalExpenseLabel}
-                  value={formatCurrency(optionalExpenseAmount)}
-                  tone={optionalExpenseAmount > 0 ? "negative" : "blue"}
+                  label={suggestedAmountLabel}
+                  value={formatCurrency(suggestedAmount)}
+                  tone="positive"
                 />
                 <StatCard
                   label={resolvedData.summary.unusedLabel}
@@ -1035,10 +1046,23 @@ export default function SurplusDecisionStage({
                   tone="positive"
                 />
                 <StatCard
-                  label={resolvedData.summary.resultLabel}
-                  value={selectedOpportunity?.possibleResult ?? "-"}
-                  tone="positive"
+                  label={resolvedData.summary.riskLabel}
+                  value={selectedOpportunity?.riskLabel ?? "-"}
                 />
+              </div>
+
+              <div className="mt-3 rounded-[1rem] border border-[#78d6a8]/34 bg-[linear-gradient(180deg,rgba(44,171,121,0.24),rgba(20,92,68,0.12))] p-3.5">
+                <div className="text-[0.74rem] font-black uppercase tracking-[0.04em] text-white/72">
+                  {resolvedData.summary.resultLabel}
+                </div>
+                <div className="mt-1.5 text-[1rem] font-black leading-snug text-white sm:text-[1.08rem]">
+                  {selectedOpportunity?.possibleResult ?? "-"}
+                </div>
+                <div className="mt-2 text-[0.8rem] font-semibold leading-relaxed text-white/76">
+                  {selectedOpportunity?.type === "save"
+                    ? "Mantienes tu dinero disponible y bajo control para usarlo cuando lo necesites."
+                    : "La meta sigue protegida y solo una parte del excedente participa en esta decision."}
+                </div>
               </div>
 
               {validationMessage ? (
