@@ -97,11 +97,11 @@
             "variant": "h3",
             "align": "center"
           },
-          "amount": 100,
+          "amount": 300,
           "media": {
-            "src": "1/ganar-dinero.webp",
-            "alt": "Meta de ahorrar para una bicicleta",
-            "variant": "square"
+            "src": "4/bicicleta.jpeg",
+            "alt": "Bicicleta con precio de trescientos soles",
+            "variant": "horizontal"
           }
         },
         "collectedLabel": {
@@ -110,7 +110,7 @@
           "align": "center"
         },
         "instruction": {
-          "text": "Mueve la canasta con el cursor o las teclas para atrapar los ingresos que caen.",
+          "text": "Cada ronda representa una semana. Atrapa los ingresos y evita los gastos para completar la meta en menos semanas.",
           "variant": "h3",
           "align": "center"
         },
@@ -120,53 +120,252 @@
           "height": 88
         },
         "game": {
-          "spawnEveryMs": 1200,
-          "maxActiveItems": 5,
+          "spawnEveryMs": 650,
+          "maxActiveItems": 4,
           "basketSpeedPx": 28,
           "itemFallMin": 2.3,
           "itemFallMax": 3.8,
-          "pointsToComplete": 100,
-          "items": [
+          "pointsToComplete": 300,
+          "introTitle": "Como se juega",
+          "introText": "Tienes 4 semanas para completar la meta y, si hace falta, 2 semanas extra. Mueve la canasta para atrapar ingresos y evita los gastos. Mientras menos semanas uses para llegar a S/. 300.00, mejor sera tu puntuacion.",
+          "startButtonText": "Comenzar",
+          "roundLabelText": "Semana",
+          "minimumCompletionScore": 60,
+          "incomeItems": [
             {
-              "id": "m4-income-tip",
-              "label": "Propina",
-              "amount": 10,
+              "id": "tip-45",
+              "label": "Gran propina",
+              "amount": 45,
+              "kind": "income",
               "media": {
                 "src": "1/ganar-dinero.webp",
-                "alt": "Propina",
+                "alt": "Gran propina",
                 "variant": "square"
               }
             },
             {
-              "id": "m4-income-work",
-              "label": "Pago por trabajo",
-              "amount": 20,
+              "id": "tip-35",
+              "label": "Gran propina",
+              "amount": 35,
+              "kind": "income",
               "media": {
                 "src": "1/ganar-dinero.webp",
-                "alt": "Pago por trabajo",
+                "alt": "Gran propina",
                 "variant": "square"
               }
             },
             {
-              "id": "m4-income-sale",
-              "label": "Venta",
-              "amount": 15,
+              "id": "tip-40",
+              "label": "Gran propina",
+              "amount": 40,
+              "kind": "income",
+              "media": {
+                "src": "1/ganar-dinero.webp",
+                "alt": "Gran propina",
+                "variant": "square"
+              }
+            },
+            {
+              "id": "tip-50",
+              "label": "Gran propina",
+              "amount": 50,
+              "kind": "income",
+              "media": {
+                "src": "1/ganar-dinero.webp",
+                "alt": "Gran propina",
+                "variant": "square"
+              }
+            },
+            {
+              "id": "sell-apples",
+              "label": "Apoyo en tienda",
+              "amount": 8,
+              "kind": "income",
               "media": {
                 "src": "1/ahorrar.webp",
-                "alt": "Venta para reunir dinero",
+                "alt": "Apoyo en tienda",
                 "variant": "square"
               }
             },
             {
-              "id": "m4-income-help",
+              "id": "recycle",
+              "label": "Reciclar botellas",
+              "amount": 4,
+              "kind": "income",
+              "media": {
+                "src": "1/ahorrar.webp",
+                "alt": "Reciclar botellas",
+                "variant": "square"
+              }
+            },
+            {
+              "id": "store-help",
+              "label": "Ayudar en tienda",
+              "amount": 12,
+              "kind": "income",
+              "media": {
+                "src": "1/ganar-dinero.webp",
+                "alt": "Ayudar en tienda",
+                "variant": "square"
+              }
+            },
+            {
+              "id": "family-help",
               "label": "Apoyo familiar",
-              "amount": 25,
+              "amount": 15,
+              "kind": "income",
               "media": {
                 "src": "1/recibir-dinero.webp",
                 "alt": "Apoyo familiar",
                 "variant": "square"
               }
+            },
+            {
+              "id": "work-pay",
+              "label": "Encargo familiar",
+              "amount": 18,
+              "kind": "income",
+              "media": {
+                "src": "1/ganar-dinero.webp",
+                "alt": "Encargo familiar",
+                "variant": "square"
+              }
+            },
+            {
+              "id": "notebooks",
+              "label": "Vender usado",
+              "amount": 10,
+              "kind": "income",
+              "media": {
+                "src": "1/ahorrar.webp",
+                "alt": "Vender algo usado",
+                "variant": "square"
+              }
+            },
+            {
+              "id": "dog-walk",
+              "label": "Pasear mascota",
+              "amount": 6,
+              "kind": "income",
+              "media": {
+                "src": "1/ganar-dinero.webp",
+                "alt": "Pasear mascota",
+                "variant": "square"
+              }
             }
+          ],
+
+          "expenseItems": [
+            {
+              "id": "candies",
+              "label": "Golosinas",
+              "amount": 5,
+              "kind": "expense",
+              "media": {
+                "src": "1/comprar-snacks.webp",
+                "alt": "Golosinas",
+                "variant": "square"
+              }
+            },
+            {
+              "id": "videogame",
+              "label": "Compra en juego",
+              "amount": 12,
+              "kind": "expense",
+              "media": {
+                "src": "1/comprar-juegos.webp",
+                "alt": "Compra en juego",
+                "variant": "square"
+              }
+            },
+            {
+              "id": "drink",
+              "label": "Gaseosa",
+              "amount": 4,
+              "kind": "expense",
+              "media": {
+                "src": "1/gaseosa.webp",
+                "alt": "Gaseosa",
+                "variant": "square"
+              }
+            },
+            {
+              "id": "toy",
+              "label": "Compra impulsiva",
+              "amount": 10,
+              "kind": "expense",
+              "media": {
+                "src": "1/comprar-juegos.webp",
+                "alt": "Compra impulsiva",
+                "variant": "square"
+              }
+            },
+            {
+              "id": "movies",
+              "label": "Salida con amigos",
+              "amount": 20,
+              "kind": "expense",
+              "media": {
+                "src": "1/comprar-juegos.webp",
+                "alt": "Salida con amigos",
+                "variant": "square"
+              }
+            }
+          ],
+          "weeklyRounds": [
+            [
+              "tip-45",
+              "work-pay",
+              "family-help",
+              "sell-apples",
+              "notebooks",
+              "candies",
+              "videogame"
+            ],
+            [
+              "tip-35",
+              "work-pay",
+              "store-help",
+              "dog-walk",
+              "recycle",
+              "drink",
+              "toy"
+            ],
+            [
+              "tip-40",
+              "family-help",
+              "store-help",
+              "sell-apples",
+              "dog-walk",
+              "candies",
+              "movies"
+            ],
+            [
+              "tip-50",
+              "work-pay",
+              "family-help",
+              "sell-apples",
+              "notebooks",
+              "drink",
+              "videogame"
+            ],
+            [
+              "tip-35",
+              "work-pay",
+              "store-help",
+              "recycle",
+              "sell-apples",
+              "candies"
+            ],
+            [
+              "tip-40",
+              "family-help",
+              "dog-walk",
+              "notebooks",
+              "recycle",
+              "toy",
+              "drink"
+            ]
           ]
         }
       },
