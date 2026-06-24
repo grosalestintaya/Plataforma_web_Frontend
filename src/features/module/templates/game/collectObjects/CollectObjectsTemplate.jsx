@@ -166,11 +166,26 @@ const ITEM_STYLES = {
 };
 
 const BACKDROP_ICONS = [
-  { Icon: Landmark, className: "left-[4%] top-[11%] h-12 w-12 sm:h-16 sm:w-16 opacity-14" },
-  { Icon: TrendingUp, className: "right-[4%] top-[16%] h-14 w-14 sm:h-20 sm:w-20 opacity-14" },
-  { Icon: PiggyBank, className: "left-[10%] bottom-[20%] h-16 w-16 sm:h-24 sm:w-24 opacity-10" },
-  { Icon: Wallet, className: "right-[7%] bottom-[17%] h-16 w-16 sm:h-24 sm:w-24 opacity-10" },
-  { Icon: Target, className: "right-[11%] top-[42%] h-10 w-10 sm:h-14 sm:w-14 opacity-10" },
+  {
+    Icon: Landmark,
+    className: "left-[4%] top-[11%] h-12 w-12 sm:h-16 sm:w-16 opacity-14",
+  },
+  {
+    Icon: TrendingUp,
+    className: "right-[4%] top-[16%] h-14 w-14 sm:h-20 sm:w-20 opacity-14",
+  },
+  {
+    Icon: PiggyBank,
+    className: "left-[10%] bottom-[20%] h-16 w-16 sm:h-24 sm:w-24 opacity-10",
+  },
+  {
+    Icon: Wallet,
+    className: "right-[7%] bottom-[17%] h-16 w-16 sm:h-24 sm:w-24 opacity-10",
+  },
+  {
+    Icon: Target,
+    className: "right-[11%] top-[42%] h-10 w-10 sm:h-14 sm:w-14 opacity-10",
+  },
 ];
 
 const PLAYFIELD_PADDING = 18;
@@ -233,8 +248,12 @@ function normalizeGameData(data) {
   const legacyItems = Array.isArray(incomingGame.items)
     ? incomingGame.items
     : [];
-  const legacyIncomeItems = legacyItems.filter((item) => item?.kind !== "expense");
-  const legacyExpenseItems = legacyItems.filter((item) => item?.kind === "expense");
+  const legacyIncomeItems = legacyItems.filter(
+    (item) => item?.kind !== "expense",
+  );
+  const legacyExpenseItems = legacyItems.filter(
+    (item) => item?.kind === "expense",
+  );
 
   const incomeItems = normalizeItems(
     incomingGame.incomeItems?.length
@@ -268,10 +287,7 @@ function normalizeGameData(data) {
         ...DEFAULT_GAME_DATA.target.media,
         ...(incomingTarget.media ?? {}),
       },
-      amount: toNumber(
-        incomingTarget.amount,
-        DEFAULT_GAME_DATA.target.amount,
-      ),
+      amount: toNumber(incomingTarget.amount, DEFAULT_GAME_DATA.target.amount),
     },
     basket: {
       ...DEFAULT_GAME_DATA.basket,
@@ -307,7 +323,8 @@ function normalizeGameData(data) {
         incomingTarget.amount ?? DEFAULT_GAME_DATA.game.pointsToComplete,
       ),
       wavePatterns:
-        Array.isArray(incomingGame.wavePatterns) && incomingGame.wavePatterns.length
+        Array.isArray(incomingGame.wavePatterns) &&
+        incomingGame.wavePatterns.length
           ? incomingGame.wavePatterns
           : DEFAULT_WAVE_PATTERNS,
       incomeItems,
@@ -338,11 +355,11 @@ function buildSprite(item, playfieldWidth, fallMin, fallMax, overrides = {}) {
       PLAYFIELD_PADDING,
       maxLeft,
     ),
-    top: overrides.top ?? (-CARD_HEIGHT - Math.random() * 36),
+    top: overrides.top ?? -CARD_HEIGHT - Math.random() * 36,
     speed:
       overrides.speed ??
-      (fallMin + Math.random() * Math.max(0.2, fallMax - fallMin)),
-    rotation: overrides.rotation ?? (Math.random() * 8 - 4),
+      fallMin + Math.random() * Math.max(0.2, fallMax - fallMin),
+    rotation: overrides.rotation ?? Math.random() * 8 - 4,
   };
 }
 
@@ -355,7 +372,8 @@ function buildWaveState({
   fallMin,
   fallMax,
 }) {
-  const pattern = patterns[waveIndex % patterns.length] ?? DEFAULT_WAVE_PATTERNS[0];
+  const pattern =
+    patterns[waveIndex % patterns.length] ?? DEFAULT_WAVE_PATTERNS[0];
   const lowestIncome = [...incomeItems].sort(
     (left, right) => Number(left.amount ?? 0) - Number(right.amount ?? 0),
   )[0];
@@ -422,20 +440,17 @@ function FallingCard({ sprite }) {
         top: `${sprite.top}px`,
         width: `${CARD_WIDTH}px`,
         transform: `rotate(${sprite.rotation}deg)`,
-      }}
-    >
+      }}>
       <div
         className={cn(
           "relative overflow-hidden rounded-[1.25rem] border-[3px] bg-transparent p-[0.18rem]",
           theme.shell,
-        )}
-      >
+        )}>
         <div
           className={cn(
             "absolute -left-3 -top-3 z-10 flex h-11 w-11 items-center justify-center rounded-full border-[3px] border-white/90 text-white shadow-[0_10px_18px_rgba(0,0,0,0.18)]",
             theme.badge,
-          )}
-        >
+          )}>
           <BadgeIcon className="h-5 w-5" strokeWidth={2.5} />
         </div>
 
@@ -498,10 +513,9 @@ function Basket({ basketX, basketWidth, basketHeight }) {
         left: `${basketX}px`,
         width: `${basketWidth}px`,
         height: `${basketHeight + 20}px`,
-      }}
-    >
+      }}>
       <img
-        src={resolveAssetSrc("4/canasta-juego.png")}
+        src={resolveAssetSrc("4/canasta-juego.webp")}
         alt=""
         aria-hidden="true"
         className="absolute inset-x-0 bottom-0 h-full w-full object-contain drop-shadow-[0_18px_18px_rgba(69,40,12,0.22)]"
@@ -526,7 +540,10 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
   const basketXRef = useRef(0);
   const collectedRef = useRef(0);
   const completedRef = useRef(false);
-  const [playfieldSize, setPlayfieldSize] = useState({ width: 900, height: 520 });
+  const [playfieldSize, setPlayfieldSize] = useState({
+    width: 900,
+    height: 520,
+  });
   const [basketX, setBasketX] = useState(0);
   const [sprites, setSprites] = useState([]);
   const [collected, setCollected] = useState(0);
@@ -881,7 +898,10 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
                 <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[linear-gradient(180deg,#fff3d9_0%,#ffdca4_100%)] text-[#f04c48] shadow-[0_8px_14px_rgba(0,0,0,0.14)]">
                   <Target className="h-4.5 w-4.5" strokeWidth={2.8} />
                 </div>
-                <Typography content={resolvedData.goalLabel} className="font-black" />
+                <Typography
+                  content={resolvedData.goalLabel}
+                  className="font-black"
+                />
               </div>
 
               <div className="min-h-0 h-[calc(100%-3.75rem)]">
@@ -890,11 +910,17 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
             </div>
 
             <div className="min-h-0 rounded-[1.15rem] border border-[#66beff]/34 bg-[linear-gradient(180deg,#236fef_0%,#154fae_100%)] px-3 py-3 sm:px-4 sm:py-4">
-              <Typography content={resolvedData.collectedLabel} className="font-black" />
+              <Typography
+                content={resolvedData.collectedLabel}
+                className="font-black"
+              />
 
               <div className="mt-2.5 flex items-center gap-2.5 sm:gap-3">
                 <div className="flex h-[3.1rem] w-[3.1rem] shrink-0 items-center justify-center rounded-[0.9rem] bg-[linear-gradient(180deg,#24c675_0%,#187d59_100%)] shadow-[0_10px_18px_rgba(0,0,0,0.16)] sm:h-[3.5rem] sm:w-[3.5rem]">
-                  <Wallet className="h-6 w-6 text-[#fff1b7] sm:h-7 sm:w-7" strokeWidth={2.4} />
+                  <Wallet
+                    className="h-6 w-6 text-[#fff1b7] sm:h-7 sm:w-7"
+                    strokeWidth={2.4}
+                  />
                 </div>
                 <div className="min-w-0 text-[1.35rem] font-black leading-none text-white sm:text-[1.55rem] xl:text-[1.8rem]">
                   {formatCurrency(collected)}
@@ -928,14 +954,16 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
           tabIndex={0}
           onMouseMove={handlePointerMove}
           onPointerMove={handlePointerMove}
-          className="relative min-h-[26rem] overflow-hidden rounded-[1.7rem] border border-white/34 bg-[linear-gradient(180deg,#bdd7ff_0%,#9cc0fb_38%,#77a7ef_100%)] outline-none shadow-[inset_0_1px_0_rgba(255,255,255,0.36)] sm:min-h-[30rem] lg:min-h-[34rem]"
-        >
+          className="relative min-h-[26rem] overflow-hidden rounded-[1.7rem] border border-white/34 bg-[linear-gradient(180deg,#bdd7ff_0%,#9cc0fb_38%,#77a7ef_100%)] outline-none shadow-[inset_0_1px_0_rgba(255,255,255,0.36)] sm:min-h-[30rem] lg:min-h-[34rem]">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.42),transparent_52%)]" />
 
           {BACKDROP_ICONS.map(({ Icon, className }, index) => (
             <Icon
               key={`${Icon.displayName ?? Icon.name}-${index}`}
-              className={cn("pointer-events-none absolute text-white", className)}
+              className={cn(
+                "pointer-events-none absolute text-white",
+                className,
+              )}
               strokeWidth={1.8}
             />
           ))}
@@ -980,8 +1008,7 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
                 <button
                   type="button"
                   onClick={handleStartGame}
-                  className="mt-6 inline-flex min-w-[11rem] items-center justify-center rounded-[1rem] border border-[#ffe08a] bg-[linear-gradient(180deg,#ffd45c_0%,#f1a81f_100%)] px-6 py-3 text-[1rem] font-black text-[#6b3b00] shadow-[0_14px_24px_rgba(0,0,0,0.18)] transition-transform duration-150 hover:scale-[1.02] active:scale-[0.99]"
-                >
+                  className="mt-6 inline-flex min-w-[11rem] items-center justify-center rounded-[1rem] border border-[#ffe08a] bg-[linear-gradient(180deg,#ffd45c_0%,#f1a81f_100%)] px-6 py-3 text-[1rem] font-black text-[#6b3b00] shadow-[0_14px_24px_rgba(0,0,0,0.18)] transition-transform duration-150 hover:scale-[1.02] active:scale-[0.99]">
                   {resolvedData.game.startButtonText ??
                     DEFAULT_GAME_DATA.game.startButtonText}
                 </button>
