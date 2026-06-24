@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // ← añade esto
 
 // Cambia los textos, imágenes y rutas según lo que definas con el admin
 const PRIZES = [
@@ -57,6 +58,7 @@ const PODIUM_ORDER = [PRIZES[1], PRIZES[0], PRIZES[2]];
 export function AnnouncementModal({ isOpen, onClose }) {
   const [selected, setSelected] = useState(1);
   const [visible, setVisible] = useState(false);
+  const navigate = useNavigate(); // ← añade esto
 
   useEffect(() => {
     if (isOpen) {
