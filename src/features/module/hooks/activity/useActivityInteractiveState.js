@@ -86,9 +86,28 @@ function shouldCountTowardMissionScore(entry) {
   return Boolean(entry?.completed) && entry?.countsTowardScore !== false;
 }
 
+function getMissionScoreOverride(entry) {
+  const override = Number(
+    entry?.missionScoreOverride ?? entry?.payload?.missionScoreOverride,
+  );
+
+  return Number.isFinite(override) ? override : null;
+}
+
 function calculateMissionScore(interactiveState) {
-  const scores = Object.values(interactiveState)
-    .filter(shouldCountTowardMissionScore)
+  const completedEntries = Object.values(interactiveState).filter(
+    shouldCountTowardMissionScore,
+  );
+
+  const overrideScores = completedEntries
+    .map(getMissionScoreOverride)
+    .filter((value) => Number.isFinite(value));
+
+  if (overrideScores.length) {
+    return Math.round(overrideScores[overrideScores.length - 1]);
+  }
+
+  const scores = completedEntries
     .map((entry) => Number(entry?.score))
     .filter((value) => Number.isFinite(value));
 
@@ -107,6 +126,7 @@ function buildResponsePayload(viewId, result) {
     type: result?.type ?? "interactive",
     completed: Boolean(result?.completed),
     score: Number(result?.score ?? 0),
+    missionScoreOverride: getMissionScoreOverride(result),
     countsTowardScore: result?.countsTowardScore,
     selectedOptionId: result?.selectedOptionId ?? result?.selectedId ?? null,
     selectedOptionLabel: result?.selectedOptionLabel ?? null,

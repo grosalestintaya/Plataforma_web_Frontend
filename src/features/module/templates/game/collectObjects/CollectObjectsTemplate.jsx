@@ -3,7 +3,9 @@ import {
   BriefcaseBusiness,
   CircleDollarSign,
   Landmark,
+  Pause,
   PiggyBank,
+  Play,
   Target,
   TrendingDown,
   TrendingUp,
@@ -12,6 +14,7 @@ import {
 
 import Typography from "@/features/module/blocks/base/Typography";
 import { cn } from "@/shared/libs/utils";
+import SurplusDecisionStage from "./SurplusDecisionStage";
 
 const DEFAULT_WAVE_PATTERNS = [
   ["income"],
@@ -63,92 +66,16 @@ const DEFAULT_GAME_DATA = {
     itemFallMin: 2.5,
     itemFallMax: 3.7,
     pointsToComplete: 100,
+    minimumCompletionAmount: 100,
     introTitle: "¿Cómo se juega?",
     introText:
       "Mueve la canasta con el cursor o con las teclas para atrapar los ingresos que caen. Evita los egresos para completar tu meta.",
     startButtonText: "Comenzar",
+    roundLabelText: "Semana",
+    weeklyRounds: [],
     wavePatterns: DEFAULT_WAVE_PATTERNS,
-    incomeItems: [
-      {
-        id: "tip",
-        kind: "income",
-        label: "Propina",
-        amount: 10,
-        media: {
-          src: "1/ganar-dinero.webp",
-          alt: "Propina",
-          variant: "square",
-        },
-      },
-      {
-        id: "job",
-        kind: "income",
-        label: "Pago por trabajo",
-        amount: 20,
-        media: {
-          src: "1/ganar-dinero.webp",
-          alt: "Pago por trabajo",
-          variant: "square",
-        },
-      },
-      {
-        id: "sale",
-        kind: "income",
-        label: "Venta",
-        amount: 15,
-        media: {
-          src: "1/ahorrar.webp",
-          alt: "Venta para reunir dinero",
-          variant: "square",
-        },
-      },
-      {
-        id: "help",
-        kind: "income",
-        label: "Apoyo familiar",
-        amount: 25,
-        media: {
-          src: "1/recibir-dinero.webp",
-          alt: "Apoyo familiar",
-          variant: "square",
-        },
-      },
-    ],
-    expenseItems: [
-      {
-        id: "snack",
-        kind: "expense",
-        label: "Antojo",
-        amount: 5,
-        media: {
-          src: "1/comprar-snacks.webp",
-          alt: "Gasto en snack",
-          variant: "square",
-        },
-      },
-      {
-        id: "toy",
-        kind: "expense",
-        label: "Capricho",
-        amount: 10,
-        media: {
-          src: "1/comprar-juegos.webp",
-          alt: "Gasto por capricho",
-          variant: "square",
-        },
-      },
-      {
-        id: "drink",
-        kind: "expense",
-        label: "Gaseosa",
-        amount: 8,
-        media: {
-          src: "1/gaseosa.webp",
-          alt: "Gasto en gaseosa",
-          variant: "square",
-        },
-      },
-    ],
+    incomeItems: [],
+    expenseItems: [],
   },
 };
 
@@ -177,8 +104,19 @@ const PLAYFIELD_PADDING = 18;
 const CARD_WIDTH = 168;
 const CARD_HEIGHT = 112;
 const FLOOR_HEIGHT = 92;
-const BASKET_WIDTH_FALLBACK = 188;
+const BASKET_WIDTH_FALLBACK = 228;
 const BASKET_HEIGHT_FALLBACK = 120;
+const BASKET_MIN_WIDTH = 228;
+const DEFAULT_COLLECTED_STATUS_TEXT = "Superaste la meta por {amount}";
+const CAPTURE_SCORE_BY_WEEK = {
+  1: 60,
+  2: 60,
+  3: 60,
+  4: 60,
+  5: 45,
+  6: 30,
+};
+const RESTART_PENALTY = 10;
 
 function clamp(value, min, max) {
   return Math.max(min, Math.min(value, max));
@@ -191,6 +129,18 @@ function toNumber(value, fallback) {
 
 function formatCurrency(value) {
   return `S/. ${Number(value ?? 0).toFixed(2)}`;
+}
+
+function replaceAmountToken(text, amount) {
+  return String(text ?? DEFAULT_COLLECTED_STATUS_TEXT).replace(
+    "{amount}",
+    formatCurrency(amount),
+  );
+}
+
+function getCaptureScore(completionWeek, restartCount) {
+  const baseScore = CAPTURE_SCORE_BY_WEEK[completionWeek] ?? 0;
+  return Math.max(0, baseScore - Math.max(0, restartCount) * RESTART_PENALTY);
 }
 
 function resolveAssetSrc(src) {
@@ -306,6 +256,16 @@ function normalizeGameData(data) {
         incomingGame.pointsToComplete,
         incomingTarget.amount ?? DEFAULT_GAME_DATA.game.pointsToComplete,
       ),
+      minimumCompletionAmount: toNumber(
+        incomingGame.minimumCompletionAmount,
+        incomingTarget.amount ?? DEFAULT_GAME_DATA.game.minimumCompletionAmount,
+      ),
+      roundLabelText:
+        incomingGame.roundLabelText ?? DEFAULT_GAME_DATA.game.roundLabelText,
+      weeklyRounds:
+        Array.isArray(incomingGame.weeklyRounds) && incomingGame.weeklyRounds.length
+          ? incomingGame.weeklyRounds
+          : DEFAULT_GAME_DATA.game.weeklyRounds,
       wavePatterns:
         Array.isArray(incomingGame.wavePatterns) && incomingGame.wavePatterns.length
           ? incomingGame.wavePatterns
@@ -319,6 +279,110 @@ function normalizeGameData(data) {
 function pickRandom(items) {
   if (!items.length) return null;
   return items[Math.floor(Math.random() * items.length)];
+}
+
+function getSourcePayload({ heroApi, resolvedData, targetAmount }) {
+  const sourceViewId = resolvedData?.sourceViewId ?? resolvedData?.game?.sourceViewId;
+  const previousState = sourceViewId ? heroApi?.getInteractiveState?.(sourceViewId) : null;
+  const payload = previousState?.payload ?? resolvedData?.previewPayload ?? {};
+  const protectedGoalAmount = toNumber(
+    payload?.protectedGoalAmount,
+    targetAmount,
+  );
+  const collectedAmount = toNumber(payload?.collectedAmount, protectedGoalAmount);
+  const surplusAmount = Math.max(
+    0,
+    toNumber(payload?.surplusAmount, collectedAmount - protectedGoalAmount),
+  );
+
+  return {
+    sourceViewId,
+    targetAmount: toNumber(payload?.targetAmount, targetAmount),
+    collectedAmount,
+    protectedGoalAmount,
+    surplusAmount,
+    requiredAmount: toNumber(payload?.requiredAmount, targetAmount),
+    canContinueToInvestment: Boolean(payload?.canContinueToInvestment),
+    completionWeek: toNumber(payload?.completionWeek, 0),
+    restartCount: Math.max(0, toNumber(payload?.restartCount, 0)),
+    captureScore: Math.max(0, toNumber(payload?.captureScore, 0)),
+    target: payload?.target ?? resolvedData?.target,
+  };
+}
+
+function shuffleArray(items) {
+  const nextItems = [...items];
+
+  for (let index = nextItems.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(Math.random() * (index + 1));
+    [nextItems[index], nextItems[swapIndex]] = [
+      nextItems[swapIndex],
+      nextItems[index],
+    ];
+  }
+
+  return nextItems;
+}
+
+function isPremiumIncomeItem(item) {
+  const amount = Number(item?.amount ?? 0);
+  return item?.kind === "income" && amount >= 30 && amount <= 50;
+}
+
+function getItemLookup(incomeItems, expenseItems) {
+  return [...incomeItems, ...expenseItems].reduce((acc, item) => {
+    if (item?.id) acc[item.id] = item;
+    return acc;
+  }, {});
+}
+
+function getRoundCards({
+  waveIndex,
+  weeklyRounds,
+  itemLookup,
+  incomeItems,
+  expenseItems,
+  patterns,
+}) {
+  if (Array.isArray(weeklyRounds) && weeklyRounds.length > 0) {
+    const roundConfig = weeklyRounds[waveIndex];
+    const roundCards = Array.isArray(roundConfig)
+      ? roundConfig
+      : Array.isArray(roundConfig?.cards)
+        ? roundConfig.cards
+        : [];
+
+    return shuffleArray(
+      roundCards
+        .map((entry) => {
+          const itemId =
+            typeof entry === "string"
+              ? entry
+              : entry?.itemId ?? entry?.id ?? null;
+
+          return itemId ? itemLookup[itemId] ?? null : null;
+        })
+        .filter(Boolean),
+    );
+  }
+
+  const pattern = patterns[waveIndex % patterns.length] ?? DEFAULT_WAVE_PATTERNS[0];
+  const lowestIncome = [...incomeItems].sort(
+    (left, right) => Number(left.amount ?? 0) - Number(right.amount ?? 0),
+  )[0];
+
+  return pattern
+    .map((kind) => {
+      const sourceItem =
+        waveIndex === 0 && kind === "income"
+          ? lowestIncome
+          : kind === "expense"
+            ? pickRandom(expenseItems)
+            : pickRandom(incomeItems);
+
+      return sourceItem ?? null;
+    })
+    .filter(Boolean);
 }
 
 function buildSprite(item, playfieldWidth, fallMin, fallMax, overrides = {}) {
@@ -343,56 +407,71 @@ function buildSprite(item, playfieldWidth, fallMin, fallMax, overrides = {}) {
       overrides.speed ??
       (fallMin + Math.random() * Math.max(0.2, fallMax - fallMin)),
     rotation: overrides.rotation ?? (Math.random() * 8 - 4),
+    releaseAtMs: overrides.releaseAtMs ?? 0,
+    isPremium: overrides.isPremium ?? isPremiumIncomeItem(item),
   };
 }
 
 function buildWaveState({
   waveIndex,
   width,
+  weeklyRounds,
+  itemLookup,
   patterns,
   incomeItems,
   expenseItems,
   fallMin,
   fallMax,
+  spawnEveryMs,
 }) {
-  const pattern = patterns[waveIndex % patterns.length] ?? DEFAULT_WAVE_PATTERNS[0];
-  const lowestIncome = [...incomeItems].sort(
-    (left, right) => Number(left.amount ?? 0) - Number(right.amount ?? 0),
-  )[0];
+  const roundCards = getRoundCards({
+    waveIndex,
+    weeklyRounds,
+    itemLookup,
+    incomeItems,
+    expenseItems,
+    patterns,
+  });
 
-  const queue = pattern
-    .map((kind, index) => {
-      const sourceItem =
-        waveIndex === 0 && kind === "income"
-          ? lowestIncome
-          : kind === "expense"
-            ? pickRandom(expenseItems)
-            : pickRandom(incomeItems);
+  if (!roundCards.length) {
+    return null;
+  }
 
-      if (!sourceItem) return null;
-
-      return buildSprite(sourceItem, width, fallMin, fallMax, {
-        top: -CARD_HEIGHT - index * 54,
+  const queue = roundCards
+    .map((item, index) =>
+      buildSprite(item, width, fallMin, fallMax, {
+        top: -CARD_HEIGHT - Math.random() * 20,
         left:
           PLAYFIELD_PADDING +
           ((width - CARD_WIDTH - PLAYFIELD_PADDING * 2) * (index + 1)) /
-            (pattern.length + 1),
+            (roundCards.length + 1),
         rotation: index % 2 === 0 ? -3 + index : 2 + index,
-      });
-    })
+        releaseAtMs: index * spawnEveryMs,
+        speed:
+          (fallMin + Math.random() * Math.max(0.2, fallMax - fallMin)) *
+          (isPremiumIncomeItem(item) ? 1.2 : 1),
+        isPremium: isPremiumIncomeItem(item),
+      }),
+    )
     .filter(Boolean);
 
   return {
-    capacity: Math.max(1, pattern.length),
+    capacity: Math.max(1, queue.length),
+    displayRound: waveIndex + 1,
     queue,
   };
 }
 
-function fillOpenSlots({ visibleSprites, queue, capacity }) {
+function fillOpenSlots({ visibleSprites, queue, capacity, elapsedMs }) {
   const nextQueue = [...queue];
   const nextVisibleSprites = [...visibleSprites];
 
   while (nextQueue.length && nextVisibleSprites.length < capacity) {
+    const nextCandidate = nextQueue[0];
+    if ((nextCandidate?.releaseAtMs ?? 0) > elapsedMs) {
+      break;
+    }
+
     const nextSprite = nextQueue.shift();
     if (nextSprite) {
       nextVisibleSprites.push(nextSprite);
@@ -409,6 +488,7 @@ function FallingCard({ sprite }) {
   const theme = ITEM_STYLES[sprite.item.kind] ?? ITEM_STYLES.income;
   const BadgeIcon = theme.icon;
   const imageSrc = resolveAssetSrc(sprite.item?.media?.src);
+  const isPremium = Boolean(sprite.isPremium);
   const amountLabel =
     sprite.item.kind === "expense"
       ? `- ${formatCurrency(sprite.item.amount)}`
@@ -428,12 +508,19 @@ function FallingCard({ sprite }) {
         className={cn(
           "relative overflow-hidden rounded-[1.25rem] border-[3px] bg-transparent p-[0.18rem]",
           theme.shell,
+          isPremium &&
+            "border-[#ffe483] shadow-[0_0_0_2px_rgba(255,233,142,0.45),0_0_26px_rgba(255,208,72,0.55),0_20px_32px_rgba(170,112,0,0.24)]",
         )}
       >
+        {isPremium ? (
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,245,175,0.38),transparent_58%)]" />
+        ) : null}
         <div
           className={cn(
             "absolute -left-3 -top-3 z-10 flex h-11 w-11 items-center justify-center rounded-full border-[3px] border-white/90 text-white shadow-[0_10px_18px_rgba(0,0,0,0.18)]",
             theme.badge,
+            isPremium &&
+              "bg-[radial-gradient(circle_at_30%_30%,#fff4ab_0%,#ffbd2c_100%)] shadow-[0_0_18px_rgba(255,211,83,0.6)]",
           )}
         >
           <BadgeIcon className="h-5 w-5" strokeWidth={2.5} />
@@ -513,12 +600,26 @@ function Basket({ basketX, basketWidth, basketHeight }) {
 export default function CollectObjectsTemplate({ view, heroApi, data }) {
   const viewId = view?.id ?? view?.viewId;
   const resolvedData = useMemo(() => normalizeGameData(data), [data]);
+  const isSurplusMode = resolvedData.game?.mode === "surplusDecision";
   const targetAmount = resolvedData.game.pointsToComplete;
-  const basketWidth = resolvedData.basket.width ?? BASKET_WIDTH_FALLBACK;
+  const minimumCompletionAmount = Math.max(
+    targetAmount,
+    toNumber(resolvedData.game.minimumCompletionAmount, targetAmount),
+  );
+  const sourcePayload = useMemo(
+    () => getSourcePayload({ heroApi, resolvedData, targetAmount }),
+    [heroApi, resolvedData, targetAmount],
+  );
+  const basketWidth = Math.max(
+    resolvedData.basket.width ?? BASKET_WIDTH_FALLBACK,
+    BASKET_MIN_WIDTH,
+  );
   const basketHeight = resolvedData.basket.height ?? BASKET_HEIGHT_FALLBACK;
   const playfieldRef = useRef(null);
   const rafRef = useRef(null);
   const lastFrameRef = useRef(0);
+  const spritesRef = useRef([]);
+  const waveElapsedRef = useRef(0);
   const queueRef = useRef([]);
   const waveIndexRef = useRef(0);
   const waveCapacityRef = useRef(1);
@@ -526,28 +627,99 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
   const basketXRef = useRef(0);
   const collectedRef = useRef(0);
   const completedRef = useRef(false);
+  const consumedSpriteIdsRef = useRef(new Set());
+  const currentRoundRef = useRef(0);
+  const sessionInitializedRef = useRef(false);
+  const autoPausedByDetailsRef = useRef(false);
   const [playfieldSize, setPlayfieldSize] = useState({ width: 900, height: 520 });
   const [basketX, setBasketX] = useState(0);
   const [sprites, setSprites] = useState([]);
   const [collected, setCollected] = useState(0);
   const [caughtItems, setCaughtItems] = useState([]);
+  const [movementHistory, setMovementHistory] = useState([]);
   const [isCompleted, setIsCompleted] = useState(false);
+  const [isFailed, setIsFailed] = useState(false);
   const [isStarted, setIsStarted] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+  const [currentRound, setCurrentRound] = useState(0);
+  const [restartCount, setRestartCount] = useState(0);
+  const [completionWeek, setCompletionWeek] = useState(null);
+  const [surplusStageState, setSurplusStageState] = useState({
+    completed: false,
+    score: 0,
+    displayAmount: 0,
+    progressValue: 0,
+    progressMax: 1,
+    details: [],
+    payload: null,
+  });
+  const itemLookup = useMemo(
+    () => getItemLookup(resolvedData.game.incomeItems, resolvedData.game.expenseItems),
+    [resolvedData.game.expenseItems, resolvedData.game.incomeItems],
+  );
+  const captureScore = useMemo(
+    () =>
+      isCompleted && !isSurplusMode
+        ? getCaptureScore(completionWeek, restartCount)
+        : 0,
+    [completionWeek, isCompleted, isSurplusMode, restartCount],
+  );
 
   useEffect(() => {
     setCollected(0);
     setCaughtItems([]);
+    setMovementHistory([]);
     setIsCompleted(false);
+    setIsFailed(false);
     setIsStarted(false);
+    setIsPaused(false);
+    setIsDetailsOpen(false);
+    setCurrentRound(0);
+    setRestartCount(0);
+    setCompletionWeek(null);
     setSprites([]);
+    spritesRef.current = [];
     collectedRef.current = 0;
     completedRef.current = false;
+    consumedSpriteIdsRef.current = new Set();
+    currentRoundRef.current = 0;
+    waveElapsedRef.current = 0;
+    autoPausedByDetailsRef.current = false;
+    sessionInitializedRef.current = false;
     queueRef.current = [];
     waveIndexRef.current = 0;
     waveCapacityRef.current = 1;
     keyboardRef.current = { left: false, right: false };
     lastFrameRef.current = 0;
+    setSurplusStageState({
+      completed: false,
+      score: 0,
+      displayAmount: 0,
+      progressValue: 0,
+      progressMax: 1,
+      details: [],
+      payload: null,
+    });
   }, [viewId]);
+
+  useEffect(() => {
+    if (!isSurplusMode) return;
+
+    setCollected(sourcePayload.surplusAmount);
+    setIsStarted(true);
+    setIsPaused(false);
+    setIsFailed(false);
+    setSprites([]);
+    spritesRef.current = [];
+    queueRef.current = [];
+    sessionInitializedRef.current = false;
+    waveIndexRef.current = 0;
+    waveCapacityRef.current = 1;
+    currentRoundRef.current = 0;
+    setCurrentRound(0);
+    lastFrameRef.current = 0;
+  }, [isSurplusMode, sourcePayload.surplusAmount]);
 
   useEffect(() => {
     function updateSize() {
@@ -591,21 +763,73 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
     collectedRef.current = collected;
     completedRef.current = isCompleted;
 
+    if (isSurplusMode) {
+      heroApi?.setInteractiveState?.(viewId, {
+        type: "collectObjects",
+        completed: surplusStageState.completed,
+        score: surplusStageState.score,
+        collected: surplusStageState.displayAmount,
+        payload: {
+          ...surplusStageState.payload,
+          targetAmount: sourcePayload.targetAmount,
+          collectedAmount: sourcePayload.collectedAmount,
+          protectedGoalAmount: sourcePayload.protectedGoalAmount,
+          surplusAmount: sourcePayload.surplusAmount,
+          target: sourcePayload.target,
+        },
+      });
+      return;
+    }
+
     heroApi?.setInteractiveState?.(viewId, {
       type: "collectObjects",
       completed: isCompleted,
       score: isCompleted
-        ? 100
-        : Math.round((collected / Math.max(targetAmount, 1)) * 100),
+        ? captureScore
+        : Math.round((collected / Math.max(minimumCompletionAmount, 1)) * 100),
       collected,
       payload: {
         targetAmount,
+        collectedAmount: collected,
+        protectedGoalAmount: targetAmount,
+        surplusAmount: Math.max(0, collected - targetAmount),
+        requiredAmount: minimumCompletionAmount,
+        canContinueToInvestment: collected >= minimumCompletionAmount,
+        completionWeek,
+        restartCount,
+        captureScore,
+        target: resolvedData.target,
         caughtItems,
+        currentRound,
       },
     });
-  }, [caughtItems, collected, heroApi, isCompleted, targetAmount, viewId]);
+  }, [
+    caughtItems,
+    collected,
+    currentRound,
+    heroApi,
+    isCompleted,
+    isSurplusMode,
+    captureScore,
+    completionWeek,
+    resolvedData.target,
+    restartCount,
+    sourcePayload.collectedAmount,
+    sourcePayload.protectedGoalAmount,
+    sourcePayload.surplusAmount,
+    sourcePayload.target,
+    sourcePayload.targetAmount,
+    surplusStageState.completed,
+    surplusStageState.displayAmount,
+    surplusStageState.payload,
+    surplusStageState.score,
+    targetAmount,
+    viewId,
+  ]);
 
   useEffect(() => {
+    if (isSurplusMode) return undefined;
+
     function handleKeyDown(event) {
       const key = event.key.toLowerCase();
 
@@ -635,12 +859,26 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
     };
-  }, []);
+  }, [isSurplusMode]);
 
   useEffect(() => {
-    if (!isStarted || isCompleted) {
+    if (isSurplusMode) {
       setSprites([]);
+      spritesRef.current = [];
       queueRef.current = [];
+      lastFrameRef.current = 0;
+      return undefined;
+    }
+
+    if (!isStarted || isCompleted || isFailed) {
+      setSprites([]);
+      spritesRef.current = [];
+      queueRef.current = [];
+      lastFrameRef.current = 0;
+      return undefined;
+    }
+
+    if (isPaused) {
       lastFrameRef.current = 0;
       return undefined;
     }
@@ -652,6 +890,7 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
 
       const delta = Math.min(32, timestamp - lastFrameRef.current);
       lastFrameRef.current = timestamp;
+      waveElapsedRef.current += delta;
 
       const maxLeft = Math.max(
         PLAYFIELD_PADDING,
@@ -675,123 +914,177 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
         }
       }
 
-      setSprites((current) => {
-        let nextSprites = current.map((sprite) => ({
-          ...sprite,
-          top: sprite.top + sprite.speed * (delta / 16),
-        }));
+      let nextSprites = spritesRef.current.map((sprite) => ({
+        ...sprite,
+        top: sprite.top + sprite.speed * (delta / 16),
+      }));
 
-        const floorTop = playfieldSize.height - FLOOR_HEIGHT;
-        const basketVisualHeight = basketHeight + 20;
-        const basketCollisionLeft = basketXRef.current + basketWidth * 0.16;
-        const basketCollisionRight = basketXRef.current + basketWidth * 0.84;
-        const basketCollisionTop =
-          floorTop - Math.max(24, basketVisualHeight * 0.34);
-        const basketCollisionBottom =
-          floorTop + Math.max(6, basketVisualHeight * 0.04);
+      const floorTop = playfieldSize.height - FLOOR_HEIGHT;
+      const basketVisualHeight = basketHeight + 20;
+      const basketCollisionLeft = basketXRef.current + basketWidth * 0.16;
+      const basketCollisionRight = basketXRef.current + basketWidth * 0.84;
+      const basketCollisionTop =
+        floorTop - Math.max(24, basketVisualHeight * 0.34);
+      const basketCollisionBottom =
+        floorTop + Math.max(6, basketVisualHeight * 0.04);
 
-        let deltaAmount = 0;
-        const caughtNow = [];
+      let deltaAmount = 0;
+      const caughtNow = [];
 
-        nextSprites = nextSprites.filter((sprite) => {
-          const spriteLeft = sprite.left + 6;
-          const spriteRight = sprite.left + CARD_WIDTH - 6;
-          const spriteTop = sprite.top + 8;
-          const spriteBottom = sprite.top + CARD_HEIGHT;
-          const spriteCenterX = (spriteLeft + spriteRight) / 2;
+      nextSprites = nextSprites.filter((sprite) => {
+        const spriteLeft = sprite.left + 6;
+        const spriteRight = sprite.left + CARD_WIDTH - 6;
+        const spriteTop = sprite.top + 8;
+        const spriteBottom = sprite.top + CARD_HEIGHT;
+        const spriteCenterX = (spriteLeft + spriteRight) / 2;
 
-          const intersectsBasket =
-            spriteCenterX >= basketCollisionLeft &&
-            spriteCenterX <= basketCollisionRight &&
-            spriteBottom >= basketCollisionTop &&
-            spriteBottom <= basketCollisionBottom &&
-            spriteTop < basketCollisionBottom;
+        const intersectsBasket =
+          spriteCenterX >= basketCollisionLeft &&
+          spriteCenterX <= basketCollisionRight &&
+          spriteBottom >= basketCollisionTop &&
+          spriteBottom <= basketCollisionBottom &&
+          spriteTop < basketCollisionBottom;
 
-          if (intersectsBasket) {
-            const signedAmount =
-              sprite.item.kind === "expense"
-                ? -Number(sprite.item.amount ?? 0)
-                : Number(sprite.item.amount ?? 0);
-
-            deltaAmount += signedAmount;
-            caughtNow.push(sprite.item);
+        if (intersectsBasket) {
+          if (consumedSpriteIdsRef.current.has(sprite.runtimeId)) {
             return false;
           }
 
-          if (sprite.top > playfieldSize.height + CARD_HEIGHT) {
-            return false;
-          }
+          consumedSpriteIdsRef.current.add(sprite.runtimeId);
+          const signedAmount =
+            sprite.item.kind === "expense"
+              ? -Number(sprite.item.amount ?? 0)
+              : Number(sprite.item.amount ?? 0);
 
-          return true;
-        });
-
-        if (!queueRef.current.length && !nextSprites.length) {
-          const nextWave = buildWaveState({
-            waveIndex: waveIndexRef.current,
-            width: playfieldSize.width,
-            patterns: resolvedData.game.wavePatterns,
-            incomeItems: resolvedData.game.incomeItems,
-            expenseItems: resolvedData.game.expenseItems,
-            fallMin: resolvedData.game.itemFallMin,
-            fallMax: resolvedData.game.itemFallMax,
-          });
-          queueRef.current = nextWave.queue;
-          waveCapacityRef.current = nextWave.capacity;
-          waveIndexRef.current += 1;
+          deltaAmount += signedAmount;
+          caughtNow.push(sprite.item);
+          return false;
         }
 
-        if (queueRef.current.length) {
-          const fillResult = fillOpenSlots({
+        if (sprite.top > playfieldSize.height + CARD_HEIGHT) {
+          return false;
+        }
+
+        return true;
+      });
+
+      if (!queueRef.current.length && !nextSprites.length) {
+        const nextWave = buildWaveState({
+          waveIndex: waveIndexRef.current,
+          width: playfieldSize.width,
+          weeklyRounds: resolvedData.game.weeklyRounds,
+          itemLookup,
+          patterns: resolvedData.game.wavePatterns,
+          incomeItems: resolvedData.game.incomeItems,
+          expenseItems: resolvedData.game.expenseItems,
+          fallMin: resolvedData.game.itemFallMin,
+          fallMax: resolvedData.game.itemFallMax,
+          spawnEveryMs: resolvedData.game.spawnEveryMs,
+        });
+
+        if (!nextWave) {
+          spritesRef.current = [];
+          setSprites([]);
+          setIsPaused(false);
+          setIsFailed(true);
+          lastFrameRef.current = 0;
+          sessionInitializedRef.current = false;
+          queueRef.current = [];
+          return;
+        }
+
+        queueRef.current = nextWave.queue;
+        waveCapacityRef.current = nextWave.capacity;
+        currentRoundRef.current = nextWave.displayRound;
+        waveElapsedRef.current = 0;
+        setCurrentRound(nextWave.displayRound);
+        waveIndexRef.current += 1;
+      }
+
+      if (queueRef.current.length) {
+        const fillResult = fillOpenSlots({
             visibleSprites: nextSprites,
             queue: queueRef.current,
             capacity: Math.min(
               waveCapacityRef.current,
               resolvedData.game.maxActiveItems,
             ),
+            elapsedMs: waveElapsedRef.current,
           });
-          nextSprites = fillResult.visibleSprites;
-          queueRef.current = fillResult.queue;
+        nextSprites = fillResult.visibleSprites;
+        queueRef.current = fillResult.queue;
+      }
+
+      if (deltaAmount !== 0) {
+        const nextCollected = Math.max(0, collectedRef.current + deltaAmount);
+        collectedRef.current = nextCollected;
+        setCollected(nextCollected);
+        setCaughtItems((currentCaught) =>
+          [...caughtNow, ...currentCaught].slice(0, 6),
+        );
+        setMovementHistory((currentHistory) => [
+          ...currentHistory,
+          ...caughtNow.map((item) => ({
+            id: `${item.id}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+            week: currentRoundRef.current,
+            label: item.label,
+            kind: item.kind,
+            amount:
+              item.kind === "expense"
+                ? -Math.abs(Number(item.amount ?? 0))
+                : Math.abs(Number(item.amount ?? 0)),
+          })),
+        ]);
+
+        if (
+          nextCollected >= minimumCompletionAmount &&
+          !completedRef.current
+        ) {
+          completedRef.current = true;
+          setCompletionWeek(currentRoundRef.current);
+          setIsCompleted(true);
         }
+      }
 
-        if (deltaAmount !== 0) {
-          const nextCollected = Math.max(0, collectedRef.current + deltaAmount);
-          collectedRef.current = nextCollected;
-          setCollected(nextCollected);
-          setCaughtItems((currentCaught) =>
-            [...caughtNow, ...currentCaught].slice(0, 6),
-          );
-
-          if (nextCollected >= targetAmount && !completedRef.current) {
-            completedRef.current = true;
-            setIsCompleted(true);
-          }
-        }
-
-        return nextSprites;
-      });
-
+      spritesRef.current = nextSprites;
+      setSprites(nextSprites);
       rafRef.current = window.requestAnimationFrame(tick);
     }
 
-    const firstWave = buildWaveState({
-      waveIndex: 0,
-      width: playfieldSize.width,
-      patterns: resolvedData.game.wavePatterns,
-      incomeItems: resolvedData.game.incomeItems,
-      expenseItems: resolvedData.game.expenseItems,
-      fallMin: resolvedData.game.itemFallMin,
-      fallMax: resolvedData.game.itemFallMax,
-    });
-    queueRef.current = firstWave.queue;
-    waveCapacityRef.current = firstWave.capacity;
-    waveIndexRef.current = 1;
-    const initialFill = fillOpenSlots({
-      visibleSprites: [],
-      queue: queueRef.current,
-      capacity: Math.min(firstWave.capacity, resolvedData.game.maxActiveItems),
-    });
-    queueRef.current = initialFill.queue;
-    setSprites(initialFill.visibleSprites);
+    if (!sessionInitializedRef.current) {
+      const firstWave = buildWaveState({
+        waveIndex: 0,
+        width: playfieldSize.width,
+        weeklyRounds: resolvedData.game.weeklyRounds,
+        itemLookup,
+        patterns: resolvedData.game.wavePatterns,
+        incomeItems: resolvedData.game.incomeItems,
+        expenseItems: resolvedData.game.expenseItems,
+        fallMin: resolvedData.game.itemFallMin,
+        fallMax: resolvedData.game.itemFallMax,
+        spawnEveryMs: resolvedData.game.spawnEveryMs,
+      });
+      if (!firstWave) {
+        return undefined;
+      }
+      queueRef.current = firstWave.queue;
+      waveCapacityRef.current = firstWave.capacity;
+      currentRoundRef.current = firstWave.displayRound;
+      waveElapsedRef.current = 0;
+      setCurrentRound(firstWave.displayRound);
+      waveIndexRef.current = 1;
+      const initialFill = fillOpenSlots({
+        visibleSprites: [],
+        queue: queueRef.current,
+        capacity: Math.min(firstWave.capacity, resolvedData.game.maxActiveItems),
+        elapsedMs: waveElapsedRef.current,
+      });
+      queueRef.current = initialFill.queue;
+      spritesRef.current = initialFill.visibleSprites;
+      setSprites(initialFill.visibleSprites);
+      sessionInitializedRef.current = true;
+    }
+
     rafRef.current = window.requestAnimationFrame(tick);
 
     return () => {
@@ -804,6 +1097,9 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
     basketWidth,
     isStarted,
     isCompleted,
+    isFailed,
+    isPaused,
+    itemLookup,
     playfieldSize.height,
     playfieldSize.width,
     resolvedData.game.basketSpeedPx,
@@ -812,13 +1108,19 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
     resolvedData.game.itemFallMax,
     resolvedData.game.itemFallMin,
     resolvedData.game.maxActiveItems,
+    resolvedData.game.minimumCompletionAmount,
+    resolvedData.game.spawnEveryMs,
+    resolvedData.game.weeklyRounds,
     resolvedData.game.wavePatterns,
+    minimumCompletionAmount,
+    isSurplusMode,
     targetAmount,
   ]);
 
   function handlePointerMove(event) {
+    if (isSurplusMode) return;
     const node = playfieldRef.current;
-    if (!node || isCompleted || !isStarted) return;
+    if (!node || isCompleted || !isStarted || isPaused) return;
 
     const rect = node.getBoundingClientRect();
     const relativeX = event.clientX - rect.left;
@@ -835,14 +1137,27 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
   }
 
   function handleStartGame() {
+    if (isSurplusMode) return;
     keyboardRef.current = { left: false, right: false };
     lastFrameRef.current = 0;
     setCollected(0);
     setCaughtItems([]);
+    setMovementHistory([]);
     setSprites([]);
+    spritesRef.current = [];
     setIsCompleted(false);
+    setIsFailed(false);
+    setIsPaused(false);
+    setIsDetailsOpen(false);
+    setCurrentRound(0);
+    setCompletionWeek(null);
     collectedRef.current = 0;
     completedRef.current = false;
+    consumedSpriteIdsRef.current = new Set();
+    currentRoundRef.current = 0;
+    waveElapsedRef.current = 0;
+    autoPausedByDetailsRef.current = false;
+    sessionInitializedRef.current = false;
     queueRef.current = [];
     waveIndexRef.current = 0;
     waveCapacityRef.current = 1;
@@ -850,17 +1165,113 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
     playfieldRef.current?.focus?.();
   }
 
+  function handleTogglePause() {
+    if (isSurplusMode) return;
+    if (!isStarted || isCompleted || isFailed) return;
+    keyboardRef.current = { left: false, right: false };
+    lastFrameRef.current = 0;
+    setIsPaused((current) => !current);
+    playfieldRef.current?.focus?.();
+  }
+
+  function handleRetryFromFailure() {
+    if (isSurplusMode) return;
+    keyboardRef.current = { left: false, right: false };
+    lastFrameRef.current = 0;
+    setCollected(0);
+    setCaughtItems([]);
+    setMovementHistory([]);
+    setSprites([]);
+    spritesRef.current = [];
+    setIsCompleted(false);
+    setIsFailed(false);
+    setIsStarted(false);
+    setIsPaused(false);
+    setIsDetailsOpen(false);
+    setCurrentRound(0);
+    setCompletionWeek(null);
+    setRestartCount((current) => current + 1);
+    collectedRef.current = 0;
+    completedRef.current = false;
+    consumedSpriteIdsRef.current = new Set();
+    currentRoundRef.current = 0;
+    waveElapsedRef.current = 0;
+    autoPausedByDetailsRef.current = false;
+    sessionInitializedRef.current = false;
+    queueRef.current = [];
+    waveIndexRef.current = 0;
+    waveCapacityRef.current = 1;
+  }
+
+  function handleOpenDetails() {
+    if (isSurplusMode) {
+      setIsDetailsOpen(true);
+      return;
+    }
+
+    if (isStarted && !isCompleted && !isFailed && !isPaused) {
+      autoPausedByDetailsRef.current = true;
+      setIsPaused(true);
+    }
+
+    setIsDetailsOpen(true);
+  }
+
+  function handleCloseDetails() {
+    setIsDetailsOpen(false);
+
+    if (isSurplusMode) {
+      playfieldRef.current?.focus?.();
+      return;
+    }
+
+    if (autoPausedByDetailsRef.current) {
+      autoPausedByDetailsRef.current = false;
+      setIsPaused(false);
+      lastFrameRef.current = 0;
+    }
+
+    playfieldRef.current?.focus?.();
+  }
+
+  const displayAmount = isSurplusMode
+    ? surplusStageState.displayAmount
+    : collected;
+  const progressBaseAmount = isSurplusMode
+    ? Math.max(surplusStageState.progressMax, 1)
+    : Math.max(targetAmount, 1);
   const progressPercent = clamp(
-    (collected / Math.max(targetAmount, 1)) * 100,
+    (displayAmount / progressBaseAmount) * 100,
     0,
     100,
   );
-  const hasExceededGoal = collected > targetAmount;
-  const exceededAmount = Math.max(0, collected - targetAmount);
+  const hasExceededGoal = displayAmount > progressBaseAmount;
+  const exceededAmount = Math.max(0, displayAmount - progressBaseAmount);
+  const historyByWeek = useMemo(
+    () =>
+      movementHistory.reduce((accumulator, entry) => {
+        const currentEntries = accumulator[entry.week] ?? [];
+        currentEntries.push(entry);
+        accumulator[entry.week] = currentEntries;
+        return accumulator;
+      }, {}),
+    [movementHistory],
+  );
+  const collectedStatusText = replaceAmountToken(
+    resolvedData.collectedStatusText,
+    exceededAmount,
+  );
 
   return (
     <section className="mx-auto flex h-full min-h-0 w-full max-w-[98rem] flex-col overflow-hidden rounded-[2rem] border border-white/30 bg-[linear-gradient(180deg,#3e8cff_0%,#235fda_100%)] p-2 text-white shadow-[0_24px_60px_rgba(8,30,88,0.3)] sm:p-3 lg:min-h-0">
-      <div className="grid min-h-0 flex-1 gap-2 sm:gap-3 lg:grid-cols-[clamp(18rem,22vw,20rem)_minmax(0,1fr)] xl:grid-cols-[clamp(19rem,23vw,21rem)_minmax(0,1fr)]">
+      <div
+        className={cn(
+          "grid min-h-0 flex-1 gap-2 sm:gap-3",
+          isSurplusMode
+            ? "lg:grid-cols-[clamp(15.5rem,18vw,17rem)_minmax(0,1fr)] xl:grid-cols-[clamp(16rem,18vw,17.5rem)_minmax(0,1fr)]"
+            : "lg:grid-cols-[clamp(18rem,22vw,20rem)_minmax(0,1fr)] xl:grid-cols-[clamp(19rem,23vw,21rem)_minmax(0,1fr)]",
+        )}
+      >
         <aside className="relative flex min-h-0 flex-col overflow-hidden rounded-[1.7rem] border border-white/30 bg-[linear-gradient(180deg,#1b66de_0%,#0f4fb9_100%)] p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.2)] sm:p-3">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.16),transparent_46%)]" />
           <div className="pointer-events-none absolute inset-3 rounded-[1.4rem] border border-[#66beff]/40" />
@@ -872,7 +1283,12 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
                   ...resolvedData.sidebarTitle,
                   align: "center",
                 }}
-                className="mx-auto max-w-[11rem] text-[clamp(1.55rem,1.05rem+1.2vw,2.4rem)] font-black leading-[0.94]"
+                className={cn(
+                  "mx-auto font-black leading-[0.94]",
+                  isSurplusMode
+                    ? "max-w-[12.5rem] text-[clamp(1.3rem,0.95rem+1vw,2rem)]"
+                    : "max-w-[11rem] text-[clamp(1.55rem,1.05rem+1.2vw,2.4rem)]",
+                )}
               />
             </div>
 
@@ -889,7 +1305,11 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
               </div>
             </div>
 
-            <div className="min-h-0 rounded-[1.15rem] border border-[#66beff]/34 bg-[linear-gradient(180deg,#236fef_0%,#154fae_100%)] px-3 py-3 sm:px-4 sm:py-4">
+            <button
+              type="button"
+              onClick={handleOpenDetails}
+              className="min-h-0 rounded-[1.15rem] border border-[#66beff]/34 bg-[linear-gradient(180deg,#236fef_0%,#154fae_100%)] px-3 py-3 text-left transition-transform duration-150 hover:scale-[1.01] sm:px-4 sm:py-4"
+            >
               <Typography content={resolvedData.collectedLabel} className="font-black" />
 
               <div className="mt-2.5 flex items-center gap-2.5 sm:gap-3">
@@ -897,13 +1317,13 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
                   <Wallet className="h-6 w-6 text-[#fff1b7] sm:h-7 sm:w-7" strokeWidth={2.4} />
                 </div>
                 <div className="min-w-0 text-[1.35rem] font-black leading-none text-white sm:text-[1.55rem] xl:text-[1.8rem]">
-                  {formatCurrency(collected)}
+                  {formatCurrency(displayAmount)}
                 </div>
               </div>
 
               {hasExceededGoal ? (
                 <div className="mt-2 text-[0.72rem] font-black uppercase tracking-[0.04em] text-[#ffd46b] sm:text-[0.78rem]">
-                  Superaste la meta por {formatCurrency(exceededAmount)}
+                  {collectedStatusText}
                 </div>
               ) : null}
 
@@ -918,7 +1338,7 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
                   style={{ width: `${progressPercent}%` }}
                 />
               </div>
-            </div>
+            </button>
           </div>
         </aside>
 
@@ -940,21 +1360,65 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
             />
           ))}
 
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[92px] bg-[linear-gradient(180deg,#d98138_0%,#c66d23_100%)]">
-            <div className="absolute inset-0 bg-[repeating-linear-gradient(90deg,rgba(255,255,255,0.07)_0_28px,transparent_28px_56px)] opacity-75" />
-          </div>
+          {!isSurplusMode && isStarted && !isFailed ? (
+            <div className="pointer-events-none absolute left-4 top-4 z-30 flex items-center gap-2 rounded-[1rem] bg-[linear-gradient(180deg,#2f61c8_0%,#234aa9_100%)] px-4 py-2 text-white shadow-[0_12px_22px_rgba(19,47,118,0.24)]">
+              <BriefcaseBusiness
+                className="h-4.5 w-4.5 text-[#ffd96d]"
+                strokeWidth={2.4}
+              />
+              <span className="text-[0.82rem] font-black uppercase tracking-[0.04em] text-white/92">
+                {resolvedData.game.roundLabelText ??
+                  DEFAULT_GAME_DATA.game.roundLabelText}
+              </span>
+              <span className="text-[1rem] font-black leading-none text-white">
+                {currentRound}
+              </span>
+            </div>
+          ) : null}
 
-          {sprites.map((sprite) => (
-            <FallingCard key={sprite.runtimeId} sprite={sprite} />
-          ))}
+          {!isSurplusMode && isStarted && !isCompleted && !isFailed ? (
+            <button
+              type="button"
+              onClick={handleTogglePause}
+              className="absolute right-4 top-4 z-40 inline-flex items-center gap-2 rounded-[1rem] border border-white/20 bg-[linear-gradient(180deg,#2f61c8_0%,#234aa9_100%)] px-4 py-2 text-[0.96rem] font-black text-white shadow-[0_12px_22px_rgba(19,47,118,0.24)] transition-transform duration-150 hover:scale-[1.02] active:scale-[0.99]"
+            >
+              {isPaused ? (
+                <Play className="h-4.5 w-4.5 text-[#ffd96d]" strokeWidth={2.6} />
+              ) : (
+                <Pause
+                  className="h-4.5 w-4.5 text-[#ffd96d]"
+                  strokeWidth={2.6}
+                />
+              )}
+              <span>{isPaused ? "Continuar" : "Pausar"}</span>
+            </button>
+          ) : null}
 
-          <Basket
-            basketX={basketX}
-            basketWidth={basketWidth}
-            basketHeight={basketHeight}
-          />
+          {!isSurplusMode ? (
+            <>
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[92px] bg-[linear-gradient(180deg,#d98138_0%,#c66d23_100%)]">
+                <div className="absolute inset-0 bg-[repeating-linear-gradient(90deg,rgba(255,255,255,0.07)_0_28px,transparent_28px_56px)] opacity-75" />
+              </div>
 
-          {!isStarted ? (
+              {sprites.map((sprite) => (
+                <FallingCard key={sprite.runtimeId} sprite={sprite} />
+              ))}
+
+              <Basket
+                basketX={basketX}
+                basketWidth={basketWidth}
+                basketHeight={basketHeight}
+              />
+            </>
+          ) : (
+            <SurplusDecisionStage
+              data={resolvedData}
+              sourcePayload={sourcePayload}
+              onStateChange={setSurplusStageState}
+            />
+          )}
+
+          {!isSurplusMode && !isStarted ? (
             <div className="absolute inset-0 z-40 flex items-center justify-center px-5 py-6 sm:px-8">
               <div className="w-full max-w-[35rem] rounded-[1.6rem] border border-white/35 bg-[linear-gradient(180deg,rgba(20,76,180,0.78),rgba(14,55,143,0.86))] px-5 py-6 text-center shadow-[0_20px_40px_rgba(10,28,88,0.3)] backdrop-blur-[3px] sm:px-8 sm:py-8">
                 <Typography
@@ -989,7 +1453,70 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
             </div>
           ) : null}
 
-          {isCompleted ? (
+          {!isSurplusMode && isPaused && !isCompleted && !isFailed && !isDetailsOpen ? (
+            <div className="absolute inset-0 z-50 flex items-center justify-center px-5 py-6 sm:px-8">
+              <div className="absolute inset-0 bg-[rgba(8,26,74,0.22)] backdrop-blur-[2px]" />
+              <div className="relative w-full max-w-[31rem] rounded-[1.5rem] border border-white/28 bg-[linear-gradient(180deg,rgba(25,87,201,0.9),rgba(17,62,149,0.92))] px-6 py-7 text-center shadow-[0_24px_48px_rgba(7,22,69,0.28)]">
+                <Typography
+                  content={{
+                    text: "Juego en pausa",
+                    variant: "h2",
+                    align: "center",
+                  }}
+                  className="font-black text-white"
+                />
+                <Typography
+                  content={{
+                    text: "Reanuda cuando quieras para seguir atrapando ingresos desde el mismo punto.",
+                    variant: "body",
+                    align: "center",
+                  }}
+                  className="mx-auto mt-3 max-w-[24rem] text-[0.98rem] font-semibold leading-relaxed text-white/92"
+                />
+                <button
+                  type="button"
+                  onClick={handleTogglePause}
+                  className="mt-6 inline-flex min-w-[11rem] items-center justify-center gap-2 rounded-[1rem] border border-[#ffe08a] bg-[linear-gradient(180deg,#ffd45c_0%,#f1a81f_100%)] px-6 py-3 text-[1rem] font-black text-[#6b3b00] shadow-[0_14px_24px_rgba(0,0,0,0.18)] transition-transform duration-150 hover:scale-[1.02] active:scale-[0.99]"
+                >
+                  <Play className="h-4.5 w-4.5" strokeWidth={2.8} />
+                  <span>Continuar</span>
+                </button>
+              </div>
+            </div>
+          ) : null}
+
+          {!isSurplusMode && isFailed && !isCompleted ? (
+            <div className="absolute inset-0 z-50 flex items-center justify-center px-5 py-6 sm:px-8">
+              <div className="absolute inset-0 bg-[rgba(8,26,74,0.3)] backdrop-blur-[2px]" />
+              <div className="relative w-full max-w-[33rem] rounded-[1.5rem] border border-white/28 bg-[linear-gradient(180deg,rgba(25,87,201,0.94),rgba(17,62,149,0.96))] px-6 py-7 text-center shadow-[0_24px_48px_rgba(7,22,69,0.28)]">
+                <Typography
+                  content={{
+                    text: "No cumpliste la meta en el tiempo estimado",
+                    variant: "h2",
+                    align: "center",
+                  }}
+                  className="font-black text-white"
+                />
+                <Typography
+                  content={{
+                    text: "Se acabaron las 6 semanas disponibles. Vuelve a intentarlo para reorganizar tus decisiones y completar la meta.",
+                    variant: "body",
+                    align: "center",
+                  }}
+                  className="mx-auto mt-3 max-w-[25rem] text-[0.98rem] font-semibold leading-relaxed text-white/92"
+                />
+                <button
+                  type="button"
+                  onClick={handleRetryFromFailure}
+                  className="mt-6 inline-flex min-w-[13rem] items-center justify-center rounded-[1rem] border border-[#ffe08a] bg-[linear-gradient(180deg,#ffd45c_0%,#f1a81f_100%)] px-6 py-3 text-[1rem] font-black text-[#6b3b00] shadow-[0_14px_24px_rgba(0,0,0,0.18)] transition-transform duration-150 hover:scale-[1.02] active:scale-[0.99]"
+                >
+                  Volver a intentarlo
+                </button>
+              </div>
+            </div>
+          ) : null}
+
+          {!isSurplusMode && isCompleted ? (
             <div className="pointer-events-none absolute inset-0 z-40 flex flex-col items-center justify-center px-6 text-center">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.36),rgba(255,255,255,0.08)_54%,transparent_100%)]" />
               <Typography
@@ -1014,6 +1541,130 @@ export default function CollectObjectsTemplate({ view, heroApi, data }) {
           ) : null}
         </div>
       </div>
+
+      {isDetailsOpen ? (
+        <div className="absolute inset-0 z-[80] flex items-center justify-center px-4 py-6 sm:px-8">
+          <div
+            className="absolute inset-0 bg-[rgba(6,18,56,0.42)] backdrop-blur-[3px]"
+            onClick={handleCloseDetails}
+          />
+          <div className="relative w-full max-w-[42rem] overflow-hidden rounded-[1.6rem] border border-white/28 bg-[linear-gradient(180deg,rgba(23,91,207,0.96),rgba(13,55,145,0.98))] shadow-[0_28px_56px_rgba(8,23,68,0.34)]">
+            <div className="flex items-center justify-between border-b border-white/12 px-5 py-4 sm:px-6">
+              <div>
+                <Typography
+                  content={{
+                    text: isSurplusMode
+                      ? "Detalle del excedente"
+                      : "Detalle de lo recolectado",
+                    variant: "h2",
+                    align: "left",
+                  }}
+                  className="font-black text-white"
+                />
+                <p className="mt-1 text-sm font-semibold text-white/75">
+                  {isSurplusMode
+                    ? "Resumen de la decision tomada con el dinero extra."
+                    : "Movimientos atrapados por semana y valor."}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={handleCloseDetails}
+                className="rounded-[0.9rem] border border-white/18 bg-white/10 px-3 py-2 text-sm font-black text-white transition-colors hover:bg-white/16"
+              >
+                Cerrar
+              </button>
+            </div>
+
+            <div className="max-h-[70vh] overflow-y-auto px-5 py-5 sm:px-6">
+              {isSurplusMode ? (
+                surplusStageState.details?.length ? (
+                  <div className="space-y-3">
+                    {surplusStageState.details.map((entry) => (
+                      <div
+                        key={entry.label}
+                        className="flex items-center justify-between gap-3 rounded-[1rem] bg-[rgba(255,255,255,0.08)] px-4 py-3"
+                      >
+                        <div className="text-sm font-black text-white">
+                          {entry.label}
+                        </div>
+                        <div className="text-sm font-semibold text-white/82">
+                          {entry.value}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="rounded-[1.2rem] border border-dashed border-white/18 bg-white/6 px-5 py-8 text-center">
+                    <p className="text-sm font-semibold text-white/82">
+                      Aun no hay una decision registrada.
+                    </p>
+                  </div>
+                )
+              ) : Object.keys(historyByWeek).length ? (
+                <div className="space-y-4">
+                  {Object.entries(historyByWeek)
+                    .sort((left, right) => Number(left[0]) - Number(right[0]))
+                    .map(([week, entries]) => {
+                      const sortedEntries = [...entries].sort(
+                        (left, right) => Math.abs(right.amount) - Math.abs(left.amount),
+                      );
+
+                      return (
+                        <div
+                          key={week}
+                          className="rounded-[1.2rem] border border-white/14 bg-white/8 p-4"
+                        >
+                          <div className="mb-3 flex items-center justify-between gap-3">
+                            <span className="rounded-full bg-white/12 px-3 py-1 text-sm font-black uppercase tracking-[0.04em] text-white">
+                              {resolvedData.game.roundLabelText ?? "Semana"} {week}
+                            </span>
+                            <span className="text-sm font-semibold text-white/75">
+                              {sortedEntries.length} movimientos
+                            </span>
+                          </div>
+
+                          <div className="space-y-2">
+                            {sortedEntries.map((entry) => (
+                              <div
+                                key={entry.id}
+                                className="flex items-center justify-between gap-3 rounded-[0.95rem] bg-[rgba(255,255,255,0.08)] px-3 py-2.5"
+                              >
+                                <div className="min-w-0">
+                                  <div className="truncate text-sm font-black text-white">
+                                    {entry.label}
+                                  </div>
+                                  <div className="text-[0.72rem] font-semibold uppercase tracking-[0.04em] text-white/62">
+                                    {entry.kind === "income" ? "Ingreso" : "Gasto"}
+                                  </div>
+                                </div>
+                                <div
+                                  className={cn(
+                                    "shrink-0 text-sm font-black",
+                                    entry.amount >= 0 ? "text-[#9af7b7]" : "text-[#ffb0a2]",
+                                  )}
+                                >
+                                  {entry.amount >= 0 ? "+" : "-"}
+                                  {formatCurrency(Math.abs(entry.amount))}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    })}
+                </div>
+              ) : (
+                <div className="rounded-[1.2rem] border border-dashed border-white/18 bg-white/6 px-5 py-8 text-center">
+                  <p className="text-sm font-semibold text-white/82">
+                    Aun no hay movimientos registrados.
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      ) : null}
     </section>
   );
 }
