@@ -4,13 +4,13 @@ import InsigniasCard from "../../components/InsigniasCardRemote";
 import { getHomeUser } from "@/features/dashboard/services/home.service";
 import HomeProgressRope from "../../components/maincard";
 import ModulesRope from "../../components/maincard";
+import { AnnouncementModal, useAnnouncement } from "@/features/announcement";
 
 import { useProgressOverview } from "../../hooks/useProgressOverview";
 
 const Inicio = () => {
   const { data, loading } = useProgressOverview();
   console.log("Home user data:", data?.modules || []);
-
   const [user, setUser] = useState({
     nombre: "",
     puntos: 0,
@@ -21,6 +21,7 @@ const Inicio = () => {
     monedas: 0,
     foto: "default",
   });
+  const { isOpen, close } = useAnnouncement(user.nombre); // o user.email, lo que tengas
 
   useEffect(() => {
     let mounted = true;
@@ -50,6 +51,8 @@ const Inicio = () => {
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}>
+      <AnnouncementModal isOpen={isOpen} onClose={close} />
+
       <div className="shrink-0">
         <UserCard user={user} />
       </div>
