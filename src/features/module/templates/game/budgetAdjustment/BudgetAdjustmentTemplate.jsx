@@ -901,7 +901,6 @@ export default function BudgetAdjustmentTemplate({ view, heroApi, data }) {
       setIsFinalized(true);
     }
   }
-
   return (
     <>
       <section className="mx-auto flex h-full w-full max-w-[82rem] flex-col overflow-hidden px-2 py-2 text-white lg:min-h-0">
@@ -911,6 +910,7 @@ export default function BudgetAdjustmentTemplate({ view, heroApi, data }) {
           <div className="pointer-events-none absolute -right-12 bottom-10 h-52 w-52 rounded-full bg-[radial-gradient(circle,rgba(255,191,95,0.28),transparent_72%)]" />
 
           <div className="relative grid h-full min-h-0 min-w-0 gap-3 lg:grid-cols-[minmax(0,1.12fr)_minmax(20rem,0.88fr)] lg:overflow-hidden">
+            {/* ── Columna izquierda ── */}
             <div className="grid min-h-0 min-w-0">
               <div className="rounded-[1.7rem] border border-[#d58f00]/65 bg-[linear-gradient(180deg,rgba(255,219,97,0.42),rgba(255,179,42,0.18))] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.28)] lg:flex lg:min-h-0 lg:flex-col">
                 <div className="mb-3 grid shrink-0 gap-2">
@@ -963,15 +963,17 @@ export default function BudgetAdjustmentTemplate({ view, heroApi, data }) {
               </div>
             </div>
 
+            {/* ── Columna derecha ── */}
             <div className="grid min-h-0 min-w-0 grid-rows-[minmax(0,1.5fr)_minmax(0,4fr)] gap-3">
-              <div className="min-h-0 overflow-hidden rounded-[1.7rem] border border-[#edbb4f]/60 bg-[linear-gradient(180deg,rgba(255,208,79,0.52),rgba(255,170,32,0.18))] p-[clamp(0.45rem,1vh,0.75rem)]  pt-0 shadow-[inset_0_1px_0_rgba(255,255,255,0.3)]">
+              {/* Panel coach */}
+              <div className="min-h-0 overflow-hidden rounded-[1.7rem] border border-[#edbb4f]/60 bg-[linear-gradient(180deg,rgba(255,208,79,0.52),rgba(255,170,32,0.18))] p-[clamp(0.45rem,1vh,0.75rem)] pt-0 shadow-[inset_0_1px_0_rgba(255,255,255,0.3)]">
                 <div className="grid h-full min-h-0 grid-cols-[clamp(4.35rem,17%,6.25rem)_minmax(0,1fr)] items-stretch gap-[clamp(0.45rem,1vw,0.75rem)]">
-                  <div className="min-h-0 overflow-hidden rounded-[1.2rem] border border-[#946fff]/55 bg-[radial-gradient(circle_at_top,#885dff_0%,#5628d6_70%,#3b1ca1_100%)] p-[clamp(0.35rem,0.8vh,0.55rem)] pt-0 shadow-[0_14px_28px_rgba(72,28,189,0.24)]">
+                  <div className="min-h-0 overflow-hidden rounded-[1.2rem] border-0  bg-[radial-gradient(circle_at_top,#ffff_0%,#fffff_70%,#3b1ca1_100%)] p-[clamp(0.35rem,0.8vh,0.55rem)] pt-0 shadow-[0_14px_28px_rgba(72,28,189,0.24)]">
                     <div className="h-full overflow-hidden">
                       <img
                         src={imageSrc}
                         alt="Personaje guia del presupuesto"
-                        className="h-full w-full object-cover object-top origin-top scale-180"
+                        className="h-full w-full object-cover object-top origin-top scale-150"
                       />
                     </div>
                   </div>
@@ -994,55 +996,49 @@ export default function BudgetAdjustmentTemplate({ view, heroApi, data }) {
                         clamp: 3,
                       }}
                       className="mt-[clamp(0.25rem,0.7vh,0.5rem)] text-[clamp(0.68rem,1.12vw,0.9rem)] font-semibold leading-[1.22] text-[#6f3400]"
-          <div className="grid min-h-0 min-w-0 grid-rows-[minmax(0,1.5fr)_minmax(0,4fr)] gap-3">
-            <div className="min-h-0 overflow-hidden rounded-[1.7rem] border border-[#edbb4f]/60 bg-[linear-gradient(180deg,rgba(255,208,79,0.52),rgba(255,170,32,0.18))] p-[clamp(0.45rem,1vh,0.75rem)] shadow-[inset_0_1px_0_rgba(255,255,255,0.3)]">
-              <div className="grid h-full min-h-0 grid-cols-[clamp(4.35rem,17%,6.25rem)_minmax(0,1fr)] items-stretch gap-[clamp(0.45rem,1vw,0.75rem)]">
-                <div className="min-h-0 overflow-hidden rounded-[1.2rem] p-[clamp(0.35rem,0.8vh,0.55rem)] shadow-[0_14px_28px_rgba(72,28,189,0.24)]">
-                  <div className="flex h-full w-full items-center justify-center rounded-[1rem] p-1">
-                    <img
-                      src={guideMascot}
-                      alt="Personaje guia del presupuesto"
-                      className="h-full max-h-[clamp(3.1rem,11vh,5.9rem)] w-auto object-contain"
                     />
                   </div>
                 </div>
               </div>
 
-              <BalanceScale
-                income={income}
-                expenses={total}
-                balance={balance}
-                incomeItems={initialIncomeCard}
-                expenseItems={selectedItems.slice(-4).map((item) => ({
-                  ...item,
-                  variant: "rose",
-                }))}
-                status={budgetState}
-                actionModel={actionModel}
-                onAction={handleActionButton}
-                onOpenExpenseStack={() => setIsExpenseStackOpen(true)}
-                renderStackItem={({ item, isExpense, onOpenStack }) => (
-                  <BudgetProductCard
-                    item={item}
-                    ariaLabel={
-                      isExpense
-                        ? "Abrir gastos seleccionados"
-                        : `${item.label} en la balanza`
-                    }
-                    onClick={
-                      isExpense && onOpenStack
-                        ? (event) => {
-                            event.stopPropagation();
-                            onOpenStack();
-                          }
-                        : undefined
-                    }
-                    compact
-                    revealLabel
-                    className="h-full w-full"
-                  />
-                )}
-              />
+              {/* Panel balanza */}
+              <div className="min-h-0 overflow-hidden rounded-[1.7rem] border border-[#edbb4f]/60 bg-[linear-gradient(180deg,rgba(255,208,79,0.52),rgba(255,170,32,0.18))] p-[clamp(0.45rem,1vh,0.75rem)] shadow-[inset_0_1px_0_rgba(255,255,255,0.3)]">
+                <BalanceScale
+                  income={income}
+                  expenses={total}
+                  balance={balance}
+                  incomeItems={initialIncomeCard}
+                  expenseItems={selectedItems.slice(-4).map((item) => ({
+                    ...item,
+                    variant: "rose",
+                  }))}
+                  status={budgetState}
+                  actionModel={actionModel}
+                  onAction={handleActionButton}
+                  onOpenExpenseStack={() => setIsExpenseStackOpen(true)}
+                  renderStackItem={({ item, isExpense, onOpenStack }) => (
+                    <BudgetProductCard
+                      item={item}
+                      ariaLabel={
+                        isExpense
+                          ? "Abrir gastos seleccionados"
+                          : `${item.label} en la balanza`
+                      }
+                      onClick={
+                        isExpense && onOpenStack
+                          ? (event) => {
+                              event.stopPropagation();
+                              onOpenStack();
+                            }
+                          : undefined
+                      }
+                      compact
+                      revealLabel
+                      className="h-full w-full"
+                    />
+                  )}
+                />
+              </div>
             </div>
           </div>
         </div>
