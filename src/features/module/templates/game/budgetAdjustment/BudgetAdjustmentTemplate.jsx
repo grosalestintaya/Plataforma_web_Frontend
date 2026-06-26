@@ -100,6 +100,12 @@ const STATE_COPY = {
     icon: Sparkles,
     score: 0,
   },
+  process: {
+    label: "En proceso",
+    tone: "process",
+    icon: Sparkles,
+    score: 20,
+  },
   balanced: {
     label: "Equilibrado",
     tone: "balanced",
@@ -305,15 +311,17 @@ function resolveBudgetState({
     },
   );
 
-  if (
-    total > income ||
-    missingEssential ||
-    missingRequiredGroup ||
-    incompatibleGroup
-  ) {
+  if (total > income || incompatibleGroup) {
     return {
       key: "risk",
       ...STATE_COPY.risk,
+    };
+  }
+
+  if (missingEssential || missingRequiredGroup) {
+    return {
+      key: "process",
+      ...STATE_COPY.process,
     };
   }
 
@@ -343,7 +351,7 @@ function buildCoachFeedback({
     feedbackKey = "idle";
   } else if (status.key === "risk" && balance < 0) {
     feedbackKey = "overBudget";
-  } else if (status.key === "risk" && missingEssentialCount > 0) {
+  } else if (status.key === "process" || missingEssentialCount > 0) {
     feedbackKey = "missingEssential";
   } else if (status.key === "good") {
     feedbackKey = "good";
@@ -362,7 +370,7 @@ function BudgetProductCard({
   ariaLabel,
   compact = false,
   revealLabel = false,
-  useImage = false,
+  useImage = true,
   className = "",
 }) {
   const ItemIcon = BUDGET_ITEM_ICON[item.id] ?? PackageOpen;
@@ -388,6 +396,7 @@ function BudgetProductCard({
       interactive={Boolean(onClick)}
       className={cn(
         "group h-full min-h-0 overflow-visible rounded-[clamp(0.8rem,1.5vw,1.15rem)] border-[clamp(2px,0.28vw,4px)] border-[#0d5f8c] bg-[linear-gradient(180deg,#fff8df_0%,#f8e9c8_100%)] p-[clamp(0.18rem,0.45vw,0.32rem)] text-white shadow-[0_16px_22px_rgba(84,45,0,0.18)]",
+        onClick && "cursor-pointer",
         compact &&
           "rounded-[clamp(0.55rem,1.4vw,0.78rem)] border-[clamp(1px,0.2vw,2px)] p-[clamp(0.12rem,0.35vw,0.2rem)] shadow-[0_8px_14px_rgba(0,0,0,0.2)]",
         className,
@@ -436,7 +445,7 @@ function BudgetProductCard({
               type="button"
               onClick={onClick}
               aria-label={resolvedAriaLabel}
-              className="absolute inset-0 z-20 rounded-[inherit] bg-transparent focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#fff2a3]/85"
+              className="absolute inset-0 z-20 cursor-pointer rounded-[inherit] bg-transparent focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#fff2a3]/85"
             />
           ) : null}
         </>
@@ -693,7 +702,10 @@ export default function BudgetAdjustmentTemplate({ view, heroApi, data }) {
       };
     }
 
-    if (reviewedSignature === currentSignature && reviewedOutcome === "risk") {
+    if (
+      reviewedSignature === currentSignature &&
+      (reviewedOutcome === "risk" || reviewedOutcome === "process")
+    ) {
       return {
         label: "Realizar ajustes",
         tone: "warning",
@@ -982,6 +994,15 @@ export default function BudgetAdjustmentTemplate({ view, heroApi, data }) {
                         clamp: 3,
                       }}
                       className="mt-[clamp(0.25rem,0.7vh,0.5rem)] text-[clamp(0.68rem,1.12vw,0.9rem)] font-semibold leading-[1.22] text-[#6f3400]"
+          <div className="grid min-h-0 min-w-0 grid-rows-[minmax(0,1.5fr)_minmax(0,4fr)] gap-3">
+            <div className="min-h-0 overflow-hidden rounded-[1.7rem] border border-[#edbb4f]/60 bg-[linear-gradient(180deg,rgba(255,208,79,0.52),rgba(255,170,32,0.18))] p-[clamp(0.45rem,1vh,0.75rem)] shadow-[inset_0_1px_0_rgba(255,255,255,0.3)]">
+              <div className="grid h-full min-h-0 grid-cols-[clamp(4.35rem,17%,6.25rem)_minmax(0,1fr)] items-stretch gap-[clamp(0.45rem,1vw,0.75rem)]">
+                <div className="min-h-0 overflow-hidden rounded-[1.2rem] p-[clamp(0.35rem,0.8vh,0.55rem)] shadow-[0_14px_28px_rgba(72,28,189,0.24)]">
+                  <div className="flex h-full w-full items-center justify-center rounded-[1rem] p-1">
+                    <img
+                      src={guideMascot}
+                      alt="Personaje guia del presupuesto"
+                      className="h-full max-h-[clamp(3.1rem,11vh,5.9rem)] w-auto object-contain"
                     />
                   </div>
                 </div>
