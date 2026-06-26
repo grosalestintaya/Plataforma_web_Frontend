@@ -151,7 +151,17 @@
   --coin-panel-bg: #ffc400;
   --coin-panel-text: #4a2b00;
 }
-
+@keyframes aurora {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
 /* -----------------------------
    Tokens de Marca (Quipu Yachay)
    ----------------------------- */

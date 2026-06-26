@@ -99,7 +99,7 @@
           },
           "amount": 300,
           "media": {
-            "src": "4/bicicleta.jpeg",
+            "src": "4/bicicleta.webp",
             "alt": "Bicicleta con precio de trescientos soles",
             "variant": "horizontal"
           }
@@ -139,7 +139,7 @@
               "amount": 40,
               "kind": "income",
               "media": {
-                "src": "4/gran-propina.jpeg",
+                "src": "4/gran-propina.webp",
                 "alt": "Gran propina",
                 "variant": "square"
               }
@@ -150,7 +150,7 @@
               "amount": 45,
               "kind": "income",
               "media": {
-                "src": "4/gran-propina.jpeg",
+                "src": "4/gran-propina.webp",
                 "alt": "Gran propina",
                 "variant": "square"
               }
@@ -161,7 +161,7 @@
               "amount": 50,
               "kind": "income",
               "media": {
-                "src": "4/gran-propina.jpeg",
+                "src": "4/gran-propina.webp",
                 "alt": "Gran propina",
                 "variant": "square"
               }
@@ -172,7 +172,7 @@
               "amount": 12,
               "kind": "income",
               "media": {
-                "src": "4/ayudar-tienda.jpeg",
+                "src": "4/ayudar-tienda.webp",
                 "alt": "Ayudar en tienda",
                 "variant": "square"
               }
@@ -183,7 +183,7 @@
               "amount": 14,
               "kind": "income",
               "media": {
-                "src": "4/ayudar-tienda.jpeg",
+                "src": "4/ayudar-tienda.webp",
                 "alt": "Ayudar en tienda",
                 "variant": "square"
               }
@@ -194,7 +194,7 @@
               "amount": 5,
               "kind": "income",
               "media": {
-                "src": "4/reciclar-botellas.jpeg",
+                "src": "4/reciclar-botellas.webp",
                 "alt": "Reciclar botellas",
                 "variant": "square"
               }
@@ -205,7 +205,7 @@
               "amount": 8,
               "kind": "income",
               "media": {
-                "src": "4/reciclar-botellas.jpeg",
+                "src": "4/reciclar-botellas.webp",
                 "alt": "Reciclar botellas",
                 "variant": "square"
               }
@@ -216,7 +216,7 @@
               "amount": 7,
               "kind": "income",
               "media": {
-                "src": "4/pasear-mascota.jpeg",
+                "src": "4/pasear-mascota.webp",
                 "alt": "Pasear mascota",
                 "variant": "square"
               }
@@ -227,7 +227,7 @@
               "amount": 9,
               "kind": "income",
               "media": {
-                "src": "4/pasear-mascota.jpeg",
+                "src": "4/pasear-mascota.webp",
                 "alt": "Pasear mascota",
                 "variant": "square"
               }
@@ -241,7 +241,7 @@
               "amount": 5,
               "kind": "expense",
               "media": {
-                "src": "4/golosinas.jpeg",
+                "src": "4/golosinas.webp",
                 "alt": "Golosinas",
                 "variant": "square"
               }
@@ -252,7 +252,7 @@
               "amount": 12,
               "kind": "expense",
               "media": {
-                "src": "4/compra-videojuego.jpeg",
+                "src": "4/compra-videojuego.webp",
                 "alt": "Compra de videojuego",
                 "variant": "square"
               }
@@ -263,7 +263,7 @@
               "amount": 10,
               "kind": "expense",
               "media": {
-                "src": "4/compra-impulsiva..jpeg",
+                "src": "4/compra-impulsiva..webp",
                 "alt": "Compra impulsiva",
                 "variant": "square"
               }
@@ -274,7 +274,7 @@
               "amount": 20,
               "kind": "expense",
               "media": {
-                "src": "4/salida-amigos.jpeg",
+                "src": "4/salida-amigos.webp",
                 "alt": "Salida con amigos",
                 "variant": "square"
               }
@@ -371,7 +371,7 @@
           },
           "amount": 300,
           "media": {
-            "src": "4/bicicleta.jpeg",
+            "src": "4/bicicleta.webp",
             "alt": "Bicicleta como meta de ahorro",
             "variant": "horizontal"
           }
@@ -395,7 +395,7 @@
               "align": "center"
             },
             "media": {
-              "src": "4/bicicleta.jpeg",
+              "src": "4/bicicleta.webp",
               "alt": "Bicicleta como meta de ahorro",
               "variant": "horizontal"
             }
