@@ -21,7 +21,7 @@ const Inicio = () => {
     monedas: 0,
     foto: "default",
   });
-  const { isOpen, close } = useAnnouncement(user.nombre); // o user.email, lo que tengas
+  const { isOpen, close } = useAnnouncement(user.monedas); // o user.email, lo que tengas
 
   useEffect(() => {
     let mounted = true;
