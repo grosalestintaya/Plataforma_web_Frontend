@@ -3,28 +3,64 @@ import { cn } from "@/shared/libs/utils";
 
 const STATUS_CLASS = {
   idle: {
+    panel:
+      "border-[#e4a621]/60 bg-[radial-gradient(circle_at_top,rgba(139,102,255,0.78),rgba(73,26,160,0.96)_58%,rgba(41,13,89,0.98)_100%)] shadow-[0_20px_36px_rgba(53,17,108,0.34)]",
+    stage:
+      "bg-[radial-gradient(circle_at_50%_18%,rgba(255,255,255,0.16),transparent_42%)]",
     shell:
       "border-white/18 bg-[linear-gradient(180deg,rgba(255,255,255,0.14),rgba(255,255,255,0.06))] text-white",
     pill: "bg-white/18 text-white",
     accent: "text-amber-100",
+    action:
+      "border-[#a9f89a] bg-[linear-gradient(180deg,#46c63f_0%,#1f9728_100%)] text-white shadow-[0_16px_26px_rgba(31,151,40,0.28)] hover:brightness-105",
+  },
+  process: {
+    panel:
+      "border-[#ffd26d]/70 bg-[radial-gradient(circle_at_top,rgba(255,210,109,0.86),rgba(225,135,24,0.96)_58%,rgba(126,67,9,0.98)_100%)] shadow-[0_20px_36px_rgba(159,86,13,0.34)]",
+    stage:
+      "bg-[radial-gradient(circle_at_50%_18%,rgba(255,244,196,0.24),transparent_44%)]",
+    shell:
+      "border-[#ffe29a]/55 bg-[linear-gradient(180deg,rgba(255,185,50,0.34),rgba(149,77,10,0.22))] text-white",
+    pill: "bg-[#fff3cc] text-[#a85a00]",
+    accent: "text-[#fff4cf]",
+    action:
+      "border-[#ffe29a] bg-[linear-gradient(180deg,#ffb13b_0%,#d97800_100%)] text-white shadow-[0_16px_26px_rgba(217,120,0,0.3)] hover:brightness-105",
   },
   balanced: {
+    panel:
+      "border-[#7cc3ff]/65 bg-[radial-gradient(circle_at_top,rgba(106,192,255,0.82),rgba(38,111,210,0.96)_58%,rgba(19,58,128,0.98)_100%)] shadow-[0_20px_36px_rgba(25,82,178,0.34)]",
+    stage:
+      "bg-[radial-gradient(circle_at_50%_18%,rgba(218,244,255,0.24),transparent_44%)]",
     shell:
       "border-[#7cc3ff]/45 bg-[linear-gradient(180deg,rgba(67,151,255,0.28),rgba(26,87,167,0.18))] text-white",
     pill: "bg-[#dff2ff] text-[#195db2]",
     accent: "text-[#dff2ff]",
+    action:
+      "border-[#aee5ff] bg-[linear-gradient(180deg,#45a8ff_0%,#1e6ed2_100%)] text-white shadow-[0_16px_26px_rgba(30,110,210,0.3)] hover:brightness-105",
   },
   good: {
+    panel:
+      "border-[#9bf093]/65 bg-[radial-gradient(circle_at_top,rgba(103,222,117,0.82),rgba(35,156,64,0.96)_58%,rgba(17,89,42,0.98)_100%)] shadow-[0_20px_36px_rgba(23,121,47,0.34)]",
+    stage:
+      "bg-[radial-gradient(circle_at_50%_18%,rgba(237,255,224,0.24),transparent_44%)]",
     shell:
       "border-[#9bf093]/45 bg-[linear-gradient(180deg,rgba(70,193,81,0.32),rgba(23,108,36,0.22))] text-white",
     pill: "bg-[#efffe6] text-[#237233]",
     accent: "text-[#efffe6]",
+    action:
+      "border-[#baf7a8] bg-[linear-gradient(180deg,#34c85d_0%,#14943c_100%)] text-white shadow-[0_16px_26px_rgba(20,148,60,0.3)] hover:brightness-105",
   },
   risk: {
+    panel:
+      "border-[#ff9aa5]/65 bg-[radial-gradient(circle_at_top,rgba(255,112,130,0.82),rgba(176,38,73,0.96)_58%,rgba(93,17,45,0.98)_100%)] shadow-[0_20px_36px_rgba(147,24,54,0.34)]",
+    stage:
+      "bg-[radial-gradient(circle_at_50%_18%,rgba(255,226,232,0.2),transparent_44%)]",
     shell:
       "border-[#ff9aa5]/45 bg-[linear-gradient(180deg,rgba(255,78,107,0.3),rgba(153,20,46,0.22))] text-white",
     pill: "bg-[#fff0f2] text-[#b4233d]",
     accent: "text-[#fff0f2]",
+    action:
+      "border-[#ffb4bd] bg-[linear-gradient(180deg,#ff5470_0%,#c82046_100%)] text-white shadow-[0_16px_26px_rgba(200,32,70,0.3)] hover:brightness-105",
   },
 };
 
@@ -223,9 +259,19 @@ export default function BalanceScale({
   const StatusIcon = status.icon;
 
   return (
-    <div className="flex h-full min-h-0 flex-col rounded-[1.6rem] border border-[#e4a621]/60 bg-[radial-gradient(circle_at_top,rgba(139,102,255,0.78),rgba(73,26,160,0.96)_58%,rgba(41,13,89,0.98)_100%)] p-[clamp(0.45rem,1.1vh,0.65rem)] shadow-[0_20px_36px_rgba(53,17,108,0.34)]">
+    <div
+      className={cn(
+        "flex h-full min-h-0 flex-col rounded-[1.6rem] border p-[clamp(0.45rem,1.1vh,0.65rem)] transition-colors duration-300",
+        stateClass.panel,
+      )}
+    >
       <div className="grid h-full min-h-0 flex-1 grid-rows-[minmax(0,1fr)_clamp(2.85rem,8vh,3.75rem)_clamp(2.45rem,6.5vh,3.2rem)] gap-[clamp(0.2rem,0.5vh,0.35rem)]">
-        <div className="relative mx-auto h-full min-h-0 w-full max-w-[36rem] overflow-hidden rounded-[1.25rem] bg-[radial-gradient(circle_at_50%_18%,rgba(255,255,255,0.16),transparent_42%)]">
+        <div
+          className={cn(
+            "relative mx-auto h-full min-h-0 w-full max-w-[36rem] overflow-hidden rounded-[1.25rem]",
+            stateClass.stage,
+          )}
+        >
           <div className="pointer-events-none absolute inset-x-8 top-3 h-24 rounded-full bg-white/8 blur-2xl" />
 
           <div className="absolute left-1/2 top-[15%] z-20 h-[70%] w-4 -translate-x-1/2 rounded-full bg-[linear-gradient(180deg,#ffc74e_0%,#d87b00_100%)] shadow-[0_12px_18px_rgba(83,33,0,0.34)]" />
@@ -334,7 +380,10 @@ export default function BalanceScale({
           onClick={onAction}
           className={cn(
             "inline-flex h-full min-h-0 w-full items-center justify-center rounded-[0.85rem] border px-4 py-0 text-[clamp(0.82rem,2vw,1rem)] font-black leading-tight transition duration-200",
-            ACTION_BUTTON_CLASS[actionModel.tone] ?? ACTION_BUTTON_CLASS.review,
+            !actionModel.disabled && "cursor-pointer",
+            actionModel.disabled
+              ? ACTION_BUTTON_CLASS.disabled
+              : stateClass.action ?? ACTION_BUTTON_CLASS[actionModel.tone] ?? ACTION_BUTTON_CLASS.review,
           )}
         >
           {actionModel.label}
