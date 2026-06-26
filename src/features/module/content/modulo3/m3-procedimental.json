@@ -207,7 +207,7 @@
                   "hint": "Frutas, azucar, agua y otros ingredientes para preparar 20 refrescos.",
                   "variant": "sun",
                   "image": {
-                    "src": "1/ensalada-de-fruta.webp",
+                    "src": "3/frutas-insumos.jpeg",
                     "alt": "Frutas para preparar refrescos"
                   }
                 },
@@ -219,7 +219,7 @@
                   "hint": "Vasos descartables para servir los 20 refrescos.",
                   "variant": "ocean",
                   "image": {
-                    "src": "1/agua.webp",
+                    "src": "3/vasos.jpeg",
                     "alt": "Vaso con bebida"
                   }
                 },
@@ -231,7 +231,7 @@
                   "hint": "Botellas sencillas para presentar y transportar mejor los refrescos.",
                   "variant": "sky",
                   "image": {
-                    "src": "1/botella-gaseosa.webp",
+                    "src": "3/botellas.jpeg",
                     "alt": "Botella para bebida"
                   }
                 },
@@ -243,7 +243,7 @@
                   "hint": "Permite mantener los refrescos frios durante la feria.",
                   "variant": "sky",
                   "image": {
-                    "src": "2/helado.webp",
+                    "src": "3/hielo.jpeg",
                     "alt": "Producto frio para representar hielo"
                   }
                 },
@@ -255,7 +255,7 @@
                   "hint": "Cartel impreso con el nombre y precio del producto.",
                   "variant": "rose",
                   "image": {
-                    "src": "2/cartulina.webp",
+                    "src": "3/cartel.jpeg",
                     "alt": "Cartel para promocionar"
                   }
                 },
@@ -267,7 +267,7 @@
                   "hint": "Cartel elaborado por el equipo con cartulina y plumones.",
                   "variant": "forest",
                   "image": {
-                    "src": "2/plumones.webp",
+                    "src": "3/cartel-a-mano.jpeg",
                     "alt": "Materiales para cartel a mano"
                   }
                 },
@@ -279,7 +279,7 @@
                   "hint": "Globos, banderines y adornos para hacer mas llamativo el puesto.",
                   "variant": "violet",
                   "image": {
-                    "src": "2/escarcha.webp",
+                    "src": "3/decoracion-completa.jpeg",
                     "alt": "Decoracion completa"
                   }
                 },
@@ -291,7 +291,7 @@
                   "hint": "Banderines y un mantel para ordenar el puesto.",
                   "variant": "violet",
                   "image": {
-                    "src": "2/cinta.webp",
+                    "src": "3/decoracion-simple.jpeg",
                     "alt": "Decoracion simple"
                   }
                 },
@@ -303,7 +303,7 @@
                   "hint": "Etiquetas con el nombre o sabor de cada refresco.",
                   "variant": "rose",
                   "image": {
-                    "src": "2/stikers.webp",
+                    "src": "3/etiquetas.jpeg",
                     "alt": "Etiquetas para refrescos"
                   }
                 },
@@ -315,7 +315,7 @@
                   "hint": "Alimentos para consumir durante la preparacion.",
                   "variant": "pumpkin",
                   "image": {
-                    "src": "1/comprar-snacks.webp",
+                    "src": "3/snacks.jpeg",
                     "alt": "Snacks"
                   }
                 }
@@ -402,7 +402,7 @@
                   "hint": "Plantas pequenas para colocar en las 15 macetas.",
                   "variant": "forest",
                   "image": {
-                    "src": "1/reciclando.webp",
+                    "src": "3/plantas.jpeg",
                     "alt": "Plantas pequenas"
                   }
                 },
@@ -414,7 +414,7 @@
                   "hint": "Tierra preparada y abono para conservar las plantas.",
                   "variant": "mint",
                   "image": {
-                    "src": "2/compras-basicas.webp",
+                    "src": "3/tierra-abono.jpeg",
                     "alt": "Materiales basicos para plantas"
                   }
                 },
@@ -426,7 +426,7 @@
                   "hint": "Recojo, limpieza y preparacion de recipientes reutilizados.",
                   "variant": "sky",
                   "image": {
-                    "src": "1/canjear-botella.webp",
+                    "src": "3/envases-reciclados.jpeg",
                     "alt": "Envases reciclados"
                   }
                 },
@@ -438,7 +438,7 @@
                   "hint": "Macetas nuevas listas para utilizar.",
                   "variant": "pumpkin",
                   "image": {
-                    "src": "2/maqueta.webp",
+                    "src": "3/macetas-compradas.jpeg",
                     "alt": "Macetas compradas"
                   }
                 },
@@ -450,7 +450,7 @@
                   "hint": "Pinturas de colores basicos para decorar las macetas.",
                   "variant": "ocean",
                   "image": {
-                    "src": "2/plumones.webp",
+                    "src": "3/pinturas-basicas.jpeg",
                     "alt": "Pinturas basicas"
                   }
                 },
@@ -462,7 +462,7 @@
                   "hint": "Pinturas variadas, pinceles y materiales decorativos.",
                   "variant": "violet",
                   "image": {
-                    "src": "2/materiales-de-estudio.webp",
+                    "src": "3/kit-pintura.jpeg",
                     "alt": "Kit de pintura"
                   }
                 },
@@ -474,7 +474,7 @@
                   "hint": "Etiquetas a mano con el nombre de la planta y sus cuidados.",
                   "variant": "rose",
                   "image": {
-                    "src": "2/stikers.webp",
+                    "src": "3/etiquetas-simples.jpeg",
                     "alt": "Etiquetas simples"
                   }
                 },
@@ -486,7 +486,7 @@
                   "hint": "Etiquetas impresas a color con cuidados de la planta.",
                   "variant": "rose",
                   "image": {
-                    "src": "1/copias.webp",
+                    "src": "3/etiquetas-impresas.jpeg",
                     "alt": "Etiquetas impresas"
                   }
                 },
@@ -498,7 +498,7 @@
                   "hint": "Cartel elaborado con cartulina y plumones.",
                   "variant": "forest",
                   "image": {
-                    "src": "2/cartulina.webp",
+                    "src": "3/cartel-a-mano.jpeg",
                     "alt": "Cartel a mano"
                   }
                 },
@@ -510,7 +510,7 @@
                   "hint": "Cartel impreso con imagenes, nombre del proyecto y precios.",
                   "variant": "rose",
                   "image": {
-                    "src": "1/copias.webp",
+                    "src": "3/cartel.jpeg",
                     "alt": "Cartel impreso"
                   }
                 },
@@ -522,7 +522,7 @@
                   "hint": "Mantel y adornos para hacer mas llamativo el espacio de venta.",
                   "variant": "violet",
                   "image": {
-                    "src": "2/escarcha.webp",
+                    "src": "3/decoracion-puesto.jpeg",
                     "alt": "Decoracion del puesto"
                   }
                 },
@@ -534,7 +534,7 @@
                   "hint": "Cajas para trasladar las macetas sin danarlas.",
                   "variant": "sky",
                   "image": {
-                    "src": "2/trasporte.webp",
+                    "src": "3/cajas-transporte.jpeg",
                     "alt": "Cajas de transporte"
                   }
                 }
