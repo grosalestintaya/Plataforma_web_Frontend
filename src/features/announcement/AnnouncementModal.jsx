@@ -150,7 +150,7 @@ export function AnnouncementModal({ isOpen, onClose }) {
         <div className="relative bg-[#00C853] px-5 py-4 flex items-center rounded-t-2xl justify-between">
           <div className="text-center">
             <h1 className="text-white text-xl font-bold leading-tight">
-              ¡Premios del ranking!
+              ¡ Anuncio Importante !
             </h1>
             <p className="text-white/80 text-sm mt-1">
               Los mejores estudiantes del trimestre ganarán estos premios
