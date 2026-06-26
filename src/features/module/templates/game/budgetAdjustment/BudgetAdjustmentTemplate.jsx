@@ -1,4 +1,6 @@
 import { startTransition, useEffect, useMemo, useState } from "react";
+import { useEquippedAvatar } from "@/features/dashboard/services/useEquippedAvatar.service";
+
 import {
   Apple,
   BadgeCheck,
@@ -223,17 +225,20 @@ function interpolateCopy(text, replacements) {
 
 function normalizeCoachCopy(copy, fallback, replacements) {
   const source = copy ?? fallback;
-  const title = typeof source?.title === "string" ? source.title : source?.title?.text;
+  const title =
+    typeof source?.title === "string" ? source.title : source?.title?.text;
   const text =
     typeof source?.text === "string"
       ? source.text
-      : source?.text?.paragraphs?.join(" ") ?? source?.text?.text;
+      : (source?.text?.paragraphs?.join(" ") ?? source?.text?.text);
   const fallbackTitle =
-    typeof fallback?.title === "string" ? fallback.title : fallback?.title?.text;
+    typeof fallback?.title === "string"
+      ? fallback.title
+      : fallback?.title?.text;
   const fallbackText =
     typeof fallback?.text === "string"
       ? fallback.text
-      : fallback?.text?.paragraphs?.join(" ") ?? fallback?.text?.text;
+      : (fallback?.text?.paragraphs?.join(" ") ?? fallback?.text?.text);
 
   return {
     title: interpolateCopy(title ?? fallbackTitle, replacements),
@@ -410,8 +415,7 @@ function BudgetProductCard({
               "pointer-events-none absolute -right-[clamp(0.35rem,0.8vw,0.55rem)] -top-[clamp(0.35rem,0.8vw,0.55rem)] z-30 flex h-[clamp(2.35rem,5.2vw,3.7rem)] w-[clamp(2.35rem,5.2vw,3.7rem)] items-center justify-center rounded-full bg-[radial-gradient(circle_at_35%_30%,#30d66f_0%,#07933e_72%)] text-[clamp(0.72rem,1.75vw,1.12rem)] font-black leading-none text-white shadow-[0_10px_18px_rgba(0,104,46,0.32)] ring-2 ring-[#b8ffc9]/45",
               compact &&
                 "-right-[clamp(0.18rem,0.6vw,0.35rem)] -top-[clamp(0.18rem,0.6vw,0.35rem)] h-[clamp(1.55rem,4vw,2.25rem)] w-[clamp(1.55rem,4vw,2.25rem)] text-[clamp(0.52rem,1.35vw,0.78rem)]",
-            )}
-          >
+            )}>
             {formatCurrency(item.amount)}
           </div>
 
@@ -423,8 +427,7 @@ function BudgetProductCard({
                 : "translate-y-0 opacity-100",
               compact &&
                 "px-1 py-[clamp(0.18rem,0.5vw,0.32rem)] text-[clamp(0.48rem,1.2vw,0.68rem)]",
-            )}
-          >
+            )}>
             {item.label}
           </div>
 
@@ -451,18 +454,17 @@ function ExpenseStackModal({ open, items, total, onClose, onRemove }) {
         role="dialog"
         aria-modal="true"
         aria-labelledby="expense-stack-title"
-        className="relative flex max-h-[min(42rem,88vh)] w-full max-w-[48rem] flex-col overflow-hidden rounded-[1.6rem] border border-[#ffcf5c]/80 bg-[radial-gradient(circle_at_top,#ffe38a_0%,#f7a91c_46%,#d97800_100%)] p-[clamp(0.75rem,2vw,1rem)] text-[#552800] shadow-[0_26px_70px_rgba(55,20,0,0.42)]"
-      >
+        className="relative flex max-h-[min(42rem,88vh)] w-full max-w-[48rem] flex-col overflow-hidden rounded-[1.6rem] border border-[#ffcf5c]/80 bg-[radial-gradient(circle_at_top,#ffe38a_0%,#f7a91c_46%,#d97800_100%)] p-[clamp(0.75rem,2vw,1rem)] text-[#552800] shadow-[0_26px_70px_rgba(55,20,0,0.42)]">
         <div className="mb-3 flex shrink-0 items-start justify-between gap-3 rounded-[1.1rem] border border-[#d58900]/55 bg-[linear-gradient(180deg,rgba(255,239,147,0.95),rgba(255,198,54,0.9))] px-4 py-3">
           <div className="min-w-0">
             <h2
               id="expense-stack-title"
-              className="text-[clamp(1.1rem,2.4vw,1.55rem)] font-black leading-tight"
-            >
+              className="text-[clamp(1.1rem,2.4vw,1.55rem)] font-black leading-tight">
               Gastos seleccionados
             </h2>
             <p className="mt-1 text-[clamp(0.75rem,1.5vw,0.9rem)] font-bold leading-tight text-[#7a3a00]">
-              Revisa las tarjetas colocadas. Haz click en una tarjeta para retirarla.
+              Revisa las tarjetas colocadas. Haz click en una tarjeta para
+              retirarla.
             </p>
           </div>
 
@@ -470,8 +472,7 @@ function ExpenseStackModal({ open, items, total, onClose, onRemove }) {
             type="button"
             onClick={onClose}
             className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#ad6a00]/45 bg-white/45 text-[#6d3500] shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] transition hover:scale-105 hover:bg-white/70 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/70"
-            aria-label="Cerrar lista de gastos"
-          >
+            aria-label="Cerrar lista de gastos">
             <X className="h-5 w-5" />
           </button>
         </div>
@@ -531,6 +532,8 @@ function AvailableBudgetBoard({ items, onSelect }) {
 }
 
 export default function BudgetAdjustmentTemplate({ view, heroApi, data }) {
+  const { imgAvatar } = useEquippedAvatar();
+  const imageSrc = `/activity/avatars/${imgAvatar}.webp`;
   const resolvedData = useMemo(() => mergeBudgetData(data), [data]);
   const viewId = getViewId(view);
   const situations = useMemo(() => {
@@ -624,14 +627,17 @@ export default function BudgetAdjustmentTemplate({ view, heroApi, data }) {
       const selectedInGroup = group.ids.filter((id) => selectedIdSet.has(id));
       return selectedInGroup.length < Number(group.min ?? 1);
     }).length;
-    const incompatibleGroupCount = [...requiredGroups, ...exclusiveGroups].filter(
-      (group) => {
-        const selectedInGroup = group.ids.filter((id) => selectedIdSet.has(id));
-        return selectedInGroup.length > Number(group.max ?? 1);
-      },
-    ).length;
+    const incompatibleGroupCount = [
+      ...requiredGroups,
+      ...exclusiveGroups,
+    ].filter((group) => {
+      const selectedInGroup = group.ids.filter((id) => selectedIdSet.has(id));
+      return selectedInGroup.length > Number(group.max ?? 1);
+    }).length;
 
-    return missingEssentialCount + missingRequiredGroupCount + incompatibleGroupCount;
+    return (
+      missingEssentialCount + missingRequiredGroupCount + incompatibleGroupCount
+    );
   }, [essentialIds, exclusiveGroups, requiredGroups, selectedIdSet]);
   const currentSignature = useMemo(
     () => [...selectedIds].sort().join("|"),
@@ -717,7 +723,8 @@ export default function BudgetAdjustmentTemplate({ view, heroApi, data }) {
         balance,
         selectedCount: selectedIds.length,
         missingEssentialCount: validationIssueCount,
-        feedbackCopy: activeSituation.coach?.feedback ?? resolvedData.coach?.feedback,
+        feedbackCopy:
+          activeSituation.coach?.feedback ?? resolvedData.coach?.feedback,
       }),
     [
       activeSituation.coach?.feedback,
@@ -860,7 +867,9 @@ export default function BudgetAdjustmentTemplate({ view, heroApi, data }) {
 
     if (actionModel.action === "nextSituation") {
       setSituationResults((current) => [...current, currentSituationResult]);
-      setSituationIndex((current) => Math.min(current + 1, situations.length - 1));
+      setSituationIndex((current) =>
+        Math.min(current + 1, situations.length - 1),
+      );
       setSelectedIds([]);
       setReviewedSignature(null);
       setReviewedOutcome(null);
@@ -884,138 +893,138 @@ export default function BudgetAdjustmentTemplate({ view, heroApi, data }) {
   return (
     <>
       <section className="mx-auto flex h-full w-full max-w-[82rem] flex-col overflow-hidden px-2 py-2 text-white lg:min-h-0">
-      <div className="relative overflow-hidden rounded-[2rem] border border-[#ffcf5c]/70 bg-[radial-gradient(circle_at_top,rgba(255,229,122,0.95),rgba(255,184,18,0.98)_36%,rgba(236,147,3,0.98)_100%)] p-3 shadow-[0_22px_52px_rgba(103,48,0,0.22)] lg:flex-1 lg:min-h-0">
-        <div className="pointer-events-none absolute inset-x-6 top-0 h-40 bg-[radial-gradient(circle_at_top,rgba(255,247,193,0.42),transparent_72%)]" />
-        <div className="pointer-events-none absolute -left-16 top-16 h-48 w-48 rounded-full bg-[radial-gradient(circle,rgba(255,244,179,0.22),transparent_70%)]" />
-        <div className="pointer-events-none absolute -right-12 bottom-10 h-52 w-52 rounded-full bg-[radial-gradient(circle,rgba(255,191,95,0.28),transparent_72%)]" />
+        <div className="relative overflow-hidden rounded-[2rem] border border-[#ffcf5c]/70 bg-[radial-gradient(circle_at_top,rgba(255,229,122,0.95),rgba(255,184,18,0.98)_36%,rgba(236,147,3,0.98)_100%)] p-3 shadow-[0_22px_52px_rgba(103,48,0,0.22)] lg:flex-1 lg:min-h-0">
+          <div className="pointer-events-none absolute inset-x-6 top-0 h-40 bg-[radial-gradient(circle_at_top,rgba(255,247,193,0.42),transparent_72%)]" />
+          <div className="pointer-events-none absolute -left-16 top-16 h-48 w-48 rounded-full bg-[radial-gradient(circle,rgba(255,244,179,0.22),transparent_70%)]" />
+          <div className="pointer-events-none absolute -right-12 bottom-10 h-52 w-52 rounded-full bg-[radial-gradient(circle,rgba(255,191,95,0.28),transparent_72%)]" />
 
-        <div className="relative grid h-full min-h-0 min-w-0 gap-3 lg:grid-cols-[minmax(0,1.12fr)_minmax(20rem,0.88fr)] lg:overflow-hidden">
-          <div className="grid min-h-0 min-w-0">
-            <div className="rounded-[1.7rem] border border-[#d58f00]/65 bg-[linear-gradient(180deg,rgba(255,219,97,0.42),rgba(255,179,42,0.18))] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.28)] lg:flex lg:min-h-0 lg:flex-col">
-              <div className="mb-3 grid shrink-0 gap-2">
-                <div className="flex items-center justify-center gap-3 rounded-[1.1rem] border border-[#ffcc6a]/80 bg-[linear-gradient(180deg,#f58017_0%,#d95d06_100%)] px-4 py-2 text-center shadow-[inset_0_2px_0_rgba(255,255,255,0.24)]">
-                  <BriefcaseBusiness className="h-5 w-5 shrink-0 text-white" />
-                  <Typography
-                    content={{
-                      text:
-                        activeSituation.projectName ??
-                        resolvedData.eyebrow?.text ??
-                        "Proyecto emprendedor",
-                      variant: "label",
-                      align: "center",
-                      color: "primary",
-                      clamp: 1,
-                    }}
-                    className="text-[clamp(1rem,0.96rem+0.38vw,1.45rem)] font-extrabold uppercase tracking-[0.03em]"
-                  />
-                </div>
-
-                <div className="rounded-[1rem] border border-[#d79c16]/75 bg-[linear-gradient(180deg,rgba(255,217,95,0.96),rgba(246,184,29,0.92))] px-4 py-2 text-[#6e3600] shadow-[inset_0_2px_0_rgba(255,255,255,0.28)]">
-                  <Typography
-                    content={{
-                      text:
-                        activeSituation.prompt ??
-                        resolvedData.subtitle?.text ??
-                        "Elabora el presupuesto de tu proyecto escolar",
-                      variant: "h3",
-                      align: "left",
-                      clamp: 2,
-                    }}
-                    className="text-[clamp(1.05rem,1rem+0.52vw,1.55rem)] font-black leading-tight text-[#6e3600]"
-                  />
-                </div>
-              </div>
-
-              <div className="min-h-0 min-w-0 lg:flex-1">
-                {availableItems.length ? (
-                  <AvailableBudgetBoard
-                    items={availableItems}
-                    onSelect={toggleSelection}
-                  />
-                ) : (
-                  <div className="flex h-full min-h-[11rem] items-center justify-center rounded-[1.3rem] border border-dashed border-[#c47900]/55 bg-white/12 px-4 text-center text-sm text-[#6d3400]">
-                    Ya colocaste todas las tarjetas en el presupuesto. Revisa si
-                    el saldo sigue siendo saludable.
+          <div className="relative grid h-full min-h-0 min-w-0 gap-3 lg:grid-cols-[minmax(0,1.12fr)_minmax(20rem,0.88fr)] lg:overflow-hidden">
+            <div className="grid min-h-0 min-w-0">
+              <div className="rounded-[1.7rem] border border-[#d58f00]/65 bg-[linear-gradient(180deg,rgba(255,219,97,0.42),rgba(255,179,42,0.18))] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.28)] lg:flex lg:min-h-0 lg:flex-col">
+                <div className="mb-3 grid shrink-0 gap-2">
+                  <div className="flex items-center justify-center gap-3 rounded-[1.1rem] border border-[#ffcc6a]/80 bg-[linear-gradient(180deg,#f58017_0%,#d95d06_100%)] px-4 py-2 text-center shadow-[inset_0_2px_0_rgba(255,255,255,0.24)]">
+                    <BriefcaseBusiness className="h-5 w-5 shrink-0 text-white" />
+                    <Typography
+                      content={{
+                        text:
+                          activeSituation.projectName ??
+                          resolvedData.eyebrow?.text ??
+                          "Proyecto emprendedor",
+                        variant: "label",
+                        align: "center",
+                        color: "primary",
+                        clamp: 1,
+                      }}
+                      className="text-[clamp(1rem,0.96rem+0.38vw,1.45rem)] font-extrabold uppercase tracking-[0.03em]"
+                    />
                   </div>
-                )}
-              </div>
-            </div>
-          </div>
 
-          <div className="grid min-h-0 min-w-0 grid-rows-[minmax(0,1.5fr)_minmax(0,4fr)] gap-3">
-            <div className="min-h-0 overflow-hidden rounded-[1.7rem] border border-[#edbb4f]/60 bg-[linear-gradient(180deg,rgba(255,208,79,0.52),rgba(255,170,32,0.18))] p-[clamp(0.45rem,1vh,0.75rem)] shadow-[inset_0_1px_0_rgba(255,255,255,0.3)]">
-              <div className="grid h-full min-h-0 grid-cols-[clamp(4.35rem,17%,6.25rem)_minmax(0,1fr)] items-stretch gap-[clamp(0.45rem,1vw,0.75rem)]">
-                <div className="min-h-0 overflow-hidden rounded-[1.2rem] border border-[#946fff]/55 bg-[radial-gradient(circle_at_top,#885dff_0%,#5628d6_70%,#3b1ca1_100%)] p-[clamp(0.35rem,0.8vh,0.55rem)] shadow-[0_14px_28px_rgba(72,28,189,0.24)]">
-                  <div className="flex h-full w-full items-center justify-center rounded-[1rem] border border-white/18 bg-[radial-gradient(circle_at_50%_30%,rgba(255,255,255,0.18),rgba(255,255,255,0.02)_72%)] p-1">
-                    <img
-                      src={guideMascot}
-                      alt="Personaje guia del presupuesto"
-                      className="h-full max-h-[clamp(3.1rem,11vh,5.9rem)] w-auto object-contain"
+                  <div className="rounded-[1rem] border border-[#d79c16]/75 bg-[linear-gradient(180deg,rgba(255,217,95,0.96),rgba(246,184,29,0.92))] px-4 py-2 text-[#6e3600] shadow-[inset_0_2px_0_rgba(255,255,255,0.28)]">
+                    <Typography
+                      content={{
+                        text:
+                          activeSituation.prompt ??
+                          resolvedData.subtitle?.text ??
+                          "Elabora el presupuesto de tu proyecto escolar",
+                        variant: "h3",
+                        align: "left",
+                        clamp: 2,
+                      }}
+                      className="text-[clamp(1.05rem,1rem+0.52vw,1.55rem)] font-black leading-tight text-[#6e3600]"
                     />
                   </div>
                 </div>
 
-                <div className="flex min-h-0 min-w-0 flex-col justify-center overflow-hidden rounded-[1.25rem] border border-[#d79c16]/70 bg-[linear-gradient(180deg,rgba(255,216,97,0.98),rgba(245,185,33,0.92))] px-[clamp(0.65rem,1.4vw,1rem)] py-[clamp(0.45rem,1vh,0.75rem)] text-[#5f2e00] shadow-[inset_0_2px_0_rgba(255,255,255,0.28)]">
-                  <Typography
-                    content={{
-                      text: coachFeedback.title,
-                      variant: "h3",
-                      align: "left",
-                      clamp: 2,
-                    }}
-                    className="text-[clamp(0.9rem,1.45vw,1.28rem)] font-black leading-[1.05] text-[#5f2e00]"
-                  />
-                  <Typography
-                    content={{
-                      text: coachFeedback.text,
-                      variant: "bodySm",
-                      align: "left",
-                      clamp: 3,
-                    }}
-                    className="mt-[clamp(0.25rem,0.7vh,0.5rem)] text-[clamp(0.68rem,1.12vw,0.9rem)] font-semibold leading-[1.22] text-[#6f3400]"
-                  />
+                <div className="min-h-0 min-w-0 lg:flex-1">
+                  {availableItems.length ? (
+                    <AvailableBudgetBoard
+                      items={availableItems}
+                      onSelect={toggleSelection}
+                    />
+                  ) : (
+                    <div className="flex h-full min-h-[11rem] items-center justify-center rounded-[1.3rem] border border-dashed border-[#c47900]/55 bg-white/12 px-4 text-center text-sm text-[#6d3400]">
+                      Ya colocaste todas las tarjetas en el presupuesto. Revisa
+                      si el saldo sigue siendo saludable.
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
 
-            <BalanceScale
-              income={income}
-              expenses={total}
-              balance={balance}
-              incomeItems={initialIncomeCard}
-              expenseItems={selectedItems.slice(-4).map((item) => ({
-                ...item,
-                variant: "rose",
-              }))}
-              status={budgetState}
-              actionModel={actionModel}
-              onAction={handleActionButton}
-              onOpenExpenseStack={() => setIsExpenseStackOpen(true)}
-              renderStackItem={({ item, isExpense, onOpenStack }) => (
-                <BudgetProductCard
-                  item={item}
-                  ariaLabel={
-                    isExpense
-                      ? "Abrir gastos seleccionados"
-                      : `${item.label} en la balanza`
-                  }
-                  onClick={
-                    isExpense && onOpenStack
-                      ? (event) => {
-                          event.stopPropagation();
-                          onOpenStack();
-                        }
-                      : undefined
-                  }
-                  compact
-                  revealLabel
-                  className="h-full w-full"
-                />
-              )}
-            />
+            <div className="grid min-h-0 min-w-0 grid-rows-[minmax(0,1.5fr)_minmax(0,4fr)] gap-3">
+              <div className="min-h-0 overflow-hidden rounded-[1.7rem] border border-[#edbb4f]/60 bg-[linear-gradient(180deg,rgba(255,208,79,0.52),rgba(255,170,32,0.18))] p-[clamp(0.45rem,1vh,0.75rem)]  pt-0 shadow-[inset_0_1px_0_rgba(255,255,255,0.3)]">
+                <div className="grid h-full min-h-0 grid-cols-[clamp(4.35rem,17%,6.25rem)_minmax(0,1fr)] items-stretch gap-[clamp(0.45rem,1vw,0.75rem)]">
+                  <div className="min-h-0 overflow-hidden rounded-[1.2rem] border border-[#946fff]/55 bg-[radial-gradient(circle_at_top,#885dff_0%,#5628d6_70%,#3b1ca1_100%)] p-[clamp(0.35rem,0.8vh,0.55rem)] pt-0 shadow-[0_14px_28px_rgba(72,28,189,0.24)]">
+                    <div className="h-full overflow-hidden">
+                      <img
+                        src={imageSrc}
+                        alt="Personaje guia del presupuesto"
+                        className="h-full w-full object-cover object-top origin-top scale-180"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex min-h-0 min-w-0 flex-col justify-center overflow-hidden rounded-[1.25rem] border border-[#d79c16]/70 bg-[linear-gradient(180deg,rgba(255,216,97,0.98),rgba(245,185,33,0.92))] px-[clamp(0.65rem,1.4vw,1rem)] py-[clamp(0.45rem,1vh,0.75rem)] text-[#5f2e00] shadow-[inset_0_2px_0_rgba(255,255,255,0.28)]">
+                    <Typography
+                      content={{
+                        text: coachFeedback.title,
+                        variant: "h3",
+                        align: "left",
+                        clamp: 2,
+                      }}
+                      className="text-[clamp(0.9rem,1.45vw,1.28rem)] font-black leading-[1.05] text-[#5f2e00]"
+                    />
+                    <Typography
+                      content={{
+                        text: coachFeedback.text,
+                        variant: "bodySm",
+                        align: "left",
+                        clamp: 3,
+                      }}
+                      className="mt-[clamp(0.25rem,0.7vh,0.5rem)] text-[clamp(0.68rem,1.12vw,0.9rem)] font-semibold leading-[1.22] text-[#6f3400]"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <BalanceScale
+                income={income}
+                expenses={total}
+                balance={balance}
+                incomeItems={initialIncomeCard}
+                expenseItems={selectedItems.slice(-4).map((item) => ({
+                  ...item,
+                  variant: "rose",
+                }))}
+                status={budgetState}
+                actionModel={actionModel}
+                onAction={handleActionButton}
+                onOpenExpenseStack={() => setIsExpenseStackOpen(true)}
+                renderStackItem={({ item, isExpense, onOpenStack }) => (
+                  <BudgetProductCard
+                    item={item}
+                    ariaLabel={
+                      isExpense
+                        ? "Abrir gastos seleccionados"
+                        : `${item.label} en la balanza`
+                    }
+                    onClick={
+                      isExpense && onOpenStack
+                        ? (event) => {
+                            event.stopPropagation();
+                            onOpenStack();
+                          }
+                        : undefined
+                    }
+                    compact
+                    revealLabel
+                    className="h-full w-full"
+                  />
+                )}
+              />
+            </div>
           </div>
         </div>
-      </div>
       </section>
 
       <ExpenseStackModal
