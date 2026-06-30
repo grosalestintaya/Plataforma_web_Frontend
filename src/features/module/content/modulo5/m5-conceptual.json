@@ -4,6 +4,792 @@
   "backendActivityId": "13",
   "activityKey": "m05-conceptual",
   "headerTitle": "Conceptual",
-  "missionTitle": "Conceptual",
-  "views": []
+  "missionTitle": "Prestamo, deuda, costo y riesgo",
+  "views": [
+    {
+      "viewId": "m5_1_v1",
+      "order": 1,
+      "name": "VISTA 1 - Inicio: Antes de empezar",
+      "viewType": "Inicio",
+      "objective": "Presentar la mision conceptual sobre prestamos, deuda, costo y riesgo.",
+      "template": "preGameLobby",
+      "variant": "preGame",
+      "slots": {
+        "title": {
+          "text": "Antes de empezar",
+          "variant": "h1",
+          "align": "center"
+        },
+        "body": {
+          "paragraphs": [
+            "A veces una persona piensa en pedir prestado para comprar algo, resolver una necesidad o alcanzar una meta.",
+            "En esta mision aprenderas que pedir un prestamo no significa recibir dinero gratis, porque despues hay que devolverlo y muchas veces pagar un costo adicional.",
+            "Tambien identificaras por que conviene revisar la necesidad, el costo, el plazo, la capacidad de pago y los riesgos antes de decidir."
+          ],
+          "variant": "body1",
+          "align": "left"
+        },
+        "media": {
+          "src": "1/pensar.webp",
+          "alt": "Estudiante pensando antes de tomar una decision financiera",
+          "variant": "vertical"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "text",
+            "slot": "body",
+            "area": "body",
+            "order": 20
+          },
+          {
+            "component": "image",
+            "slot": "media",
+            "area": "media",
+            "order": 30
+          }
+        ],
+        "compound": []
+      },
+      "navigation": {
+        "mode": "cta",
+        "label": "Empezar",
+        "action": "startMissionAttempt"
+      },
+      "completionCriteria": {
+        "type": "manualStart"
+      }
+    },
+    {
+      "viewId": "m5_1_v2",
+      "order": 2,
+      "name": "VISTA 2 - Teoria: Prestamo y deuda",
+      "viewType": "Teoria",
+      "objective": "Explicar que es un prestamo y que significa tener una deuda.",
+      "template": "simpleTheory",
+      "variant": "simple",
+      "slots": {
+        "title": {
+          "text": "Que es un prestamo?",
+          "variant": "h1",
+          "align": "center"
+        },
+        "body": {
+          "paragraphs": [
+            "Un prestamo es dinero que una persona o entidad entrega por un tiempo para que luego sea devuelto.",
+            "Cuando recibes ese dinero, aparece una deuda: una obligacion de pago que debe cumplirse en el plazo acordado."
+          ],
+          "variant": "body1",
+          "align": "center"
+        },
+        "feedback": {
+          "paragraphs": [
+            "Pedir prestado implica devolver el dinero despues."
+          ],
+          "variant": "body2",
+          "align": "center"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "text",
+            "slot": "body",
+            "area": "body1",
+            "order": 20
+          },
+          {
+            "component": "text",
+            "slot": "feedback",
+            "area": "feedback",
+            "order": 30
+          }
+        ],
+        "compound": [
+          {
+            "type": "showCard",
+            "component": "showCard",
+            "category": "grouper",
+            "area": "media",
+            "items": [
+              {
+                "id": "m5-card-prestamo",
+                "media": {
+                  "src": "1/recibir-dinero.webp",
+                  "alt": "Persona recibiendo dinero",
+                  "variant": "horizontal"
+                },
+                "title": {
+                  "text": "Prestamo",
+                  "variant": "label",
+                  "align": "center"
+                },
+                "text": {
+                  "text": "Dinero recibido para usarlo ahora y devolverlo despues.",
+                  "variant": "bodySm",
+                  "align": "center"
+                }
+              },
+              {
+                "id": "m5-card-deuda",
+                "media": {
+                  "src": "1/pagar-pasaje.webp",
+                  "alt": "Persona realizando un pago",
+                  "variant": "horizontal"
+                },
+                "title": {
+                  "text": "Deuda",
+                  "variant": "label",
+                  "align": "center"
+                },
+                "text": {
+                  "text": "Compromiso de devolver lo prestado en el tiempo acordado.",
+                  "variant": "bodySm",
+                  "align": "center"
+                }
+              },
+              {
+                "id": "m5-card-plazo",
+                "media": {
+                  "src": "1/ahorrar.webp",
+                  "alt": "Planificacion del tiempo y el dinero",
+                  "variant": "horizontal"
+                },
+                "title": {
+                  "text": "Plazo",
+                  "variant": "label",
+                  "align": "center"
+                },
+                "text": {
+                  "text": "Tiempo que tienes para devolver el dinero.",
+                  "variant": "bodySm",
+                  "align": "center"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "normal"
+      },
+      "completionCriteria": {
+        "type": "reading"
+      }
+    },
+    {
+      "viewId": "m5_1_v3",
+      "order": 3,
+      "name": "VISTA 3 - Teoria: El costo de pedir prestado",
+      "viewType": "Teoria",
+      "objective": "Explicar que un prestamo puede tener un costo adicional como el interes simple.",
+      "template": "simpleTheory",
+      "variant": "simple",
+      "slots": {
+        "title": {
+          "text": "Pedir prestado tambien tiene costo",
+          "variant": "h1",
+          "align": "center"
+        },
+        "body": {
+          "paragraphs": [
+            "Cuando alguien presta dinero, puede pedir que se devuelva un poco mas. Ese pago extra se llama interes.",
+            "El interes simple es un costo adicional calculado sobre el dinero prestado. Por eso el costo total de un prestamo no siempre es igual a la cantidad recibida al inicio."
+          ],
+          "variant": "body1",
+          "align": "center"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "text",
+            "slot": "body",
+            "area": "body1",
+            "order": 20
+          }
+        ],
+        "compound": [
+          {
+            "type": "showCard",
+            "component": "showCard",
+            "category": "grouper",
+            "area": "media",
+            "items": [
+              {
+                "id": "m5-card-capital",
+                "title": {
+                  "text": "Dinero prestado",
+                  "variant": "label",
+                  "align": "center"
+                },
+                "text": {
+                  "text": "Es la cantidad que recibes al inicio.",
+                  "variant": "bodySm",
+                  "align": "center"
+                },
+                "media": {
+                  "src": "1/recibir-dinero.webp",
+                  "alt": "Dinero recibido al inicio de un prestamo",
+                  "variant": "horizontal"
+                }
+              },
+              {
+                "id": "m5-card-interes",
+                "title": {
+                  "text": "Interes simple",
+                  "variant": "label",
+                  "align": "center"
+                },
+                "text": {
+                  "text": "Pago extra que se suma por haber recibido el prestamo.",
+                  "variant": "bodySm",
+                  "align": "center"
+                },
+                "media": {
+                  "src": "1/ganar-dinero.webp",
+                  "alt": "Costo adicional de un prestamo",
+                  "variant": "horizontal"
+                }
+              },
+              {
+                "id": "m5-card-costo-total",
+                "title": {
+                  "text": "Costo total",
+                  "variant": "label",
+                  "align": "center"
+                },
+                "text": {
+                  "text": "Suma del dinero prestado mas el interes que debes devolver.",
+                  "variant": "bodySm",
+                  "align": "center"
+                },
+                "media": {
+                  "src": "2/compras-basicas.webp",
+                  "alt": "Revision del costo total antes de decidir",
+                  "variant": "horizontal"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "normal"
+      },
+      "completionCriteria": {
+        "type": "reading"
+      }
+    },
+    {
+      "viewId": "m5_1_v4",
+      "order": 4,
+      "name": "VISTA 4 - Teoria: Capacidad de pago",
+      "viewType": "Teoria",
+      "objective": "Explicar por que conviene evaluar si la persona puede responder por la deuda.",
+      "template": "simpleTheory",
+      "variant": "simple",
+      "slots": {
+        "title": {
+          "text": "Puedo pagarlo sin problema?",
+          "variant": "h1",
+          "align": "center"
+        },
+        "body": {
+          "paragraphs": [
+            "Antes de aceptar un prestamo, conviene revisar si realmente se necesita y si sera posible pagarlo sin dejar de cubrir otros gastos importantes.",
+            "La capacidad de pago es la posibilidad real de responder por la deuda segun el dinero disponible y el tiempo para devolverlo."
+          ],
+          "variant": "body1",
+          "align": "center"
+        },
+        "feedback": {
+          "paragraphs": [
+            "No basta con recibir el dinero: tambien hay que pensar como se devolvera."
+          ],
+          "variant": "body2",
+          "align": "center"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "text",
+            "slot": "body",
+            "area": "body1",
+            "order": 20
+          },
+          {
+            "component": "text",
+            "slot": "feedback",
+            "area": "feedback",
+            "order": 30
+          }
+        ],
+        "compound": [
+          {
+            "type": "showCard",
+            "component": "showCard",
+            "category": "grouper",
+            "area": "media",
+            "items": [
+              {
+                "id": "m5-card-necesidad",
+                "title": {
+                  "text": "Necesidad real",
+                  "variant": "label",
+                  "align": "center"
+                },
+                "text": {
+                  "text": "Primero se analiza si el prestamo es realmente necesario.",
+                  "variant": "bodySm",
+                  "align": "center"
+                },
+                "media": {
+                  "src": "1/pensar.webp",
+                  "alt": "Reflexion sobre la necesidad de pedir prestado",
+                  "variant": "horizontal"
+                }
+              },
+              {
+                "id": "m5-card-capacidad",
+                "title": {
+                  "text": "Capacidad de pago",
+                  "variant": "label",
+                  "align": "center"
+                },
+                "text": {
+                  "text": "Se revisa si el dinero disponible alcanzara para devolver la deuda.",
+                  "variant": "bodySm",
+                  "align": "center"
+                },
+                "media": {
+                  "src": "1/ahorro.webp",
+                  "alt": "Organizacion del dinero para pagar",
+                  "variant": "horizontal"
+                }
+              },
+              {
+                "id": "m5-card-tiempo",
+                "title": {
+                  "text": "Tiempo de pago",
+                  "variant": "label",
+                  "align": "center"
+                },
+                "text": {
+                  "text": "El plazo influye en la decision porque marca cuando debe devolverse el dinero.",
+                  "variant": "bodySm",
+                  "align": "center"
+                },
+                "media": {
+                  "src": "1/compra-online-ahorro.webp",
+                  "alt": "Revision del tiempo antes de decidir",
+                  "variant": "horizontal"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "normal"
+      },
+      "completionCriteria": {
+        "type": "reading"
+      }
+    },
+    {
+      "viewId": "m5_1_v5",
+      "order": 5,
+      "name": "VISTA 5 - Teoria: Riesgo financiero e informalidad",
+      "viewType": "Teoria",
+      "objective": "Explicar riesgos de pedir prestamos sin plan y de acudir a opciones informales.",
+      "template": "simpleTheory",
+      "variant": "simple",
+      "slots": {
+        "title": {
+          "text": "Riesgo financiero e informalidad",
+          "variant": "h1",
+          "align": "center"
+        },
+        "body": {
+          "paragraphs": [
+            "Un riesgo financiero es la posibilidad de tener problemas para pagar o perder dinero por una mala decision.",
+            "Ese riesgo aumenta cuando se acepta un prestamo sin plan, cuando no se entienden las condiciones o cuando se acude a prestamos informales."
+          ],
+          "variant": "body1",
+          "align": "center"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "text",
+            "slot": "body",
+            "area": "body1",
+            "order": 20
+          }
+        ],
+        "compound": [
+          {
+            "type": "showCard",
+            "component": "showCard",
+            "category": "grouper",
+            "area": "media",
+            "items": [
+              {
+                "id": "m5-card-riesgo",
+                "title": {
+                  "text": "Riesgo financiero",
+                  "variant": "label",
+                  "align": "center"
+                },
+                "text": {
+                  "text": "Aparece cuando una decision puede causar dificultades de pago o perdida de dinero.",
+                  "variant": "bodySm",
+                  "align": "center"
+                },
+                "media": {
+                  "src": "1/pensar.webp",
+                  "alt": "Analisis del riesgo financiero",
+                  "variant": "horizontal"
+                }
+              },
+              {
+                "id": "m5-card-informalidad",
+                "title": {
+                  "text": "Prestamo informal",
+                  "variant": "label",
+                  "align": "center"
+                },
+                "text": {
+                  "text": "Puede no tener reglas claras, comprobantes o proteccion para quien lo acepta.",
+                  "variant": "bodySm",
+                  "align": "center"
+                },
+                "media": {
+                  "src": "1/comprar-juegos.webp",
+                  "alt": "Decision apresurada sin revisar condiciones",
+                  "variant": "horizontal"
+                }
+              },
+              {
+                "id": "m5-card-oferta",
+                "title": {
+                  "text": "Oferta enganiosa",
+                  "variant": "label",
+                  "align": "center"
+                },
+                "text": {
+                  "text": "Promete dinero facil o rapido, pero oculta informacion importante sobre el pago.",
+                  "variant": "bodySm",
+                  "align": "center"
+                },
+                "media": {
+                  "src": "1/compra-online-ahorro.webp",
+                  "alt": "Oferta llamativa en internet",
+                  "variant": "horizontal"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "normal"
+      },
+      "completionCriteria": {
+        "type": "reading"
+      }
+    },
+    {
+      "viewId": "m5_1_v6",
+      "order": 6,
+      "name": "VISTA 6 - Teoria: Antes de decidir",
+      "viewType": "Teoria",
+      "objective": "Resumir las preguntas clave antes de aceptar un prestamo.",
+      "template": "simpleTheory",
+      "variant": "simple",
+      "slots": {
+        "title": {
+          "text": "Antes de aceptar un prestamo",
+          "variant": "h1",
+          "align": "center"
+        },
+        "body": {
+          "paragraphs": [
+            "Antes de tomar una decision conviene hacerse preguntas simples: lo necesito de verdad, cuanto costara, cuando tendre que pagarlo y podre responder sin afectar otras prioridades?",
+            "Si la propuesta es apurada, poco clara o parece demasiado facil, es mejor detenerse, pedir ayuda y revisar mejor la informacion."
+          ],
+          "variant": "body1",
+          "align": "center"
+        },
+        "feedback": {
+          "paragraphs": [
+            "Pensar antes de endeudarse ayuda a evitar problemas futuros."
+          ],
+          "variant": "body2",
+          "align": "center"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "text",
+            "slot": "body",
+            "area": "body1",
+            "order": 20
+          },
+          {
+            "component": "text",
+            "slot": "feedback",
+            "area": "feedback",
+            "order": 30
+          }
+        ],
+        "compound": []
+      },
+      "navigation": {
+        "mode": "normal"
+      },
+      "completionCriteria": {
+        "type": "reading"
+      }
+    },
+    {
+      "viewId": "m5_1_v7",
+      "order": 7,
+      "name": "VISTA 7 - Interaccion: Crucigrama del prestamo responsable",
+      "viewType": "Interaccion",
+      "objective": "Reforzar los conceptos clave de prestamo, deuda, costo y riesgo con un crucigrama.",
+      "template": "assessmentTheory",
+      "variant": "assessment",
+      "slots": {
+        "title": {
+          "text": "Crucigrama del prestamo responsable",
+          "variant": "h1",
+          "align": "center"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          }
+        ],
+        "compound": [
+          {
+            "type": "crossword",
+            "component": "crossword",
+            "category": "interactive",
+            "area": "assessment",
+            "title": {
+              "text": "Palabras clave del modulo 5",
+              "variant": "h3",
+              "align": "left"
+            },
+            "instruction": {
+              "text": "Haz click en el tablero para cambiar entre palabras y responder su pista.",
+              "variant": "bodySm",
+              "align": "left"
+            },
+            "crossword": {
+              "minimumScore": 60,
+              "maximumScore": 100,
+              "boardBackground": {
+                "src": "3/v8x1c.webp",
+                "alt": "Fondo del crucigrama"
+              },
+              "sidebarImage": {
+                "src": "1/pensar.webp",
+                "alt": "Imagen de apoyo para reflexionar antes de decidir"
+              },
+              "words": [
+                {
+                  "id": "prestamo",
+                  "answer": "PRESTAMO",
+                  "clue": "Dinero que se recibe por un tiempo y debe devolverse despues.",
+                  "image": {
+                    "src": "1/recibir-dinero.webp",
+                    "alt": "Persona recibiendo dinero"
+                  }
+                },
+                {
+                  "id": "deuda",
+                  "answer": "DEUDA",
+                  "clue": "Obligacion de devolver el dinero prestado.",
+                  "image": {
+                    "src": "1/pagar-pasaje.webp",
+                    "alt": "Persona pagando dinero"
+                  }
+                },
+                {
+                  "id": "interes",
+                  "answer": "INTERES",
+                  "clue": "Costo adicional que puede cobrarse por prestar dinero.",
+                  "image": {
+                    "src": "1/ganar-dinero.webp",
+                    "alt": "Costo adicional de un prestamo"
+                  }
+                },
+                {
+                  "id": "plazo",
+                  "answer": "PLAZO",
+                  "clue": "Tiempo acordado para devolver el dinero.",
+                  "image": {
+                    "src": "1/ahorrar.webp",
+                    "alt": "Tiempo para organizar un pago"
+                  }
+                },
+                {
+                  "id": "riesgo",
+                  "answer": "RIESGO",
+                  "clue": "Posibilidad de tener problemas o perder dinero por una mala decision.",
+                  "image": {
+                    "src": "1/pensar.webp",
+                    "alt": "Analisis del riesgo"
+                  }
+                },
+                {
+                  "id": "informal",
+                  "answer": "INFORMAL",
+                  "clue": "Tipo de prestamo que puede no tener reglas claras ni proteccion.",
+                  "image": {
+                    "src": "1/comprar-juegos.webp",
+                    "alt": "Decision sin condiciones claras"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "lockedUntilComplete",
+        "label": "Completa el crucigrama para continuar"
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "completeCrossword"
+      }
+    },
+    {
+      "viewId": "m5_1_v8",
+      "order": 8,
+      "name": "VISTA 8 - Final: Mision completada",
+      "viewType": "Final",
+      "objective": "Cerrar la mision conceptual y reforzar el aprendizaje principal sobre endeudamiento responsable.",
+      "template": "postGameLobby",
+      "variant": "postGame",
+      "slots": {
+        "title": {
+          "text": "Mision cumplida",
+          "variant": "h1",
+          "align": "center"
+        },
+        "feedback": {
+          "text": "Ahora ya puedes reconocer que un prestamo implica deuda, costo y riesgo, y que conviene evaluar la capacidad de pago antes de decidir.",
+          "variant": "label",
+          "align": "center",
+          "color": "accent"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "text",
+            "slot": "feedback",
+            "area": "feedback",
+            "order": 20
+          }
+        ],
+        "compound": [
+          {
+            "type": "showCard",
+            "component": "showCard",
+            "category": "grouper",
+            "area": "rewards",
+            "items": [
+              {
+                "id": "reward-xp",
+                "title": {
+                  "text": "XP",
+                  "variant": "label"
+                },
+                "text": {
+                  "text": "+ 10",
+                  "variant": "bodySm"
+                }
+              },
+              {
+                "id": "reward-intis",
+                "title": {
+                  "text": "INTIS",
+                  "variant": "label"
+                },
+                "text": {
+                  "text": "+ 10",
+                  "variant": "bodySm"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "cta",
+        "label": "Continuar",
+        "action": "goToNextMissionMenu"
+      },
+      "completionCriteria": {
+        "type": "endOfMission"
+      }
+    }
+  ]
 }
