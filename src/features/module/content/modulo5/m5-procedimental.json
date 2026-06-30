@@ -4,6 +4,398 @@
   "backendActivityId": "14",
   "activityKey": "m05-procedimental",
   "headerTitle": "Procedimental",
-  "missionTitle": "Procedimental",
-  "views": []
+  "missionTitle": "Evaluo si me conviene endeudarme",
+  "views": [
+    {
+      "viewId": "m5_2_v1",
+      "order": 1,
+      "name": "VISTA 1 - Inicio: Antes de empezar",
+      "viewType": "Inicio",
+      "objective": "Presentar la practica del modulo 5 y explicar que el estudiante evaluara decisiones antes de aceptar un prestamo.",
+      "template": "preGameLobby",
+      "variant": "preGame",
+      "slots": {
+        "title": {
+          "text": "Antes de empezar",
+          "variant": "h1",
+          "align": "center"
+        },
+        "body": {
+          "paragraphs": [
+            "En esta practica revisaras situaciones donde una persona piensa en pedir prestado.",
+            "Tu tarea sera observar si la necesidad es real, cuanto costara el prestamo, si el pago es posible y si la oferta parece segura o riesgosa.",
+            "Lee cada escenario con calma y decide que harías antes de endeudarte."
+          ],
+          "variant": "body1",
+          "align": "left"
+        },
+        "media": {
+          "src": "1/pensar.webp",
+          "alt": "Estudiante analizando una decision financiera",
+          "variant": "vertical"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "text",
+            "slot": "body",
+            "area": "body",
+            "order": 20
+          },
+          {
+            "component": "image",
+            "slot": "media",
+            "area": "media",
+            "order": 30
+          }
+        ],
+        "compound": []
+      },
+      "navigation": {
+        "mode": "cta",
+        "label": "Iniciar",
+        "action": "startMissionAttempt"
+      },
+      "completionCriteria": {
+        "type": "manualStart"
+      }
+    },
+    {
+      "viewId": "m5_2_v2",
+      "order": 2,
+      "name": "VISTA 2 - Practica: Situacion 1",
+      "viewType": "Practica",
+      "objective": "Evaluar un prestamo formal para una necesidad escolar, revisando costo y capacidad de pago.",
+      "template": "whatWouldYouDo",
+      "variant": "scenarioDecision",
+      "data": {
+        "title": {
+          "text": "Situacion 1",
+          "variant": "h1",
+          "align": "left"
+        },
+        "text": {
+          "paragraphs": [
+            "Luis necesita comprar materiales para una exposicion escolar que debe entregar esta semana.",
+            "Le ofrecen un prestamo de S/ 40. Debe devolver S/ 45 en 2 semanas.",
+            "Luis puede guardar S/ 25 por semana y la oferta tiene condiciones claras."
+          ],
+          "variant": "body1",
+          "align": "left"
+        },
+        "scenarioType": "formalLoan",
+        "caseFacts": {
+          "need": "Materiales para una exposicion escolar",
+          "loanAmount": 40,
+          "totalPayment": 45,
+          "term": "2 semanas",
+          "paymentCapacity": "Puede separar S/ 25 por semana",
+          "offerType": "Formal y clara"
+        },
+        "expectedDecision": "Comparar el costo y aceptar solo si no afecta otras prioridades importantes.",
+        "options": [
+          {
+            "id": "m5p_s1_opt1",
+            "label": "Aceptar el prestamo despues de revisar que el pago si cabe en su dinero disponible.",
+            "score": 100
+          },
+          {
+            "id": "m5p_s1_opt2",
+            "label": "Aceptar de inmediato sin revisar cuanto terminara pagando.",
+            "score": 60
+          },
+          {
+            "id": "m5p_s1_opt3",
+            "label": "Rechazarlo sin analizar si realmente podia resolver una necesidad importante.",
+            "score": 80
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "embedded",
+        "label": "Lee la situacion y confirma tu decision."
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "confirmDecision"
+      }
+    },
+    {
+      "viewId": "m5_2_v3",
+      "order": 3,
+      "name": "VISTA 3 - Practica: Situacion 2",
+      "viewType": "Practica",
+      "objective": "Reconocer que no conviene endeudarse por un gusto momentaneo con una oferta enganiosa.",
+      "template": "whatWouldYouDo",
+      "variant": "scenarioDecision",
+      "data": {
+        "title": {
+          "text": "Situacion 2",
+          "variant": "h1",
+          "align": "left"
+        },
+        "text": {
+          "paragraphs": [
+            "Camila quiere comprar unos audifonos que le gustaron en una promocion de internet.",
+            "Le ofrecen llevarlos hoy con un pago despues: recibe S/ 60 y termina devolviendo S/ 90.",
+            "La publicidad dice dinero rapido y facil, pero no explica bien las condiciones."
+          ],
+          "variant": "body1",
+          "align": "left"
+        },
+        "scenarioType": "misleadingOffer",
+        "caseFacts": {
+          "need": "No es una necesidad urgente",
+          "loanAmount": 60,
+          "totalPayment": 90,
+          "term": "No esta claro",
+          "paymentCapacity": "No ha revisado si puede pagarlo",
+          "offerType": "Oferta poco clara"
+        },
+        "expectedDecision": "No conviene aceptar una oferta poco clara para cubrir un gusto del momento.",
+        "options": [
+          {
+            "id": "m5p_s2_opt1",
+            "label": "Aceptar porque asi no pierde la promocion.",
+            "score": 60
+          },
+          {
+            "id": "m5p_s2_opt2",
+            "label": "Detenerse, desconfiar de la oferta y no endeudarse por una compra no urgente.",
+            "score": 100
+          },
+          {
+            "id": "m5p_s2_opt3",
+            "label": "Aceptar primero y preguntar despues cuanto pagara en total.",
+            "score": 60
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "embedded",
+        "label": "Lee la situacion y confirma tu decision."
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "confirmDecision"
+      }
+    },
+    {
+      "viewId": "m5_2_v4",
+      "order": 4,
+      "name": "VISTA 4 - Practica: Situacion 3",
+      "viewType": "Practica",
+      "objective": "Identificar el riesgo de un prestamo informal con informacion incompleta.",
+      "template": "whatWouldYouDo",
+      "variant": "scenarioDecision",
+      "data": {
+        "title": {
+          "text": "Situacion 3",
+          "variant": "h1",
+          "align": "left"
+        },
+        "text": {
+          "paragraphs": [
+            "A Julia se le malogro un cuaderno de trabajo y necesita reponerlo pronto.",
+            "Una persona del barrio le ofrece S/ 30 y le dice que luego ven como se devuelve.",
+            "No hay plazo claro, no se explica el costo final y todo queda solo de palabra."
+          ],
+          "variant": "body1",
+          "align": "left"
+        },
+        "scenarioType": "informalLoan",
+        "caseFacts": {
+          "need": "Necesidad escolar real",
+          "loanAmount": 30,
+          "totalPayment": "No definido",
+          "term": "No definido",
+          "paymentCapacity": "No puede calcularse bien",
+          "offerType": "Informal"
+        },
+        "expectedDecision": "Aunque la necesidad existe, no conviene aceptar un prestamo informal sin condiciones claras.",
+        "options": [
+          {
+            "id": "m5p_s3_opt1",
+            "label": "Aceptar porque el dinero se necesita rapido y lo demas se ve despues.",
+            "score": 60
+          },
+          {
+            "id": "m5p_s3_opt2",
+            "label": "Buscar una opcion mas clara o pedir ayuda antes de aceptar algo informal.",
+            "score": 100
+          },
+          {
+            "id": "m5p_s3_opt3",
+            "label": "Aceptar solo porque la persona parece de confianza.",
+            "score": 70
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "embedded",
+        "label": "Lee la situacion y confirma tu decision."
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "confirmDecision"
+      }
+    },
+    {
+      "viewId": "m5_2_v5",
+      "order": 5,
+      "name": "VISTA 5 - Practica: Situacion 4",
+      "viewType": "Practica",
+      "objective": "Evaluar que no conviene asumir una deuda cuando la capacidad de pago no alcanza.",
+      "template": "whatWouldYouDo",
+      "variant": "scenarioDecision",
+      "data": {
+        "title": {
+          "text": "Situacion 4",
+          "variant": "h1",
+          "align": "left"
+        },
+        "text": {
+          "paragraphs": [
+            "Pedro quiere pedir un prestamo de S/ 80 para cubrir un gasto familiar importante.",
+            "Debe devolver S/ 100 en una semana, pero solo podria reunir S/ 50 en ese tiempo.",
+            "La necesidad es real, pero el pago exigido supera claramente su capacidad."
+          ],
+          "variant": "body1",
+          "align": "left"
+        },
+        "scenarioType": "insufficientCapacity",
+        "caseFacts": {
+          "need": "Necesidad familiar importante",
+          "loanAmount": 80,
+          "totalPayment": 100,
+          "term": "1 semana",
+          "paymentCapacity": "Solo puede reunir S/ 50",
+          "offerType": "Costo y plazo claros"
+        },
+        "expectedDecision": "Si no alcanza para pagar en el plazo, no conviene aceptar la deuda asi como esta.",
+        "options": [
+          {
+            "id": "m5p_s4_opt1",
+            "label": "Aceptar aunque no alcance y esperar resolverlo despues.",
+            "score": 60
+          },
+          {
+            "id": "m5p_s4_opt2",
+            "label": "Reconocer que no puede responder por ese pago y buscar otra alternativa.",
+            "score": 100
+          },
+          {
+            "id": "m5p_s4_opt3",
+            "label": "Aceptar porque la necesidad es importante, sin revisar el riesgo de no pagar.",
+            "score": 70
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "embedded",
+        "label": "Lee la situacion y confirma tu decision."
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "confirmDecision"
+      }
+    },
+    {
+      "viewId": "m5_2_v6",
+      "order": 6,
+      "name": "VISTA 6 - Final: Mision cumplida",
+      "viewType": "Final",
+      "objective": "Cerrar la practica reforzando que una deuda debe evaluarse antes de aceptarse.",
+      "template": "postGameLobby",
+      "variant": "postGame",
+      "slots": {
+        "title": {
+          "text": "Mision cumplida",
+          "variant": "h1",
+          "align": "center"
+        },
+        "feedback": {
+          "text": "Practicaron como evaluar si una deuda conviene o no, revisando necesidad, costo, capacidad de pago y riesgo antes de decidir.",
+          "variant": "label",
+          "align": "center",
+          "color": "accent"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "text",
+            "slot": "feedback",
+            "area": "feedback",
+            "order": 20
+          }
+        ],
+        "compound": [
+          {
+            "type": "showCard",
+            "component": "showCard",
+            "category": "grouper",
+            "area": "rewards",
+            "items": [
+              {
+                "id": "reward-xp",
+                "title": {
+                  "text": "XP",
+                  "variant": "label"
+                },
+                "text": {
+                  "text": "+10",
+                  "variant": "body1",
+                  "color": "secondary"
+                },
+                "media": {
+                  "src": "",
+                  "alt": "Recompensa de XP",
+                  "variant": "square"
+                }
+              },
+              {
+                "id": "reward-intis",
+                "title": {
+                  "text": "INTIS",
+                  "variant": "label"
+                },
+                "text": {
+                  "text": "+10",
+                  "variant": "body1",
+                  "color": "secondary"
+                },
+                "media": {
+                  "src": "",
+                  "alt": "Recompensa de INTIS",
+                  "variant": "square"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "cta",
+        "label": "Continuar",
+        "action": "goToNextMissionMenu"
+      },
+      "completionCriteria": {
+        "type": "endOfMission"
+      }
+    }
+  ]
 }

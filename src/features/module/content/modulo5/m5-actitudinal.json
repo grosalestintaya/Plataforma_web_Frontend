@@ -4,6 +4,518 @@
   "backendActivityId": "15",
   "activityKey": "m05-actitudinal",
   "headerTitle": "Actitudinal",
-  "missionTitle": "Actitudinal",
-  "views": []
+  "missionTitle": "Rechazo decisiones financieras informales o riesgosas",
+  "views": [
+    {
+      "viewId": "m5_3_v1",
+      "order": 1,
+      "name": "VISTA 1 - Inicio: Antes de empezar",
+      "viewType": "Inicio",
+      "objective": "Presentar la mision actitudinal como un espacio de reflexion sobre prestamos informales, ofertas enganiosas y decisiones apresuradas.",
+      "template": "preGameLobby",
+      "variant": "preGame",
+      "slots": {
+        "title": {
+          "text": "Antes de empezar",
+          "variant": "h1",
+          "align": "center"
+        },
+        "body": {
+          "paragraphs": [
+            "No toda opcion para conseguir dinero es conveniente o segura.",
+            "A veces una oferta parece facil o rapida, pero puede ocultar costos, plazos o riesgos que despues generan problemas.",
+            "En esta mision reflexionaras sobre como evitar decisiones apresuradas, prestamos informales y propuestas poco claras."
+          ],
+          "variant": "body1",
+          "align": "justify"
+        },
+        "media": {
+          "src": "1/pensar.webp",
+          "alt": "Estudiante pensando antes de aceptar una oferta de dinero",
+          "variant": "vertical"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "text",
+            "slot": "body",
+            "area": "body",
+            "order": 20
+          },
+          {
+            "component": "image",
+            "slot": "media",
+            "area": "media",
+            "order": 30
+          }
+        ],
+        "compound": []
+      },
+      "navigation": {
+        "mode": "cta",
+        "label": "Iniciar",
+        "action": "startMissionAttempt"
+      },
+      "completionCriteria": {
+        "type": "manualStart"
+      }
+    },
+    {
+      "viewId": "m5_3_v2",
+      "order": 2,
+      "name": "VISTA 2 - Practica: Situacion 1",
+      "viewType": "Practica",
+      "objective": "Reflexionar sobre no endeudarse sin revisar si el prestamo es necesario y posible de pagar.",
+      "template": "simpleQuiz",
+      "variant": "simple",
+      "slots": {
+        "title": {
+          "text": "Situacion 1",
+          "variant": "h1",
+          "align": "center"
+        },
+        "media": {
+          "src": "1/compra-online-ahorro.webp",
+          "alt": "Estudiante pensando si endeudarse para comprar algo",
+          "variant": "horizontal"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "image",
+            "slot": "media",
+            "area": "media",
+            "order": 20
+          }
+        ],
+        "compound": [
+          {
+            "type": "formQuestion",
+            "component": "formQuestion",
+            "category": "interactive",
+            "area": "action",
+            "question": {
+              "text": "Quieres comprar algo hoy y alguien te dice que pidas prestado rapido para no perder la oportunidad. Que decision muestra mayor responsabilidad?",
+              "variant": "body1",
+              "align": "justify"
+            },
+            "options": [
+              {
+                "id": "m5a_s1_rush",
+                "label": {
+                  "text": "a) Pedir el dinero de inmediato para aprovechar la compra.",
+                  "variant": "body2"
+                },
+                "score": 70
+              },
+              {
+                "id": "m5a_s1_review",
+                "label": {
+                  "text": "b) Revisar si realmente lo necesitas, cuanto costara y si podras pagarlo despues.",
+                  "variant": "body2"
+                },
+                "score": 100
+              },
+              {
+                "id": "m5a_s1_half",
+                "label": {
+                  "text": "c) Pedir solo una parte sin pensar mucho en como devolverla.",
+                  "variant": "body2"
+                },
+                "score": 80
+              }
+            ],
+            "prompt": {
+              "text": "Por que elegirias esa opcion? (Opcional)",
+              "variant": "helper"
+            },
+            "placeholder": "Explica tu razon...",
+            "minReasonLength": 12,
+            "reasonRequired": false
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "lockedUntilComplete"
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "selectOption"
+      }
+    },
+    {
+      "viewId": "m5_3_v3",
+      "order": 3,
+      "name": "VISTA 3 - Practica: Situacion 2",
+      "viewType": "Practica",
+      "objective": "Reflexionar sobre rechazar prestamos informales con condiciones poco claras.",
+      "template": "extendedQuiz",
+      "variant": "extended",
+      "slots": {
+        "title": {
+          "text": "Situacion 2",
+          "variant": "h1",
+          "align": "center"
+        },
+        "media": {
+          "src": "1/amigos-comida-rapida.webp",
+          "alt": "Conversacion sobre una propuesta de dinero rapido",
+          "variant": "horizontal"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "image",
+            "slot": "media",
+            "area": "media",
+            "order": 20
+          }
+        ],
+        "compound": [
+          {
+            "type": "formQuestion",
+            "component": "formQuestion",
+            "category": "interactive",
+            "area": "action",
+            "question": {
+              "text": "Una persona te ofrece un prestamo informal y te dice que no hace falta explicar bien las condiciones porque despues se arregla. Que actitud es mas segura?",
+              "variant": "body1",
+              "align": "justify"
+            },
+            "options": [
+              {
+                "id": "m5a_s2_accept",
+                "label": {
+                  "text": "a) Aceptarlo porque parece facil y rapido.",
+                  "variant": "body2"
+                },
+                "score": 70
+              },
+              {
+                "id": "m5a_s2_reject",
+                "label": {
+                  "text": "b) Rechazarlo o pedir ayuda a un adulto antes de aceptar algo poco claro.",
+                  "variant": "body2"
+                },
+                "score": 100
+              },
+              {
+                "id": "m5a_s2_try",
+                "label": {
+                  "text": "c) Aceptarlo solo por esta vez y esperar entenderlo despues.",
+                  "variant": "body2"
+                },
+                "score": 75
+              }
+            ],
+            "prompt": {
+              "text": "Si quieres, explica por que esa opcion te parece mejor. (Opcional)",
+              "variant": "helper"
+            },
+            "placeholder": "Comparte tu reflexion...",
+            "minReasonLength": 12,
+            "reasonRequired": false
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "lockedUntilComplete"
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "selectOption"
+      }
+    },
+    {
+      "viewId": "m5_3_v4",
+      "order": 4,
+      "name": "VISTA 4 - Practica: Situacion 3",
+      "viewType": "Practica",
+      "objective": "Reflexionar sobre identificar ofertas enganiosas que prometen dinero facil.",
+      "template": "simpleQuiz",
+      "variant": "simple",
+      "slots": {
+        "title": {
+          "text": "Situacion 3",
+          "variant": "h1",
+          "align": "center"
+        },
+        "media": {
+          "src": "1/comprar-juegos.webp",
+          "alt": "Oferta atractiva que puede llevar a una mala decision",
+          "variant": "horizontal"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "image",
+            "slot": "media",
+            "area": "media",
+            "order": 20
+          }
+        ],
+        "compound": [
+          {
+            "type": "formQuestion",
+            "component": "formQuestion",
+            "category": "interactive",
+            "area": "action",
+            "question": {
+              "text": "Ves un anuncio que promete dinero facil, sin preguntas y con pago despues. Que deberias pensar primero?",
+              "variant": "body1",
+              "align": "justify"
+            },
+            "options": [
+              {
+                "id": "m5a_s3_easy",
+                "label": {
+                  "text": "a) Que si se ve facil, seguramente conviene aceptarlo.",
+                  "variant": "body2"
+                },
+                "score": 70
+              },
+              {
+                "id": "m5a_s3_verify",
+                "label": {
+                  "text": "b) Que puede ser una oferta enganiosa y conviene revisar el costo y las condiciones.",
+                  "variant": "body2"
+                },
+                "score": 100
+              },
+              {
+                "id": "m5a_s3_friends",
+                "label": {
+                  "text": "c) Que basta con preguntar a otra persona si le parece buena idea.",
+                  "variant": "body2"
+                },
+                "score": 80
+              }
+            ],
+            "prompt": {
+              "text": "Por que elegirias esa respuesta? (Opcional)",
+              "variant": "helper"
+            },
+            "placeholder": "Escribe tu razon...",
+            "minReasonLength": 12,
+            "reasonRequired": false
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "lockedUntilComplete"
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "selectOption"
+      }
+    },
+    {
+      "viewId": "m5_3_v5",
+      "order": 5,
+      "name": "VISTA 5 - Practica: Situacion 4",
+      "viewType": "Practica",
+      "objective": "Reflexionar sobre no decidir apresuradamente cuando faltan datos sobre el pago.",
+      "template": "extendedQuiz",
+      "variant": "extended",
+      "slots": {
+        "title": {
+          "text": "Situacion 4",
+          "variant": "h1",
+          "align": "center"
+        },
+        "media": {
+          "src": "1/ganar-dinero.webp",
+          "alt": "Persona revisando una propuesta antes de decidir",
+          "variant": "vertical"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "image",
+            "slot": "media",
+            "area": "media",
+            "order": 20
+          }
+        ],
+        "compound": [
+          {
+            "type": "formQuestion",
+            "component": "formQuestion",
+            "category": "interactive",
+            "area": "action",
+            "question": {
+              "text": "Te ofrecen llevar algo ahora y pagarlo despues, pero no te explican bien cuanto terminaras pagando ni en cuanto tiempo. Que decision refleja mayor cuidado?",
+              "variant": "body1",
+              "align": "justify"
+            },
+            "options": [
+              {
+                "id": "m5a_s4_accept",
+                "label": {
+                  "text": "a) Aceptar para resolverlo rapido y preguntar despues.",
+                  "variant": "body2"
+                },
+                "score": 70
+              },
+              {
+                "id": "m5a_s4_wait",
+                "label": {
+                  "text": "b) Detenerte y pedir informacion clara sobre costo, plazo y pago antes de decidir.",
+                  "variant": "body2"
+                },
+                "score": 100
+              },
+              {
+                "id": "m5a_s4_guess",
+                "label": {
+                  "text": "c) Aceptar si crees que despues encontraras como pagarlo.",
+                  "variant": "body2"
+                },
+                "score": 75
+              }
+            ],
+            "prompt": {
+              "text": "Si quieres, explica por que tomarias esa decision. (Opcional)",
+              "variant": "helper"
+            },
+            "placeholder": "Cuenta tu reflexion...",
+            "minReasonLength": 12,
+            "reasonRequired": false
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "lockedUntilComplete"
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "selectOption"
+      }
+    },
+    {
+      "viewId": "m5_3_v6",
+      "order": 6,
+      "name": "VISTA 6 - Final: Cierre reflexivo",
+      "viewType": "Final",
+      "objective": "Cerrar la mision actitudinal reforzando el rechazo a decisiones financieras informales o riesgosas.",
+      "template": "postGameLobby",
+      "variant": "postGame",
+      "slots": {
+        "title": {
+          "text": "Reflexion completada",
+          "variant": "h1",
+          "align": "center"
+        },
+        "feedback": {
+          "text": "Completaste una mision de reflexion sobre decisiones financieras seguras y responsables: +10 INTIS",
+          "variant": "label",
+          "align": "center",
+          "color": "accent"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "text",
+            "slot": "feedback",
+            "area": "feedback",
+            "order": 20
+          }
+        ],
+        "compound": [
+          {
+            "type": "showCard",
+            "component": "showCard",
+            "category": "grouper",
+            "area": "rewards",
+            "items": [
+              {
+                "id": "reward-xp",
+                "title": {
+                  "text": "XP",
+                  "variant": "label"
+                },
+                "text": {
+                  "text": "+10",
+                  "variant": "body1",
+                  "color": "secondary"
+                },
+                "media": {
+                  "src": "",
+                  "alt": "Recompensa de XP",
+                  "variant": "square"
+                }
+              },
+              {
+                "id": "reward-intis",
+                "title": {
+                  "text": "INTIS",
+                  "variant": "label"
+                },
+                "text": {
+                  "text": "+10",
+                  "variant": "body1",
+                  "color": "secondary"
+                },
+                "media": {
+                  "src": "",
+                  "alt": "Recompensa de INTIS",
+                  "variant": "square"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "cta",
+        "label": "Continuar",
+        "action": "goToNextMissionMenu"
+      },
+      "completionCriteria": {
+        "type": "endOfMission"
+      }
+    }
+  ]
 }
