@@ -189,7 +189,7 @@
       "code": "m05",
       "sortOrder": 5,
       "title": "Modulo 5",
-      "name": "Endeudamiento responsable y riesgos financieros",
+      "name": "Decisiones financieras responsables",
       "theme": {
         "tone": "rose",
         "color": "#7130F7",
@@ -197,11 +197,11 @@
       },
       "missions": {
         "conceptual": {
-          "title": "Conceptual",
+          "title": "Préstamo, deuda, costo y riesgo",
           "backendActivityId": null,
           "activityKey": "m05-conceptual",
-          "learn": [],
-          "outcome": ""
+          "learn": ["Comprender qué es un préstamo y cómo funciona.","Reconocer qué significa tener una deuda y la responsabilidad de devolver el dinero recibido."],
+          "outcome": "Reconocerás qué es un préstamo, qué implica una deuda, qué significa pagar un costo adicional o interés simple y por qué existen riesgos financieros."
         },
         "procedimental": {
           "title": "Procedimental",
@@ -211,11 +211,11 @@
           "outcome": ""
         },
         "actitudinal": {
-          "title": "Actitudinal",
+          "title": "Rechazo decisiones financieras informales o riesgosas",
           "backendActivityId": null,
           "activityKey": "m05-actitudinal",
-          "learn": [],
-          "outcome": ""
+          "learn": ["Reflexionar sobre los riesgos de aceptar préstamos o compromisos financieros sin analizarlos previamente","✦ Reconocer la importancia de pensar antes de tomar decisiones relacionadas con el dinero."],
+          "outcome": "Reflexionarás sobre distintas situaciones para reconocer la importancia de evitar decisiones financieras apresuradas, informales o riesgosas."
         }
       }
     },
