@@ -69,7 +69,11 @@ export default function Calculator({
   disabled = false,
 }) {
   const submitLabel = data?.submitLabel ?? "Pagar";
-  const emptyLabel = data?.emptyLabel ?? "Aún no has seleccionado productos.";
+  const emptyLabel = data?.emptyLabel ?? "Aun no has seleccionado productos.";
+  const summaryLabels = data?.summaryLabels ?? {};
+  const initialLabel = summaryLabels.initial ?? "Saldo inicial";
+  const totalLabel = summaryLabels.total ?? "Suma total";
+  const balanceLabel = summaryLabels.balance ?? "Saldo restante";
 
   return (
     <section className="flex h-full min-h-0 w-full min-w-0 flex-col gap-3 rounded-2xl border border-white/10 bg-white/5 p-3">
@@ -132,9 +136,9 @@ export default function Calculator({
       </div>
 
       <div className="shrink-0 space-y-2 rounded-xl border border-white/10 bg-black/10 p-3">
-        <SummaryRow label="Saldo inicial" value={initialBalance} />
-        <SummaryRow label="Suma total" value={total} />
-        <SummaryRow label="Saldo restante" value={balance} />
+        <SummaryRow label={initialLabel} value={initialBalance} />
+        <SummaryRow label={totalLabel} value={total} />
+        <SummaryRow label={balanceLabel} value={balance} />
       </div>
 
       {errorMessage ? (

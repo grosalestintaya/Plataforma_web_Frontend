@@ -4,14 +4,14 @@
   "backendActivityId": "14",
   "activityKey": "m05-procedimental",
   "headerTitle": "Procedimental",
-  "missionTitle": "Evaluo si me conviene endeudarme",
+  "missionTitle": "Financio mi emprendimiento sin atrasarme",
   "views": [
     {
       "viewId": "m5_2_v1",
       "order": 1,
       "name": "VISTA 1 - Inicio: Antes de empezar",
       "viewType": "Inicio",
-      "objective": "Presentar la practica del modulo 5 y explicar que el estudiante evaluara decisiones antes de aceptar un prestamo.",
+      "objective": "Presentar la practica del modulo 5 y explicar que el estudiante analizara materiales, prestamo y plan de pagos antes de endeudarse.",
       "template": "preGameLobby",
       "variant": "preGame",
       "slots": {
@@ -22,16 +22,16 @@
         },
         "body": {
           "paragraphs": [
-            "En esta practica revisaras situaciones donde una persona piensa en pedir prestado.",
-            "Tu tarea sera observar si la necesidad es real, cuanto costara el prestamo, si el pago es posible y si la oferta parece segura o riesgosa.",
-            "Lee cada escenario con calma y decide que harías antes de endeudarte."
+            "En esta practica financiaras un pequeno emprendimiento sin atrasarte en tus pagos.",
+            "Primero revisaras que materiales necesitas, luego compararas prestamos y finalmente organizaras un plan de pago por semanas.",
+            "La idea es reconocer que una deuda solo conviene cuando cubre una necesidad real, tiene condiciones claras y puede pagarse a tiempo."
           ],
           "variant": "body1",
           "align": "left"
         },
         "media": {
-          "src": "1/pensar.webp",
-          "alt": "Estudiante analizando una decision financiera",
+          "src": "1/ganar-dinero.webp",
+          "alt": "Estudiante planificando un pequeno emprendimiento",
           "variant": "vertical"
         }
       },
@@ -60,7 +60,7 @@
       },
       "navigation": {
         "mode": "cta",
-        "label": "Iniciar",
+        "label": "Empezar",
         "action": "startMissionAttempt"
       },
       "completionCriteria": {
@@ -70,249 +70,527 @@
     {
       "viewId": "m5_2_v2",
       "order": 2,
-      "name": "VISTA 2 - Practica: Situacion 1",
+      "name": "VISTA 2 - Practica: Financio mi emprendimiento sin atrasarme",
       "viewType": "Practica",
-      "objective": "Evaluar un prestamo formal para una necesidad escolar, revisando costo y capacidad de pago.",
+      "objective": "Evaluar cuanto dinero hace falta, comparar ofertas de prestamo y organizar pagos semanales hasta completar la deuda.",
       "template": "whatWouldYouDo",
-      "variant": "scenarioDecision",
+      "variant": "entrepreneurLoanPlan",
       "data": {
         "title": {
-          "text": "Situacion 1",
+          "text": "Financio mi emprendimiento sin atrasarme",
           "variant": "h1",
           "align": "left"
         },
-        "text": {
-          "paragraphs": [
-            "Luis necesita comprar materiales para una exposicion escolar que debe entregar esta semana.",
-            "Le ofrecen un prestamo de S/ 40. Debe devolver S/ 45 en 2 semanas.",
-            "Luis puede guardar S/ 25 por semana y la oferta tiene condiciones claras."
+        "game": {
+          "ownMoney": 12,
+          "stepTitles": [
+            "Preparo mis materiales",
+            "Comparo prestamos",
+            "Cumplo mi plan de pagos",
+            "Reviso mi resultado"
           ],
-          "variant": "body1",
-          "align": "left"
-        },
-        "scenarioType": "formalLoan",
-        "caseFacts": {
-          "need": "Materiales para una exposicion escolar",
-          "loanAmount": 40,
-          "totalPayment": 45,
-          "term": "2 semanas",
-          "paymentCapacity": "Puede separar S/ 25 por semana",
-          "offerType": "Formal y clara"
-        },
-        "expectedDecision": "Comparar el costo y aceptar solo si no afecta otras prioridades importantes.",
-        "options": [
-          {
-            "id": "m5p_s1_opt1",
-            "label": "Aceptar el prestamo despues de revisar que el pago si cabe en su dinero disponible.",
-            "score": 100
-          },
-          {
-            "id": "m5p_s1_opt2",
-            "label": "Aceptar de inmediato sin revisar cuanto terminara pagando.",
-            "score": 60
-          },
-          {
-            "id": "m5p_s1_opt3",
-            "label": "Rechazarlo sin analizar si realmente podia resolver una necesidad importante.",
-            "score": 80
+          "products": [
+            {
+              "id": "basic",
+              "label": "Basica",
+              "sidebarLabel": "Basica",
+              "quantity": 5,
+              "unitPrice": 3,
+              "income": 15,
+              "media": {
+                "src": "1/ganar-dinero.webp",
+                "alt": "Modelo de pulsera basica",
+                "variant": "square"
+              }
+            },
+            {
+              "id": "charm",
+              "label": "Con dije",
+              "sidebarLabel": "Con dije",
+              "quantity": 4,
+              "unitPrice": 6,
+              "income": 24,
+              "media": {
+                "src": "1/ganar-dinero.webp",
+                "alt": "Modelo de pulsera con dije",
+                "variant": "square"
+              }
+            },
+            {
+              "id": "custom",
+              "label": "Personalizada",
+              "sidebarLabel": "Personalizada",
+              "quantity": 3,
+              "unitPrice": 8,
+              "income": 24,
+              "media": {
+                "src": "1/ganar-dinero.webp",
+                "alt": "Modelo de pulsera personalizada",
+                "variant": "square"
+              }
+            }
+          ],
+          "materials": [
+            {
+              "id": "hilo",
+              "label": "Hilos",
+              "price": 8,
+              "required": true,
+              "media": {
+                "src": "2/cinta.webp",
+                "alt": "Hilo de colores para pulseras",
+                "variant": "square"
+              }
+            },
+            {
+              "id": "cuentas",
+              "label": "Cuentas",
+              "price": 15,
+              "required": true,
+              "media": {
+                "src": "2/escarcha.webp",
+                "alt": "Cuentas para pulseras",
+                "variant": "square"
+              }
+            },
+            {
+              "id": "dijes",
+              "label": "Dijes",
+              "price": 8,
+              "required": true,
+              "media": {
+                "src": "2/stikers.webp",
+                "alt": "Dijes para pulseras",
+                "variant": "square"
+              }
+            },
+            {
+              "id": "letras",
+              "label": "Letras",
+              "price": 9,
+              "required": true,
+              "media": {
+                "src": "2/plumones.webp",
+                "alt": "Letras para personalizar pulseras",
+                "variant": "square"
+              }
+            },
+            {
+              "id": "broches",
+              "label": "Broches",
+              "price": 6,
+              "required": true,
+              "media": {
+                "src": "2/stick.webp",
+                "alt": "Broches y cierres para pulseras",
+                "variant": "square"
+              }
+            },
+            {
+              "id": "bolsitas",
+              "label": "Bolsitas para entregar",
+              "price": 4,
+              "required": true,
+              "media": {
+                "src": "2/cartulina.webp",
+                "alt": "Bolsitas para entregar pulseras",
+                "variant": "square"
+              }
+            },
+            {
+              "id": "snack",
+              "label": "Snack",
+              "price": 5,
+              "required": false,
+              "media": {
+                "src": "3/snacks.jpeg",
+                "alt": "Snack para el recreo",
+                "variant": "square"
+              }
+            },
+            {
+              "id": "audifonos",
+              "label": "Audifonos",
+              "price": 7,
+              "required": false,
+              "media": {
+                "src": "2/audifonos.webp",
+                "alt": "Audifonos personales",
+                "variant": "square"
+              }
+            },
+            {
+              "id": "cuaderno",
+              "label": "Cuaderno",
+              "price": 6,
+              "required": false,
+              "media": {
+                "src": "2/materiales-de-estudio.webp",
+                "alt": "Cuaderno y utiles escolares",
+                "variant": "square"
+              }
+            }
+          ],
+          "loanOffers": [
+            {
+              "id": "offer-a",
+              "name": "Oferta A",
+              "amount": 30,
+              "totalToRepay": 33,
+              "extraCost": 3,
+              "termWeeks": 4,
+              "weeklyPayment": "S/ 8.25",
+              "differenceLabel": "Faltan S/ 8.00",
+              "risk": "Bajo",
+              "conditions": "Claras",
+              "coverage": "Insuficiente",
+              "summary": "No alcanza para completar la compra.",
+              "detailMessage": "Faltan S/ 8.00 para cubrir todos los materiales.",
+              "viable": false,
+              "media": {
+                "src": "/activity/1/recibir-dinero.webp",
+                "alt": "Oferta A de prestamo"
+              }
+            },
+            {
+              "id": "offer-b",
+              "name": "Oferta B",
+              "amount": 45,
+              "totalToRepay": 51,
+              "extraCost": 6,
+              "termWeeks": 4,
+              "weeklyPayment": "S/ 13, S/ 13, S/ 13 y S/ 12",
+              "differenceLabel": "Sobran S/ 7.00",
+              "risk": "Bajo",
+              "conditions": "Claras",
+              "coverage": "Suficiente",
+              "summary": "Cubre la compra y deja un pequeno respaldo.",
+              "detailMessage": "Cubre lo necesario y sus condiciones son claras.",
+              "viable": true,
+              "media": {
+                "src": "/activity/1/ganar-dinero.webp",
+                "alt": "Oferta B de prestamo"
+              }
+            },
+            {
+              "id": "offer-c",
+              "name": "Oferta C",
+              "amount": 65,
+              "totalToRepay": 84,
+              "extraCost": 19,
+              "termWeeks": 4,
+              "weeklyPayment": "S/ 21.00",
+              "differenceLabel": "Sobran S/ 27.00",
+              "risk": "Medio",
+              "conditions": "Claras, pero costosas",
+              "coverage": "Mucho mas de lo necesario",
+              "summary": "Presta de mas y vuelve la deuda pesada.",
+              "detailMessage": "Devolverias S/ 84.00, mas de lo que el negocio puede sostener.",
+              "viable": false,
+              "media": {
+                "src": "/activity/1/ahorro.webp",
+                "alt": "Oferta C de prestamo"
+              }
+            },
+            {
+              "id": "offer-d",
+              "name": "Oferta D",
+              "amount": 45,
+              "totalToRepay": null,
+              "extraCost": null,
+              "termWeeks": null,
+              "weeklyPayment": "No se puede calcular",
+              "differenceLabel": "Cobertura suficiente",
+              "risk": "Alto",
+              "conditions": "Poco claras",
+              "coverage": "Suficiente",
+              "summary": "Oculta datos clave del pago.",
+              "detailMessage": "Sin total ni plazo claros no puedes planificar el pago.",
+              "viable": false,
+              "media": {
+                "src": "/activity/1/compra-online-ahorro.webp",
+                "alt": "Oferta D de prestamo"
+              }
+            }
+          ],
+          "paymentStrategies": [
+            {
+              "id": "early",
+              "title": "Opcion 1: pago anticipado",
+              "description": "Cada semana juntas dinero y, ni bien alcanzas lo que debes, lo pagas de inmediato.",
+              "tone": "warning",
+              "summary": "Avanzas rapido, pero puedes gastar tu reserva antes de tiempo.",
+              "conditions": [
+                "Guardas ventas y reserva hasta completar toda la deuda.",
+                "Pagas en una sola semana, apenas ya te alcance.",
+                "Si te adelantas, terminas antes del plazo."
+              ],
+              "media": {
+                "src": "/activity/1/recibir-dinero.webp",
+                "alt": "Pago anticipado del prestamo",
+                "variant": "horizontal"
+              }
+            },
+            {
+              "id": "regulated",
+              "title": "Opcion 2: pago regulado",
+              "description": "Cada semana separas un monto para completar el pago dentro del plazo acordado.",
+              "tone": "success",
+              "summary": "Te ayuda a mantener orden entre pagar y seguir vendiendo.",
+              "conditions": [
+                "Divides la deuda en 4 semanas.",
+                "Cada semana cumples una cuota planificada.",
+                "Es la opcion mas ordenada para no desbalancearte."
+              ],
+              "media": {
+                "src": "/activity/1/ganar-dinero.webp",
+                "alt": "Pago regulado del prestamo",
+                "variant": "horizontal"
+              }
+            },
+            {
+              "id": "deferred",
+              "title": "Opcion 3: pago ni bien tenga todo",
+              "description": "Dejas la deuda para el final y pagas cuando crees tener todo, con mas incertidumbre al cierre.",
+              "tone": "warning",
+              "summary": "Postergar el pago hace mas riesgoso llegar completo al final.",
+              "conditions": [
+                "No pagas durante las primeras semanas.",
+                "Guardas todo para cancelar al final.",
+                "Si algo falla, el cierre se vuelve mas riesgoso."
+              ],
+              "media": {
+                "src": "/activity/1/compra-online-ahorro.webp",
+                "alt": "Pago postergado del prestamo",
+                "variant": "horizontal"
+              }
+            }
+          ],
+          "weeks": [
+            {
+              "week": 1,
+              "title": "La feria comienza bien",
+              "description": "Vendiste 2 pulseras basicas, 1 pulsera con dije y 1 pulsera personalizada.",
+              "sales": [
+                {
+                  "product": "Basica",
+                  "quantity": 2,
+                  "unitPrice": 3,
+                  "income": 6
+                },
+                {
+                  "product": "Con dije",
+                  "quantity": 1,
+                  "unitPrice": 6,
+                  "income": 6
+                },
+                {
+                  "product": "Personalizada",
+                  "quantity": 1,
+                  "unitPrice": 8,
+                  "income": 8
+                }
+              ],
+              "income": 20,
+              "fullScore": 10
+            },
+            {
+              "week": 2,
+              "title": "Esta semana hubo menos compradores",
+              "description": "Vendiste 1 pulsera basica y 1 pulsera con dije.",
+              "sales": [
+                {
+                  "product": "Basica",
+                  "quantity": 1,
+                  "unitPrice": 3,
+                  "income": 3
+                },
+                {
+                  "product": "Con dije",
+                  "quantity": 1,
+                  "unitPrice": 6,
+                  "income": 6
+                }
+              ],
+              "income": 9,
+              "fullScore": 10
+            },
+            {
+              "week": 3,
+              "title": "Las ventas mejoraron",
+              "description": "Vendiste 1 pulsera basica, 1 pulsera con dije y 1 pulsera personalizada.",
+              "sales": [
+                {
+                  "product": "Basica",
+                  "quantity": 1,
+                  "unitPrice": 3,
+                  "income": 3
+                },
+                {
+                  "product": "Con dije",
+                  "quantity": 1,
+                  "unitPrice": 6,
+                  "income": 6
+                },
+                {
+                  "product": "Personalizada",
+                  "quantity": 1,
+                  "unitPrice": 8,
+                  "income": 8
+                }
+              ],
+              "income": 17,
+              "fullScore": 15
+            },
+            {
+              "week": 4,
+              "title": "La feria cierra con buenas ventas",
+              "description": "Vendiste 1 pulsera basica, 1 pulsera con dije y 1 pulsera personalizada.",
+              "sales": [
+                {
+                  "product": "Basica",
+                  "quantity": 1,
+                  "unitPrice": 3,
+                  "income": 3
+                },
+                {
+                  "product": "Con dije",
+                  "quantity": 1,
+                  "unitPrice": 6,
+                  "income": 6
+                },
+                {
+                  "product": "Personalizada",
+                  "quantity": 1,
+                  "unitPrice": 8,
+                  "income": 8
+                }
+              ],
+              "income": 17,
+              "fullScore": 10
+            }
+          ],
+          "copy": {
+            "step1": {
+              "asideTitle": "Productos a vender",
+              "asideText": "Observa las pulseras y elige solo los materiales necesarios.",
+              "mainTitle": "Que necesito comprar para fabricar las pulseras?",
+              "mainSubtitle": "Agrega al carrito solo los materiales que ayudan a producir o entregar los pedidos.",
+              "shoppingTitle": "Mi seleccion",
+              "emptySelectionLabel": "Elige uno o mas materiales.",
+              "summaryLabels": {
+                "initial": "Dinero propio",
+                "total": "Costo actual",
+                "balance": "Dinero disponible"
+              },
+              "reviewButton": "Revisar materiales",
+              "nextButton": "Comparar prestamos"
+            },
+            "step2": {
+              "mainTitle": "Ofertas de prestamo disponibles",
+              "mainSubtitle": "Compara monto, interes, plazo y claridad antes de decidir.",
+              "neededMoneyLabel": "Dinero que necesito",
+              "chooseButton": "Elegir esta oferta"
+            },
+            "step3": {
+              "sidebarHeroTitle": "Armando mi plan de pago",
+              "asidePlanTitle": "Plan de pago",
+              "asideExecutionTitle": "Seguimiento del pago",
+              "planTitle": "Como pagare mi prestamo?",
+              "planSubtitle": "Elige una forma de organizar tus pagos semanales antes de empezar con las ventas.",
+              "strategyDetailsTitle": "Condiciones de esta opcion",
+              "strategyContinueButton": "Continuar con esta opcion",
+              "reserveLabel": "Reserva disponible",
+              "reserveHint": "Es la diferencia entre lo que necesitabas y lo que te presto la oferta elegida.",
+              "executionTitle": "Cumplo mi plan de pagos",
+              "executionSubtitle": "Sigue tu estrategia, revisa lo que vendiste y decide el pago de la semana solo cuando corresponda.",
+              "weekSalesTitle": "Ventas de la semana",
+              "weekSalesHint": "Esto ingreso tu emprendimiento en esta semana.",
+              "paymentActionTitle": "Decision de esta semana",
+              "waitWeekButton": "Registrar semana sin pago",
+              "payAllButton": "Pagar todo ahora",
+              "paymentInputTitle": "Decide cuanto pagar esta semana",
+              "paymentInputHint": "Recuerda: puedes usar las ventas de la semana y, si hace falta, parte de tu reserva.",
+              "confirmPaymentButton": "Confirmar pago",
+              "continueButton": "Continuar a la siguiente semana",
+              "reviewResultButton": "Revisar mi resultado"
+            },
+            "step4": {
+              "mainTitle": "Resultado de mi emprendimiento",
+              "mainSubtitle": "Asi fue tu proceso desde la lista de materiales hasta el pago final del prestamo.",
+              "materialsTitle": "Mis materiales",
+              "loanTitle": "Prestamo elegido",
+              "paymentsTitle": "Recorrido de pagos",
+              "financialTitle": "Resultado financiero"
+            },
+            "messages": {
+              "materialsSuccess": {
+                "tone": "success",
+                "title": "Tu lista esta completa",
+                "text": "Ya sabes cuanto dinero necesitas para iniciar la produccion de las pulseras."
+              },
+              "materialsMissing": {
+                "tone": "warning",
+                "title": "Tu lista aun no permite fabricar todos los pedidos",
+                "text": "Revisa que material falta para completar las pulseras solicitadas antes de pasar al prestamo."
+              },
+              "materialsDistractor": {
+                "tone": "warning",
+                "title": "Hay productos que no ayudan a tu produccion",
+                "text": "Ese gasto no fabrica ni entrega pulseras. Si lo agregas, aumenta el dinero que necesitas pedir prestado."
+              },
+              "materialsGeneric": {
+                "tone": "warning",
+                "title": "Revisa tu seleccion",
+                "text": "Ajusta la lista para quedarte solo con lo necesario para producir y entregar."
+              },
+              "offerViable": {
+                "tone": "success",
+                "title": "Puede funcionar",
+                "text": "Cubre lo necesario. Si quieres seguir, presiona otra vez el boton."
+              },
+              "offerInvalidTitle": "No permite avanzar",
+              "offerInvalidFallback": "Esta oferta no conviene para continuar.",
+              "planAdjustTitle": "Ajusta tu plan semanal",
+              "planReady": {
+                "tone": "success",
+                "title": "Plan de pagos listo",
+                "text": "Ahora revisa semana por semana si tus ventas y tu reserva alcanzan para sostener el plan que propusiste."
+              },
+              "paymentInvalid": {
+                "tone": "warning",
+                "title": "El pago no es valido",
+                "text": "No puedes pagar un monto negativo, superior al dinero disponible de la semana o mayor que la deuda pendiente."
+              },
+              "finalRiskTitle": "Tu plan necesita mejoras",
+              "finalRiskText": "Antes de aceptar un prestamo, debes verificar que el monto alcance, que las condiciones sean claras y que tus ventas permitan cumplir con el pago.",
+              "finalDebtTitle": "Tu plan necesita reforzar los pagos",
+              "finalDebtText": "Aun queda deuda pendiente. Revisa como una semana con menos ventas puede afectar el cumplimiento del prestamo.",
+              "finalTopTitle": "Decision financiera responsable",
+              "finalTopText": "Identificaste los materiales necesarios, elegiste una oferta clara y organizaste tus pagos hasta completar el prestamo dentro del plazo.",
+              "finalMidTitle": "Cumpliste con el prestamo, pero tu plan tuvo momentos ajustados",
+              "finalMidText": "Revisa como una semana con menos ventas puede generar atrasos. Una reserva mas amplia puede ayudarte a reducir el riesgo.",
+              "finalLowTitle": "Tu plan necesita mejoras",
+              "finalLowText": "Lograste avanzar, pero todavia debes fortalecer como comparas el prestamo y como compensas los atrasos de pago."
+            }
           }
-        ]
+        }
       },
       "navigation": {
         "mode": "embedded",
-        "label": "Lee la situacion y confirma tu decision."
+        "label": "Avanza paso a paso para construir una decision de endeudamiento responsable."
       },
       "completionCriteria": {
         "type": "interaction",
-        "required": "confirmDecision"
+        "required": "completeLoanPlanningMission"
       }
     },
     {
       "viewId": "m5_2_v3",
       "order": 3,
-      "name": "VISTA 3 - Practica: Situacion 2",
-      "viewType": "Practica",
-      "objective": "Reconocer que no conviene endeudarse por un gusto momentaneo con una oferta enganiosa.",
-      "template": "whatWouldYouDo",
-      "variant": "scenarioDecision",
-      "data": {
-        "title": {
-          "text": "Situacion 2",
-          "variant": "h1",
-          "align": "left"
-        },
-        "text": {
-          "paragraphs": [
-            "Camila quiere comprar unos audifonos que le gustaron en una promocion de internet.",
-            "Le ofrecen llevarlos hoy con un pago despues: recibe S/ 60 y termina devolviendo S/ 90.",
-            "La publicidad dice dinero rapido y facil, pero no explica bien las condiciones."
-          ],
-          "variant": "body1",
-          "align": "left"
-        },
-        "scenarioType": "misleadingOffer",
-        "caseFacts": {
-          "need": "No es una necesidad urgente",
-          "loanAmount": 60,
-          "totalPayment": 90,
-          "term": "No esta claro",
-          "paymentCapacity": "No ha revisado si puede pagarlo",
-          "offerType": "Oferta poco clara"
-        },
-        "expectedDecision": "No conviene aceptar una oferta poco clara para cubrir un gusto del momento.",
-        "options": [
-          {
-            "id": "m5p_s2_opt1",
-            "label": "Aceptar porque asi no pierde la promocion.",
-            "score": 60
-          },
-          {
-            "id": "m5p_s2_opt2",
-            "label": "Detenerse, desconfiar de la oferta y no endeudarse por una compra no urgente.",
-            "score": 100
-          },
-          {
-            "id": "m5p_s2_opt3",
-            "label": "Aceptar primero y preguntar despues cuanto pagara en total.",
-            "score": 60
-          }
-        ]
-      },
-      "navigation": {
-        "mode": "embedded",
-        "label": "Lee la situacion y confirma tu decision."
-      },
-      "completionCriteria": {
-        "type": "interaction",
-        "required": "confirmDecision"
-      }
-    },
-    {
-      "viewId": "m5_2_v4",
-      "order": 4,
-      "name": "VISTA 4 - Practica: Situacion 3",
-      "viewType": "Practica",
-      "objective": "Identificar el riesgo de un prestamo informal con informacion incompleta.",
-      "template": "whatWouldYouDo",
-      "variant": "scenarioDecision",
-      "data": {
-        "title": {
-          "text": "Situacion 3",
-          "variant": "h1",
-          "align": "left"
-        },
-        "text": {
-          "paragraphs": [
-            "A Julia se le malogro un cuaderno de trabajo y necesita reponerlo pronto.",
-            "Una persona del barrio le ofrece S/ 30 y le dice que luego ven como se devuelve.",
-            "No hay plazo claro, no se explica el costo final y todo queda solo de palabra."
-          ],
-          "variant": "body1",
-          "align": "left"
-        },
-        "scenarioType": "informalLoan",
-        "caseFacts": {
-          "need": "Necesidad escolar real",
-          "loanAmount": 30,
-          "totalPayment": "No definido",
-          "term": "No definido",
-          "paymentCapacity": "No puede calcularse bien",
-          "offerType": "Informal"
-        },
-        "expectedDecision": "Aunque la necesidad existe, no conviene aceptar un prestamo informal sin condiciones claras.",
-        "options": [
-          {
-            "id": "m5p_s3_opt1",
-            "label": "Aceptar porque el dinero se necesita rapido y lo demas se ve despues.",
-            "score": 60
-          },
-          {
-            "id": "m5p_s3_opt2",
-            "label": "Buscar una opcion mas clara o pedir ayuda antes de aceptar algo informal.",
-            "score": 100
-          },
-          {
-            "id": "m5p_s3_opt3",
-            "label": "Aceptar solo porque la persona parece de confianza.",
-            "score": 70
-          }
-        ]
-      },
-      "navigation": {
-        "mode": "embedded",
-        "label": "Lee la situacion y confirma tu decision."
-      },
-      "completionCriteria": {
-        "type": "interaction",
-        "required": "confirmDecision"
-      }
-    },
-    {
-      "viewId": "m5_2_v5",
-      "order": 5,
-      "name": "VISTA 5 - Practica: Situacion 4",
-      "viewType": "Practica",
-      "objective": "Evaluar que no conviene asumir una deuda cuando la capacidad de pago no alcanza.",
-      "template": "whatWouldYouDo",
-      "variant": "scenarioDecision",
-      "data": {
-        "title": {
-          "text": "Situacion 4",
-          "variant": "h1",
-          "align": "left"
-        },
-        "text": {
-          "paragraphs": [
-            "Pedro quiere pedir un prestamo de S/ 80 para cubrir un gasto familiar importante.",
-            "Debe devolver S/ 100 en una semana, pero solo podria reunir S/ 50 en ese tiempo.",
-            "La necesidad es real, pero el pago exigido supera claramente su capacidad."
-          ],
-          "variant": "body1",
-          "align": "left"
-        },
-        "scenarioType": "insufficientCapacity",
-        "caseFacts": {
-          "need": "Necesidad familiar importante",
-          "loanAmount": 80,
-          "totalPayment": 100,
-          "term": "1 semana",
-          "paymentCapacity": "Solo puede reunir S/ 50",
-          "offerType": "Costo y plazo claros"
-        },
-        "expectedDecision": "Si no alcanza para pagar en el plazo, no conviene aceptar la deuda asi como esta.",
-        "options": [
-          {
-            "id": "m5p_s4_opt1",
-            "label": "Aceptar aunque no alcance y esperar resolverlo despues.",
-            "score": 60
-          },
-          {
-            "id": "m5p_s4_opt2",
-            "label": "Reconocer que no puede responder por ese pago y buscar otra alternativa.",
-            "score": 100
-          },
-          {
-            "id": "m5p_s4_opt3",
-            "label": "Aceptar porque la necesidad es importante, sin revisar el riesgo de no pagar.",
-            "score": 70
-          }
-        ]
-      },
-      "navigation": {
-        "mode": "embedded",
-        "label": "Lee la situacion y confirma tu decision."
-      },
-      "completionCriteria": {
-        "type": "interaction",
-        "required": "confirmDecision"
-      }
-    },
-    {
-      "viewId": "m5_2_v6",
-      "order": 6,
-      "name": "VISTA 6 - Final: Mision cumplida",
+      "name": "VISTA 3 - Final: Mision cumplida",
       "viewType": "Final",
-      "objective": "Cerrar la practica reforzando que una deuda debe evaluarse antes de aceptarse.",
+      "objective": "Cerrar la practica reforzando que endeudarse exige revisar necesidad, costo, riesgo y capacidad de pago.",
       "template": "postGameLobby",
       "variant": "postGame",
       "slots": {
@@ -322,7 +600,7 @@
           "align": "center"
         },
         "feedback": {
-          "text": "Practicaron como evaluar si una deuda conviene o no, revisando necesidad, costo, capacidad de pago y riesgo antes de decidir.",
+          "text": "Ya comparaste materiales, prestamos y pagos para decidir una deuda con mas criterio. Endeudarse solo conviene cuando el monto alcanza, las condiciones son claras y el plan de pago es posible.",
           "variant": "label",
           "align": "center",
           "color": "accent"

@@ -36,10 +36,8 @@ export default function Button({
   className = "",
 }) {
   const content = children ?? label ?? "Continuar";
-
   const variantClass =
     BUTTON_VARIANT_CLASS[variant] ?? BUTTON_VARIANT_CLASS.simple;
-
   const sizeClass = BUTTON_SIZE_CLASS[size] ?? BUTTON_SIZE_CLASS.normal;
   const hasComplexContent = isValidElement(content);
 
@@ -49,21 +47,29 @@ export default function Button({
       onClick={onClick}
       disabled={disabled}
       className={cn(
-        "box-border flex min-w-0 max-w-full cursor-pointer items-center justify-center overflow-hidden",
+        "box-border max-w-full cursor-pointer items-center justify-center overflow-hidden",
         "rounded-xl border font-medium transition duration-200",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60",
         "focus-visible:ring-offset-2 focus-visible:ring-offset-black/30",
         "hover:-translate-y-0.5 active:translate-y-0",
         "disabled:cursor-not-allowed disabled:translate-y-0 disabled:opacity-60",
         "touch-manipulation select-none",
+        hasComplexContent ? "flex w-full min-w-0" : "inline-flex w-auto",
+        fullWidth && "w-full min-w-0",
         sizeClass,
         variantClass,
-        fullWidth && "w-full",
         className,
       )}
     >
       {hasComplexContent ? (
-        <div className="min-w-0 w-full">{content}</div>
+        <div
+          className={cn(
+            "w-full min-w-0 max-w-full",
+            "[&_p]:break-normal [&_p]:[overflow-wrap:normal]",
+          )}
+        >
+          {content}
+        </div>
       ) : (
         <span className="min-w-0 truncate text-center leading-tight">
           {content}
