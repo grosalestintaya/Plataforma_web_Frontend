@@ -25,14 +25,27 @@ export default function Shopping({
   disabled = false,
   columns = 3,
   rows = 2,
+  hideCalculator = false,
+  layout = "default",
 }) {
   const shoppingItems = useMemo(() => {
     return items.map(normalizeShoppingItem);
   }, [items]);
 
+  const desktopLayoutClass =
+    layout === "balanced"
+      ? "lg:grid-cols-[minmax(0,1.18fr)_minmax(23rem,1fr)]"
+      : "lg:grid-cols-[minmax(0,1.55fr)_minmax(20rem,0.9fr)]";
+
   return (
-    <div className="grid min-h-full w-full min-w-0 gap-3 overflow-visible lg:h-full lg:min-h-0 lg:grid-cols-[minmax(0,1.55fr)_minmax(20rem,0.9fr)] lg:overflow-hidden">
-      <section className="min-h-[18rem] min-w-0 overflow-visible rounded-2xl border border-white/10 bg-white/5 p-3 lg:h-full lg:min-h-0 lg:overflow-hidden">
+    <div
+      className={
+        hideCalculator
+          ? "grid min-h-full w-full min-w-0 gap-3 overflow-visible lg:h-full lg:min-h-0 lg:grid-cols-1 lg:items-stretch"
+          : `grid min-h-full w-full min-w-0 gap-3 overflow-visible lg:h-full lg:min-h-0 lg:items-stretch ${desktopLayoutClass}`
+      }
+    >
+      <section className="min-h-[18rem] min-w-0 overflow-visible rounded-2xl border border-white/10 bg-white/5 p-3 lg:h-full lg:min-h-0">
         <CollageCard
           items={shoppingItems}
           selectedIds={selectedIds}
@@ -42,7 +55,7 @@ export default function Shopping({
         />
       </section>
 
-      <section className="min-h-[18rem] min-w-0 overflow-visible rounded-2xl lg:h-full lg:min-h-0 lg:overflow-hidden">
+      {!hideCalculator ? (
         <Calculator
           data={calculatorData}
           items={selectedItems}
@@ -54,7 +67,7 @@ export default function Shopping({
           onRemoveItem={onRemoveItem}
           disabled={disabled}
         />
-      </section>
+      ) : null}
     </div>
   );
 }
