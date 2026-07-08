@@ -30,7 +30,7 @@
           "align": "left"
         },
         "media": {
-          "src": "/activity/5/emprendimiento-final.jpeg",
+          "src": "/activity/5/emprendimiento-final.webp",
           "alt": "Estudiante planificando un pequeño emprendimiento",
           "variant": "vertical"
         }
@@ -84,7 +84,7 @@
         "game": {
           "ownMoney": 12,
           "ventureMedia": {
-            "src": "/activity/5/emprendimiento-final.jpeg",
+            "src": "/activity/5/emprendimiento-final.webp",
             "alt": "Emprendimiento de pulseras terminado",
             "variant": "square"
           },
@@ -103,7 +103,7 @@
               "unitPrice": 3,
               "income": 15,
               "media": {
-                "src": "/activity/5/pulsera-basica.jpeg",
+                "src": "/activity/5/pulsera-basica.webp",
                 "alt": "Modelo de pulsera básica",
                 "variant": "square"
               }
@@ -116,7 +116,7 @@
               "unitPrice": 6,
               "income": 24,
               "media": {
-                "src": "/activity/5/pulsera-con-dije.peg.jpeg",
+                "src": "/activity/5/pulsera-con-dije.peg.webp",
                 "alt": "Modelo de pulsera con dije",
                 "variant": "square"
               }
@@ -129,7 +129,7 @@
               "unitPrice": 8,
               "income": 24,
               "media": {
-                "src": "/activity/5/pulsera-personalizada.jpeg",
+                "src": "/activity/5/pulsera-personalizada.webp",
                 "alt": "Modelo de pulsera personalizada",
                 "variant": "square"
               }
@@ -142,7 +142,7 @@
               "price": 8,
               "required": true,
               "media": {
-                "src": "/activity/5/hilos.jpeg",
+                "src": "/activity/5/hilos.webp",
                 "alt": "Hilo de colores para pulseras",
                 "variant": "square"
               }
@@ -153,7 +153,7 @@
               "price": 15,
               "required": true,
               "media": {
-                "src": "/activity/5/cuentas.jpeg",
+                "src": "/activity/5/cuentas.webp",
                 "alt": "Cuentas para pulseras",
                 "variant": "square"
               }
@@ -164,7 +164,7 @@
               "price": 8,
               "required": true,
               "media": {
-                "src": "/activity/5/dijes.jpeg",
+                "src": "/activity/5/dijes.webp",
                 "alt": "Dijes para pulseras",
                 "variant": "square"
               }
@@ -175,7 +175,7 @@
               "price": 9,
               "required": true,
               "media": {
-                "src": "/activity/5/letras.jpeg",
+                "src": "/activity/5/letras.webp",
                 "alt": "Letras para personalizar pulseras",
                 "variant": "square"
               }
@@ -186,7 +186,7 @@
               "price": 6,
               "required": true,
               "media": {
-                "src": "/activity/5/brovhes.jpeg",
+                "src": "/activity/5/brovhes.webp",
                 "alt": "Broches y cierres para pulseras",
                 "variant": "square"
               }
@@ -197,7 +197,7 @@
               "price": 4,
               "required": true,
               "media": {
-                "src": "/activity/5/empaques.jpeg",
+                "src": "/activity/5/empaques.webp",
                 "alt": "Bolsitas para entregar pulseras",
                 "variant": "square"
               }
@@ -253,7 +253,7 @@
               "detailMessage": "Faltan S/ 8.00 para cubrir todos los materiales.",
               "viable": false,
               "media": {
-                "src": "/activity/5/oferta-a.jpeg",
+                "src": "/activity/5/oferta-a.webp",
                 "alt": "Oferta A de préstamo"
               }
             },
@@ -276,7 +276,7 @@
               "recommended": true,
               "viable": true,
               "media": {
-                "src": "/activity/5/oferta-b.jpeg",
+                "src": "/activity/5/oferta-b.webp",
                 "alt": "Oferta B de préstamo"
               }
             },
@@ -299,7 +299,7 @@
               "recommended": false,
               "viable": false,
               "media": {
-                "src": "/activity/5/oferta-c.jpeg",
+                "src": "/activity/5/oferta-c.webp",
                 "alt": "Oferta C de préstamo"
               }
             },
@@ -319,7 +319,7 @@
               "detailMessage": "Sin total ni plazo claros no puedes planificar el pago.",
               "viable": false,
               "media": {
-                "src": "/activity/5/oferta-d.jpeg",
+                "src": "/activity/5/oferta-d.webp",
                 "alt": "Oferta D de préstamo"
               }
             }
@@ -337,7 +337,7 @@
                 "Si te adelantas, terminas antes del plazo."
               ],
               "media": {
-                "src": "/activity/5/pago-anticipado.jpeg",
+                "src": "/activity/5/pago-anticipado.webp",
                 "alt": "Pago anticipado del préstamo",
                 "variant": "horizontal"
               }
