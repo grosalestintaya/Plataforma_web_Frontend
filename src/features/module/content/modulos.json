@@ -207,14 +207,14 @@
           "title": "Rechazo decisiones financieras informales o riesgosas",
           "backendActivityId": null,
           "activityKey": "m05-procedimental",
-          "learn": ["Reconocer la importancia de pensar antes de tomar decisiones relacionadas con el dinero.","Valorar la planificación y la información como herramientas para evitar decisiones financieras riesgosas."],
+          "learn": ["Reconocer la importancia de pensar antes de tomar decisiones relacionadas con el dinero."],
           "outcome": "Reflexionarás sobre distintas situaciones para reconocer la importancia de evitar decisiones financieras apresuradas, informales o riesgosas."
         },
         "actitudinal": {
           "title": "Rechazo decisiones financieras informales o riesgosas",
           "backendActivityId": null,
           "activityKey": "m05-actitudinal",
-          "learn": ["Reflexionar sobre los riesgos de aceptar préstamos o compromisos financieros sin analizarlos previamente","✦ Reconocer la importancia de pensar antes de tomar decisiones relacionadas con el dinero."],
+          "learn": ["Reflexionar sobre los riesgos de aceptar préstamos o compromisos financieros sin analizarlos previamente"],
           "outcome": "Reflexionarás sobre distintas situaciones para reconocer la importancia de evitar decisiones financieras apresuradas, informales o riesgosas."
         }
       }
