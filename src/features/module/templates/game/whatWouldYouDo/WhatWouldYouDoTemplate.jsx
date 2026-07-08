@@ -634,7 +634,7 @@ export default function WhatWouldYouDoTemplate(props) {
                         />
                       </div>
 
-                      <div className="space-y-3 rounded-2xl border border-white/10 bg-white/6 p-2.5">
+                      <div className="space-y-3 rounded-[1.45rem] border border-[#ffd772]/55 bg-[radial-gradient(circle_at_top_left,rgba(255,230,160,0.26),transparent_34%),linear-gradient(180deg,rgba(120,78,8,0.36),rgba(79,43,2,0.26))] p-3 shadow-[0_14px_30px_rgba(90,55,5,0.24),inset_0_1px_0_rgba(255,245,204,0.22)]">
                         <Typography
                           content={{
                             text: displayWeekSummaryTitle,
@@ -652,7 +652,7 @@ export default function WhatWouldYouDoTemplate(props) {
                         />
 
                         <div className="grid min-w-0 grid-cols-[3.25rem_minmax(0,1fr)] gap-2">
-                          <div className="flex items-center justify-center rounded-2xl border border-white/12 bg-black/20 px-3 py-3">
+                          <div className="flex items-center justify-center rounded-2xl border border-[#ffe08a]/40 bg-[rgba(52,28,2,0.24)] px-3 py-3 shadow-[inset_0_1px_0_rgba(255,241,191,0.12)]">
                             <Typography
                               content={{
                                 text: "S/",
@@ -675,7 +675,7 @@ export default function WhatWouldYouDoTemplate(props) {
                               onChange={(event) =>
                                 updateDraftPayment(event.target.value)
                               }
-                              className="h-14 w-full rounded-2xl border border-white/16 bg-black/20 px-4 text-xl font-black text-white outline-none placeholder:text-white/35 disabled:cursor-not-allowed disabled:opacity-80"
+                              className="h-14 w-full rounded-2xl border border-[#ffe08a]/38 bg-[rgba(49,27,4,0.22)] px-4 text-xl font-black text-white outline-none placeholder:text-white/35 shadow-[inset_0_1px_0_rgba(255,241,191,0.10)] disabled:cursor-not-allowed disabled:opacity-80"
                             />
                             <Button
                               variant="secondary"
@@ -696,6 +696,7 @@ export default function WhatWouldYouDoTemplate(props) {
                               }}
                               disabled={!canPayDisplayedWeek}
                               fullWidth
+                              className="min-w-[6.5rem]"
                             />
                           </div>
                         </div>
@@ -711,6 +712,7 @@ export default function WhatWouldYouDoTemplate(props) {
                           onClick={handleContinueAfterWeek}
                           disabled={!canAdvanceWeek}
                           fullWidth
+                          className="shadow-[0_16px_30px_rgba(100,58,0,0.22)]"
                         />
                       </div>
                     </div>
