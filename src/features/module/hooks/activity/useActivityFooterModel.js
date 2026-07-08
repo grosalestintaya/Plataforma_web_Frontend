@@ -32,10 +32,11 @@ export function useActivityFooterModel({
 }) {
   return useMemo(() => {
     const model = footerModel;
-    if (model?.type !== "normal") return model;
-
     const currentViewId = getViewId(currentView);
     const currentInteractiveState = currentViewId ? interactiveState[currentViewId] : null;
+
+    if (model?.type !== "normal") return model;
+
     const requiresCompletion = currentView?.nav?.mode === "lockedUntilComplete";
     const hasBackendAttempt = canUseBackendAttempt(activityId, missionAttempt);
 

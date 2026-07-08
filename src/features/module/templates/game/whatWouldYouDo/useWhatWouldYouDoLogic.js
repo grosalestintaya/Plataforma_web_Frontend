@@ -2,461 +2,94 @@ import { useEffect, useMemo, useState } from "react";
 
 const DEFAULT_CONTENT = {
   title: {
-    text: "Financio mi emprendimiento sin atrasarme",
+    text: "",
     variant: "h1",
     align: "left",
   },
-  stepTitles: [
-    "Preparo mis materiales",
-    "Comparo prestamos",
-    "Cumplo mi plan de pagos",
-    "Reviso mi resultado",
-  ],
-  ownMoney: 12,
-  products: [
-    {
-      id: "basic",
-      label: "Pulsera basica",
-      sidebarLabel: "Basica",
-      quantity: 5,
-      unitPrice: 3,
-      income: 15,
-      media: {
-        src: "1/ganar-dinero.webp",
-        alt: "Modelo de pulsera basica",
-        variant: "square",
-      },
-    },
-    {
-      id: "charm",
-      label: "Pulsera con dije",
-      sidebarLabel: "Con dije",
-      quantity: 4,
-      unitPrice: 6,
-      income: 24,
-      media: {
-        src: "1/ganar-dinero.webp",
-        alt: "Modelo de pulsera con dije",
-        variant: "square",
-      },
-    },
-    {
-      id: "custom",
-      label: "Pulsera personalizada",
-      sidebarLabel: "Personalizada",
-      quantity: 3,
-      unitPrice: 8,
-      income: 24,
-      media: {
-        src: "1/ganar-dinero.webp",
-        alt: "Modelo de pulsera personalizada",
-        variant: "square",
-      },
-    },
-  ],
-  materials: [
-    {
-      id: "hilo",
-      label: "Hilos",
-      price: 8,
-      required: true,
-      media: {
-        src: "2/cinta.webp",
-        alt: "Hilo de colores para pulseras",
-        variant: "square",
-      },
-    },
-    {
-      id: "cuentas",
-      label: "Cuentas",
-      price: 15,
-      required: true,
-      media: {
-        src: "2/escarcha.webp",
-        alt: "Cuentas para pulseras",
-        variant: "square",
-      },
-    },
-    {
-      id: "dijes",
-      label: "Dijes",
-      price: 8,
-      required: true,
-      media: {
-        src: "2/stikers.webp",
-        alt: "Dijes para pulseras",
-        variant: "square",
-      },
-    },
-    {
-      id: "letras",
-      label: "Letras",
-      price: 9,
-      required: true,
-      media: {
-        src: "2/plumones.webp",
-        alt: "Letras para personalizar pulseras",
-        variant: "square",
-      },
-    },
-    {
-      id: "broches",
-      label: "Broches",
-      price: 6,
-      required: true,
-      media: {
-        src: "2/stick.webp",
-        alt: "Broches y cierres para pulseras",
-        variant: "square",
-      },
-    },
-    {
-      id: "bolsitas",
-      label: "Bolsitas para entregar",
-      price: 4,
-      required: true,
-      media: {
-        src: "2/cartulina.webp",
-        alt: "Bolsitas para entregar pulseras",
-        variant: "square",
-      },
-    },
-    {
-      id: "snack",
-      label: "Snack",
-      price: 5,
-      required: false,
-      media: {
-        src: "3/snacks.jpeg",
-        alt: "Snack para el recreo",
-        variant: "square",
-      },
-    },
-    {
-      id: "audifonos",
-      label: "Audifonos",
-      price: 7,
-      required: false,
-      media: {
-        src: "2/audifonos.webp",
-        alt: "Audifonos personales",
-        variant: "square",
-      },
-    },
-    {
-      id: "cuaderno",
-      label: "Cuaderno",
-      price: 6,
-      required: false,
-      media: {
-        src: "2/materiales-de-estudio.webp",
-        alt: "Cuaderno y utiles escolares",
-        variant: "square",
-      },
-    },
-  ],
-  loanOffers: [
-    {
-      id: "offer-a",
-      name: "Oferta A",
-      amount: 30,
-      totalToRepay: 33,
-      extraCost: 3,
-      termWeeks: 4,
-      weeklyPayment: "S/ 8.25",
-      differenceLabel: "Faltan S/ 8.00",
-      risk: "Bajo",
-      conditions: "Claras",
-      coverage: "Insuficiente",
-      summary: "No alcanza para completar la compra.",
-      detailMessage: "Faltan S/ 8.00 para cubrir todos los materiales.",
-      viable: false,
-      media: {
-        src: "/activity/1/recibir-dinero.webp",
-        alt: "Oferta A de prestamo",
-      },
-    },
-    {
-      id: "offer-b",
-      name: "Oferta B",
-      amount: 45,
-      totalToRepay: 51,
-      extraCost: 6,
-      termWeeks: 4,
-      weeklyPayment: "S/ 13, S/ 13, S/ 13 y S/ 12",
-      differenceLabel: "Sobran S/ 7.00",
-      risk: "Bajo",
-      conditions: "Claras",
-      coverage: "Suficiente",
-      summary: "Cubre la compra y deja un pequeno respaldo.",
-      detailMessage: "Cubre lo necesario y sus condiciones son claras.",
-      viable: true,
-      media: {
-        src: "/activity/1/ganar-dinero.webp",
-        alt: "Oferta B de prestamo",
-      },
-    },
-    {
-      id: "offer-c",
-      name: "Oferta C",
-      amount: 65,
-      totalToRepay: 84,
-      extraCost: 19,
-      termWeeks: 4,
-      weeklyPayment: "S/ 21.00",
-      differenceLabel: "Sobran S/ 27.00",
-      risk: "Medio",
-      conditions: "Claras, pero costosas",
-      coverage: "Mucho mas de lo necesario",
-      summary: "Presta de mas y vuelve la deuda pesada.",
-      detailMessage: "Devolverias S/ 84.00, mas de lo que el negocio puede sostener.",
-      viable: false,
-      media: {
-        src: "/activity/1/ahorro.webp",
-        alt: "Oferta C de prestamo",
-      },
-    },
-    {
-      id: "offer-d",
-      name: "Oferta D",
-      amount: 45,
-      totalToRepay: null,
-      extraCost: null,
-      termWeeks: null,
-      weeklyPayment: "No se puede calcular",
-      differenceLabel: "Cobertura suficiente",
-      risk: "Alto",
-      conditions: "Poco claras",
-      coverage: "Suficiente",
-      summary: "Oculta datos clave del pago.",
-      detailMessage: "Sin total ni plazo claros no puedes planificar el pago.",
-      viable: false,
-      media: {
-        src: "/activity/1/compra-online-ahorro.webp",
-        alt: "Oferta D de prestamo",
-      },
-    },
-  ],
-  weeks: [
-    {
-      week: 1,
-      title: "La feria comienza bien",
-      description:
-        "Vendiste 2 pulseras basicas, 1 pulsera con dije y 1 pulsera personalizada.",
-      sales: [
-        { product: "Basica", quantity: 2, unitPrice: 3, income: 6 },
-        { product: "Con dije", quantity: 1, unitPrice: 6, income: 6 },
-        { product: "Personalizada", quantity: 1, unitPrice: 8, income: 8 },
-      ],
-      income: 20,
-      fullScore: 10,
-    },
-    {
-      week: 2,
-      title: "Esta semana hubo menos compradores",
-      description: "Vendiste 1 pulsera basica y 1 pulsera con dije.",
-      sales: [
-        { product: "Basica", quantity: 1, unitPrice: 3, income: 3 },
-        { product: "Con dije", quantity: 1, unitPrice: 6, income: 6 },
-      ],
-      income: 9,
-      fullScore: 10,
-    },
-    {
-      week: 3,
-      title: "Las ventas mejoraron",
-      description:
-        "Vendiste 1 pulsera basica, 1 pulsera con dije y 1 pulsera personalizada.",
-      sales: [
-        { product: "Basica", quantity: 1, unitPrice: 3, income: 3 },
-        { product: "Con dije", quantity: 1, unitPrice: 6, income: 6 },
-        { product: "Personalizada", quantity: 1, unitPrice: 8, income: 8 },
-      ],
-      income: 17,
-      fullScore: 15,
-    },
-    {
-      week: 4,
-      title: "La feria cierra con buenas ventas",
-      description:
-        "Vendiste 1 pulsera basica, 1 pulsera con dije y 1 pulsera personalizada.",
-      sales: [
-        { product: "Basica", quantity: 1, unitPrice: 3, income: 3 },
-        { product: "Con dije", quantity: 1, unitPrice: 6, income: 6 },
-        { product: "Personalizada", quantity: 1, unitPrice: 8, income: 8 },
-      ],
-      income: 17,
-      fullScore: 10,
-    },
-  ],
-  paymentStrategies: [
-    {
-      id: "early",
-      title: "Opcion 1: pago anticipado",
-      description:
-        "Cada semana juntas dinero y, ni bien alcanzas lo que debes, lo pagas de inmediato.",
-      tone: "warning",
-      summary: "Avanzas rapido, pero puedes gastar tu reserva antes de tiempo.",
-      conditions: [
-        "Guardas ventas y reserva hasta completar toda la deuda.",
-        "Pagas en una sola semana, apenas ya te alcance.",
-        "Si te adelantas, terminas antes del plazo.",
-      ],
-      media: {
-        src: "/activity/1/recibir-dinero.webp",
-        alt: "Pago anticipado del prestamo",
-        variant: "horizontal",
-      },
-    },
-    {
-      id: "regulated",
-      title: "Opcion 2: pago regulado",
-      description:
-        "Cada semana separas un monto para completar el pago dentro del plazo acordado.",
-      tone: "success",
-      summary: "Te ayuda a mantener orden entre pagar y seguir vendiendo.",
-      conditions: [
-        "Divides la deuda en 4 semanas.",
-        "Cada semana cumples una cuota planificada.",
-        "Es la opcion mas ordenada para no desbalancearte.",
-      ],
-      media: {
-        src: "/activity/1/ganar-dinero.webp",
-        alt: "Pago regulado del prestamo",
-        variant: "horizontal",
-      },
-    },
-    {
-      id: "deferred",
-      title: "Opcion 3: pago ni bien tenga todo",
-      description:
-        "Dejas la deuda para el final y pagas cuando crees tener todo, con mas incertidumbre al cierre.",
-      tone: "warning",
-      summary: "Postergar el pago hace mas riesgoso llegar completo al final.",
-      conditions: [
-        "No pagas durante las primeras semanas.",
-        "Guardas todo para cancelar al final.",
-        "Si algo falla, el cierre se vuelve mas riesgoso.",
-      ],
-      media: {
-        src: "/activity/1/compra-online-ahorro.webp",
-        alt: "Pago postergado del prestamo",
-        variant: "horizontal",
-      },
-    },
-  ],
+  stepTitles: ["Paso 1", "Paso 2", "Paso 3", "Paso 4"],
+  ownMoney: 0,
+  products: [],
+  materials: [],
+  loanOffers: [],
+  weeks: [],
+  paymentStrategies: [],
   copy: {
     step1: {
-      asideTitle: "Productos a vender",
-      asideText: "Observa las pulseras y elige solo los materiales necesarios.",
-      mainTitle: "Que necesito comprar para fabricar las pulseras?",
-      mainSubtitle:
-        "Agrega al carrito solo los materiales que ayudan a producir o entregar los pedidos.",
-      shoppingTitle: "Mi seleccion",
-      emptySelectionLabel: "Elige uno o mas materiales.",
+      asideTitle: "",
+      ownMoneyLabel: "",
+      mainTitle: "",
+      mainSubtitle: "",
+      shoppingTitle: "",
+      emptySelectionLabel: "",
       summaryLabels: {
-        initial: "Dinero propio",
-        total: "Costo actual",
-        balance: "Dinero disponible",
+        initial: "Inicial",
+        total: "Total",
+        balance: "Balance",
       },
-      reviewButton: "Revisar materiales",
-      nextButton: "Comparar prestamos",
+      reviewButton: "Continuar",
+      nextButton: "Continuar",
     },
     step2: {
-      mainTitle: "Ofertas de prestamo disponibles",
-      mainSubtitle: "Compara monto, interes, plazo y claridad antes de decidir.",
+      mainTitle: "",
+      mainSubtitle: "",
       neededMoneyLabel: "Dinero que necesito",
-      chooseButton: "Elegir esta oferta",
+      chooseButton: "Elegir",
     },
     step3: {
-      sidebarHeroTitle: "Armando mi plan de pago",
-      asidePlanTitle: "Plan de pago",
-      asideExecutionTitle: "Seguimiento del pago",
-      planTitle: "Como pagare mi prestamo?",
-      planSubtitle:
-        "Elige una forma de organizar tus pagos semanales antes de empezar con las ventas.",
-      strategyDetailsTitle: "Condiciones de esta opcion",
-      strategyContinueButton: "Continuar con esta opcion",
-      reserveLabel: "Reserva disponible",
-      reserveHint: "Es la diferencia entre lo que necesitabas y lo que te presto la oferta elegida.",
-      executionTitle: "Cumplo mi plan de pagos",
-      executionSubtitle:
-        "Sigue tu estrategia, revisa lo que vendiste y decide el pago de la semana solo cuando corresponda.",
-      weekSalesTitle: "Ventas de la semana",
-      weekSalesHint: "Esto ingreso tu emprendimiento en esta semana.",
-      paymentActionTitle: "Decision de esta semana",
-      waitWeekButton: "Registrar semana sin pago",
-      payAllButton: "Pagar todo ahora",
-      paymentInputTitle: "Decide cuanto pagar esta semana",
-      paymentInputHint:
-        "Recuerda: puedes usar las ventas de la semana y, si hace falta, parte de tu reserva.",
-      confirmPaymentButton: "Confirmar pago",
-      continueButton: "Continuar a la siguiente semana",
-      reviewResultButton: "Revisar mi resultado",
+      sidebarHeroTitle: "",
+      asidePlanTitle: "",
+      asideExecutionTitle: "",
+      planTitle: "",
+      planSubtitle: "",
+      strategyDetailsTitle: "",
+      strategyContinueButton: "Continuar",
+      reserveLabel: "Reserva",
+      reserveHint: "",
+      executionTitle: "",
+      executionSubtitle: "",
+      weekSalesTitle: "",
+      weekSalesHint: "",
+      paymentActionTitle: "",
+      waitWeekButton: "Continuar",
+      payAllButton: "Pagar",
+      paymentInputTitle: "",
+      paymentInputHint: "",
+      confirmPaymentButton: "Confirmar",
+      continueButton: "Continuar",
+      reviewResultButton: "Revisar",
     },
     step4: {
-      mainTitle: "Resultado de mi emprendimiento",
-      mainSubtitle:
-        "Asi fue tu proceso desde la lista de materiales hasta el pago final del prestamo.",
-      materialsTitle: "Mis materiales",
-      loanTitle: "Prestamo elegido",
-      paymentsTitle: "Recorrido de pagos",
-      financialTitle: "Resultado financiero",
+      mainTitle: "",
+      mainSubtitle: "",
+      generalInfoTitle: "",
+      ventureCardTitle: "",
+      productionTitle: "",
+      ventureSalesTitle: "",
+      journeyTitle: "",
+      closingTitle: "",
+      finishButton: "Finalizar",
     },
     messages: {
-      materialsSuccess: {
-        tone: "success",
-        title: "Tu lista esta completa",
-        text: "Ya sabes cuanto dinero necesitas para iniciar la produccion de las pulseras.",
-      },
-      materialsMissing: {
-        tone: "warning",
-        title: "Tu lista aun no permite fabricar todos los pedidos",
-        text: "Revisa que material falta para completar las pulseras solicitadas antes de pasar al prestamo.",
-      },
-      materialsDistractor: {
-        tone: "warning",
-        title: "Hay productos que no ayudan a tu produccion",
-        text: "Ese gasto no fabrica ni entrega pulseras. Si lo agregas, aumenta el dinero que necesitas pedir prestado.",
-      },
-      materialsGeneric: {
-        tone: "warning",
-        title: "Revisa tu seleccion",
-        text: "Ajusta la lista para quedarte solo con lo necesario para producir y entregar.",
-      },
-      offerViable: {
-        tone: "success",
-        title: "Puede funcionar",
-        text: "Cubre lo necesario. Si quieres seguir, presiona otra vez el boton.",
-      },
-      offerInvalidTitle: "No permite avanzar",
-      offerInvalidFallback: "Esta oferta no conviene para continuar.",
-      planAdjustTitle: "Ajusta tu plan semanal",
-      planReady: {
-        tone: "success",
-        title: "Plan de pagos listo",
-        text: "Ahora revisa semana por semana si tus ventas y tu reserva alcanzan para sostener el plan que propusiste.",
-      },
-      paymentInvalid: {
-        tone: "warning",
-        title: "El pago no es valido",
-        text: "No puedes pagar un monto negativo, superior al dinero disponible de la semana o mayor que la deuda pendiente.",
-      },
-      finalRiskTitle: "Tu plan necesita mejoras",
-      finalRiskText:
-        "Antes de aceptar un prestamo, debes verificar que el monto alcance, que las condiciones sean claras y que tus ventas permitan cumplir con el pago.",
-      finalDebtTitle: "Tu plan necesita reforzar los pagos",
-      finalDebtText:
-        "Aun queda deuda pendiente. Revisa como una semana con menos ventas puede afectar el cumplimiento del prestamo.",
-      finalTopTitle: "Decision financiera responsable",
-      finalTopText:
-        "Identificaste los materiales necesarios, elegiste una oferta clara y organizaste tus pagos hasta completar el prestamo dentro del plazo.",
-      finalMidTitle: "Cumpliste con el prestamo, pero tu plan tuvo momentos ajustados",
-      finalMidText:
-        "Revisa como una semana con menos ventas puede generar atrasos. Una reserva mas amplia puede ayudarte a reducir el riesgo.",
-      finalLowTitle: "Tu plan necesita mejoras",
-      finalLowText:
-        "Lograste avanzar, pero todavia debes fortalecer como comparas el prestamo y como compensas los atrasos de pago.",
+      materialsSuccess: { tone: "success", title: "", text: "" },
+      materialsMissing: { tone: "warning", title: "", text: "" },
+      materialsDistractor: { tone: "warning", title: "", text: "" },
+      materialsGeneric: { tone: "warning", title: "", text: "" },
+      offerViable: { tone: "success", title: "", text: "" },
+      offerInvalidTitle: "",
+      offerInvalidFallback: "",
+      planAdjustTitle: "",
+      planReady: { tone: "success", title: "", text: "" },
+      paymentInvalid: { tone: "warning", title: "", text: "" },
+      finalRiskTitle: "",
+      finalRiskText: "",
+      finalDebtTitle: "",
+      finalDebtText: "",
+      finalTopTitle: "",
+      finalTopText: "",
+      finalMidTitle: "",
+      finalMidText: "",
+      finalLowTitle: "",
+      finalLowText: "",
     },
   },
 };
@@ -559,7 +192,9 @@ function getAttemptMultiplier(attempts) {
 }
 
 function getInitialGameState(content) {
-  const fallbackTotal = content.loanOffers.find((offer) => offer.viable)?.totalToRepay ?? 51;
+  const fallbackTotal =
+    content.loanOffers.find((offer) => isOfferPassable(offer))?.totalToRepay ??
+    0;
 
   return {
     step: 1,
@@ -621,6 +256,14 @@ function getSelectedOffer(loanOffers, offerId) {
   return loanOffers.find((offer) => offer.id === offerId) ?? null;
 }
 
+function isOfferPassable(offer) {
+  return Boolean(offer?.passable ?? offer?.viable);
+}
+
+function isOfferRecommended(offer) {
+  return Boolean(offer?.recommended);
+}
+
 function getEarlyPayoffWeek(weeks, initialReserve, totalToRepay) {
   let accumulated = Number(initialReserve ?? 0);
   const target = Number(totalToRepay ?? 0);
@@ -635,7 +278,12 @@ function getEarlyPayoffWeek(weeks, initialReserve, totalToRepay) {
   return weeks.length;
 }
 
-function buildStrategyPlan({ strategyId, totalToRepay, weeks, initialReserve }) {
+function buildStrategyPlan({
+  strategyId,
+  totalToRepay,
+  weeks,
+  initialReserve,
+}) {
   if (strategyId === "deferred") {
     return weeks.map((_, index) =>
       index === weeks.length - 1 ? Number(totalToRepay) : 0,
@@ -660,7 +308,12 @@ function getWeekStatus({ weekIndex, payment, arrears, remaining, weeks }) {
   return arrears === 0 ? "Puntual" : "Con atraso";
 }
 
-function buildMaterialsFeedback({ missingRequiredCount, selectedDistractors, isCorrect, messages }) {
+function buildMaterialsFeedback({
+  missingRequiredCount,
+  selectedDistractors,
+  isCorrect,
+  messages,
+}) {
   if (isCorrect) return messages.materialsSuccess;
   if (missingRequiredCount > 0) return messages.materialsMissing;
   if (selectedDistractors.length > 0) return messages.materialsDistractor;
@@ -673,6 +326,8 @@ function getMaterialsRawScore({
   requiredIds,
   materialsTotal,
   fundingNeeded,
+  expectedMaterialsTotal,
+  expectedFundingNeeded,
 }) {
   const selectedRequiredCount = requiredIds.filter((id) =>
     selectedIds.includes(id),
@@ -685,19 +340,22 @@ function getMaterialsRawScore({
 
   if (selectedRequiredCount === requiredIds.length) rawScore += 14;
   if (selectedDistractors.length === 0) rawScore += 6;
-  if (materialsTotal === 50 && fundingNeeded === 38) rawScore += 5;
+  if (
+    materialsTotal === Number(expectedMaterialsTotal ?? 0) &&
+    fundingNeeded === Number(expectedFundingNeeded ?? 0)
+  ) {
+    rawScore += 5;
+  }
 
   return rawScore;
 }
 
-function getLoanRawScore(state) {
-  let rawScore = 0;
+function getLoanRawScore(state, loanOffers) {
+  const selectedOffer = getSelectedOffer(loanOffers, state.selectedOfferId);
+  const offerScore = Number(selectedOffer?.loanScore ?? 0);
 
-  if (state.openedOfferIds.length >= 3) rawScore += 5;
-  if (state.recognizedInformalRisk) rawScore += 5;
-  if (state.selectedOfferId === "offer-b") rawScore += 15;
-
-  return rawScore;
+  if (!isOfferPassable(selectedOffer)) return 0;
+  return offerScore;
 }
 
 function getWeekScore(week, paidAmount, expectedAmount) {
@@ -708,22 +366,39 @@ function getWeekScore(week, paidAmount, expectedAmount) {
   return 0;
 }
 
-function getFinalStateLabel({ totalScore, debtPending, loanValidated, selectedOfferId }) {
-  if (selectedOfferId !== "offer-b" || !loanValidated) {
-    return "No aprobado: decision riesgosa";
+function getFinalStateLabel({
+  totalScore,
+  debtPending,
+  loanValidated,
+  selectedOfferId,
+  passableOfferIds,
+  recommendedOfferId,
+}) {
+  if (!passableOfferIds.includes(selectedOfferId) || !loanValidated) {
+    return "No aprobado: decisión riesgosa";
   }
 
   if (debtPending > 0) {
     return "No aprobado: debe reforzar pagos";
   }
 
-  if (totalScore >= 90) return "Dominio logrado";
+  if (selectedOfferId === recommendedOfferId && totalScore >= 90) {
+    return "Dominio logrado";
+  }
   if (totalScore >= 60) return "Aprobado";
   return "En proceso";
 }
 
-function getFinalMessage({ totalScore, debtPending, loanValidated, selectedOfferId, messages }) {
-  if (selectedOfferId !== "offer-b" || !loanValidated) {
+function getFinalMessage({
+  totalScore,
+  debtPending,
+  loanValidated,
+  selectedOfferId,
+  passableOfferIds,
+  recommendedOfferId,
+  messages,
+}) {
+  if (!passableOfferIds.includes(selectedOfferId) || !loanValidated) {
     return {
       tone: "warning",
       title: messages.finalRiskTitle,
@@ -739,7 +414,7 @@ function getFinalMessage({ totalScore, debtPending, loanValidated, selectedOffer
     };
   }
 
-  if (totalScore >= 90) {
+  if (selectedOfferId === recommendedOfferId && totalScore >= 90) {
     return {
       tone: "success",
       title: messages.finalTopTitle,
@@ -762,27 +437,155 @@ function getFinalMessage({ totalScore, debtPending, loanValidated, selectedOffer
   };
 }
 
+function getOfferGuidance(offer) {
+  if (!offer) {
+    return {
+      title: "Aquí verás el análisis",
+      description:
+        "Selecciona una oferta y revisa su monto, interés, plazo y claridad.",
+    };
+  }
+
+  if (!isOfferPassable(offer)) {
+    return {
+      title: "No permite avanzar",
+      description: offer.detailMessage ?? "Esta oferta no te deja continuar.",
+    };
+  }
+
+  return {
+    title: "Revisa la oferta seleccionada",
+    description:
+      "Comprueba si el monto te alcanza y si el pago final se puede organizar.",
+  };
+}
+
+function getWeekPaymentSummary({
+  week,
+  paidAmount,
+  paymentTarget,
+  remaining,
+  isLastWeek,
+  hadDebtBeforePayment,
+}) {
+  const title = `Semana ${week} registrada`;
+
+  if (!hadDebtBeforePayment && remaining <= 0) {
+    return {
+      tone: "success",
+      title,
+      text: "Ya no tienes deuda.",
+    };
+  }
+
+  if (isLastWeek) {
+    return {
+      tone: remaining <= 0 ? "success" : "warning",
+      title,
+      text:
+        remaining <= 0
+          ? "Pagaste la deuda."
+          : "No llegaste a pagar la deuda en el plazo.",
+    };
+  }
+
+  if (remaining <= 0) {
+    return {
+      tone: "success",
+      title,
+      text: "Pagaste toda la deuda antes del plazo.",
+    };
+  }
+
+  if (paidAmount <= 0) {
+    return {
+      tone: "warning",
+      title,
+      text: "No pagaste nada esta semana.",
+    };
+  }
+
+  if (paidAmount > paymentTarget) {
+    return {
+      tone: "success",
+      title,
+      text: "Pagaste más de la cuota por semana.",
+    };
+  }
+
+  if (paidAmount === paymentTarget) {
+    return {
+      tone: "success",
+      title,
+      text: "Pagaste la cuota aproximada.",
+    };
+  }
+
+  return {
+    tone: "warning",
+    title,
+    text: "Pagaste menos de la cuota aproximada.",
+  };
+}
+
+function getPaymentQualityLabel({
+  strategyId,
+  debtPending,
+  weeklyPayments,
+  loanTotalToRepay,
+  weeksLength,
+}) {
+  const normalizedPayments = weeklyPayments.map((value) => Number(value ?? 0));
+  const balancedWeeklyPlan = isBalancedPaymentPlan(
+    normalizedPayments,
+    loanTotalToRepay,
+  );
+  let accumulated = 0;
+  const payoffWeekIndex = normalizedPayments.findIndex((value) => {
+    accumulated += Number(value ?? 0);
+    return accumulated >= Number(loanTotalToRepay ?? 0);
+  });
+  const finishedBeforeLastWeek =
+    payoffWeekIndex >= 0 &&
+    payoffWeekIndex < Math.max(0, Number(weeksLength ?? 0) - 1);
+
+  if (debtPending > 0) return "Malo";
+  if (finishedBeforeLastWeek) {
+    return "Bueno";
+  }
+  if (strategyId === "regulated" && balancedWeeklyPlan) {
+    return "Equilibrado";
+  }
+  return "Malo";
+}
+
 export function useWhatWouldYouDoLogic({ view, heroApi, data }) {
   const content = useMemo(
     () => mergeContent(DEFAULT_CONTENT, data?.game ?? {}),
     [data],
   );
   const viewId = getViewId(view);
-  const persistedState = heroApi?.getInteractiveState?.(viewId)?.payload?.gameState;
+  const persistedState =
+    heroApi?.getInteractiveState?.(viewId)?.payload?.gameState;
   const [gameState, setGameState] = useState(() =>
-    persistedState ? mergePersistedState(persistedState, content) : getInitialGameState(content),
+    persistedState
+      ? mergePersistedState(persistedState, content)
+      : getInitialGameState(content),
   );
   const [materialsMessage, setMaterialsMessage] = useState(null);
   const [paymentMessage, setPaymentMessage] = useState(null);
   const [offerFeedback, setOfferFeedback] = useState(null);
   const [missionCompleted, setMissionCompleted] = useState(false);
-  const [draftPayment, setDraftPayment] = useState(0);
+  const [pendingMissionAdvance, setPendingMissionAdvance] = useState(false);
+  const [completionPersisted, setCompletionPersisted] = useState(false);
+  const [draftPayment, setDraftPayment] = useState("");
   const [activeOfferId, setActiveOfferId] = useState(
-    () => persistedState?.selectedOfferId ?? content.loanOffers[0]?.id ?? null,
+    () => persistedState?.selectedOfferId ?? null,
   );
 
   const requiredMaterialIds = useMemo(
-    () => content.materials.filter((item) => item.required).map((item) => item.id),
+    () =>
+      content.materials.filter((item) => item.required).map((item) => item.id),
     [content.materials],
   );
 
@@ -794,6 +597,32 @@ export function useWhatWouldYouDoLogic({ view, heroApi, data }) {
     () => getFundingNeeded(materialsTotal, content.ownMoney),
     [content.ownMoney, materialsTotal],
   );
+  const expectedMaterialsTotal = useMemo(
+    () =>
+      content.materials
+        .filter((item) => item.required)
+        .reduce((acc, item) => acc + Number(item.price ?? 0), 0),
+    [content.materials],
+  );
+  const expectedFundingNeeded = useMemo(
+    () => getFundingNeeded(expectedMaterialsTotal, content.ownMoney),
+    [content.ownMoney, expectedMaterialsTotal],
+  );
+  const passableOffers = useMemo(
+    () => content.loanOffers.filter((offer) => isOfferPassable(offer)),
+    [content.loanOffers],
+  );
+  const passableOfferIds = useMemo(
+    () => passableOffers.map((offer) => offer.id),
+    [passableOffers],
+  );
+  const recommendedOfferId = useMemo(
+    () =>
+      content.loanOffers.find((offer) => isOfferRecommended(offer))?.id ??
+      passableOffers[0]?.id ??
+      null,
+    [content.loanOffers, passableOffers],
+  );
   const selectedRequiredCount = requiredMaterialIds.filter((id) =>
     gameState.selectedMaterials.includes(id),
   ).length;
@@ -803,8 +632,8 @@ export function useWhatWouldYouDoLogic({ view, heroApi, data }) {
   const isMaterialsCorrect =
     selectedRequiredCount === requiredMaterialIds.length &&
     selectedDistractors.length === 0 &&
-    materialsTotal === 50 &&
-    fundingNeeded === 38;
+    materialsTotal === expectedMaterialsTotal &&
+    fundingNeeded === expectedFundingNeeded;
 
   const materialShopItems = useMemo(
     () =>
@@ -855,7 +684,7 @@ export function useWhatWouldYouDoLogic({ view, heroApi, data }) {
     () =>
       getSelectedOffer(
         content.loanOffers,
-        activeOfferId ?? gameState.selectedOfferId ?? content.loanOffers[0]?.id,
+        activeOfferId ?? gameState.selectedOfferId,
       ),
     [activeOfferId, content.loanOffers, gameState.selectedOfferId],
   );
@@ -866,15 +695,22 @@ export function useWhatWouldYouDoLogic({ view, heroApi, data }) {
   const selectedPaymentStrategy = useMemo(
     () =>
       content.paymentStrategies.find(
-        (strategy) => strategy.id === gameState.selectedPaymentStrategyId,
-      ) ?? null,
+        (strategy) =>
+          strategy.id === (gameState.selectedPaymentStrategyId ?? "regulated"),
+      ) ??
+      content.paymentStrategies[0] ??
+      null,
     [content.paymentStrategies, gameState.selectedPaymentStrategyId],
   );
-  const loanTotalToRepay = selectedOffer?.totalToRepay ?? 51;
+  const loanTotalToRepay =
+    selectedOffer?.totalToRepay ??
+    content.loanOffers.find((offer) => isOfferPassable(offer))?.totalToRepay ??
+    0;
   const loanTermWeeks = selectedOffer?.termWeeks ?? content.weeks.length;
   const initialReserve = Math.max(
     0,
-    Number(selectedOffer?.amount ?? 0) - Number(gameState.fundingNeeded || fundingNeeded),
+    Number(selectedOffer?.amount ?? 0) -
+      Number(gameState.fundingNeeded || fundingNeeded),
   );
   const earlyPayoffWeek = useMemo(
     () => getEarlyPayoffWeek(content.weeks, initialReserve, loanTotalToRepay),
@@ -892,7 +728,12 @@ export function useWhatWouldYouDoLogic({ view, heroApi, data }) {
         weeks: content.weeks,
         initialReserve,
       }),
-    [content.weeks, initialReserve, loanTotalToRepay, selectedPaymentStrategy?.id],
+    [
+      content.weeks,
+      initialReserve,
+      loanTotalToRepay,
+      selectedPaymentStrategy?.id,
+    ],
   );
   const effectivePaymentPlan = gameState.paymentPlanConfirmed
     ? gameState.paymentPlan
@@ -909,15 +750,21 @@ export function useWhatWouldYouDoLogic({ view, heroApi, data }) {
   const currentWeekSalesSummary = currentWeek.sales
     .map((sale) => `${sale.quantity} ${sale.product.toLowerCase()}`)
     .join(", ");
-  const previousArrears = gameState.weeklyStates[currentWeekIndex - 1]?.arrears ?? 0;
-  const plannedWeekPayment = Number(effectivePaymentPlan[currentWeekIndex] ?? 0);
+  const previousArrears =
+    gameState.weeklyStates[currentWeekIndex - 1]?.arrears ?? 0;
+  const plannedWeekPayment = Number(
+    effectivePaymentPlan[currentWeekIndex] ?? 0,
+  );
   const availableThisWeek =
     Number(gameState.reserveRemaining ?? 0) + Number(currentWeek?.income ?? 0);
   const paymentTarget = Math.min(
     plannedWeekPayment + previousArrears,
     gameState.pendingAmount,
   );
-  const maxAllowedPayment = Math.min(availableThisWeek, gameState.pendingAmount);
+  const maxAllowedPayment = Math.min(
+    availableThisWeek,
+    gameState.pendingAmount,
+  );
   const planSpread =
     gameState.paymentPlan.length > 0
       ? Math.max(...gameState.paymentPlan) - Math.min(...gameState.paymentPlan)
@@ -931,21 +778,32 @@ export function useWhatWouldYouDoLogic({ view, heroApi, data }) {
   const isApproved =
     totalScore >= 60 &&
     debtPending === 0 &&
-    gameState.selectedOfferId === "offer-b" &&
+    passableOfferIds.includes(gameState.selectedOfferId) &&
     gameState.loanValidated;
-  const finalAvailableMoney = gameState.reserveRemaining;
-  const netProfit = finalAvailableMoney - content.ownMoney;
+  const totalSalesIncome = content.weeks.reduce(
+    (total, week) => total + Number(week?.income ?? 0),
+    0,
+  );
+  const finalAvailableMoney = Math.max(
+    0,
+    Number(initialReserve ?? 0) + totalSalesIncome - Number(gameState.totalPaid ?? 0),
+  );
+  const netProfit = finalAvailableMoney;
   const finalStateLabel = getFinalStateLabel({
     totalScore,
     debtPending,
     loanValidated: gameState.loanValidated,
     selectedOfferId: gameState.selectedOfferId,
+    passableOfferIds,
+    recommendedOfferId,
   });
   const finalMessage = getFinalMessage({
     totalScore,
     debtPending,
     loanValidated: gameState.loanValidated,
     selectedOfferId: gameState.selectedOfferId,
+    passableOfferIds,
+    recommendedOfferId,
     messages: content.copy.messages,
   });
   const selectedStrategyDetails = useMemo(() => {
@@ -989,14 +847,16 @@ export function useWhatWouldYouDoLogic({ view, heroApi, data }) {
     selectedPaymentStrategy,
   ]);
   const strategyExecutionConfig = useMemo(() => {
-    if (!selectedPaymentStrategy || !gameState.paymentPlanConfirmed) return null;
+    if (!selectedPaymentStrategy || !gameState.paymentPlanConfirmed)
+      return null;
 
     if (gameState.pendingAmount <= 0) {
       return {
         mode: "wait",
         title: "Prestamo completado",
-        description: "Ya cancelaste toda la deuda. Esta semana solo registra el cierre sin pago.",
-        helper: "Tu siguiente decision ya no requiere abonar nada.",
+        description:
+          "Ya cancelaste toda la deuda. Esta semana solo registra el cierre sin pago.",
+        helper: "Tu siguiente decisión ya no requiere abonar nada.",
         suggestedPayment: 0,
         buttonLabel: content.copy.step3.waitWeekButton,
       };
@@ -1006,7 +866,7 @@ export function useWhatWouldYouDoLogic({ view, heroApi, data }) {
       if (currentWeek.week < earlyPayoffWeek) {
         return {
           mode: "wait",
-          title: "Aun no toca pagar",
+          title: "Aún no toca pagar",
           description: `Con esta estrategia pagaras todo recien en la semana ${earlyPayoffWeek}. Por ahora guarda lo que vendes.`,
           helper: `Esta semana registraras S/ 0.00 para seguir acumulando hasta llegar a ${formatCurrency(
             loanTotalToRepay,
@@ -1033,7 +893,8 @@ export function useWhatWouldYouDoLogic({ view, heroApi, data }) {
         return {
           mode: "wait",
           title: "Todavia no pagaras",
-          description: "Con esta opcion guardas el dinero durante las primeras semanas.",
+          description:
+            "Con esta opción guardas el dinero durante las primeras semanas.",
           helper: `Recien en la semana ${content.weeks.length} intentaras pagar ${formatCurrency(
             loanTotalToRepay,
           )} de una sola vez.`,
@@ -1045,7 +906,8 @@ export function useWhatWouldYouDoLogic({ view, heroApi, data }) {
       return {
         mode: "autoPay",
         title: "Llego el pago final",
-        description: "Ahora si debes intentar cancelar toda la deuda en una sola semana.",
+        description:
+          "Ahora si debes intentar cancelar toda la deuda en una sola semana.",
         helper: `Pago esperado esta semana: ${formatCurrency(gameState.pendingAmount)}.`,
         suggestedPayment: gameState.pendingAmount,
         buttonLabel: content.copy.step3.payAllButton,
@@ -1084,8 +946,15 @@ export function useWhatWouldYouDoLogic({ view, heroApi, data }) {
 
   useEffect(() => {
     if (!gameState.paymentPlanConfirmed) return;
-    setDraftPayment(gameState.weeklyPayments[currentWeekIndex] ?? 0);
-  }, [currentWeekIndex, gameState.paymentPlanConfirmed, gameState.weeklyPayments]);
+    const paymentValue = Number(
+      gameState.weeklyPayments[currentWeekIndex] ?? 0,
+    );
+    setDraftPayment(paymentValue > 0 ? String(paymentValue) : "");
+  }, [
+    currentWeekIndex,
+    gameState.paymentPlanConfirmed,
+    gameState.weeklyPayments,
+  ]);
 
   useEffect(() => {
     if (gameState.selectedOfferId) {
@@ -1094,12 +963,19 @@ export function useWhatWouldYouDoLogic({ view, heroApi, data }) {
   }, [gameState.selectedOfferId]);
 
   useEffect(() => {
+    if (gameState.step === 4 && !missionCompleted) {
+      setMissionCompleted(true);
+    }
+  }, [gameState.step, missionCompleted]);
+
+  useEffect(() => {
     if (!viewId) return;
 
     heroApi?.setInteractiveState?.(viewId, {
       completed: missionCompleted,
       type: "whatWouldYouDo",
       score: totalScore,
+      missionScoreOverride: totalScore,
       countsTowardScore: missionCompleted,
       payload: {
         gameState: {
@@ -1122,7 +998,12 @@ export function useWhatWouldYouDoLogic({ view, heroApi, data }) {
         approved: isApproved,
       },
     });
+
+    if (missionCompleted && pendingMissionAdvance && !completionPersisted) {
+      setCompletionPersisted(true);
+    }
   }, [
+    completionPersisted,
     content.products,
     debtPending,
     finalAvailableMoney,
@@ -1134,9 +1015,23 @@ export function useWhatWouldYouDoLogic({ view, heroApi, data }) {
     materialsTotal,
     missionCompleted,
     netProfit,
+    pendingMissionAdvance,
     totalScore,
     viewId,
   ]);
+
+  useEffect(() => {
+    if (!pendingMissionAdvance || !completionPersisted) return;
+
+    setPendingMissionAdvance(false);
+    setCompletionPersisted(false);
+
+    const timerId = window.setTimeout(() => {
+      heroApi?.advanceCurrentView?.();
+    }, 0);
+
+    return () => window.clearTimeout(timerId);
+  }, [completionPersisted, heroApi, pendingMissionAdvance]);
 
   function updateGameState(patch) {
     setGameState((current) => ({
@@ -1177,6 +1072,8 @@ export function useWhatWouldYouDoLogic({ view, heroApi, data }) {
       requiredIds: requiredMaterialIds,
       materialsTotal,
       fundingNeeded,
+      expectedMaterialsTotal,
+      expectedFundingNeeded,
     });
     const multiplier = getAttemptMultiplier(gameState.materialAttempts);
     const stepScore = Math.round(rawScore * multiplier);
@@ -1201,7 +1098,8 @@ export function useWhatWouldYouDoLogic({ view, heroApi, data }) {
 
     setMaterialsMessage(
       buildMaterialsFeedback({
-        missingRequiredCount: requiredMaterialIds.length - selectedRequiredCount,
+        missingRequiredCount:
+          requiredMaterialIds.length - selectedRequiredCount,
         selectedDistractors,
         isCorrect: isMaterialsCorrect,
         messages: content.copy.messages,
@@ -1230,20 +1128,20 @@ export function useWhatWouldYouDoLogic({ view, heroApi, data }) {
 
   function handleChooseOffer(offerId) {
     const offer = getSelectedOffer(content.loanOffers, offerId);
+    if (!offer || !isOfferPassable(offer)) return;
+
     setActiveOfferId(offerId);
     markOfferOpened(offerId);
     const recognizedInformalRisk =
       gameState.recognizedInformalRisk || offerId === "offer-d";
-    const isSameFeedback =
-      offerFeedback?.offerId === offerId && offerFeedback?.tone === "success";
 
-    if (offer?.viable && isSameFeedback) {
+    if (isOfferPassable(offer)) {
       const nextState = {
         ...gameState,
         selectedOfferId: offerId,
         recognizedInformalRisk,
       };
-      const rawScore = getLoanRawScore(nextState);
+      const rawScore = getLoanRawScore(nextState, content.loanOffers);
       const multiplier = getAttemptMultiplier(gameState.loanAttempts);
       const stepScore = Math.round(rawScore * multiplier);
 
@@ -1253,16 +1151,21 @@ export function useWhatWouldYouDoLogic({ view, heroApi, data }) {
         step: 3,
         recognizedInformalRisk,
         selectedPaymentStrategyId: null,
-        paymentPlan: Array.from({ length: offer.termWeeks ?? content.weeks.length }, () => 0),
+        paymentPlan: Array.from(
+          { length: offer.termWeeks ?? content.weeks.length },
+          () => 0,
+        ),
         paymentPlanConfirmed: false,
         paymentPlanAttempts: 0,
         currentWeek: 1,
         weeklyPayments: Array.from({ length: content.weeks.length }, () => 0),
         weeklyStates: [],
-        pendingAmount: offer.totalToRepay ?? 51,
+        pendingAmount:
+          offer.totalToRepay ?? passableOffers[0]?.totalToRepay ?? 0,
         reserveRemaining: Math.max(
           0,
-          Number(offer.amount ?? 0) - Number(gameState.fundingNeeded || fundingNeeded),
+          Number(offer.amount ?? 0) -
+            Number(gameState.fundingNeeded || fundingNeeded),
         ),
         totalPaid: 0,
         paymentAttempts: Array.from({ length: content.weeks.length }, () => 0),
@@ -1272,29 +1175,15 @@ export function useWhatWouldYouDoLogic({ view, heroApi, data }) {
         },
       });
       setPaymentMessage(null);
+      setOfferFeedback(null);
       return;
     }
 
     updateGameState({
-      selectedOfferId: offerId,
       recognizedInformalRisk,
-      loanAttempts:
-        offer?.viable ? gameState.loanAttempts : gameState.loanAttempts + 1,
+      loanAttempts: gameState.loanAttempts + 1,
     });
-
-    setOfferFeedback(
-      offer?.viable
-        ? {
-            ...content.copy.messages.offerViable,
-            offerId,
-          }
-        : {
-            offerId,
-            tone: "warning",
-            title: content.copy.messages.offerInvalidTitle,
-            text: offer?.detailMessage ?? content.copy.messages.offerInvalidFallback,
-          },
-    );
+    setOfferFeedback(null);
   }
 
   function handleOpenPaymentStrategy(strategyId) {
@@ -1304,9 +1193,11 @@ export function useWhatWouldYouDoLogic({ view, heroApi, data }) {
     setPaymentMessage(null);
   }
 
-  function handleConfirmPaymentStrategy() {
+  function handleConfirmPaymentStrategy(strategyIdOverride = null) {
+    const resolvedStrategyId =
+      strategyIdOverride ?? gameState.selectedPaymentStrategyId ?? "regulated";
     const strategy = content.paymentStrategies.find(
-      (item) => item.id === gameState.selectedPaymentStrategyId,
+      (item) => item.id === resolvedStrategyId,
     );
     if (!strategy) return;
 
@@ -1348,20 +1239,42 @@ export function useWhatWouldYouDoLogic({ view, heroApi, data }) {
   }
 
   function updateDraftPayment(nextValue) {
-    const normalized = Number(String(nextValue).replace(/[^\d.]/g, ""));
-    if (Number.isNaN(normalized)) {
-      setDraftPayment(0);
+    const sanitized = String(nextValue ?? "")
+      .replace(",", ".")
+      .replace(/[^\d.]/g, "");
+
+    if (!sanitized) {
+      setDraftPayment("");
       return;
     }
-    setDraftPayment(Math.max(0, Math.min(normalized, maxAllowedPayment)));
+
+    const [integerPart = "", ...decimalParts] = sanitized.split(".");
+    const decimalPart = decimalParts.join("").slice(0, 2);
+    const normalized = decimalParts.length
+      ? `${integerPart}.${decimalPart}`
+      : integerPart;
+    const numericValue = Number(normalized);
+
+    if (Number.isNaN(numericValue)) {
+      setDraftPayment("");
+      return;
+    }
+
+    if (numericValue > maxAllowedPayment) {
+      setDraftPayment(String(maxAllowedPayment));
+      return;
+    }
+
+    setDraftPayment(normalized);
   }
 
   function adjustDraftPayment(delta) {
-    updateDraftPayment(Number(draftPayment ?? 0) + delta);
+    updateDraftPayment(Number(draftPayment || 0) + delta);
   }
 
   function commitWeekPayment(rawAmount) {
     const paidAmount = Number(rawAmount ?? 0);
+    const hadDebtBeforePayment = Number(gameState.pendingAmount ?? 0) > 0;
 
     if (paidAmount < 0 || paidAmount > maxAllowedPayment) {
       setPaymentMessage(content.copy.messages.paymentInvalid);
@@ -1373,17 +1286,32 @@ export function useWhatWouldYouDoLogic({ view, heroApi, data }) {
       return;
     }
 
-    const previousTotalPaid = sum(gameState.weeklyPayments.slice(0, currentWeekIndex));
+    const previousTotalPaid = sum(
+      gameState.weeklyPayments.slice(0, currentWeekIndex),
+    );
     const newTotalPaid = previousTotalPaid + paidAmount;
     const remaining = Math.max(0, loanTotalToRepay - newTotalPaid);
-    const arrears = Math.max(0, expectedAccumulated[currentWeekIndex] - newTotalPaid);
+    const arrears = Math.max(
+      0,
+      expectedAccumulated[currentWeekIndex] - newTotalPaid,
+    );
     const nextReserve = Math.max(
       0,
-      Number(gameState.reserveRemaining ?? 0) + Number(currentWeek.income ?? 0) - paidAmount,
+      Number(gameState.reserveRemaining ?? 0) +
+        Number(currentWeek.income ?? 0) -
+        paidAmount,
     );
     const updatedPayments = [...gameState.weeklyPayments];
     updatedPayments[currentWeekIndex] = paidAmount;
     const updatedStates = [...gameState.weeklyStates];
+    const weekPaymentSummary = getWeekPaymentSummary({
+      week: currentWeek.week,
+      paidAmount,
+      paymentTarget,
+      remaining,
+      isLastWeek: currentWeekIndex === content.weeks.length - 1,
+      hadDebtBeforePayment,
+    });
     updatedStates[currentWeekIndex] = {
       week: currentWeek.week,
       income: currentWeek.income,
@@ -1400,6 +1328,7 @@ export function useWhatWouldYouDoLogic({ view, heroApi, data }) {
       }),
       balance: nextReserve,
       reserveAfterWeek: nextReserve,
+      message: weekPaymentSummary,
     };
 
     const nextPaymentsScore = updatedPayments.reduce(
@@ -1432,26 +1361,15 @@ export function useWhatWouldYouDoLogic({ view, heroApi, data }) {
       paymentsCompleted: currentWeekIndex === content.weeks.length - 1,
     });
 
-    setPaymentMessage({
-      tone: paidAmount >= paymentTarget ? "success" : "warning",
-      title: `Semana ${currentWeek.week} registrada`,
-      text:
-        paidAmount >= paymentTarget
-          ? `Cumpliste la meta semanal. Pagaste ${formatCurrency(
-              paidAmount,
-            )} y cierras la semana con ${formatCurrency(nextReserve)} disponibles.`
-          : `Pagaste ${formatCurrency(paidAmount)}. Aun queda un atraso acumulado de ${formatCurrency(
-              arrears,
-            )} y cierras la semana con ${formatCurrency(nextReserve)} para la siguiente semana.`,
-    });
+    setPaymentMessage(weekPaymentSummary);
   }
 
   function handleConfirmWeekPayment() {
-    commitWeekPayment(draftPayment);
+    commitWeekPayment(draftPayment || 0);
   }
 
   function handleApplySuggestedPayment(amount) {
-    setDraftPayment(amount);
+    setDraftPayment(String(amount));
     commitWeekPayment(amount);
   }
 
@@ -1471,38 +1389,278 @@ export function useWhatWouldYouDoLogic({ view, heroApi, data }) {
     setPaymentMessage(null);
   }
 
-  async function handleFinishMission() {
-    setMissionCompleted(true);
-    heroApi?.setInteractiveState?.(viewId, {
-      completed: true,
-      type: "whatWouldYouDo",
-      score: totalScore,
-      countsTowardScore: true,
-      payload: {
-        gameState: {
-          ...gameState,
-          materialsTotal,
-          fundingNeeded,
-          pendingAmount: debtPending,
-          score: totalScore,
-        },
-        scoreBreakdown: gameState.scoreBreakdown,
-        products: content.products,
-        weeklyStates: gameState.weeklyStates,
-        totalPaid: gameState.totalPaid,
-        finalAvailableMoney,
-        netProfit,
-        finalStateLabel,
-        selectedOfferId: gameState.selectedOfferId,
-        selectedOfferJustification: gameState.selectedOfferJustification,
-        offersReviewed: gameState.openedOfferIds,
-        approved: isApproved,
-      },
-    });
-    await heroApi?.advanceCurrentView?.();
-  }
-
   const currentStepTitle = content.stepTitles[gameState.step - 1];
+  const interactiveAsideModel = useMemo(() => {
+    const step1Model = {
+      title: currentStepTitle,
+      sections: [
+        {
+          id: "own-money",
+          kind: "stat",
+          label: content.copy.step1.ownMoneyLabel,
+          value: formatCurrency(content.ownMoney),
+        },
+        {
+          id: "products-intro",
+          title: content.copy.step1.asideTitle,
+          description: content.copy.step1.asideText,
+        },
+        {
+          id: "products-list",
+          kind: "cards",
+          items: content.products.map((product) => ({
+            id: product.id,
+            title: product.sidebarLabel ?? product.label,
+            text: `${product.quantity} unidades`,
+            media: product.media,
+            variant: "solid",
+            size: "normal",
+          })),
+          columns: 2,
+          fill: true,
+          scrollable: true,
+        },
+      ],
+    };
+
+    const step2Sections = [
+      {
+        id: "needed-money",
+        kind: "stat",
+        label: content.copy.step2.neededMoneyLabel,
+        value: formatCurrency(gameState.fundingNeeded || fundingNeeded),
+      },
+      {
+        id: "active-offer",
+        kind: "grid",
+        title: activeOffer?.name ?? "Selecciona una oferta",
+        items: [
+          {
+            label: "Monto prestado",
+            value: activeOffer ? formatCurrency(activeOffer.amount) : "—",
+          },
+          {
+            label: "Total a devolver",
+            value: activeOffer
+              ? activeOffer.totalToRepay != null
+                ? formatCurrency(activeOffer.totalToRepay)
+                : "No indicado"
+              : "—",
+          },
+          {
+            label: "Interes",
+            value: activeOffer
+              ? activeOffer.extraCost != null
+                ? formatCurrency(activeOffer.extraCost)
+                : "No indicado"
+              : "—",
+          },
+          {
+            label: "Plazo",
+            value: activeOffer
+              ? activeOffer.termWeeks != null
+                ? `${activeOffer.termWeeks} semanas`
+                : "Poco claro"
+              : "—",
+          },
+        ],
+      },
+      {
+        id: "offer-guidance",
+        title: getOfferGuidance(activeOffer).title,
+        description: getOfferGuidance(activeOffer).description,
+      },
+      {
+        id: "offer-action",
+        kind: "action",
+        buttonLabel: content.copy.step2.chooseButton,
+        disabled: !activeOffer || !isOfferPassable(activeOffer),
+        onClick: () => handleChooseOffer(activeOffer?.id),
+      },
+    ];
+
+    const step2Model = {
+      title: currentStepTitle,
+      sections: step2Sections,
+    };
+
+    const step3Sections = [];
+
+    if (selectedOffer) {
+      step3Sections.push({
+        id: "loan-overview",
+        kind: "grid",
+        title: "Información previa",
+        items: [
+          {
+            label: "Prestamo (P)",
+            value: formatCurrency(selectedOffer.amount),
+          },
+          {
+            label: "Plazo",
+            value:
+              selectedOffer.termWeeks != null
+                ? `${selectedOffer.termWeeks} semanas`
+                : "Poco claro",
+          },
+          {
+            label: "Interes (I)",
+            value:
+              selectedOffer.extraCost != null
+                ? formatCurrency(selectedOffer.extraCost)
+                : "No indicado",
+          },
+          {
+            label: "Gastado (G)",
+            value: formatCurrency(gameState.fundingNeeded || fundingNeeded),
+          },
+          {
+            label: "Total (P + I)",
+            value:
+              selectedOffer.totalToRepay != null
+                ? formatCurrency(selectedOffer.totalToRepay)
+                : "No indicado",
+          },
+          {
+            label: "Sobrante (P - G)",
+            value: formatCurrency(initialReserve),
+          },
+        ],
+      });
+    }
+
+    step3Sections.push({
+      id: "weekly-reference",
+      title: "Cuota aproximada por semana",
+      description: `Se divide el total a pagar (${formatCurrency(
+        loanTotalToRepay,
+      )}) entre el plazo (${loanTermWeeks} semanas) ${formatCurrency(
+        loanTermWeeks > 0 ? loanTotalToRepay / loanTermWeeks : 0,
+      )} aprox.`,
+    });
+
+    const step3Model = {
+      title: gameState.paymentPlanConfirmed
+        ? currentStepTitle
+        : content.copy.step3.sidebarHeroTitle,
+      sections: step3Sections,
+    };
+
+    const paymentQuality = getPaymentQualityLabel({
+      strategyId: gameState.selectedPaymentStrategyId,
+      debtPending,
+      weeklyPayments: gameState.weeklyPayments,
+      loanTotalToRepay,
+      weeksLength: content.weeks.length,
+    });
+    const totalPaidWeeks = gameState.weeklyPayments.filter(
+      (value) => Number(value ?? 0) > 0,
+    ).length;
+
+    const paymentQualityDescription =
+      paymentQuality === "Bueno"
+        ? "Juntaste el dinero necesario y cancelaste la deuda antes de la última semana."
+        : paymentQuality === "Equilibrado"
+          ? "Repartiste el pago por semanas y cumpliste el plazo sin atrasarte."
+          : debtPending > 0
+            ? "El plan no alcanzo para cubrir toda la deuda dentro del plazo."
+            : totalPaidWeeks <= 1
+              ? "Cancelaste la deuda al cierre, pero asumiste más riesgo durante el proceso."
+              : "Tuviste pagos desordenados y el plan se volvio menos seguro.";
+
+    const step4Sections = [
+      {
+        id: "general-result",
+        kind: "grid",
+        title: content.copy.step4.generalInfoTitle,
+        items: [
+          {
+            label: "Prestamo",
+            value: formatCurrency(selectedOffer?.amount ?? 0),
+          },
+          {
+            label: "Interes",
+            value: formatCurrency(
+              selectedOffer?.additionalCost ??
+                Math.max(
+                  0,
+                  (selectedOffer?.totalToRepay ?? 0) -
+                    (selectedOffer?.amount ?? 0),
+                ),
+            ),
+          },
+          {
+            label: "Total",
+            value: formatCurrency(
+              selectedOffer?.totalToRepay ?? loanTotalToRepay,
+            ),
+          },
+          { label: "Plazo", value: `${loanTermWeeks} semanas` },
+        ],
+      },
+      {
+        id: "financial-close-result",
+        kind: "grid",
+        title: `Ganancia neta:  ${formatCurrency(finalAvailableMoney)}`,
+      },
+      {
+        id: "payment-quality-result",
+        kind: "message",
+        title: `Pago: ${paymentQuality}`,
+        description: paymentQualityDescription,
+        tone: paymentQuality === "Malo" ? "warning" : "success",
+      },
+    ];
+
+    const step4Model = {
+      title: currentStepTitle,
+      sections: step4Sections,
+    };
+
+    switch (gameState.step) {
+      case 1:
+        return step1Model;
+      case 2:
+        return step2Model;
+      case 3:
+        return step3Model;
+      case 4:
+        return step4Model;
+      default:
+        return null;
+    }
+  }, [
+    activeOffer,
+    content.copy.step1.asideText,
+    content.copy.step1.asideTitle,
+    content.copy.step1.ownMoneyLabel,
+    content.copy.step2.chooseButton,
+    content.copy.step2.neededMoneyLabel,
+    content.copy.step3.sidebarHeroTitle,
+    content.copy.step4.generalInfoTitle,
+    content.products,
+    currentStepTitle,
+    debtPending,
+    finalMessage,
+    finalStateLabel,
+    fundingNeeded,
+    gameState.fundingNeeded,
+    gameState.materialsTotal,
+    gameState.paymentPlanConfirmed,
+    gameState.selectedPaymentStrategyId,
+    gameState.step,
+    gameState.weeklyPayments,
+    gameState.weeklyStates,
+    handleChooseOffer,
+    finalAvailableMoney,
+    initialReserve,
+    loanTermWeeks,
+    loanTotalToRepay,
+    materialsTotal,
+    netProfit,
+    selectedOffer,
+    totalScore,
+  ]);
 
   return {
     content,
@@ -1546,6 +1704,7 @@ export function useWhatWouldYouDoLogic({ view, heroApi, data }) {
     finalStateLabel,
     finalMessage,
     currentStepTitle,
+    interactiveAsideModel,
     isBalancedPaymentPlan,
     toggleMaterial,
     removeMaterial,
@@ -1560,6 +1719,5 @@ export function useWhatWouldYouDoLogic({ view, heroApi, data }) {
     handleConfirmWeekPayment,
     handleApplySuggestedPayment,
     handleContinueAfterWeek,
-    handleFinishMission,
   };
 }

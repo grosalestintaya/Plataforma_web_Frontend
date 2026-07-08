@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Button from "@/features/module/blocks/base/Action/Button";
 import Typography from "@/features/module/blocks/base/Typography";
 import Card from "@/features/module/blocks/compounds/container/Card";
+import InteractiveInfoAside from "@/features/module/blocks/compounds/grouper/InteractiveInfoAside";
 import Shopping from "@/features/module/blocks/compounds/iteractive/Shopping";
 import { cn } from "@/shared/libs/utils";
 
@@ -56,7 +57,7 @@ function LoanOfferCard({ offer, isActive, isSelected, onOpen }) {
       className={cn(
         "group relative flex min-h-[14rem] min-w-0 overflow-hidden rounded-[1.35rem] border text-left transition duration-150",
         isSelected || isActive
-          ? "border-[#ffe08a] bg-[linear-gradient(180deg,rgba(255,215,95,0.24),rgba(40,91,176,0.2))] shadow-[0_16px_30px_rgba(10,39,98,0.26)]"
+          ? "scale-[1.01] border-[#fff1a8] bg-[linear-gradient(180deg,rgba(255,215,95,0.34),rgba(40,91,176,0.24))] ring-4 ring-[#ffe08a]/75 shadow-[0_0_0_2px_rgba(255,240,168,0.55),0_18px_34px_rgba(10,39,98,0.34)]"
           : "border-white/16 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03))] hover:border-white/28 hover:bg-white/10",
       )}
     >
@@ -94,7 +95,7 @@ function LoanOfferCard({ offer, isActive, isSelected, onOpen }) {
               <div className="text-[1rem] font-black">
                 {offer.termWeeks != null
                   ? `${offer.termWeeks} semanas`
-                  : "No claro"}
+                  : "Poco claro"}
               </div>
             </div>
           </div>
@@ -133,7 +134,7 @@ function SectionCard({ title, subtitle, children, className = "" }) {
       )}
     >
       {title?.text || subtitle?.text ? (
-        <div className="mb-2">
+        <div className="mb-2 p-2">
           {title?.text ? <Typography content={title} /> : null}
           {subtitle?.text ? (
             <Typography content={subtitle} className="mt-2" />
@@ -178,55 +179,6 @@ function InfoBanner({ message }) {
   );
 }
 
-function Table({ headers, rows }) {
-  return (
-    <div className="overflow-hidden rounded-2xl border border-white/12">
-      <div
-        className="grid bg-white/10"
-        style={{
-          gridTemplateColumns: `repeat(${headers.length}, minmax(0, 1fr))`,
-        }}
-      >
-        {headers.map((header) => (
-          <div
-            key={header}
-            className="border-r border-white/8 px-3 py-3 last:border-r-0"
-          >
-            <Typography
-              content={{ text: header, variant: "label", align: "left" }}
-            />
-          </div>
-        ))}
-      </div>
-      {rows.map((row, rowIndex) => (
-        <div
-          key={`row-${rowIndex}`}
-          className="grid border-t border-white/8 bg-black/10"
-          style={{
-            gridTemplateColumns: `repeat(${headers.length}, minmax(0, 1fr))`,
-          }}
-        >
-          {row.map((cell, cellIndex) => (
-            <div
-              key={`cell-${rowIndex}-${cellIndex}`}
-              className="border-r border-white/8 px-3 py-3 last:border-r-0"
-            >
-              <Typography
-                content={{
-                  text: cell,
-                  variant: "bodySm",
-                  align: "left",
-                  color: "secondary",
-                }}
-              />
-            </div>
-          ))}
-        </div>
-      ))}
-    </div>
-  );
-}
-
 export default function WhatWouldYouDoTemplate(props) {
   const model = useWhatWouldYouDoLogic(props);
   const {
@@ -234,7 +186,6 @@ export default function WhatWouldYouDoTemplate(props) {
     gameState,
     materialsMessage,
     paymentMessage,
-    offerFeedback,
     draftPayment,
     materialsTotal,
     fundingNeeded,
@@ -266,28 +217,21 @@ export default function WhatWouldYouDoTemplate(props) {
     netProfit,
     finalStateLabel,
     finalMessage,
-    currentStepTitle,
+    interactiveAsideModel,
     toggleMaterial,
     removeMaterial,
     handleReviewMaterials,
     goToStep,
     handleOpenOffer,
-    handleChooseOffer,
-    handleOpenPaymentStrategy,
     handleConfirmPaymentStrategy,
     updateDraftPayment,
     adjustDraftPayment,
     handleConfirmWeekPayment,
     handleApplySuggestedPayment,
     handleContinueAfterWeek,
-    handleFinishMission,
   } = model;
 
   const copy = content.copy;
-  const sidebarTitle =
-    gameState.step === 3 && !gameState.paymentPlanConfirmed
-      ? copy.step3.sidebarHeroTitle
-      : currentStepTitle;
   const [displayWeekIndex, setDisplayWeekIndex] = useState(
     Math.max(0, gameState.currentWeek - 1),
   );
@@ -327,32 +271,63 @@ export default function WhatWouldYouDoTemplate(props) {
     : Number(displayWeekState?.payment ?? 0);
   const canGoPrevWeek = safeDisplayWeekIndex > 0;
   const canGoNextWeek = safeDisplayWeekIndex < maxVisibleWeekIndex;
-  const displayWeekCompleted = Boolean(displayWeekState);
-  const currentWeekCompleted = Boolean(
-    gameState.weeklyStates[currentWeekIndex],
-  );
-  const paymentGuideText =
-    strategyExecutionConfig?.helper ??
-    strategyExecutionConfig?.description ??
-    "";
+  const displayWeekAutoCompleted =
+    displayWeekIsCurrent && !displayWeekState && debtPending <= 0;
+  const displayWeekCompleted = Boolean(displayWeekState) || displayWeekAutoCompleted;
+  const currentWeekCompleted =
+    Boolean(gameState.weeklyStates[currentWeekIndex]) || debtPending <= 0;
+  const displayWeekMessage =
+    displayWeekState?.message ?? (displayWeekIsCurrent ? paymentMessage : null);
   const displayWeekInputValue = displayWeekCompleted
-    ? Number(displayWeekState?.payment ?? 0)
+    ? String(Number(displayWeekState?.payment ?? 0))
     : displayWeekIsCurrent && strategyExecutionConfig?.mode !== "regulated"
-      ? Number(strategyExecutionConfig?.suggestedPayment ?? 0)
-      : Number(draftPayment ?? 0);
-  const canPayDisplayedWeek = displayWeekIsCurrent && !displayWeekCompleted;
+      ? String(Number(strategyExecutionConfig?.suggestedPayment ?? 0))
+      : draftPayment;
+  const canPayDisplayedWeek =
+    displayWeekIsCurrent &&
+    !displayWeekCompleted &&
+    strategyExecutionConfig?.mode !== "wait";
   const canAdvanceWeek = displayWeekIsCurrent && currentWeekCompleted;
   const step3StrategyId =
     selectedPaymentStrategy?.id ?? gameState.selectedPaymentStrategyId;
-  const showWeeklyApproximation = step3StrategyId === "regulated";
-  const approximateWeeklyFee =
-    loanTermWeeks > 0
-      ? formatCurrency(loanTotalToRepay / loanTermWeeks)
-      : "S/ 0.00";
   const displayWeekDebt =
     displayWeekCompleted && displayWeekState?.remaining != null
       ? Number(displayWeekState.remaining)
       : debtPending;
+  const displayWeekSummaryTitle =
+    displayWeekMessage?.title ??
+    (displayWeekDebt <= 0
+      ? `Semana ${displayWeek.week} registrada`
+      : "Pago correspondiente");
+  const displayWeekSummaryText =
+    displayWeekMessage?.text ??
+    (displayWeekDebt <= 0
+      ? "Ya no tienes deuda."
+      : `Tienes aun una deuda de ${formatCurrency(displayWeekDebt)}`);
+  const totalSalesIncome = content.weeks.reduce(
+    (total, week) => total + Number(week?.income ?? 0),
+    0,
+  );
+  const extraLoanCost = Math.max(
+    0,
+    gameState.totalPaid - (selectedOffer?.amount ?? 0),
+  );
+  const paidWeeksCount = gameState.weeklyStates.filter(Boolean).length;
+  const selectedMaterialsCount = gameState.selectedMaterials.length;
+  const ventureCardMedia = content.ventureMedia ?? content.products[0]?.media ?? null;
+  const plannedUnits = content.products.reduce(
+    (total, product) => total + Number(product?.quantity ?? 0),
+    0,
+  );
+  const soldUnits = content.weeks.reduce(
+    (total, week) =>
+      total +
+      week.sales.reduce(
+        (weekTotal, sale) => weekTotal + Number(sale?.quantity ?? 0),
+        0,
+      ),
+    0,
+  );
   const currentWeekSaleCards =
     displayWeek?.sales?.map((sale) => {
       const product = content.products.find(
@@ -372,289 +347,20 @@ export default function WhatWouldYouDoTemplate(props) {
     selectedPaymentStrategy?.id === "regulated"
       ? "Cuota aproximada por semana"
       : selectedPaymentStrategy?.id === "early"
-        ? "Pago segun lo acumulado"
+        ? "Pago según lo acumulado"
         : "Pago al cierre del plazo";
 
   return (
-    <section className="mx-auto flex h-full w-full max-w-[90rem] px-4 py-4 text-white lg:min-h-0">
-      <div className="grid h-full min-h-0 w-full gap-4 lg:grid-cols-[21rem_minmax(0,1fr)]">
-        <aside className="flex min-h-0 flex-col gap-2 overflow-y-auto rounded-[2rem] border border-white/14 bg-[linear-gradient(180deg,rgba(255,255,255,0.10),rgba(255,255,255,0.04))] p-4">
-          <Typography
-            content={{
-              text: sidebarTitle,
-              variant: "h1",
-              align: "left",
-            }}
+    <section className="mx-auto flex h-full w-full max-w-[96rem] px-4 py-4 text-white lg:min-h-0">
+      <div className="grid h-full min-h-0 w-full gap-4 xl:grid-cols-[minmax(18rem,24rem)_minmax(0,1fr)]">
+        {interactiveAsideModel ? (
+          <InteractiveInfoAside
+            title={interactiveAsideModel.title}
+            sections={interactiveAsideModel.sections}
           />
+        ) : null}
 
-          {gameState.step === 1 ? (
-            <SectionCard
-              title={{
-                text: copy.step1.asideTitle,
-                variant: "h3",
-                align: "left",
-              }}
-              className="flex min-h-0 flex-1 flex-col overflow-hidden p-4"
-            >
-              <div className="flex min-h-0 flex-1 flex-col gap-4">
-                <Typography
-                  content={{
-                    text: copy.step1.asideText,
-                    variant: "bodySm",
-                    align: "left",
-                    color: "secondary",
-                  }}
-                />
-
-                <div className="grid min-h-0 flex-1 grid-cols-2 content-start gap-3 overflow-y-auto pr-1">
-                  {content.products.map((product) => (
-                    <Card
-                      key={product.id}
-                      title={{
-                        text: product.sidebarLabel ?? product.label,
-                        variant: "cardTitle",
-                        align: "center",
-                      }}
-                      text={{
-                        text: `${product.quantity} unidades`,
-                        variant: "cardText",
-                        align: "center",
-                        color: "secondary",
-                      }}
-                      media={product.media}
-                      variant="solid"
-                      size="normal"
-                    />
-                  ))}
-                </div>
-              </div>
-            </SectionCard>
-          ) : null}
-
-          {gameState.step === 2 ? (
-            <SectionCard className="flex min-h-0 flex-1 flex-col">
-              <div className="rounded-[1.35rem] border border-[#ffe08a]/55 bg-[linear-gradient(180deg,rgba(255,224,138,0.18),rgba(255,255,255,0.08))] px-4 py-4 shadow-[0_12px_24px_rgba(30,20,70,0.2)]">
-                <Typography
-                  content={{
-                    text: copy.step2.neededMoneyLabel,
-                    variant: "helper",
-                    align: "left",
-                    color: "secondary",
-                  }}
-                />
-                <Typography
-                  content={{
-                    text: formatCurrency(
-                      gameState.fundingNeeded || fundingNeeded,
-                    ),
-                    variant: "h1",
-                    align: "left",
-                  }}
-                  className="mt-2"
-                />
-              </div>
-
-              {activeOffer ? (
-                <div className="relative mt-4 flex min-h-0 flex-1 flex-col rounded-[1.2rem] border border-white/14 bg-black/10 p-3 overflow-hidden">
-                  <Typography
-                    content={{
-                      text: activeOffer.name,
-                      variant: "h3",
-                      align: "left",
-                    }}
-                  />
-
-                  <div className="mt-3 grid gap-2 min-[380px]:grid-cols-2">
-                    {[
-                      ["Monto prestado", formatCurrency(activeOffer.amount)],
-                      [
-                        "Total a devolver",
-                        activeOffer.totalToRepay != null
-                          ? formatCurrency(activeOffer.totalToRepay)
-                          : "No dice",
-                      ],
-                      [
-                        "Interes",
-                        activeOffer.extraCost != null
-                          ? formatCurrency(activeOffer.extraCost)
-                          : "No dice",
-                      ],
-                      [
-                        "Plazo",
-                        activeOffer.termWeeks != null
-                          ? `${activeOffer.termWeeks} semanas`
-                          : "No claro",
-                      ],
-                    ].map(([label, value]) => (
-                      <div
-                        key={label}
-                        className="min-w-0 rounded-2xl border border-white/10 bg-white/6 p-2"
-                      >
-                        <Typography
-                          content={{
-                            text: label,
-                            variant: "helper",
-                            align: "left",
-                            color: "secondary",
-                          }}
-                        />
-                        <Typography
-                          content={{
-                            text: value,
-                            variant: "h3",
-                            align: "left",
-                          }}
-                          className="mt-2 break-words"
-                        />
-                      </div>
-                    ))}
-                  </div>
-
-                  {offerFeedback?.offerId === activeOffer.id ? (
-                    <div className="mt-3 [@media(max-height:700px)]:hidden">
-                      <InfoBanner message={offerFeedback} />
-                    </div>
-                  ) : null}
-
-                  <div className="mt-auto pt-3">
-                    <Button
-                      variant="primary"
-                      label={copy.step2.chooseButton}
-                      onClick={() => handleChooseOffer(activeOffer.id)}
-                      fullWidth
-                    />
-                  </div>
-
-                  {offerFeedback?.offerId === activeOffer.id ? (
-                    <div className="pointer-events-none absolute inset-x-3 top-[4.65rem] z-20 hidden [@media(max-height:700px)]:block">
-                      <div className="rounded-[1.25rem] border border-white/10 bg-[radial-gradient(circle_at_18%_22%,rgba(255,255,255,0.18),transparent_24%),radial-gradient(circle_at_78%_30%,rgba(214,197,255,0.16),transparent_28%),radial-gradient(circle_at_50%_78%,rgba(255,255,255,0.12),transparent_26%),linear-gradient(180deg,rgba(20,13,48,0.50),rgba(20,13,48,0.72))] p-1.5 shadow-[0_16px_30px_rgba(12,8,34,0.28)] backdrop-blur-[10px]">
-                        <InfoBanner message={offerFeedback} />
-                      </div>
-                    </div>
-                  ) : null}
-                </div>
-              ) : null}
-            </SectionCard>
-          ) : null}
-
-          {gameState.step === 3 ? (
-            <SectionCard className="flex min-h-0 flex-1 flex-col p-0 gap-2">
-              {selectedOffer ? (
-                <div className="gap-2">
-                  <div className=" mb-2 rounded-[1rem] border border-white/12 bg-white/8 px-4 py-3">
-                    <Typography
-                      content={{
-                        text: "Información previa",
-                        variant: "h3",
-                        align: "left",
-                      }}
-                      className="leading-none"
-                    />
-                  </div>
-
-                  <div className="grid gap-2 min-[380px]:grid-cols-2">
-                    {[
-                      ["Préstamo (P)", formatCurrency(selectedOffer.amount)],
-                      [
-                        "Plazo",
-                        selectedOffer.termWeeks != null
-                          ? `${selectedOffer.termWeeks} semanas`
-                          : "No claro",
-                      ],
-                      [
-                        "Interés (I)",
-                        selectedOffer.extraCost != null
-                          ? formatCurrency(selectedOffer.extraCost)
-                          : "No dice",
-                      ],
-                      [
-                        "Gastado (G)",
-                        formatCurrency(
-                          gameState.fundingNeeded || fundingNeeded,
-                        ),
-                      ],
-                      [
-                        "Total (P + I)",
-                        selectedOffer.totalToRepay != null
-                          ? formatCurrency(selectedOffer.totalToRepay)
-                          : "No dice",
-                      ],
-                      ["Sobrante (P - G)", formatCurrency(initialReserve)],
-                    ].map(([label, value]) => (
-                      <div
-                        key={label}
-                        className="min-w-0 rounded-[1.05rem] border border-white/12 bg-white/6 p-2.5"
-                      >
-                        <Typography
-                          content={{
-                            text: label,
-                            variant: "helper",
-                            align: "left",
-                            color: "secondary",
-                          }}
-                        />
-
-                        <Typography
-                          content={{
-                            text: value,
-                            variant: "h3",
-                            align: "left",
-                          }}
-                          className="mt-2 break-words"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ) : null}
-
-              {showWeeklyApproximation ? (
-                <div className="rounded-[1.2rem] border border-white/12 bg-black/10 px-4 py-4">
-                  <Typography
-                    content={{
-                      text: "Cuota aproximada por semana",
-                      variant: "h2",
-                      align: "left",
-                    }}
-                  />
-                  <Typography
-                    content={{
-                      text: `Se divide el total a pagar (${formatCurrency(
-                        loanTotalToRepay,
-                      )}) entre el plazo (${loanTermWeeks} semanas) ${approximateWeeklyFee} aprox.`,
-                      variant: "bodySm",
-                      align: "left",
-                      color: "secondary",
-                    }}
-                    className="mt-3"
-                  />
-                </div>
-              ) : null}
-            </SectionCard>
-          ) : null}
-
-          {gameState.step === 4 ? (
-            <SectionCard
-              title={{ text: "Resultado final", variant: "h3", align: "left" }}
-              className="p-4"
-            >
-              <div className="space-y-2">
-                <SidebarRow label="Puntaje" value={`${totalScore} / 100`} />
-                <SidebarRow label="Estado" value={finalStateLabel} />
-                <SidebarRow
-                  label="Deuda pendiente"
-                  value={formatCurrency(debtPending)}
-                />
-                <SidebarRow
-                  label="Ganancia neta"
-                  value={formatCurrency(netProfit)}
-                />
-              </div>
-            </SectionCard>
-          ) : null}
-        </aside>
-
-        <main className="min-h-0 overflow-auto rounded-[2rem] border border-white/14 bg-[linear-gradient(180deg,rgba(255,255,255,0.10),rgba(255,255,255,0.04))] p-2">
+        <main className="min-h-0 min-w-0 overflow-x-hidden overflow-y-auto rounded-[2rem] border border-white/14 bg-[linear-gradient(180deg,rgba(255,255,255,0.10),rgba(255,255,255,0.04))]">
           {gameState.step === 1 ? (
             <SectionCard
               title={{
@@ -676,9 +382,9 @@ export default function WhatWouldYouDoTemplate(props) {
                   selectedIds={gameState.selectedMaterials}
                   selectedItems={selectedMaterialItems}
                   calculatorData={materialsCalculatorData}
-                  initialBalance={content.ownMoney}
-                  total={materialsTotal}
-                  balance={Math.max(0, content.ownMoney - materialsTotal)}
+                  initialBalance={materialsTotal}
+                  total={content.ownMoney}
+                  balance={Math.max(0, materialsTotal - content.ownMoney)}
                   errorMessage={
                     materialsMessage?.tone === "warning"
                       ? materialsMessage.text
@@ -758,98 +464,51 @@ export default function WhatWouldYouDoTemplate(props) {
                       className="mt-2"
                     />
                   </div>
+
                   <div className="grid gap-3 md:grid-cols-3">
                     {content.paymentStrategies.map((strategy) => (
                       <div
                         key={strategy.id}
-                        className="rounded-[1.35rem] border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03))] p-2"
+                        className="overflow-hidden rounded-[1.35rem] border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03))]"
                       >
-                        <Card
-                          title={{
-                            text: strategy.title,
-                            variant: "cardTitle",
-                            align: "center",
-                          }}
-                          text={null}
-                          media={strategy.media}
-                          interaction={{ type: "selectable" }}
-                          selected={selectedPaymentStrategy?.id === strategy.id}
-                          onSelect={() =>
-                            handleOpenPaymentStrategy(strategy.id)
-                          }
-                          variant="solid"
+                        <img
+                          src={strategy.media?.src}
+                          alt={strategy.media?.alt}
+                          className="h-44 w-full object-cover"
                         />
-                      </div>
-                    ))}
-                  </div>
-
-                  {selectedStrategyDetails ? (
-                    <div className="mt-2 rounded-[1.35rem] border border-white/12 bg-black/10 p-4">
-                      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_14rem] lg:items-end">
-                        <div>
+                        <div className="space-y-3 p-4">
                           <Typography
                             content={{
-                              text: copy.step3.strategyDetailsTitle,
+                              text: strategy.title,
                               variant: "h3",
                               align: "left",
                             }}
                           />
                           <Typography
                             content={{
-                              text: selectedStrategyDetails.title,
-                              variant: "label",
-                              align: "left",
-                            }}
-                            className="mt-2 text-white"
-                          />
-                          <Typography
-                            content={{
-                              text: selectedStrategyDetails.description,
-                              variant: "helper",
+                              text: strategy.description,
+                              variant: "bodySm",
                               align: "left",
                               color: "secondary",
                             }}
-                            className="mt-2"
-                          />
-
-                          <div className="mt-3 grid gap-2 sm:grid-cols-3 lg:grid-cols-1">
-                            {selectedStrategyDetails.conditions.map(
-                              (condition) => (
-                                <div
-                                  key={condition}
-                                  className="rounded-2xl border border-white/10 bg-white/6 px-3 py-3"
-                                >
-                                  <Typography
-                                    content={{
-                                      text: condition,
-                                      variant: "helper",
-                                      align: "left",
-                                      color: "secondary",
-                                    }}
-                                  />
-                                </div>
-                              ),
-                            )}
-                          </div>
-                        </div>
-
-                        <div className="flex h-full flex-col justify-end">
-                          <Button
-                            variant="primary"
-                            label={copy.step3.strategyContinueButton}
-                            onClick={handleConfirmPaymentStrategy}
-                            disabled={!selectedPaymentStrategy}
-                            fullWidth
                           />
                         </div>
                       </div>
-                    </div>
-                  ) : null}
+                    ))}
+                  </div>
+
+                  <div className="mt-3 flex justify-end">
+                    <Button
+                      variant="primary"
+                      label={copy.step3.strategyContinueButton}
+                      onClick={() => handleConfirmPaymentStrategy("regulated")}
+                    />
+                  </div>
                 </div>
               ) : (
-                <div className="flex min-h-0 flex-col rounded-[1.6rem] border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.07),rgba(255,255,255,0.03))] p-2">
-                  <div className="grid gap-2 xl:grid-cols-[minmax(0,1.45fr)_minmax(19rem,0.78fr)]">
-                    <div className="grid gap-2 rounded-[1.35rem] border border-white/12 bg-black/10 p-2">
+                <div className="flex min-h-0 min-w-0 flex-col rounded-[1.6rem] border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.07),rgba(255,255,255,0.03))] p-2">
+                  <div className="grid min-w-0 gap-2 min-[1180px]:grid-cols-[minmax(0,1.45fr)_minmax(16.5rem,0.78fr)]">
+                    <div className="grid min-w-0 gap-2 rounded-[1.35rem] border border-white/12 bg-black/10 p-2">
                       <div className="rounded-[1.2rem] border border-white/12 bg-black/10 px-4 py-3 text-center">
                         <Typography
                           content={{
@@ -857,9 +516,10 @@ export default function WhatWouldYouDoTemplate(props) {
                             variant: "h1",
                             align: "left",
                           }}
+                          className="break-words"
                         />
                       </div>
-                      <div className="grid items-start gap-3 sm:grid-cols-3 xl:grid-cols-3">
+                      <div className="grid min-w-0 items-start gap-3 sm:grid-cols-2 lg:grid-cols-3">
                         {displayWeek.sales.map((sale, index) => {
                           const saleCard = currentWeekSaleCards[index];
 
@@ -887,7 +547,7 @@ export default function WhatWouldYouDoTemplate(props) {
                         })}
                       </div>
 
-                      <div className="grid gap-3 sm:grid-cols-3 xl:grid-cols-3">
+                      <div className="grid min-w-0 gap-3 sm:grid-cols-2 lg:grid-cols-3">
                         {displayWeek.sales.map((sale, index) => {
                           const saleCard = currentWeekSaleCards[index];
 
@@ -910,18 +570,18 @@ export default function WhatWouldYouDoTemplate(props) {
                         })}
                       </div>
 
-                      <div className="rounded-[1.2rem] border border-white/12 bg-black/10 px-4 py-3 text-center">
+                      <div className="rounded-[1.2rem] border border-white/12 bg-black/10 p-1 text-center">
                         <Typography
                           content={{
                             text: `Total:  ${formatCurrency(displayWeekIncome)}`,
-                            variant: "h1",
+                            variant: "h2",
                             align: "center",
                           }}
                         />
                       </div>
                     </div>
 
-                    <div className="space-y-3 rounded-2xl border border-white/12 bg-black/10 p-4">
+                    <div className="min-w-0 space-y-3 rounded-2xl border border-white/12 bg-black/10 p-4">
                       <Typography
                         content={{
                           text: "Resumen",
@@ -930,7 +590,7 @@ export default function WhatWouldYouDoTemplate(props) {
                         }}
                       />
 
-                      <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 rounded-2xl border border-white/10 bg-white/6 p-2">
+                      <div className="grid min-w-0 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 rounded-2xl border border-white/10 bg-white/6 p-2">
                         <Button
                           variant="simple"
                           label="<"
@@ -941,14 +601,15 @@ export default function WhatWouldYouDoTemplate(props) {
                           disabled={!canGoPrevWeek}
                         />
                         <div className="rounded-xl bg-white/6 px-3 py-3 text-center">
-                          <Typography
-                            content={{
-                              text: `Semana ${displayWeek.week}`,
-                              variant: "label",
-                              align: "center",
-                            }}
-                          />
-                        </div>
+                            <Typography
+                              content={{
+                                text: `Semana ${displayWeek.week}`,
+                                variant: "label",
+                                align: "center",
+                              }}
+                              className="break-words"
+                            />
+                          </div>
                         <Button
                           variant="simple"
                           label=">"
@@ -971,40 +632,26 @@ export default function WhatWouldYouDoTemplate(props) {
                           label="Dinero en caja"
                           value={formatCurrency(displayWeekCash)}
                         />
-                        <SidebarRow
-                          label="Ganancia total"
-                          value={
-                            displayWeekGain == null
-                              ? "S/ ---"
-                              : formatCurrency(displayWeekGain)
-                          }
-                        />
                       </div>
 
-                      <div className="space-y-3 rounded-2xl border border-white/10 bg-white/6 p-3">
-                        {paymentMessage?.text ? (
-                          <InfoBanner message={paymentMessage} />
-                        ) : (
-                          <>
-                            <Typography
-                              content={{
-                                text: "Pago correspondiente",
-                                variant: "h2",
-                                align: "left",
-                              }}
-                            />
-                            <Typography
-                              content={{
-                                text: `Tienes aun una deuda de ${formatCurrency(displayWeekDebt)}`,
-                                variant: "body",
-                                align: "left",
-                                color: "secondary",
-                              }}
-                            />
-                          </>
-                        )}
+                      <div className="space-y-3 rounded-2xl border border-white/10 bg-white/6 p-2.5">
+                        <Typography
+                          content={{
+                            text: displayWeekSummaryTitle,
+                            variant: "h2",
+                            align: "left",
+                          }}
+                        />
+                        <Typography
+                          content={{
+                            text: displayWeekSummaryText,
+                            variant: "body",
+                            align: "left",
+                            color: "secondary",
+                          }}
+                        />
 
-                        <div className="grid grid-cols-[3.5rem_minmax(0,1fr)] gap-2 sm:grid-cols-[3.5rem_minmax(0,1fr)]">
+                        <div className="grid min-w-0 grid-cols-[3.25rem_minmax(0,1fr)] gap-2">
                           <div className="flex items-center justify-center rounded-2xl border border-white/12 bg-black/20 px-3 py-3">
                             <Typography
                               content={{
@@ -1014,13 +661,13 @@ export default function WhatWouldYouDoTemplate(props) {
                               }}
                             />
                           </div>
-                          <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-2">
+                          <div className="grid min-w-0 gap-2 sm:grid-cols-[minmax(0,1fr)_auto]">
                             <input
-                              type="number"
-                              min={0}
-                              max={maxAllowedPayment}
-                              step="0.01"
+                              type="text"
+                              inputMode="decimal"
+                              autoComplete="off"
                               value={displayWeekInputValue}
+                              placeholder="0"
                               disabled={
                                 !canPayDisplayedWeek ||
                                 strategyExecutionConfig?.mode !== "regulated"
@@ -1028,7 +675,7 @@ export default function WhatWouldYouDoTemplate(props) {
                               onChange={(event) =>
                                 updateDraftPayment(event.target.value)
                               }
-                              className="h-14 w-full rounded-2xl border border-white/16 bg-black/20 px-4 text-xl font-black text-white outline-none disabled:cursor-not-allowed disabled:opacity-80"
+                              className="h-14 w-full rounded-2xl border border-white/16 bg-black/20 px-4 text-xl font-black text-white outline-none placeholder:text-white/35 disabled:cursor-not-allowed disabled:opacity-80"
                             />
                             <Button
                               variant="secondary"
@@ -1048,6 +695,7 @@ export default function WhatWouldYouDoTemplate(props) {
                                 );
                               }}
                               disabled={!canPayDisplayedWeek}
+                              fullWidth
                             />
                           </div>
                         </div>
@@ -1087,172 +735,137 @@ export default function WhatWouldYouDoTemplate(props) {
                   color: "secondary",
                 }}
               >
-                <div className="space-y-5">
-                  <SectionCard
+                <div className="grid gap-4 xl:grid-cols-[minmax(16rem,19rem)_minmax(0,1fr)]">
+                  <Card
                     title={{
-                      text: copy.step4.materialsTitle,
-                      variant: "h2",
-                      align: "left",
+                      text: copy.step4.ventureCardTitle,
+                      variant: "cardTitle",
+                      align: "center",
                     }}
-                    className="p-4"
-                  >
-                    <Table
-                      headers={["Concepto", "Resultado"]}
-                      rows={[
-                        [
-                          "Costo de materiales",
-                          formatCurrency(
-                            gameState.materialsTotal || materialsTotal,
-                          ),
-                        ],
-                        [
-                          "Dinero propio utilizado",
-                          formatCurrency(content.ownMoney),
-                        ],
-                        [
-                          "Dinero que faltaba",
-                          formatCurrency(
-                            gameState.fundingNeeded || fundingNeeded,
-                          ),
-                        ],
-                        [
-                          "Materiales seleccionados correctamente",
-                          gameState.materialsValidated ? "Si" : "Debo reforzar",
-                        ],
-                      ]}
-                    />
-                  </SectionCard>
-
-                  <SectionCard
-                    title={{
-                      text: copy.step4.loanTitle,
-                      variant: "h2",
-                      align: "left",
+                    text={{
+                      text: `${plannedUnits} pulseras preparadas para la feria escolar.`,
+                      variant: "cardText",
+                      align: "center",
+                      color: "secondary",
                     }}
-                    className="p-4"
-                  >
-                    <Table
-                      headers={["Concepto", "Resultado"]}
-                      rows={[
-                        [
-                          "Monto recibido",
-                          formatCurrency(selectedOffer?.amount ?? 0),
-                        ],
-                        ["Total devuelto", formatCurrency(gameState.totalPaid)],
-                        [
-                          "Costo adicional",
-                          formatCurrency(
-                            Math.max(
-                              0,
-                              gameState.totalPaid -
-                                (selectedOffer?.amount ?? 0),
-                            ),
-                          ),
-                        ],
-                        ["Plazo", `${selectedOffer?.termWeeks ?? 0} semanas`],
-                        ["Condiciones", selectedOffer?.conditions ?? "-"],
-                        ["Riesgo", selectedOffer?.risk ?? "-"],
-                        [
-                          "Excedente inicial del prestamo",
-                          formatCurrency(initialReserve),
-                        ],
-                      ]}
-                    />
-                  </SectionCard>
+                    media={ventureCardMedia}
+                  />
 
-                  <SectionCard
-                    title={{
-                      text: copy.step4.paymentsTitle,
-                      variant: "h2",
-                      align: "left",
-                    }}
-                    className="p-4"
-                  >
-                    <Table
-                      headers={[
-                        "Semana",
-                        "Ingreso por ventas",
-                        "Pago realizado",
-                        "Atraso al cerrar",
-                        "Estado",
-                      ]}
-                      rows={content.weeks.map((week, index) => {
-                        const weekState = gameState.weeklyStates[index];
-                        return [
-                          String(week.week),
-                          formatCurrency(week.income),
-                          formatCurrency(weekState?.payment ?? 0),
-                          formatCurrency(weekState?.arrears ?? 0),
-                          weekState?.status ?? "Pendiente",
-                        ];
-                      })}
-                    />
-                  </SectionCard>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <SectionCard
+                      title={{
+                        text: copy.step4.productionTitle,
+                        variant: "h2",
+                        align: "left",
+                      }}
+                      className="p-4"
+                    >
+                      <div className="space-y-3">
+                        <Typography
+                          content={{
+                            text: `${selectedMaterialsCount} materiales listos para producir.`,
+                            variant: "body",
+                            align: "left",
+                          }}
+                        />
+                        <Typography
+                          content={{
+                            text: `${plannedUnits} pulseras preparadas para la feria.`,
+                            variant: "bodySm",
+                            align: "left",
+                            color: "secondary",
+                          }}
+                        />
+                      </div>
+                    </SectionCard>
 
-                  <SectionCard
-                    title={{
-                      text: copy.step4.financialTitle,
-                      variant: "h2",
-                      align: "left",
-                    }}
-                    className="p-4"
-                  >
-                    <Table
-                      headers={["Concepto", "Monto"]}
-                      rows={[
-                        ["Total obtenido por ventas", formatCurrency(63)],
-                        [
-                          "Costo de materiales",
-                          `-${formatCurrency(gameState.materialsTotal || materialsTotal)}`,
-                        ],
-                        [
-                          "Ganancia antes del costo del prestamo",
-                          formatCurrency(
-                            63 - (gameState.materialsTotal || materialsTotal),
-                          ),
-                        ],
-                        [
-                          "Costo adicional del prestamo",
-                          `-${formatCurrency(
-                            Math.max(
-                              0,
-                              gameState.totalPaid -
-                                (selectedOffer?.amount ?? 0),
-                            ),
-                          )}`,
-                        ],
-                        [
-                          "Ganancia neta del emprendimiento",
-                          formatCurrency(netProfit),
-                        ],
-                        [
-                          "Excedente inicial del prestamo no usado",
-                          formatCurrency(initialReserve),
-                        ],
-                        [
-                          "Saldo final disponible",
-                          formatCurrency(finalAvailableMoney),
-                        ],
-                        [
-                          "Estado de aprobacion",
-                          isApproved ? "Aprobado" : "En refuerzo",
-                        ],
-                      ]}
-                    />
-                  </SectionCard>
+                    <SectionCard
+                      title={{
+                        text: copy.step4.ventureSalesTitle,
+                        variant: "h2",
+                        align: "left",
+                      }}
+                      className="p-4"
+                    >
+                      <div className="space-y-3">
+                        <Typography
+                          content={{
+                            text: `${soldUnits} pulseras vendidas.`,
+                            variant: "body",
+                            align: "left",
+                          }}
+                        />
+                        <Typography
+                          content={{
+                            text: `Ingresos totales: ${formatCurrency(totalSalesIncome)}.`,
+                            variant: "bodySm",
+                            align: "left",
+                            color: "secondary",
+                          }}
+                        />
+                      </div>
+                    </SectionCard>
 
-                  <InfoBanner message={finalMessage} />
+                    <SectionCard
+                      title={{
+                        text: copy.step4.journeyTitle,
+                        variant: "h2",
+                        align: "left",
+                      }}
+                      className="p-4"
+                    >
+                      <div className="space-y-3">
+                        <Typography
+                          content={{
+                            text: `Aportaste ${formatCurrency(content.ownMoney)} de tu dinero.`,
+                            variant: "body",
+                            align: "left",
+                          }}
+                        />
+                        <Typography
+                          content={{
+                            text:
+                              debtPending <= 0
+                                ? `${paidWeeksCount} semanas registradas. Interes pagado: ${formatCurrency(extraLoanCost)}.`
+                                : `Quedo pendiente ${formatCurrency(debtPending)} al cierre.`,
+                            variant: "bodySm",
+                            align: "left",
+                            color: "secondary",
+                          }}
+                        />
+                      </div>
+                    </SectionCard>
+
+                    <SectionCard
+                      title={{
+                        text: copy.step4.closingTitle,
+                        variant: "h2",
+                        align: "left",
+                      }}
+                      className="p-4"
+                    >
+                      <div className="space-y-3">
+                        <Typography
+                          content={{
+                            text: `Caja final: ${formatCurrency(finalAvailableMoney)}.`,
+                            variant: "body",
+                            align: "left",
+                          }}
+                        />
+                        <Typography
+                          content={{
+                            text: `Ganancia neta: ${formatCurrency(netProfit)}.`,
+                            variant: "bodySm",
+                            align: "left",
+                            color: "secondary",
+                          }}
+                        />
+                      </div>
+                    </SectionCard>
+                  </div>
                 </div>
               </SectionCard>
 
-              <div className="flex flex-wrap gap-3">
-                <Button
-                  variant="primary"
-                  size="lg"
-                  label="Finalizar mision"
-                  onClick={handleFinishMission}
-                />
-              </div>
             </div>
           ) : null}
         </main>
