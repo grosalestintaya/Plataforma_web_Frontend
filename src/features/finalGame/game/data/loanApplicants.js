@@ -1,0 +1,81 @@
+// game/data/loanApplicants.js
+// Solicitantes del minijuego "El Banquero". Cada uno tiene una respuesta
+// correcta (shouldApprove) basada en capacidad de pago real (ingresos menos
+// gastos, comparado con el monto solicitado) Y en el historial crediticio —
+// la idea es que el jugador aprenda que un buen ingreso no alcanza si la
+// persona ya tiene deudas sin pagar, y que un ingreso modesto puede ser
+// suficiente si gasta poco y pide un monto razonable.
+export const loanApplicants = [
+  {
+    id: "applicant_01",
+    name: "Carlos Mendoza",
+    income: 1200,
+    expenses: 700,
+    creditHistory: "Buena",
+    creditNote: "Pagó todos sus préstamos anteriores a tiempo.",
+    requestedAmount: 300,
+    shouldApprove: true,
+    feedbackApprove: "Bien hecho: le sobran S/500 al mes y siempre pagó a tiempo.",
+    feedbackReject: "Era un buen pagador con capacidad de sobra. Perdiste un cliente confiable.",
+  },
+  {
+    id: "applicant_02",
+    name: "Rosa Quispe",
+    income: 900,
+    expenses: 850,
+    creditHistory: "Regular",
+    creditNote: "Pagó, pero siempre con retraso.",
+    requestedAmount: 600,
+    shouldApprove: false,
+    feedbackApprove: "Le quedaban solo S/50 al mes: no podía pagar una cuota de S/600.",
+    feedbackReject: "Correcto: casi no le sobraba dinero para asumir esa deuda.",
+  },
+  {
+    id: "applicant_03",
+    name: "Jorge Ramírez",
+    income: 1500,
+    expenses: 600,
+    creditHistory: "Mala",
+    creditNote: "Dejó de pagar dos préstamos anteriores.",
+    requestedAmount: 400,
+    shouldApprove: false,
+    feedbackApprove: "Tenía dinero de sobra, pero ya había dejado de pagar antes. El riesgo era alto.",
+    feedbackReject: "Correcto: un buen ingreso no compensa un mal historial de pagos.",
+  },
+  {
+    id: "applicant_04",
+    name: "Ana Torres",
+    income: 800,
+    expenses: 500,
+    creditHistory: "Buena",
+    creditNote: "Es su primer préstamo, no tiene historial previo.",
+    requestedAmount: 200,
+    shouldApprove: true,
+    feedbackApprove: "Bien: le sobran S/300 al mes, más que suficiente para un préstamo pequeño.",
+    feedbackReject: "Tenía capacidad de pago de sobra para un monto tan pequeño.",
+  },
+  {
+    id: "applicant_05",
+    name: "Miguel Ángel Fernández",
+    income: 2000,
+    expenses: 1850,
+    creditHistory: "Regular",
+    creditNote: "Ya tiene otro préstamo activo que está pagando.",
+    requestedAmount: 500,
+    shouldApprove: false,
+    feedbackApprove: "Ganaba bien, pero gastaba casi todo: solo le quedaban S/150 y ya tenía otra deuda.",
+    feedbackReject: "Correcto: un ingreso alto no sirve de nada si los gastos se lo comen todo.",
+  },
+  {
+    id: "applicant_06",
+    name: "Lucía Paredes",
+    income: 1100,
+    expenses: 750,
+    creditHistory: "Buena",
+    creditNote: "Pagó su único préstamo anterior antes de tiempo.",
+    requestedAmount: 350,
+    shouldApprove: true,
+    feedbackApprove: "Bien hecho: buena capacidad de pago y excelente historial.",
+    feedbackReject: "Era una excelente candidata: buen historial y dinero de sobra cada mes.",
+  },
+];

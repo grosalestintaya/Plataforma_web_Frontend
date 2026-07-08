@@ -11,6 +11,7 @@ const NotFound = lazy(() => import("./features/system/pages/NotFoud.jsx"));
 const Introduction = lazy(
   () => import("./features/marketing/pages/Introduction.jsx"),
 );
+const JuegoFinal = lazy(() => import("./features/finalGame/FinalGamePage.jsx"));
 const Login = lazy(() => import("./features/auth/pages/Login.jsx"));
 const LandingPage = lazy(
   () => import("./features/marketing/pages/LandingPage.jsx"),
@@ -305,6 +306,14 @@ function App() {
           path="/modules/:moduleCode/:missionKey"
           element={
             <PrivateRoute>{withSuspense(<ModuleActivtyPage />)}</PrivateRoute>
+          }
+        />
+        <Route
+          path="juegofinal"
+          element={
+            <PrivateRoute>
+              <JuegoFinal />
+            </PrivateRoute>
           }
         />
 
