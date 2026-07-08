@@ -8,6 +8,8 @@ import { gameplayItems } from "../data/gameplayItems";
 import { runnerGates } from "../data/runnerGates";
 import { MAX_GAMEPLAY_SCORE, toSectionScore } from "../services/scoreCalculator";
 import { beginSection, completeSection, updateProgress } from "../services/attemptTracker";
+import { playMusic } from "../services/musicManager";
+import { addSfx } from "../services/audioSettings";
 import { ACTIVITY_IDS } from "../config/activities";
 import { fadeToScene, createChoiceButton } from "../ui/sceneUI";
 
@@ -58,12 +60,13 @@ export default class GameplayScene extends Phaser.Scene {
     this.cameras.main.fadeIn(300, 0, 0, 0);
 
     beginSection(ACTIVITY_IDS.runner);
+    playMusic(this, "bg_runner");
 
-    this.sfxClick = this.sound.add("sfx_click");
-    this.sfxHover = this.sound.add("sfx_hover");
-    this.sfxSuccess = this.sound.add("sfx_success");
-    this.sfxError = this.sound.add("sfx_error");
-    this.sfxCoin = this.sound.add("sfx_coin");
+    this.sfxClick = addSfx(this, "sfx_click");
+    this.sfxHover = addSfx(this, "sfx_hover");
+    this.sfxSuccess = addSfx(this, "sfx_success");
+    this.sfxError = addSfx(this, "sfx_error");
+    this.sfxCoin = addSfx(this, "sfx_coin");
 
     this.ensureColibriAnim();
     this.renderIntro();

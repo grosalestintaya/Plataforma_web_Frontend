@@ -5,6 +5,7 @@
 import Phaser from "phaser";
 import { EventBus } from "../EventBus";
 import { averageSectionScores } from "../services/scoreCalculator";
+import { fadeOutMusic } from "../services/musicManager";
 import {
   createArcadeBackground,
   createFloatingIcons,
@@ -45,16 +46,7 @@ export default class ResultScene extends Phaser.Scene {
     this.createAverage();
     this.startReturnCountdown();
 
-    const bgMusic = this.sound.get("bg_music");
-    if (bgMusic) {
-      this.tweens.add({
-        targets: bgMusic,
-        volume: 0,
-        duration: 1500,
-        delay: 3000,
-        onComplete: () => bgMusic.stop(),
-      });
-    }
+    fadeOutMusic(this, { duration: 1500, delay: 3000 });
   }
 
   createTitle() {

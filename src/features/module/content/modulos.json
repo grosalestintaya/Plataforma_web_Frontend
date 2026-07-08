@@ -204,11 +204,11 @@
           "outcome": "Reconocerás qué es un préstamo, qué implica una deuda, qué significa pagar un costo adicional o interés simple y por qué existen riesgos financieros."
         },
         "procedimental": {
-          "title": "Procedimental",
+          "title": "Rechazo decisiones financieras informales o riesgosas",
           "backendActivityId": null,
           "activityKey": "m05-procedimental",
-          "learn": [],
-          "outcome": ""
+          "learn": ["Reconocer la importancia de pensar antes de tomar decisiones relacionadas con el dinero.","Valorar la planificación y la información como herramientas para evitar decisiones financieras riesgosas."],
+          "outcome": "Reflexionarás sobre distintas situaciones para reconocer la importancia de evitar decisiones financieras apresuradas, informales o riesgosas."
         },
         "actitudinal": {
           "title": "Rechazo decisiones financieras informales o riesgosas",
