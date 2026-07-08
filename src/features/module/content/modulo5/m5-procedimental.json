@@ -208,7 +208,7 @@
               "price": 5,
               "required": false,
               "media": {
-                "src": "/activity/5/v10x1c.webp",
+                "src": "2/caramelo.webp",
                 "alt": "Snack para el recreo",
                 "variant": "square"
               }
@@ -219,7 +219,7 @@
               "price": 7,
               "required": false,
               "media": {
-                "src": "/activity/5/v10x1c.webp",
+                "src": "2/audifonos.webp",
                 "alt": "Audífonos personales",
                 "variant": "square"
               }
@@ -230,7 +230,7 @@
               "price": 6,
               "required": false,
               "media": {
-                "src": "/activity/5/v7x1c.webp",
+                "src": "2/cuaderno.webp",
                 "alt": "Cuaderno y útiles escolares",
                 "variant": "square"
               }

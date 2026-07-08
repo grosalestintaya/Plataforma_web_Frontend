@@ -3,6 +3,8 @@ import Phaser from "phaser";
 import { getNode, getQuiz } from "../services/storyEngine";
 import { MAX_STORY_SCORE, toSectionScore } from "../services/scoreCalculator";
 import { beginSection, completeSection, updateProgress } from "../services/attemptTracker";
+import { playMusic } from "../services/musicManager";
+import { addSfx } from "../services/audioSettings";
 import { ACTIVITY_IDS } from "../config/activities";
 import {
   createBackground,
@@ -34,14 +36,13 @@ export default class StoryScene extends Phaser.Scene {
 
     beginSection(ACTIVITY_IDS.story);
 
-    this.sfxClick = this.sound.add("sfx_click");
-    this.sfxHover = this.sound.add("sfx_hover");
-    this.sfxNext = this.sound.add("sfx_next");
-    this.sfxSuccess = this.sound.add("sfx_success");
-    this.sfxError = this.sound.add("sfx_error");
+    this.sfxClick = addSfx(this, "sfx_click");
+    this.sfxHover = addSfx(this, "sfx_hover");
+    this.sfxNext = addSfx(this, "sfx_next");
+    this.sfxSuccess = addSfx(this, "sfx_success");
+    this.sfxError = addSfx(this, "sfx_error");
 
-    this.bgMusic = this.sound.add("bg_music", { loop: true, volume: 0.4 });
-    this.bgMusic.play();
+    playMusic(this, "bg_music");
 
     this.scoreBadge = createHudBadge(this, 20, 20, "★ 0");
     this.moduleBadge = createHudBadge(this, 20, 62, "Introducción");

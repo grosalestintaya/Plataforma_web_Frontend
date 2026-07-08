@@ -7,6 +7,7 @@ import {
   registerUnloadHandler,
   unregisterUnloadHandler,
 } from "./game/services/attemptTracker";
+import SettingsMenu from "./SettingsMenu";
 
 export default function PhaserGameWrapper({ onGameFinished }) {
   const containerRef = useRef(null);
@@ -42,6 +43,7 @@ export default function PhaserGameWrapper({ onGameFinished }) {
     // visible como borde alrededor.
     <div
       style={{
+        position: "relative",
         width: "100vw",
         height: "100vh",
         background: "#f5b400",
@@ -59,6 +61,7 @@ export default function PhaserGameWrapper({ onGameFinished }) {
           boxSizing: "border-box",
         }}
       />
+      <SettingsMenu />
     </div>
   );
 }

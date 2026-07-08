@@ -11,6 +11,8 @@ import {
   completeSection,
   updateProgress,
 } from "../services/attemptTracker";
+import { playMusic } from "../services/musicManager";
+import { addSfx } from "../services/audioSettings";
 import { ACTIVITY_IDS } from "../config/activities";
 import {
   createBackground,
@@ -26,7 +28,12 @@ import {
 
 const CORRECT_DELTA = 5;
 const INCORRECT_DELTA = -2;
-const FEEDBACK_DELAY_MS = 2200;
+// Al sellar suena el golpe; esperamos antes de evaluar para que el sfx de
+// exito/error no se solape con el del sello.
+const EVAL_DELAY_MS = 1000;
+// Tras mostrar el resultado, el jugador se queda en el caso para leer el
+// feedback y escuchar el audio completo antes de pasar al siguiente.
+const READ_DELAY_MS = 5000;
 
 // Tamaño de fuente del HUD (score/progreso) 20% mas grande que el default
 // compartido (14px), solo dentro de esta escena.
@@ -58,11 +65,12 @@ export default class BankerScene extends Phaser.Scene {
     this.cameras.main.fadeIn(300, 0, 0, 0);
 
     beginSection(ACTIVITY_IDS.banker);
+    playMusic(this, "bg_banker");
 
-    this.sfxStamp = this.sound.add("sfx_stamp");
-    this.sfxHover = this.sound.add("sfx_hover");
-    this.sfxSuccess = this.sound.add("sfx_success");
-    this.sfxError = this.sound.add("sfx_error");
+    this.sfxStamp = addSfx(this, "sfx_stamp");
+    this.sfxHover = addSfx(this, "sfx_hover");
+    this.sfxSuccess = addSfx(this, "sfx_success");
+    this.sfxError = addSfx(this, "sfx_error");
 
     this.scoreBadge = createHudBadge(this, 20, 20, "★ 0", {
       fontSize: HUD_FONT_SIZE,
@@ -209,28 +217,36 @@ export default class BankerScene extends Phaser.Scene {
   }
 
   resolveDecision(applicant, approved) {
+    // 1) Solo el golpe del sello al seleccionar.
     this.sfxStamp.play();
     this.currentButtons.forEach((btn) => btn.disableInteractive());
 
-    const isCorrect = approved === applicant.shouldApprove;
-    this.bankerScore = Phaser.Math.Clamp(
-      this.bankerScore + (isCorrect ? CORRECT_DELTA : INCORRECT_DELTA),
-      0,
-      MAX_BANKER_SCORE,
-    );
-    this.answers.push({ applicant: applicant.name, approved, ok: isCorrect });
-    updateProgress(this.sectionScore(), { answers: this.answers });
-    this.updateHud();
-    if (isCorrect) this.sfxSuccess.play();
-    else this.sfxError.play();
+    // 2) Esperar ~1s antes de evaluar, para no solapar el sfx del sello con el
+    //    de exito/error.
+    this.time.delayedCall(EVAL_DELAY_MS, () => {
+      const isCorrect = approved === applicant.shouldApprove;
+      this.bankerScore = Phaser.Math.Clamp(
+        this.bankerScore + (isCorrect ? CORRECT_DELTA : INCORRECT_DELTA),
+        0,
+        MAX_BANKER_SCORE,
+      );
+      this.answers.push({ applicant: applicant.name, approved, ok: isCorrect });
+      updateProgress(this.sectionScore(), { answers: this.answers });
+      this.updateHud();
 
-    const feedback = approved
-      ? applicant.feedbackApprove
-      : applicant.feedbackReject;
-    this.showFeedback(feedback, isCorrect);
+      // 3) Sonido de resultado + feedback en pantalla.
+      if (isCorrect) this.sfxSuccess.play();
+      else this.sfxError.play();
 
-    this.time.delayedCall(FEEDBACK_DELAY_MS, () => {
-      this.renderApplicant(this.applicantIndex + 1);
+      const feedback = approved
+        ? applicant.feedbackApprove
+        : applicant.feedbackReject;
+      this.showFeedback(feedback, isCorrect);
+
+      // 4) Mantener el caso 5s para leer/escuchar, luego el siguiente.
+      this.time.delayedCall(READ_DELAY_MS, () => {
+        this.renderApplicant(this.applicantIndex + 1);
+      });
     });
   }
 
@@ -239,7 +255,7 @@ export default class BankerScene extends Phaser.Scene {
     const feedbackBox = this.add
       .text(
         this.rightX,
-        MARGIN + 350,
+        MARGIN + 430,
         `${isCorrect ? "✓ Correcto" : "✗ Incorrecto"}\n${text}`,
         {
           fontSize: "18px",
