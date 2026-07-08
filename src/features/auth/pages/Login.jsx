@@ -245,11 +245,6 @@ export default function Login() {
                 className="block text-[#1a1a1a] text-sm font-medium">
                 Contraseña
               </label>
-              <a
-                href="#"
-                className="text-[#1fc16b] text-sm font-medium hover:underline">
-                ¿Olvidaste tu contraseña?
-              </a>
             </div>
             <Input
               id="contrasenia"

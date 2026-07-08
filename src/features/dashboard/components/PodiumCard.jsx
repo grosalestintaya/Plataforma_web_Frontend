@@ -151,13 +151,13 @@ export default function PodiumCard({ participant, rank }) {
             {(participant.xp_total ?? 0).toLocaleString()}
           </span>
           <XpQuipuIcon className="h-10 w-10 text-accent" />
+          <span className="text-xs font-bold text-primary">
+            {participant.attempts_total.toLocaleString()} intentos
+          </span>
         </div>
 
-        <div className="mt-2 text-xs font-semibold text-muted-foreground">
-          {participant.grade} <br />
-          <span className="text-xsm font-bold text-primary">
-            {participant.attempts_total.toLocaleString()} intentos
-          </span>{" "}
+        <div className="mt-2 flex items-center justify-center gap-2 text-xs font-semibold text-muted-foreground">
+          <span>{participant.grade}</span>
         </div>
       </div>
     </div>

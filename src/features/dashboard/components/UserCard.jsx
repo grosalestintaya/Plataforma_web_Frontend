@@ -126,8 +126,8 @@ const MetricPanel = ({
         style={{ background: "rgba(255,255,255,0.24)" }}
       />
 
-      <div className="relative flex h-full items-center gap-3 px-3 py-3.4">
-        <div className="relative flex h-18 w-18 shrink-0 items-center justify-center rounded-xl">
+      <div className="relative flex h-full items-center gap-0 px-3 py-0">
+        <div className="relative flex h-18 w-15 shrink-0 items-left justify-left rounded-xl">
           <div className="absolute inset-[6px] rounded-[10px]" />
           <div className="relative z-[1]">{icon}</div>
         </div>
