@@ -154,7 +154,10 @@ export default function PodiumCard({ participant, rank }) {
         </div>
 
         <div className="mt-2 text-xs font-semibold text-muted-foreground">
-          {participant.grade}
+          {participant.grade} <br />
+          <span className="text-xsm font-bold text-primary">
+            {participant.attempts_total.toLocaleString()} intentos
+          </span>{" "}
         </div>
       </div>
     </div>

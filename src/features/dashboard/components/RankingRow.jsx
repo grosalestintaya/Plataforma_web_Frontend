@@ -31,6 +31,9 @@ export default function RankingRow({ participant }) {
         <div className="mt-1 text-xs font-semibold text-muted-foreground">
           {participant.grade}
         </div>
+        <span className="text-sm font-bold text-primary">
+          {participant.attempts_total.toLocaleString()} intentos
+        </span>{" "}
       </div>
 
       <div className="flex items-center gap-2">
@@ -39,7 +42,7 @@ export default function RankingRow({ participant }) {
         </span>
 
         {/* Badge XP */}
-        <span className="grid pr-0.5 h-9 w-9 place-items-center rounded-full bg-accent/15 ring-1 ring-accent/25">
+        <span className="grid pr-1.5 h-9 w-9 place-items-center rounded-full bg-accent/15 ring-1 ring-accent/25">
           <XpQuipuIcon className="h-10 w-10 text-accent" />
         </span>
       </div>

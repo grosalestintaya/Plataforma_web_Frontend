@@ -601,7 +601,7 @@ export default function FinalModuleUnlockPanel({
   modules = [],
   className = "",
   title = "Chakana sagrada",
-  finalRoute = "/modules/m06",
+  finalRoute = "/juegofinal",
   onOpenFinal = null,
 }) {
   const navigate = useNavigate();
