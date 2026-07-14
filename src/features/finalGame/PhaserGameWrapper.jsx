@@ -9,7 +9,7 @@ import {
 } from "./game/services/attemptTracker";
 import SettingsMenu from "./SettingsMenu";
 
-export default function PhaserGameWrapper({ onGameFinished }) {
+export default function PhaserGameWrapper({ onGameFinished, onExit }) {
   const containerRef = useRef(null);
   const gameRef = useRef(null);
 
@@ -61,7 +61,7 @@ export default function PhaserGameWrapper({ onGameFinished }) {
           boxSizing: "border-box",
         }}
       />
-      <SettingsMenu />
+      <SettingsMenu onExit={onExit} />
     </div>
   );
 }

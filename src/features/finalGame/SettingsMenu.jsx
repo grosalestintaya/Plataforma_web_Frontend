@@ -1,50 +1,14 @@
 // SettingsMenu.jsx
-// Boton de engranaje (arriba a la derecha) que abre el modal "Opciones" con dos
-// sliders: Efectos (volumen de sfx) y Musica (volumen ambiente). Los sliders
-// ajustan en vivo los servicios de audio del juego (Phaser).
+// Boton de engranaje (arriba a la derecha) que abre el modal de opciones para
+// ajustar el volumen de efectos (sfx) y musica ambiente. Reutiliza el
+// ConfiguracionModal compartido del proyecto para mantener el mismo estilo, y
+// cablea sus sliders a los servicios de audio del juego final (Phaser).
 import { useState } from "react";
+import ConfiguracionModal from "@/features/module/components/sections/ConfiguracionModal";
 import { getSfxVolume, setSfxVolume } from "./game/services/audioSettings";
 import { getMusicVolume, setMusicVolume } from "./game/services/musicManager";
 
-const GOLD = "#f5c518";
-const INK = "#16233a";
-
-function SliderRow({ icon, label, value, onChange }) {
-  return (
-    <div style={{ marginBottom: 26 }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-        <div
-          style={{
-            width: 44,
-            height: 44,
-            borderRadius: 12,
-            background: "rgba(255,255,255,0.55)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: 22,
-            flexShrink: 0,
-          }}>
-          {icon}
-        </div>
-        <span style={{ color: INK, fontWeight: 800, fontSize: 20, flex: 1 }}>
-          {label}
-        </span>
-        <span style={{ color: INK, fontWeight: 800, fontSize: 20 }}>{value}</span>
-      </div>
-      <input
-        type="range"
-        min="0"
-        max="100"
-        value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-        style={{ width: "100%", marginTop: 10, accentColor: INK, cursor: "pointer" }}
-      />
-    </div>
-  );
-}
-
-export default function SettingsMenu() {
+export default function SettingsMenu({ onExit }) {
   const [open, setOpen] = useState(false);
   const [sfx, setSfx] = useState(Math.round(getSfxVolume() * 100));
   const [music, setMusic] = useState(Math.round(getMusicVolume() * 100));
@@ -84,61 +48,17 @@ export default function SettingsMenu() {
         />
       </button>
 
-      {open && (
-        <div
-          onClick={() => setOpen(false)}
-          style={{
-            position: "absolute",
-            inset: 0,
-            background: "rgba(0,0,0,0.5)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 30,
-          }}>
-          <div
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              width: "min(620px, 90vw)",
-              background: GOLD,
-              borderRadius: 24,
-              padding: "28px 34px 34px",
-              boxShadow: "0 20px 60px rgba(0,0,0,0.45)",
-            }}>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                marginBottom: 28,
-              }}>
-              <h2 style={{ color: INK, fontWeight: 900, fontSize: 40, margin: 0 }}>
-                Opciones
-              </h2>
-              <button
-                type="button"
-                aria-label="Cerrar"
-                onClick={() => setOpen(false)}
-                style={{
-                  width: 46,
-                  height: 46,
-                  border: "none",
-                  borderRadius: 12,
-                  background: "rgba(255,255,255,0.55)",
-                  color: INK,
-                  fontSize: 24,
-                  fontWeight: 900,
-                  cursor: "pointer",
-                }}>
-                ✕
-              </button>
-            </div>
-
-            <SliderRow icon="🔊" label="Efectos" value={sfx} onChange={handleSfx} />
-            <SliderRow icon="🎵" label="Musica" value={music} onChange={handleMusic} />
-          </div>
-        </div>
-      )}
+      <ConfiguracionModal
+        open={open}
+        onRequestClose={() => setOpen(false)}
+        onRequestAbandon={onExit}
+        description="Saldrás del juego y volverás al panel."
+        abandonLabel="Abandonar actividad"
+        sfx={sfx}
+        music={music}
+        onChangeSfx={handleSfx}
+        onChangeMusic={handleMusic}
+      />
     </>
   );
 }
