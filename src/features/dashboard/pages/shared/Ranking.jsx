@@ -71,7 +71,7 @@ export default function Ranking() {
   const myRank = rankingState.myRank ?? rankingState.me?.rank ?? null;
 
   return (
-    <div className="w-full h-[calc(100dvh-30px)] overflow-hidden px-0">
+    <div className="relative w-full h-[calc(100dvh-30px)] overflow-hidden px-0">
       {showIntro && (
         <DashboardIntroVideo onFinish={() => setShowIntro(false)} />
       )}
