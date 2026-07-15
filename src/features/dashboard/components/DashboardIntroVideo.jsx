@@ -35,7 +35,7 @@ export default function DashboardIntroVideo({ onFinish }) {
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-black transition-opacity ease-out"
+      className="absolute inset-0 z-40 flex items-center justify-center overflow-hidden rounded-2xl bg-black transition-opacity ease-out"
       style={{
         opacity: fading ? 0 : 1,
         transitionDuration: `${FADE_MS}ms`,
