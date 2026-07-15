@@ -3,8 +3,10 @@ import { Card } from "../../../../shared/atoms/card";
 import UserProfileCard from "../../components/UserProfileCard";
 import BoardCard from "../../components/ListCard";
 import { RankingService } from "../../services/ranking.service";
+import DashboardIntroVideo from "../../components/DashboardIntroVideo";
 
 export default function Ranking() {
+  const [showIntro, setShowIntro] = useState(true);
   const [rankingState, setRankingState] = useState({
     loading: false,
     top10: [],
@@ -70,6 +72,9 @@ export default function Ranking() {
 
   return (
     <div className="w-full h-[calc(100dvh-30px)] overflow-hidden px-0">
+      {showIntro && (
+        <DashboardIntroVideo onFinish={() => setShowIntro(false)} />
+      )}
       <div className="flex h-full min-h-0 flex-col overflow-hidden">
         {error && (
           <div className="mb-1 shrink-0 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
