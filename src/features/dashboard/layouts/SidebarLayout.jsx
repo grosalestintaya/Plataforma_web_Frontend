@@ -74,7 +74,9 @@ export default function SidebarLayout() {
 
   const content = (
     <div
-      className={`flex min-h-screen w-full ${themeClass} transition-colors duration-300`}
+      className={`flex min-h-screen w-full ${
+        isAppHome ? "md:h-screen md:overflow-hidden" : ""
+      } ${themeClass} transition-colors duration-300`}
       style={{
         backgroundColor: "var(--app-bg)",
         backgroundImage: isAppHome ? `url(${bgImage})` : "none",

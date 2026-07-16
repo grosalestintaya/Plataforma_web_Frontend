@@ -66,16 +66,16 @@ export default function ModulesRope({
       <div
         className="
           grid w-full min-w-0 grid-cols-1 items-start gap-4
+          lg:h-full lg:min-h-0 lg:grid-rows-[minmax(0,1fr)] lg:items-stretch
+          lg:grid-cols-[minmax(0,1.5fr)_minmax(300px,400px)] lg:gap-5
           xl:grid-cols-[minmax(0,1.45fr)_minmax(320px,420px)] xl:gap-6
         ">
-        <div className="min-w-0">
-          <div
-            className="w-full overflow-x-auto overflow-y-visible pb-1"
-            id="main-rope">
+        <div className="min-w-0 lg:h-full lg:min-h-0">
+          <div className="w-full pb-1 lg:h-full" id="main-rope">
             <svg
               viewBox="50 0 720 470"
-              preserveAspectRatio="xMidYMin meet"
-              className="mx-auto block h-auto w-full min-w-[760px] max-w-[800px] overflow-visible"
+              preserveAspectRatio="xMidYMid meet"
+              className="mx-auto block h-auto w-full max-w-[800px] overflow-visible lg:h-full"
               role="img"
               aria-label="Mapa de subcuerdas de módulos">
               <ImperialRopeDefs path={MAIN_ROPE_PATH} ids={defsIds} />
@@ -200,7 +200,9 @@ export default function ModulesRope({
           </div>
         </div>
 
-        <div className="min-w-0 pr-10 xl:pt-3" id="last-module-panel">
+        <div
+          className="min-w-0 pr-4 lg:min-h-0 lg:overflow-y-auto lg:pt-3 xl:pr-10"
+          id="last-module-panel">
           <div className="mx-auto max-w-[430px]">
             <FinalModuleUnlockPanel modules={modules || []} />
           </div>
