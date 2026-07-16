@@ -526,7 +526,7 @@ function ChakanaSvg({ activeMap, finalUnlocked }) {
     <div className="relative mx-auto w-full max-w-[420px]">
       <svg
         viewBox="0 0 400 400"
-        className="block h-auto w-full overflow-visible align-top">
+        className="block h-auto max-h-[42vh] w-full overflow-visible align-top">
         <ChakanaDefs />
         <ChakanaBackdrop finalUnlocked={finalUnlocked} />
 
@@ -675,16 +675,58 @@ export default function FinalModuleUnlockPanel({
         }
 
         @keyframes ctaPulse {
-          0%,100% { box-shadow: 0 14px 28px rgba(255,157,47,0.22), 0 6px 16px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.32); }
-          50%     { box-shadow: 0 18px 36px rgba(255,157,47,0.40), 0 8px 20px rgba(0,0,0,0.32), inset 0 1px 0 rgba(255,255,255,0.38); }
+          0%,100% {
+            box-shadow:
+              0 0 10px rgba(255,196,0,0.50),
+              0 0 26px rgba(255,196,0,0.28),
+              0 6px 16px rgba(0,0,0,0.28),
+              inset 0 1px 0 rgba(255,255,255,0.32);
+          }
+          50% {
+            box-shadow:
+              0 0 18px rgba(255,196,0,0.90),
+              0 0 48px rgba(255,196,0,0.50),
+              0 8px 20px rgba(0,0,0,0.32),
+              inset 0 1px 0 rgba(255,255,255,0.38);
+          }
+        }
+
+        @keyframes ctaShine {
+          0%       { left: -60%; }
+          55%,100% { left: 130%; }
         }
 
         .cta-unlocked {
+          position: relative;
+          overflow: hidden;
           animation: ctaPulse 2.4s ease-in-out infinite;
           transition: filter 150ms ease, transform 120ms ease;
         }
+        /* destello que recorre el botón */
+        .cta-unlocked::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: -60%;
+          width: 40%;
+          background: linear-gradient(
+            75deg,
+            transparent 0%,
+            rgba(255,255,255,0.55) 50%,
+            transparent 100%
+          );
+          transform: skewX(-20deg);
+          animation: ctaShine 2.4s ease-in-out infinite;
+          pointer-events: none;
+        }
         .cta-unlocked:hover { filter: brightness(1.06); transform: translateY(-1px); }
         .cta-unlocked:active { transform: translateY(0px); }
+
+        @media (prefers-reduced-motion: reduce) {
+          .cta-unlocked { animation: none; }
+          .cta-unlocked::after { animation: none; display: none; }
+        }
       `}</style>
 
       {/* título */}
@@ -733,11 +775,11 @@ export default function FinalModuleUnlockPanel({
           className={`mx-auto mt-3 mb-1 inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-6 py-2 text-[13px] font-black uppercase tracking-[0.12em] ${finalUnlocked ? "cta-unlocked" : ""}`}
           style={{
             background: finalUnlocked
-              ? "linear-gradient(180deg, #FFD87A 0%, #FF9D2F 100%)"
+              ? "linear-gradient(180deg, #FFE08A 0%, #FFC400 55%, #F2A900 100%)"
               : "linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03))",
             color: finalUnlocked ? "#2E1800" : "var(--card-muted)",
             border: finalUnlocked
-              ? "1px solid rgba(255,220,140,0.40)"
+              ? "1px solid rgba(255,196,0,0.55)"
               : "1px solid rgba(255,255,255,0.08)",
             cursor: finalUnlocked ? "pointer" : "not-allowed",
             opacity: finalUnlocked ? 1 : 0.7,
