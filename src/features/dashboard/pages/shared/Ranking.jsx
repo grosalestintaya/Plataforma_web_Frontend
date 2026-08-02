@@ -5,8 +5,11 @@ import BoardCard from "../../components/ListCard";
 import { RankingService } from "../../services/ranking.service";
 import DashboardIntroVideo from "../../components/DashboardIntroVideo";
 
+const INTRO_VIDEO_ENABLED =
+  import.meta.env.VITE_INTRO_VIDEO_ENABLED === "true";
+
 export default function Ranking() {
-  const [showIntro, setShowIntro] = useState(true);
+  const [showIntro, setShowIntro] = useState(INTRO_VIDEO_ENABLED);
   const [rankingState, setRankingState] = useState({
     loading: false,
     top10: [],

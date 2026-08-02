@@ -1,8 +1,12 @@
 // useAnnouncement.js
 import { useState, useEffect } from "react";
 
+// Subir la versión al publicar un anuncio nuevo: invalida el "ya visto"
+// de quienes cerraron el anterior en esta misma sesión del navegador.
+const VERSION = "v2-ganadores";
+
 export function useAnnouncement(userId) {
-  const SESSION_KEY = `qy_announcement_seen_${userId}`;
+  const SESSION_KEY = `qy_announcement_seen_${VERSION}_${userId}`;
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
