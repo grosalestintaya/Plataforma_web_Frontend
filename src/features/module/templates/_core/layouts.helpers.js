@@ -2,8 +2,8 @@
 
 /**
  * normalizeLayout:
- * - Convierte layout definido como { base, md } a formato plano para HeroGrid.
- * - HeroGrid espera cols/rows/areas (+ md opcional).
+ * - Convierte layout definido como { base, md, lg, fit } al formato de HeroGrid.
+ * - `fit` se conserva como compatibilidad para layouts de escritorio existentes.
  */
 
 export function normalizeLayout(layoutDef) {
@@ -18,6 +18,7 @@ export function normalizeLayout(layoutDef) {
 
   if (layoutDef.md) out.md = layoutDef.md;
   if (layoutDef.lg) out.lg = layoutDef.lg;
+  if (layoutDef.fit) out.fit = layoutDef.fit;
 
   return out;
 }

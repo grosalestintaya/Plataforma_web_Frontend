@@ -11,18 +11,24 @@ function TextInput({
   onChange,
   placeholder = "Escribe aqui...",
   name,
+  disabled = false,
+  inputMode = "text",
+  autoComplete = "off",
   className = "",
 }) {
   return (
     <input
       type="text"
+      inputMode={inputMode}
+      autoComplete={autoComplete}
       name={name}
       value={value}
+      disabled={disabled}
       onChange={(event) => onChange?.(event.target.value, event)}
       placeholder={placeholder}
       className={[
         "w-full rounded-xl border border-white/20 bg-neutral-200/70 px-4 py-2.5 text-sm text-black",
-        "outline-none placeholder:text-black/60 focus:border-white/35",
+        "outline-none placeholder:text-black/60 focus:border-white/35 disabled:cursor-not-allowed disabled:opacity-60",
         className,
       ].join(" ")}
     />

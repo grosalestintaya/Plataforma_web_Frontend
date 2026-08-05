@@ -1,3 +1,5 @@
+import { lazy } from "react";
+
 // Elementos base
 export { default as Typography } from "./base/Typography";
 export { default as Image } from "./base/Media/Image";
@@ -17,6 +19,7 @@ export { default as TextField } from "./compounds/container/TextField";
 export { default as ShowCard } from "./compounds/grouper/ShowCard";
 export { default as CollageCard } from "./compounds/grouper/CollageCard";
 export { default as ComposeGroup } from "./compounds/grouper/ComposeGroup";
+export { default as InteractiveInfoAside } from "./compounds/grouper/InteractiveInfoAside";
 
 // Elementos compuestos: interactivo
 export { default as IteractionComplete } from "./compounds/iteractive/IteractionComplete";
@@ -28,4 +31,7 @@ export { default as Crossword } from "./compounds/iteractive/crossword/Crossword
 export { default as Calculator } from "./compounds/iteractive/Calculator";
 export { default as Shopping } from "./compounds/iteractive/Shopping";
 export { default as ClasifyCard } from "./compounds/iteractive/ClasifyCard";
-
+export { default as BalanceScale } from "./compounds/iteractive/BalanceScale";
+export const FallingObjects = lazy(
+  () => import("./compounds/iteractive/FallingObjects"),
+);

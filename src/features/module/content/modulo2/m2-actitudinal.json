@@ -1,4 +1,5 @@
 {
+  "schemaVersion": "1.0",
   "id": "actitudinal",
   "activityId": "06",
   "backendActivityId": "06",
@@ -30,7 +31,7 @@
           "align": "justify"
         },
         "media": {
-          "src": "",
+          "src": "2/acto5.webp",
           "alt": "Inicio de la mision actitudinal del modulo 2",
           "variant": "vertical"
         }
@@ -337,8 +338,8 @@
         "required": "selectOption"
       }
     },
-      {
-      "viewId": "m2_3_v4",
+    {
+      "viewId": "m2_3_v5",
       "order": 5,
       "name": "VISTA 4 - Practica: Situacion 3",
       "viewType": "Practica",
@@ -428,7 +429,7 @@
       }
     },
     {
-      "viewId": "m2_3_v5",
+      "viewId": "m2_3_v6",
       "order": 6,
       "name": "VISTA 5 - Practica: Situacion 4",
       "viewType": "Practica",
@@ -518,7 +519,7 @@
       }
     },
     {
-      "viewId": "m2_3_v6",
+      "viewId": "m2_3_v7",
       "order": 7,
       "name": "VISTA 6 - Final: Lo lograste",
       "viewType": "Final",

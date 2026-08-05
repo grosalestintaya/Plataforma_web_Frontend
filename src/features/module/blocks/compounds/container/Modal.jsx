@@ -1,7 +1,9 @@
-
+import { isValidElement } from "react";
 import Typography from "../../base/Typography";
 import Image from "../../base/Media/Image";
 import Button from "../../base/Action/Button";
+import { X } from "lucide-react";
+import { cn } from "@/shared/libs/utils";
 
 /**
  * Modal:
@@ -16,20 +18,56 @@ export default function Modal({
   primaryAction,
   secondaryAction,
   onClose,
+  children,
+  className = "",
+  backdropClassName = "",
+  headerClassName = "",
+  contentClassName = "",
+  closeLabel = "Cerrar",
+  labelledBy,
 }) {
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 grid place-items-center bg-black/55 p-4">
-      <section className="w-full max-w-xl rounded-2xl border border-white/20 bg-slate-900 p-5 text-white shadow-2xl">
-        <div className="flex items-start justify-between gap-3">
-          {title ? <Typography content={title} variant={title?.variant ?? "h3"} /> : null}
+    <div
+      className={cn(
+        "fixed inset-0 z-50 grid place-items-center bg-black/55 p-4",
+        backdropClassName,
+      )}
+    >
+      <section
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={labelledBy}
+        className={cn(
+          "w-full max-w-xl rounded-2xl border border-white/20 bg-slate-900 p-5 text-white shadow-2xl",
+          className,
+        )}
+      >
+        <div
+          className={cn(
+            "flex items-start justify-between gap-3",
+            headerClassName,
+          )}
+        >
+          {title ? (
+            <div className="min-w-0 flex-1">
+              {isValidElement(title) ? (
+                title
+              ) : (
+                <Typography content={title} variant={title?.variant ?? "h3"} />
+              )}
+            </div>
+          ) : null}
           <button
             type="button"
             onClick={onClose}
-            className="cursor-pointer rounded-md border border-white/20 px-2 py-1 text-xs transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 active:scale-95"
+            aria-label={closeLabel}
+            title={closeLabel}
+            className="inline-flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-full border border-current/25 bg-black/10 transition hover:bg-black/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current/50 active:scale-95"
           >
-            Cerrar
+            <X className="size-6" aria-hidden="true" />
+            <span className="sr-only">{closeLabel}</span>
           </button>
         </div>
 
@@ -41,13 +79,21 @@ export default function Modal({
           />
         ) : null}
 
+        {children !== undefined ? (
+          <div className={contentClassName}>{children}</div>
+        ) : null}
+
         {media ? (
           <div className="mt-4 rounded-xl border border-white/15 bg-black/15 p-3">
-            <Image src={media?.src} alt={media?.alt ?? "Detalle"} className="h-[180px] w-full" />
+            <Image
+              src={media?.src}
+              alt={media?.alt ?? "Detalle"}
+              className="h-[180px] w-full"
+            />
           </div>
         ) : null}
 
-        {(primaryAction || secondaryAction) ? (
+        {primaryAction || secondaryAction ? (
           <div className="mt-5 flex justify-end gap-2">
             {secondaryAction ? (
               <Button

@@ -1,4 +1,5 @@
 {
+  "schemaVersion": "1.0",
   "id": "procedimental",
   "activityId": "05",
   "backendActivityId": "05",
@@ -817,7 +818,8 @@
                   "align": "center"
                 },
                 "correctCategoryId": "desire"
-              },          {
+              },
+              {
                 "id": "s4-lentes.",
                 "media": {
                   "src": "2/gafas.webp",

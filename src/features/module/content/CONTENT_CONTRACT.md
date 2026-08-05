@@ -3,6 +3,10 @@
 Este documento define el contrato base para `ModulosQY`.
 La meta es que futuras plantillas lean JSON consistente, predecible y escalable.
 
+El contenido de misiones sigue un enfoque **Model-Driven UI**: cada mision se
+declara como un modelo JSON versionado, el registry lo valida/normaliza y el
+renderer lo interpreta dinamicamente mediante templates y bloques reutilizables.
+
 ## 1. Estructura de carpetas
 
 ```text
@@ -27,6 +31,7 @@ Cada modulo describe identidad, orden, tema y mapeo de misiones.
 
 ```json
 {
+  "schemaVersion": "1.0",
   "modules": [
     {
       "id": "module-1",
@@ -79,6 +84,8 @@ Cada modulo describe identidad, orden, tema y mapeo de misiones.
 
 Campos recomendados:
 
+- `schemaVersion`: version del contrato de contenido. Debe coincidir con
+  `MISSION_SCHEMA_VERSION`.
 - `id`: id del modulo en backend o dominio.
 - `code`: codigo corto usado por rutas y registry.
 - `legacyCodes`: alias temporales para compatibilidad.
@@ -96,6 +103,7 @@ Cada archivo de mision representa una sola experiencia lineal.
 
 ```json
 {
+  "schemaVersion": "1.0",
   "id": "conceptual",
   "activityId": "01",
   "activityKey": "m01-conceptual",
@@ -107,6 +115,7 @@ Cada archivo de mision representa una sola experiencia lineal.
 
 Campos:
 
+- `schemaVersion`: version del contrato de mision. Actualmente `1.0`.
 - `id`: clave de la mision.
 - `activityId`: id real usado para attempts y tracking.
 - `backendActivityId`: alias temporal aceptado por compatibilidad.
@@ -114,6 +123,20 @@ Campos:
 - `headerTitle`: etiqueta corta del header.
 - `missionTitle`: nombre largo de la mision.
 - `views`: arreglo de pantallas de la mision.
+
+Reglas validadas por codigo:
+
+- cada mision debe declarar `schemaVersion`, `id`, `activityKey`,
+  `missionTitle` y al menos una vista.
+- cada vista debe declarar `id` o `viewId`, `template`, y usar un template
+  registrado.
+- los `viewId` deben ser unicos dentro de la mision.
+- `navigation.mode`, cuando existe, debe ser un modo registrado.
+- `navigation.action`, cuando existe, debe ser una accion registrada.
+- los elementos de `elements.base` y `elements.compound` deben declarar
+  `component` o `type`.
+- las vistas quiz deben declarar preguntas mediante `formQuestion` o
+  `data.questions`.
 
 ## 4. Contrato de view
 
@@ -525,7 +548,20 @@ Para futuro:
 - No mezclar strings y objetos en la misma coleccion si el bloque ya depende de metadatos visuales.
 - Cuando un bloque sea interactivo, sus datos deben vivir dentro de `activity.payload`.
 
-## 13. Decision recomendada para las nuevas plantillas
+## 13. Validacion automatica
+
+El contrato se valida con:
+
+```bash
+npm run validate:missions
+```
+
+El comando revisa `modulos.json` y todos los archivos `moduloX/mX-*.json`
+existentes. Actualmente `m06` esta declarado en el catalogo, pero sus archivos
+de contenido todavia no existen; por eso el validador lo reporta como aviso y no
+como error.
+
+## 14. Decision recomendada para las nuevas plantillas
 
 La base comun para futuras plantillas debe ser:
 

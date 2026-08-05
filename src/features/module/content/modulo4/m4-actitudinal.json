@@ -1,4 +1,5 @@
 {
+  "schemaVersion": "1.0",
   "id": "actitudinal",
   "activityId": "12",
   "backendActivityId": "12",
@@ -22,9 +23,9 @@
         },
         "body": {
           "paragraphs": [
-    "Alcanzar una meta suele requerir tiempo, paciencia y constancia.",
-"En el camino pueden aparecer situaciones que nos hagan querer cambiar nuestros planes o abandonar nuestro objetivo.",
-"En esta misión analizarás distintas situaciones relacionadas con el compromiso y la perseverancia necesarios para alcanzar una meta."
+            "Alcanzar una meta suele requerir tiempo, paciencia y constancia.",
+            "En el camino pueden aparecer situaciones que nos hagan querer cambiar nuestros planes o abandonar nuestro objetivo.",
+            "En esta misión analizarás distintas situaciones relacionadas con el compromiso y la perseverancia necesarios para alcanzar una meta."
           ],
           "variant": "body1",
           "align": "justify"

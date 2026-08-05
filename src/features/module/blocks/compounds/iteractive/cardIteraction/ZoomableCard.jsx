@@ -23,6 +23,10 @@ export default function ZoomableFrame({
   variant = "default",
   size = "normal",
   onComplete,
+  interactionOverlay,
+  interactionClassName,
+  overlay: contentOverlay,
+  ...cardProps
 }) {
   const dialogTitleId = useId();
   const completedRef = useRef(false);
@@ -67,15 +71,19 @@ export default function ZoomableFrame({
   }, [isOpen]);
 
   const overlay = (
-    <button
-      type="button"
-      onClick={openZoom}
-      aria-label={zoomLabel}
-      className={cn(
-        "absolute inset-0 z-10 rounded-2xl bg-transparent",
-        "cursor-zoom-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60",
-      )}
-    />
+    <>
+      {contentOverlay}
+      {interactionOverlay}
+      <button
+        type="button"
+        onClick={openZoom}
+        aria-label={zoomLabel}
+        className={cn(
+          "absolute inset-0 z-10 rounded-2xl bg-transparent",
+          "cursor-zoom-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60",
+        )}
+      />
+    </>
   );
 
   return (
@@ -90,6 +98,8 @@ export default function ZoomableFrame({
           size={size}
           interactive
           overlay={overlay}
+          className={interactionClassName}
+          {...cardProps}
         />
       </div>
 

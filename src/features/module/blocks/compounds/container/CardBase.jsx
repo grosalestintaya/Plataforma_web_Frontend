@@ -7,6 +7,7 @@ const CARD_VARIANT_CLASS = {
   default: "border border-white/15 bg-white/5",
   ghost: "border border-white/10 bg-transparent",
   solid: "border border-white/15 bg-white/10",
+  bare: "",
 };
 
 function normalizeContent(content) {
@@ -45,6 +46,8 @@ function getCardMedia(media) {
     alt: media?.alt ?? "Imagen",
     variant: normalizeMediaVariant(media?.variant ?? media?.ratio),
     mode: normalizeMediaMode(media?.mode),
+    className: media?.className,
+    imgClassName: media?.imgClassName,
   };
 }
 
@@ -79,7 +82,8 @@ function CardBody({
           variant={media.variant}
           mode="slot"
           size="card"
-          className="max-h-full max-w-full"
+          className={cn("max-h-full max-w-full", media.className)}
+          imgClassName={media.imgClassName}
         />
       ) : null}
 
@@ -89,7 +93,7 @@ function CardBody({
             "flex w-full min-w-0 flex-col items-center justify-center text-center",
             hasMedia
               ? "shrink-0 gap-0.5 px-2 py-1"
-              : "h-full min-h-0 gap-3 p-4",
+              : "h-full min-h-0 gap-2 p-2",
             contentClassName,
           )}
         >
@@ -126,10 +130,16 @@ export default function CardBase({
   media,
   variant = "default",
   selected = false,
-  size = "normal",
   isBackFace = false,
   interactive = false,
   overlay = null,
+  children,
+  as: Component = "article",
+  onClick,
+  role,
+  tabIndex,
+  ariaLabel,
+  type,
 
   /**
    * Estas clases quedan sólo para usos internos controlados,
@@ -146,26 +156,35 @@ export default function CardBase({
   const resolvedText = normalizeContent(text);
 
   return (
-    <article
+    <Component
+      onClick={onClick}
+      role={role}
+      tabIndex={tabIndex}
+      aria-label={ariaLabel}
+      type={Component === "button" ? (type ?? "button") : undefined}
       className={cn(
         "relative mx-auto grid w-full max-w-full h-fit max-h-full min-w-0 min-h-0 self-center justify-self-center overflow-hidden rounded-2xl p-1.5",
         "[container-type:inline-size]",
-        CARD_VARIANT_CLASS[selected ? "solid" : variant] ||
+        CARD_VARIANT_CLASS[selected ? "solid" : variant] ??
           CARD_VARIANT_CLASS.default,
         interactive && "transition-transform duration-200 hover:scale-[1.015]",
         className,
       )}
     >
-      <CardBody
-        media={resolvedMedia}
-        title={resolvedTitle}
-        text={resolvedText}
-        isBackFace={isBackFace}
-        contentClassName={contentClassName}
-        titleClassName={titleClassName}
-        textClassName={textClassName}
-      />
+      {children !== undefined ? (
+        children
+      ) : (
+        <CardBody
+          media={resolvedMedia}
+          title={resolvedTitle}
+          text={resolvedText}
+          isBackFace={isBackFace}
+          contentClassName={contentClassName}
+          titleClassName={titleClassName}
+          textClassName={textClassName}
+        />
+      )}
       {overlay}
-    </article>
+    </Component>
   );
 }

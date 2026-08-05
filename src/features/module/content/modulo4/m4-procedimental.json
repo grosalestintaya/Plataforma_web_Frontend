@@ -1,4 +1,5 @@
 {
+  "schemaVersion": "1.0",
   "id": "procedimental",
   "activityId": "11",
   "backendActivityId": "11",
@@ -123,8 +124,8 @@
           "spawnEveryMs": 650,
           "maxActiveItems": 4,
           "basketSpeedPx": 28,
-          "itemFallMin": 2.3,
-          "itemFallMax": 3.8,
+          "itemFallMin": 0.8,
+          "itemFallMax": 1.15,
           "pointsToComplete": 300,
           "minimumCompletionAmount": 310,
           "introTitle": "Como se juega",
@@ -233,7 +234,6 @@
               }
             }
           ],
-
           "expenseItems": [
             {
               "id": "candies",

@@ -12,6 +12,14 @@ export default function SelectableCard({
   size = "normal",
   onSelect,
   onComplete,
+  overlay: contentOverlay,
+  interactionOverlay,
+  interactionClassName,
+  ariaLabel = "Seleccionar tarjeta",
+  className = "",
+  contentClassName = "",
+  titleClassName = "",
+  textClassName = "",
 }) {
   const completedRef = useRef(false);
 
@@ -22,22 +30,26 @@ export default function SelectableCard({
     onComplete?.();
   }
 
-  function handleSelect() {
-    onSelect?.();
+  function handleSelect(event) {
+    onSelect?.(event);
     completeOnce();
   }
 
   const overlay = (
-    <button
-      type="button"
-      onClick={handleSelect}
-      aria-label="Seleccionar tarjeta"
-      aria-pressed={selected}
-      className={cn(
-        "absolute inset-0 z-10 rounded-2xl bg-transparent",
-        "cursor-pointer focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--color-gold-100)]/85 focus-visible:ring-offset-2 focus-visible:ring-offset-black/20",
-      )}
-    />
+    <>
+      {contentOverlay}
+      {interactionOverlay}
+      <button
+        type="button"
+        onClick={handleSelect}
+        aria-label={ariaLabel}
+        aria-pressed={selected}
+        className={cn(
+          "absolute inset-0 z-20 rounded-[inherit] bg-transparent",
+          "cursor-pointer focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--color-gold-100)]/85 focus-visible:ring-offset-2 focus-visible:ring-offset-black/20",
+        )}
+      />
+    </>
   );
 
   return (
@@ -50,11 +62,14 @@ export default function SelectableCard({
       size={size}
       interactive
       overlay={overlay}
+      contentClassName={contentClassName}
+      titleClassName={titleClassName}
+      textClassName={textClassName}
       className={cn(
+        interactionClassName,
         interaction?.className,
-        selected && [
-          "border-4 border-[var(--color-gold-200)]",
-        ],
+        className,
+        selected && ["border-4 border-[var(--color-gold-200)]"],
       )}
     />
   );

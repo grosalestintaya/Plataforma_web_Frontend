@@ -20,9 +20,10 @@ export function getLegacyObjectClassificationElement(view, data) {
   return data?.objectClassification ?? null;
 }
 
-export function getObjectClassificationRuntime({ view, data }) {
+export function getObjectClassificationModel({ view, data }) {
   const legacyElement = getLegacyObjectClassificationElement(view, data);
-  const config = findCompound(view, "objectClassification") ?? legacyElement ?? {};
+  const config =
+    findCompound(view, "objectClassification") ?? legacyElement ?? {};
 
   return {
     config,

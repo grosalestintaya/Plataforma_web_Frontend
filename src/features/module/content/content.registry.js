@@ -1,4 +1,8 @@
 import modulesCatalog from "./modulos.json";
+import {
+  assertValidMissionContent,
+  assertValidModulesCatalog,
+} from "./mission.schema";
 
 import m01Conceptual from "./modulo1/m1-conceptual.json";
 import m01Procedimental from "./modulo1/m1-procedimental.json";
@@ -329,6 +333,13 @@ function getMissionKeys(moduleMeta, missionContentMap) {
 }
 
 function buildMission(missionKey, missionMeta = {}, missionContent = {}) {
+  if (Object.keys(missionContent ?? {}).length > 0) {
+    assertValidMissionContent(missionContent, {
+      moduleCode: missionMeta.moduleCode,
+      missionKey,
+    });
+  }
+
   return {
     id: missionContent.id ?? missionContent.missionId ?? missionKey,
     activityId:
@@ -375,7 +386,10 @@ function buildModuleData(moduleMeta) {
       missionKey,
       buildMission(
         missionKey,
-        moduleMeta.missions?.[missionKey],
+        {
+          ...moduleMeta.missions?.[missionKey],
+          moduleCode: moduleMeta.code,
+        },
         missionContentMap[missionKey],
       ),
     ]),
@@ -411,6 +425,8 @@ function buildModuleData(moduleMeta) {
     missions,
   };
 }
+
+assertValidModulesCatalog(modulesCatalog);
 
 export const MODULE_CONTENT_MAP = modulesCatalog.modules.reduce((acc, moduleMeta) => {
   // Expone cada modulo por su codigo principal y por aliases legacy.

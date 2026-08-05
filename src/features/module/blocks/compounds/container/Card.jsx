@@ -1,5 +1,15 @@
 import CardBase from "./CardBase";
-import { getCardInteractionComponent } from "../iteractive/cardIteraction/cardInteractionRegistry";
+import { resolveCardInteractions } from "../iteractive/cardIteraction/cardInteractionRegistry";
+import { cn } from "@/shared/libs/utils";
+
+function renderEnhancers(enhancers) {
+  return enhancers.map((enhancer, index) => (
+    <enhancer.Component
+      key={enhancer.config.id ?? `${enhancer.type}-${index}`}
+      interaction={enhancer.config}
+    />
+  ));
+}
 
 export default function Card({
   title,
@@ -12,26 +22,37 @@ export default function Card({
   size = "normal",
   onSelect,
   onComplete,
+  className,
+  overlay,
+  tabIndex,
+  children,
+  ...cardProps
 }) {
-  const { Component: InteractionComponent, interaction: resolvedInteraction } =
-    getCardInteractionComponent({
-      interaction,
-      media,
-      zoomable,
-    });
+  const composition = resolveCardInteractions({
+    interaction,
+    media,
+    zoomable,
+  });
+  const enhancementOverlay = renderEnhancers(composition.enhancers);
+  const interactionClassName = cn(composition.hostProps.className, className);
 
-  if (InteractionComponent) {
+  if (composition.primary) {
     return (
-      <InteractionComponent
+      <composition.primary.Component
         title={title}
         text={text}
         media={media}
-        interaction={resolvedInteraction}
+        interaction={composition.primary.config}
         selected={selected}
         variant={variant}
         size={size}
         onSelect={onSelect}
         onComplete={onComplete}
+        interactionOverlay={enhancementOverlay}
+        interactionClassName={interactionClassName}
+        overlay={overlay}
+        tabIndex={tabIndex}
+        {...cardProps}
       />
     );
   }
@@ -44,6 +65,17 @@ export default function Card({
       selected={selected}
       variant={variant}
       size={size}
-    />
+      overlay={
+        <>
+          {overlay}
+          {enhancementOverlay}
+        </>
+      }
+      className={interactionClassName}
+      tabIndex={tabIndex ?? composition.hostProps.tabIndex}
+      {...cardProps}
+    >
+      {children}
+    </CardBase>
   );
 }

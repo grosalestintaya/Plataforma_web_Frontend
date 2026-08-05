@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-function isLobbyTemplate(template) {
+function isLobbyViewTemplate(template) {
   // En Lobby todavia no hay actividad real que proteger con confirmacion.
   return String(template ?? "").toLowerCase().includes("lobby");
 }
@@ -34,7 +34,7 @@ export function useActivityExitGuards({
       ),
     [activityId, missionAttempt.attemptId, missionAttempt.status],
   );
-  const isLobbyView = isLobbyTemplate(currentTemplate);
+  const isLobbyView = isLobbyViewTemplate(currentTemplate);
   // La confirmacion solo aplica una vez que dejamos la intro Lobby.
   const shouldConfirmExit = hasActiveAttempt && !isLobbyView;
 

@@ -14,6 +14,9 @@
   "dev": "vite",
   
     
+  "validate:missions": "node tools/validate-missions.mjs",
+  
+    
   "build": "vite build",
   
     

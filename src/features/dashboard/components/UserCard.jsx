@@ -53,7 +53,7 @@ function useCountUp(value, { duration = 650 } = {}) {
   return display;
 }
 
-const CompactChip = ({ color, icon: Icon, children }) => (
+const CompactChip = ({ color, children }) => (
   <div
     className="group relative flex min-w-0 items-center gap-2 overflow-hidden rounded-lg border px-2.5 py-1.5"
     style={{
@@ -64,7 +64,8 @@ const CompactChip = ({ color, icon: Icon, children }) => (
       color: "#F8FAFC",
       boxShadow:
         "inset 0 1px 0 rgba(255,255,255,0.10), 0 6px 12px rgba(0,0,0,0.10)",
-    }}>
+    }}
+  >
     <span
       className="absolute inset-y-0 left-0 w-[3px]"
       style={{
@@ -110,7 +111,8 @@ const MetricPanel = ({
         boxShadow: glow
           ? `0 10px 24px rgba(0,0,0,0.18), 0 0 0 2px color-mix(in srgb, ${color} 40%, white 60%), inset 0 1px 0 rgba(255,255,255,0.14)`
           : "0 8px 18px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.12)",
-      }}>
+      }}
+    >
       <div
         className="pointer-events-none absolute inset-0 opacity-20"
         style={{
@@ -138,7 +140,8 @@ const MetricPanel = ({
             style={{
               color: textColor,
               opacity: 0.82,
-            }}>
+            }}
+          >
             {title}
           </p>
 
@@ -148,7 +151,8 @@ const MetricPanel = ({
               style={{
                 color: textColor,
                 textShadow: "0 2px 10px rgba(0,0,0,0.20)",
-              }}>
+              }}
+            >
               {value}
             </p>
 
@@ -160,7 +164,8 @@ const MetricPanel = ({
                   opacity: 0.96,
                   textShadow: "0 2px 8px rgba(0,0,0,0.22)",
                   animation: "coinFloat 900ms ease-out forwards",
-                }}>
+                }}
+              >
                 +{formatInt(delta)}
               </span>
             )}
@@ -229,7 +234,8 @@ const UserCard = ({ user, isFirst = false }) => {
         maxHeight: "18vh",
         boxShadow:
           "inset 0 1px 0 rgba(255,255,255,0.10), 0 10px 24px rgba(0,0,0,0.14)",
-      }}>
+      }}
+    >
       <div
         className="pointer-events-none absolute inset-0 opacity-25"
         style={{
@@ -265,7 +271,8 @@ const UserCard = ({ user, isFirst = false }) => {
           relative grid h-full items-center gap-12
           xl:grid-cols-[minmax(320px,1fr)_340px]
         "
-        id="nav-user">
+        id="nav-user"
+      >
         <section className="min-w-0">
           <div className="flex h-full min-w-0 items-center gap-3">
             <div className="relative shrink-1">
@@ -284,7 +291,6 @@ const UserCard = ({ user, isFirst = false }) => {
               <div
                 className="relative rounded-[70px] border  p-[0.1px]"
                 style={{
-                  borderColor: "rgba(255,255,255,0.18)",
                   background: `
                     linear-gradient(
                       135deg,
@@ -296,7 +302,8 @@ const UserCard = ({ user, isFirst = false }) => {
                   borderColor: "var(--primary)",
                   boxShadow:
                     "0 0 0 1px rgba(255,255,255,0.08), 0 8px 18px rgba(0,0,0,0.20)",
-                }}>
+                }}
+              >
                 <img
                   src={resolveAvatar(user?.foto)}
                   alt={`Perfil de ${user?.nombre || "usuario"}`}
@@ -329,13 +336,15 @@ const UserCard = ({ user, isFirst = false }) => {
                   style={{
                     color: "#F8FAFC",
                     textShadow: "0 2px 10px rgba(0,0,0,0.20)",
-                  }}>
+                  }}
+                >
                   {user?.nombre || "Usuario"}
                 </h2>
                 <div className="flex min-w-0 flex-wrap items-center gap-2">
                   <CompactChip
                     color="var(--usercard-accent-2)"
-                    icon={Building2}>
+                    icon={Building2}
+                  >
                     {"🏫 " + user?.institucion || "Sin sección"}
                   </CompactChip>
 
@@ -345,7 +354,8 @@ const UserCard = ({ user, isFirst = false }) => {
 
                   <CompactChip
                     color="var( --usercard-accent-2)"
-                    icon={Sparkles}>
+                    icon={Sparkles}
+                  >
                     🔮 Lv. {user?.nivel ?? "-"}
                   </CompactChip>
                 </div>
@@ -358,7 +368,8 @@ const UserCard = ({ user, isFirst = false }) => {
                     style={{
                       color: "rgba(255,255,255,0.88)",
                       textShadow: "0 1px 6px rgba(0,0,0,0.14)",
-                    }}>
+                    }}
+                  >
                     PROGRESO ACTUAL EN EL NIVEL {user?.nivel ?? "-"}
                   </p>
 
@@ -370,7 +381,8 @@ const UserCard = ({ user, isFirst = false }) => {
                         "linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.08))",
                       boxShadow:
                         "inset 0 0 0 1px rgba(255,255,255,0.12), 0 4px 10px rgba(0,0,0,0.10)",
-                    }}>
+                    }}
+                  >
                     {progreso}%
                   </span>
                 </div>
@@ -382,7 +394,8 @@ const UserCard = ({ user, isFirst = false }) => {
                       "linear-gradient(180deg, rgba(0,0,0,0.26), rgba(255,255,255,0.05))",
                     boxShadow:
                       "inset 0 1px 3px rgba(0,0,0,0.28), inset 0 0 0 1px rgba(255,255,255,0.04)",
-                  }}>
+                  }}
+                >
                   <div
                     className="relative h-full rounded-full transition-all duration-500 ease-out"
                     style={{
@@ -397,7 +410,8 @@ const UserCard = ({ user, isFirst = false }) => {
                       `,
                       boxShadow:
                         "0 0 10px var(--usercard-accent), 0 0 18px var(--usercard-accent-2)",
-                    }}>
+                    }}
+                  >
                     <span
                       className="absolute right-0 top-0 h-full w-10 opacity-60"
                       style={{

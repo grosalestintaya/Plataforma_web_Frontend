@@ -42,9 +42,7 @@ export function useActivityFooterModel({
 
     if (requiresCompletion) {
       // lockedUntilComplete delega en el estado interactivo de la vista actual.
-      const canAdvance =
-        Boolean(currentInteractiveState?.completed) &&
-        (!activityId || hasBackendAttempt);
+      const canAdvance = Boolean(currentInteractiveState?.completed);
       const centerText = canAdvance
         ? model.centerText
         : missionAttempt.status === "starting"

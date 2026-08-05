@@ -74,8 +74,8 @@ function renderGroupItem(item, index) {
   const {
     id,
     key,
-    block,
-    component,
+    block: _block,
+    component: _component,
     grow = false,
     shrink = true,
     wrapperClassName,

@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import PublicRoute from "./features/auth/components/PublicRoute.jsx";
 import PrivateRoute from "./features/auth/components/PrivateRoute.jsx";
 import SidebarLayout from "./features/dashboard/layouts/SidebarLayout.jsx";
+import LogOut from "./features/auth/pages/LogOut.jsx";
 // Lazy imports: páginas y layouts pesados
 
 const NotFound = lazy(() => import("./features/system/pages/NotFoud.jsx"));
@@ -28,7 +29,6 @@ const Ranking = lazy(
 const Ajustes = lazy(
   () => import("./features/dashboard/pages/shared/Ajustes.jsx"),
 );
-const LogOut = lazy(() => import("./features/auth/pages/LogOut.jsx"));
 const Store = lazy(() => import("./features/dashboard/pages/shared/Store.jsx"));
 const HeatMap = lazy(
   () => import("./features/dashboard/pages/shared/heatMap.jsx"),
@@ -138,7 +138,8 @@ class RouteErrorBoundary extends React.Component {
             <button
               type="button"
               onClick={this.handleReload}
-              className="mt-4 rounded-xl bg-white/10 px-4 py-2 text-sm font-medium text-white transition hover:bg-white/20">
+              className="mt-4 rounded-xl bg-white/10 px-4 py-2 text-sm font-medium text-white transition hover:bg-white/20"
+            >
               Recargar
             </button>
           </div>
@@ -205,7 +206,8 @@ function App() {
                 <FullscreenLoader text="Cargando panel..." />,
               )}
             </PrivateRoute>
-          }>
+          }
+        >
           <Route index element={withSuspense(<Inicio />)} />
           <Route path="perfil" element={withSuspense(<Perfil />)} />
           <Route path="ranking" element={withSuspense(<Ranking />)} />

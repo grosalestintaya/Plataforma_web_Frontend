@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "@/shared/libs/utils";
 import Typography from "../../base/Typography";
 import Button from "../../base/Action/Button";
@@ -44,7 +44,10 @@ function normalizeCategory(category, index) {
     ...category,
     id: category?.id ?? `category-${index + 1}`,
     title: normalizeTextNode(
-      category?.title ?? category?.label ?? category?.name ?? `Categoria ${index + 1}`,
+      category?.title ??
+        category?.label ??
+        category?.name ??
+        `Categoria ${index + 1}`,
       "body",
     ),
   };
@@ -55,8 +58,7 @@ function getCategoryTone(categoryId) {
     return {
       shell:
         "bg-[linear-gradient(180deg,rgba(132,31,15,0.24),rgba(80,14,5,0.18))] shadow-[inset_0_1px_0_rgba(255,255,255,0.10)]",
-      chip:
-        "bg-[linear-gradient(180deg,rgba(255,255,255,0.15),rgba(255,255,255,0.07))] text-[#fff2dd]",
+      chip: "bg-[linear-gradient(180deg,rgba(255,255,255,0.15),rgba(255,255,255,0.07))] text-[#fff2dd]",
       empty: "border border-dashed border-white/12 bg-white/[0.04]",
     };
   }
@@ -64,8 +66,7 @@ function getCategoryTone(categoryId) {
   return {
     shell:
       "bg-[linear-gradient(180deg,rgba(17,98,106,0.20),rgba(7,57,72,0.18))] shadow-[inset_0_1px_0_rgba(255,255,255,0.10)]",
-    chip:
-      "bg-[linear-gradient(180deg,rgba(255,255,255,0.15),rgba(255,255,255,0.07))] text-[#ebfffe]",
+    chip: "bg-[linear-gradient(180deg,rgba(255,255,255,0.15),rgba(255,255,255,0.07))] text-[#ebfffe]",
     empty: "border border-dashed border-white/12 bg-white/[0.04]",
   };
 }
@@ -168,7 +169,8 @@ export default function ClasifyCard({
   const layoutVariant = "responsive";
 
   const panelTitle = normalizeTextNode(
-    runtime?.panelTitle ?? "Arrastra los diferentes objetos a uno de los contenedores",
+    runtime?.panelTitle ??
+      "Arrastra los diferentes objetos a uno de los contenedores",
     "body2",
   );
 
@@ -201,12 +203,18 @@ export default function ClasifyCard({
   }, [viewId, controlledSelectedItemId]);
 
   const itemMap = useMemo(
-    () => new Map((Array.isArray(items) ? items : []).map((item) => [item?.id, item])),
+    () =>
+      new Map(
+        (Array.isArray(items) ? items : []).map((item) => [item?.id, item]),
+      ),
     [items],
   );
 
   const bankItems = useMemo(
-    () => (Array.isArray(items) ? items : []).filter((item) => !placements[item?.id]),
+    () =>
+      (Array.isArray(items) ? items : []).filter(
+        (item) => !placements[item?.id],
+      ),
     [items, placements],
   );
 
@@ -230,10 +238,6 @@ export default function ClasifyCard({
 
   const completed = allPlaced;
   const countsTowardScore = runtime?.countsTowardScore !== false;
-  const score =
-    completed && totalItems > 0
-      ? Math.round((correctCount / totalItems) * Number(runtime?.score ?? view?.score ?? 100))
-      : 0;
   const classifiedCount = Math.max(0, totalItems - bankItems.length);
   const incorrectCount = Math.max(0, classifiedCount - correctCount);
   const bankVisibleMobileRows = 4;
@@ -242,51 +246,74 @@ export default function ClasifyCard({
     bankItems,
     Math.max(bankVisibleMobileRows, bankVisibleDesktopCols, bankItems.length),
   );
-  const actionLabel = runtime?.submitLabel ?? heroApi?.advanceLabel ?? "Continuar";
+  const actionLabel =
+    runtime?.submitLabel ?? heroApi?.advanceLabel ?? "Continuar";
 
-  function buildClassificationState(forceCompleted = completed) {
-    const isFinished = Boolean(forceCompleted);
-    const finalScore =
-      isFinished && totalItems > 0
-        ? Math.round((correctCount / totalItems) * Number(runtime?.score ?? view?.score ?? 100))
-        : 0;
+  const buildClassificationState = useCallback(
+    (forceCompleted = completed) => {
+      const isFinished = Boolean(forceCompleted);
+      const finalScore =
+        isFinished && totalItems > 0
+          ? Math.round(
+              (correctCount / totalItems) *
+                Number(runtime?.score ?? view?.score ?? 100),
+            )
+          : 0;
 
-    return {
-      type: "objectClassification",
-      completed: isFinished,
-      terminado: isFinished,
-      finished: isFinished,
-      status: isFinished ? "terminado" : "in_progress",
-      score: finalScore,
-      countsTowardScore,
-      selectedItemId,
-      placements,
-      correctCount,
-      incorrectCount,
-      totalCount: totalItems,
-      bankCount: bankItems.length,
-      classifiedCount,
-      payload: {
+      return {
+        type: "objectClassification",
         completed: isFinished,
         terminado: isFinished,
+        finished: isFinished,
         status: isFinished ? "terminado" : "in_progress",
+        score: finalScore,
+        countsTowardScore,
+        selectedItemId,
         placements,
         correctCount,
         incorrectCount,
         totalCount: totalItems,
         bankCount: bankItems.length,
         classifiedCount,
-        categoryCount: categories.length,
-        layoutVariant,
-      },
-    };
-  }
+        payload: {
+          completed: isFinished,
+          terminado: isFinished,
+          status: isFinished ? "terminado" : "in_progress",
+          placements,
+          correctCount,
+          incorrectCount,
+          totalCount: totalItems,
+          bankCount: bankItems.length,
+          classifiedCount,
+          categoryCount: categories.length,
+          layoutVariant,
+        },
+      };
+    },
+    [
+      bankItems.length,
+      categories.length,
+      classifiedCount,
+      completed,
+      correctCount,
+      countsTowardScore,
+      incorrectCount,
+      placements,
+      runtime?.score,
+      selectedItemId,
+      totalItems,
+      view?.score,
+    ],
+  );
 
-  function reportClassificationState(forceCompleted = completed) {
-    const nextState = buildClassificationState(forceCompleted);
-    heroApi?.setInteractiveState?.(viewId, nextState);
-    return nextState;
-  }
+  const reportClassificationState = useCallback(
+    (forceCompleted = completed) => {
+      const nextState = buildClassificationState(forceCompleted);
+      heroApi?.setInteractiveState?.(viewId, nextState);
+      return nextState;
+    },
+    [buildClassificationState, completed, heroApi, viewId],
+  );
 
   function updatePlacements(itemId, categoryId = null) {
     if (!itemId || !itemMap.has(itemId)) return;
@@ -359,21 +386,7 @@ export default function ClasifyCard({
     if (!heroApi?.setInteractiveState || !viewId) return;
 
     reportClassificationState();
-  }, [
-    heroApi,
-    viewId,
-    completed,
-    countsTowardScore,
-    selectedItemId,
-    placements,
-    correctCount,
-    incorrectCount,
-    totalItems,
-    bankItems.length,
-    classifiedCount,
-    categories.length,
-    layoutVariant,
-  ]);
+  }, [heroApi, reportClassificationState, viewId]);
 
   useEffect(() => {
     if (!completed || completionSentRef.current) return;
@@ -381,21 +394,7 @@ export default function ClasifyCard({
     completionSentRef.current = true;
 
     onComplete?.(buildClassificationState(true));
-  }, [
-    completed,
-    score,
-    correctCount,
-    incorrectCount,
-    totalItems,
-    placements,
-    countsTowardScore,
-    selectedItemId,
-    bankItems.length,
-    classifiedCount,
-    categories.length,
-    layoutVariant,
-    onComplete,
-  ]);
+  }, [buildClassificationState, completed, onComplete]);
 
   function renderPanelTitle() {
     if (!panelTitle) return null;
@@ -440,7 +439,7 @@ export default function ClasifyCard({
             className={cn(
               "overflow-hidden",
               mobile
-                ? "h-[calc(22.4rem+2.25rem)] sm:h-[calc(24rem+2.25rem)]"
+                ? "h-[calc(22.4rem+2.25rem)] overflow-x-hidden overflow-y-auto pr-1 scrollbar-thin scrollbar-track-white/5 scrollbar-thumb-white/20 sm:h-[calc(24rem+2.25rem)]"
                 : "h-[5.75rem] xl:h-[6.1rem]",
             )}
           >
@@ -448,7 +447,7 @@ export default function ClasifyCard({
               className={cn(
                 "grid gap-3",
                 mobile
-                  ? "grid-cols-1 auto-rows-[5.6rem] overflow-hidden pr-0 sm:auto-rows-[6rem]"
+                  ? "grid-cols-1 auto-rows-[5.6rem] sm:auto-rows-[6rem]"
                   : "grid-cols-6 auto-rows-[5.75rem] overflow-hidden pr-0 xl:auto-rows-[6.1rem]",
               )}
             >
@@ -571,17 +570,13 @@ export default function ClasifyCard({
     >
       {renderPanelTitle()}
       <div className="grid min-h-0 flex-1 grid-cols-[minmax(5.5rem,6.4rem)_minmax(0,1fr)] gap-2 lg:hidden">
-        <div className="min-h-0 min-w-0">
-          {renderBank({ mobile: true })}
-        </div>
+        <div className="min-h-0 min-w-0">{renderBank({ mobile: true })}</div>
         <div className="min-h-0 flex min-w-0 flex-col">
           {renderCategories({ mobile: true })}
         </div>
       </div>
       <div className="hidden min-h-0 flex-1 grid-cols-1 grid-rows-[auto_1fr] gap-2 lg:grid">
-        <div className="min-h-0 min-w-0">
-          {renderBank({ mobile: false })}
-        </div>
+        <div className="min-h-0 min-w-0">{renderBank({ mobile: false })}</div>
         <div className="min-h-0 flex min-w-0 flex-col">
           {renderCategories({ mobile: false })}
         </div>

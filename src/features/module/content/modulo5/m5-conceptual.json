@@ -1,4 +1,5 @@
 {
+  "schemaVersion": "1.0",
   "id": "conceptual",
   "activityId": "13",
   "backendActivityId": "13",
@@ -23,7 +24,7 @@
         "body": {
           "paragraphs": [
             "En algunas ocasiones, las personas necesitan dinero que no tienen disponible en ese momento.",
-            "Para obtenerlo, pueden solicitar un préstamo, el cual deberá ser devuelto posteriormente." ,
+            "Para obtenerlo, pueden solicitar un préstamo, el cual deberá ser devuelto posteriormente.",
             "En esta misión descubrirás qué son los préstamos, las deudas, los intereses y algunos riesgos relacionados con las decisiones financieras."
           ],
           "variant": "body1",
@@ -67,429 +68,429 @@
         "type": "manualStart"
       }
     },
-{
-  "viewId": "m5_1_v2",
-  "order": 2,
-  "name": "VISTA 2 - Teoria: Prestamo y deuda",
-  "viewType": "Interaccion",
-  "objective": "Explicar que es un prestamo y que significa tener una deuda.",
-  "template": "explanationTheory",
-  "variant": "explanation",
-  "slots": {
-    "title": {
-      "text": "¿Qué es un préstamo?",
-      "variant": "h1",
-      "align": "center"
-    },
-    "subtitle": {
-      "text": "Un préstamo ocurre cuando una persona recibe dinero que deberá devolver más adelante. Quien presta el dinero espera recuperarlo según lo acordado.",
-      "variant": "body1",
-      "align": "center"
-    }
-  },
-  "elements": {
-    "base": [
-      {
-        "component": "heading",
-        "slot": "title",
-        "area": "title",
-        "order": 10
+    {
+      "viewId": "m5_1_v2",
+      "order": 2,
+      "name": "VISTA 2 - Teoria: Prestamo y deuda",
+      "viewType": "Interaccion",
+      "objective": "Explicar que es un prestamo y que significa tener una deuda.",
+      "template": "explanationTheory",
+      "variant": "explanation",
+      "slots": {
+        "title": {
+          "text": "¿Qué es un préstamo?",
+          "variant": "h1",
+          "align": "center"
+        },
+        "subtitle": {
+          "text": "Un préstamo ocurre cuando una persona recibe dinero que deberá devolver más adelante. Quien presta el dinero espera recuperarlo según lo acordado.",
+          "variant": "body1",
+          "align": "center"
+        }
       },
-      {
-        "component": "heading",
-        "slot": "subtitle",
-        "area": "subtitle",
-        "order": 20
-      }
-    ],
-    "compound": [
-      {
-        "type": "collageCard",
-        "component": "collageCard",
-        "category": "grouper",
-        "area": "media",
-        "columns": 3,
-        "rows": 1,
-        "items": [
+      "elements": {
+        "base": [
           {
-            "id": "prestamo-recibir",
-            "title": {
-              "text": "Recibir dinero temporalmente",
-              "variant": "h3",
-              "align": "center"
-            },
-            "media": {
-              "src": "5/5v2x1c.webp",
-              "alt": "Adolescente recibiendo dinero prestado de un familiar",
-              "variant": "square"
-            },
-            "interaction": {
-              "type": "flipCard",
-              "backCard": {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "heading",
+            "slot": "subtitle",
+            "area": "subtitle",
+            "order": 20
+          }
+        ],
+        "compound": [
+          {
+            "type": "collageCard",
+            "component": "collageCard",
+            "category": "grouper",
+            "area": "media",
+            "columns": 3,
+            "rows": 1,
+            "items": [
+              {
+                "id": "prestamo-recibir",
                 "title": {
                   "text": "Recibir dinero temporalmente",
                   "variant": "h3",
                   "align": "center"
                 },
-                "text": {
-                  "text": "Es obtener dinero prestado para usarlo por un tiempo determinado.",
-                  "variant": "bodySm",
-                  "align": "center"
+                "media": {
+                  "src": "5/5v2x1c.webp",
+                  "alt": "Adolescente recibiendo dinero prestado de un familiar",
+                  "variant": "square"
+                },
+                "interaction": {
+                  "type": "flipCard",
+                  "backCard": {
+                    "title": {
+                      "text": "Recibir dinero temporalmente",
+                      "variant": "h3",
+                      "align": "center"
+                    },
+                    "text": {
+                      "text": "Es obtener dinero prestado para usarlo por un tiempo determinado.",
+                      "variant": "bodySm",
+                      "align": "center"
+                    }
+                  }
                 }
-              }
-            }
-          },
-          {
-            "id": "prestamo-devolver",
-            "title": {
-              "text": "Devolverlo después",
-              "variant": "h3",
-              "align": "center"
-            },
-            "media": {
-              "src": "5/5v2x2c.webp",
-              "alt": "Adolescente devolviendo el dinero días después",
-              "variant": "square"
-            },
-            "interaction": {
-              "type": "flipCard",
-              "backCard": {
+              },
+              {
+                "id": "prestamo-devolver",
                 "title": {
                   "text": "Devolverlo después",
                   "variant": "h3",
                   "align": "center"
                 },
-                "text": {
-                  "text":" Es regresar el dinero recibido en la fecha o en los plazos acordados.",
-                  "variant": "bodySm",
-                  "align": "center"
+                "media": {
+                  "src": "5/5v2x2c.webp",
+                  "alt": "Adolescente devolviendo el dinero días después",
+                  "variant": "square"
+                },
+                "interaction": {
+                  "type": "flipCard",
+                  "backCard": {
+                    "title": {
+                      "text": "Devolverlo después",
+                      "variant": "h3",
+                      "align": "center"
+                    },
+                    "text": {
+                      "text": " Es regresar el dinero recibido en la fecha o en los plazos acordados.",
+                      "variant": "bodySm",
+                      "align": "center"
+                    }
+                  }
                 }
-              }
-            }
-          },
-          {
-            "id": "prestamo-acuerdo",
-            "title": {
-              "text": "Cumplir un acuerdo",
-              "variant": "h3",
-              "align": "center"
-            },
-            "media": {
-              "src": "5/v2x3c.webp",
-              "alt": "Dos personas acordando las condiciones del préstamo",
-              "variant": "square"
-            },
-            "interaction": {
-              "type": "flipCard",
-              "backCard": {
+              },
+              {
+                "id": "prestamo-acuerdo",
                 "title": {
                   "text": "Cumplir un acuerdo",
                   "variant": "h3",
                   "align": "center"
                 },
-                "text": {
-                  "text": "Es respetar las condiciones del préstamo, como devolver el dinero a tiempo y, si corresponde, pagar los intereses.",
-                  "variant": "bodySm",
-                  "align": "center"
+                "media": {
+                  "src": "5/v2x3c.webp",
+                  "alt": "Dos personas acordando las condiciones del préstamo",
+                  "variant": "square"
+                },
+                "interaction": {
+                  "type": "flipCard",
+                  "backCard": {
+                    "title": {
+                      "text": "Cumplir un acuerdo",
+                      "variant": "h3",
+                      "align": "center"
+                    },
+                    "text": {
+                      "text": "Es respetar las condiciones del préstamo, como devolver el dinero a tiempo y, si corresponde, pagar los intereses.",
+                      "variant": "bodySm",
+                      "align": "center"
+                    }
+                  }
                 }
               }
-            }
+            ]
           }
         ]
-      }
-    ]
-  },
-  "navigation": {
-    "mode": "lockedUntilComplete",
-    "label": "Toca todas las tarjetas para continuar"
-  },
-  "completionCriteria": {
-    "type": "interaction",
-    "required": "reviewCards"
-  }
-},
-   {
-  "viewId": "m5_1_v3",
-  "order": 3,
-  "name": "VISTA 3 - Teoria: Que es una deuda",
-  "viewType": "Interaccion",
-  "objective": "Explicar que es una deuda y que implica un compromiso de pago.",
-  "template": "explanationTheory",
-  "variant": "explanation",
-  "slots": {
-    "title": {
-      "text": "¿Qué es una deuda?",
-      "variant": "h1",
-      "align": "center"
-    },
-    "subtitle": {
-      "text": "Cuando recibimos dinero prestado y aún no lo devolvemos, tenemos una deuda. La deuda representa un compromiso de pago.",
-      "variant": "body1",
-      "align": "center"
-    }
-  },
-  "elements": {
-    "base": [
-      {
-        "component": "heading",
-        "slot": "title",
-        "area": "title",
-        "order": 10
       },
-      {
-        "component": "heading",
-        "slot": "subtitle",
-        "area": "subtitle",
-        "order": 20
+      "navigation": {
+        "mode": "lockedUntilComplete",
+        "label": "Toca todas las tarjetas para continuar"
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "reviewCards"
       }
-    ],
-    "compound": [
-      {
-        "type": "collageCard",
-        "component": "collageCard",
-        "category": "grouper",
-        "area": "media",
-        "columns": 3,
-        "rows": 1,
-        "items": [
+    },
+    {
+      "viewId": "m5_1_v3",
+      "order": 3,
+      "name": "VISTA 3 - Teoria: Que es una deuda",
+      "viewType": "Interaccion",
+      "objective": "Explicar que es una deuda y que implica un compromiso de pago.",
+      "template": "explanationTheory",
+      "variant": "explanation",
+      "slots": {
+        "title": {
+          "text": "¿Qué es una deuda?",
+          "variant": "h1",
+          "align": "center"
+        },
+        "subtitle": {
+          "text": "Cuando recibimos dinero prestado y aún no lo devolvemos, tenemos una deuda. La deuda representa un compromiso de pago.",
+          "variant": "body1",
+          "align": "center"
+        }
+      },
+      "elements": {
+        "base": [
           {
-            "id": "deuda-recibido",
-            "title": {
-              "text": "Dinero recibido",
-              "variant": "h3",
-              "align": "center"
-            },
-            "media": {
-              "src": "5/v3x1c.webp",
-              "alt": "Billetes pasando de una persona a otra",
-              "variant": "square"
-            },
-            "interaction": {
-              "type": "flipCard",
-              "backCard": {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "heading",
+            "slot": "subtitle",
+            "area": "subtitle",
+            "order": 20
+          }
+        ],
+        "compound": [
+          {
+            "type": "collageCard",
+            "component": "collageCard",
+            "category": "grouper",
+            "area": "media",
+            "columns": 3,
+            "rows": 1,
+            "items": [
+              {
+                "id": "deuda-recibido",
                 "title": {
                   "text": "Dinero recibido",
                   "variant": "h3",
                   "align": "center"
                 },
-                "text": {
-                  "text": "Es la cantidad de dinero que una persona recibe prestada para cubrir una necesidad o realizar una compra.",
-                  "variant": "bodySm",
-                  "align": "center"
+                "media": {
+                  "src": "5/v3x1c.webp",
+                  "alt": "Billetes pasando de una persona a otra",
+                  "variant": "square"
+                },
+                "interaction": {
+                  "type": "flipCard",
+                  "backCard": {
+                    "title": {
+                      "text": "Dinero recibido",
+                      "variant": "h3",
+                      "align": "center"
+                    },
+                    "text": {
+                      "text": "Es la cantidad de dinero que una persona recibe prestada para cubrir una necesidad o realizar una compra.",
+                      "variant": "bodySm",
+                      "align": "center"
+                    }
+                  }
                 }
-              }
-            }
-          },
-          {
-            "id": "deuda-compromiso",
-            "title": {
-              "text": "Compromiso pendiente",
-              "variant": "h3",
-              "align": "center"
-            },
-            "media": {
-              "src": "5/v3x2c.webp",
-              "alt": "Adolescente observando una nota con la fecha acordada para devolver el dinero",
-              "variant": "square"
-            },
-            "interaction": {
-              "type": "flipCard",
-              "backCard": {
+              },
+              {
+                "id": "deuda-compromiso",
                 "title": {
                   "text": "Compromiso pendiente",
                   "variant": "h3",
                   "align": "center"
                 },
-                "text": {
-                  "text": "Es la responsabilidad de devolver el dinero recibido, respetando las condiciones acordadas.",
-                  "variant": "bodySm",
-                  "align": "center"
+                "media": {
+                  "src": "5/v3x2c.webp",
+                  "alt": "Adolescente observando una nota con la fecha acordada para devolver el dinero",
+                  "variant": "square"
+                },
+                "interaction": {
+                  "type": "flipCard",
+                  "backCard": {
+                    "title": {
+                      "text": "Compromiso pendiente",
+                      "variant": "h3",
+                      "align": "center"
+                    },
+                    "text": {
+                      "text": "Es la responsabilidad de devolver el dinero recibido, respetando las condiciones acordadas.",
+                      "variant": "bodySm",
+                      "align": "center"
+                    }
+                  }
                 }
-              }
-            }
-          },
-          {
-            "id": "deuda-pago-futuro",
-            "title": {
-              "text": "Pago futuro",
-              "variant": "h3",
-              "align": "center"
-            },
-            "media": {
-              "src": "5/v3x3c.webp",
-              "alt": "Es el dinero que deberá devolverse más adelante, en la fecha establecida. En algunos casos, puede incluir intereses.",
-              "variant": "square"
-            },
-            "interaction": {
-              "type": "flipCard",
-              "backCard": {
+              },
+              {
+                "id": "deuda-pago-futuro",
                 "title": {
                   "text": "Pago futuro",
                   "variant": "h3",
                   "align": "center"
                 },
-                "text": {
-                  "text": "Un calendario marca una fecha próxima. El adolescente tiene dinero reservado y se prepara para cumplir con el pago.",
-                  "variant": "bodySm",
-                  "align": "center"
+                "media": {
+                  "src": "5/v3x3c.webp",
+                  "alt": "Es el dinero que deberá devolverse más adelante, en la fecha establecida. En algunos casos, puede incluir intereses.",
+                  "variant": "square"
+                },
+                "interaction": {
+                  "type": "flipCard",
+                  "backCard": {
+                    "title": {
+                      "text": "Pago futuro",
+                      "variant": "h3",
+                      "align": "center"
+                    },
+                    "text": {
+                      "text": "Un calendario marca una fecha próxima. El adolescente tiene dinero reservado y se prepara para cumplir con el pago.",
+                      "variant": "bodySm",
+                      "align": "center"
+                    }
+                  }
                 }
               }
-            }
+            ]
           }
         ]
-      }
-    ]
-  },
-  "navigation": {
-    "mode": "lockedUntilComplete",
-    "label": "Toca todas las tarjetas para continuar"
-  },
-  "completionCriteria": {
-    "type": "interaction",
-    "required": "reviewCards"
-  }
-},
-{
-  "viewId": "m5_1_v4",
-  "order": 4,
-  "name": "VISTA 4 - Teoria: Que es un interes",
-  "viewType": "Interaccion",
-  "objective": "Explicar que es el interes como costo adicional de un prestamo.",
-  "template": "explanationTheory",
-  "variant": "explanation",
-  "slots": {
-    "title": {
-      "text": "¿Qué es un interés?",
-      "variant": "h1",
-      "align": "center"
-    },
-    "subtitle": {
-      "text": "En algunos préstamos se devuelve una cantidad mayor al dinero recibido. La diferencia adicional se conoce como interés.",
-      "variant": "body1",
-      "align": "center"
-    }
-  },
-  "elements": {
-    "base": [
-      {
-        "component": "heading",
-        "slot": "title",
-        "area": "title",
-        "order": 10
       },
-      {
-        "component": "heading",
-        "slot": "subtitle",
-        "area": "subtitle",
-        "order": 20
+      "navigation": {
+        "mode": "lockedUntilComplete",
+        "label": "Toca todas las tarjetas para continuar"
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "reviewCards"
       }
-    ],
-    "compound": [
-      {
-        "type": "collageCard",
-        "component": "collageCard",
-        "category": "grouper",
-        "area": "media",
-        "columns": 3,
-        "rows": 1,
-        "items": [
+    },
+    {
+      "viewId": "m5_1_v4",
+      "order": 4,
+      "name": "VISTA 4 - Teoria: Que es un interes",
+      "viewType": "Interaccion",
+      "objective": "Explicar que es el interes como costo adicional de un prestamo.",
+      "template": "explanationTheory",
+      "variant": "explanation",
+      "slots": {
+        "title": {
+          "text": "¿Qué es un interés?",
+          "variant": "h1",
+          "align": "center"
+        },
+        "subtitle": {
+          "text": "En algunos préstamos se devuelve una cantidad mayor al dinero recibido. La diferencia adicional se conoce como interés.",
+          "variant": "body1",
+          "align": "center"
+        }
+      },
+      "elements": {
+        "base": [
           {
-            "id": "interes-dinero-prestado",
-            "title": {
-              "text": "Dinero prestado",
-              "variant": "h3",
-              "align": "center"
-            },
-            "media": {
-              "src": "5/v4x1c.webp",
-              "alt": "Un adolescente recibe S/100 de un familiar. Una persona entregando el dinero con un letrero que dice S/100 prestados.",
-              "variant": "square"
-            },
-            "interaction": {
-              "type": "flipCard",
-              "backCard": {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "heading",
+            "slot": "subtitle",
+            "area": "subtitle",
+            "order": 20
+          }
+        ],
+        "compound": [
+          {
+            "type": "collageCard",
+            "component": "collageCard",
+            "category": "grouper",
+            "area": "media",
+            "columns": 3,
+            "rows": 1,
+            "items": [
+              {
+                "id": "interes-dinero-prestado",
                 "title": {
                   "text": "Dinero prestado",
                   "variant": "h3",
                   "align": "center"
                 },
-                "text": {
-                  "text": "Es la cantidad de dinero que una persona o una entidad entrega para ser devuelta más adelante.",
-                  "variant": "bodySm",
-                  "align": "center"
+                "media": {
+                  "src": "5/v4x1c.webp",
+                  "alt": "Un adolescente recibe S/100 de un familiar. Una persona entregando el dinero con un letrero que dice S/100 prestados.",
+                  "variant": "square"
+                },
+                "interaction": {
+                  "type": "flipCard",
+                  "backCard": {
+                    "title": {
+                      "text": "Dinero prestado",
+                      "variant": "h3",
+                      "align": "center"
+                    },
+                    "text": {
+                      "text": "Es la cantidad de dinero que una persona o una entidad entrega para ser devuelta más adelante.",
+                      "variant": "bodySm",
+                      "align": "center"
+                    }
+                  }
                 }
-              }
-            }
-          },
-          {
-            "id": "interes-monto-adicional",
-            "title": {
-              "text": "Monto adicional",
-              "variant": "h3",
-              "align": "center"
-            },
-            "media": {
-              "src": "5/v4x2c.webp",
-              "alt": "Es la cantidad extra que se paga, además del dinero prestado, como costo por haber recibido el préstamo.",
-              "variant": "square"
-            },
-            "interaction": {
-              "type": "flipCard",
-              "backCard": {
+              },
+              {
+                "id": "interes-monto-adicional",
                 "title": {
                   "text": "Monto adicional",
                   "variant": "h3",
                   "align": "center"
                 },
-                "text": {
-                  "text": "El adolescente devuelve el dinero. Se observa: Recibí S/100 — Devuelvo S/105. Una flecha resalta la diferencia de S/5.",
-                  "variant": "bodySm",
-                  "align": "center"
+                "media": {
+                  "src": "5/v4x2c.webp",
+                  "alt": "Es la cantidad extra que se paga, además del dinero prestado, como costo por haber recibido el préstamo.",
+                  "variant": "square"
+                },
+                "interaction": {
+                  "type": "flipCard",
+                  "backCard": {
+                    "title": {
+                      "text": "Monto adicional",
+                      "variant": "h3",
+                      "align": "center"
+                    },
+                    "text": {
+                      "text": "El adolescente devuelve el dinero. Se observa: Recibí S/100 — Devuelvo S/105. Una flecha resalta la diferencia de S/5.",
+                      "variant": "bodySm",
+                      "align": "center"
+                    }
+                  }
                 }
-              }
-            }
-          },
-          {
-            "id": "interes-costo",
-            "title": {
-              "text": "Pedir dinero prestado puede tener un costo o interés",
-              "variant": "h3",
-              "align": "center"
-            },
-            "media": {
-              "src": "5/v4x3c.webp",
-              "alt": "Comparación visual: Dinero recibido S/100, Dinero devuelto S/105, diferencia S/5. Una etiqueta indica costo adicional.",
-              "variant": "square"
-            },
-            "interaction": {
-              "type": "flipCard",
-              "backCard": {
+              },
+              {
+                "id": "interes-costo",
                 "title": {
-                  "text": "Costo adicional",
+                  "text": "Pedir dinero prestado puede tener un costo o interés",
                   "variant": "h3",
                   "align": "center"
                 },
-                "text": {
-                  "text": "Cuando solicitas un préstamo, es posible que debas devolver más dinero del que recibiste. Ese costo adicional se llama interés",
-                  "variant": "bodySm",
-                  "align": "center"
+                "media": {
+                  "src": "5/v4x3c.webp",
+                  "alt": "Comparación visual: Dinero recibido S/100, Dinero devuelto S/105, diferencia S/5. Una etiqueta indica costo adicional.",
+                  "variant": "square"
+                },
+                "interaction": {
+                  "type": "flipCard",
+                  "backCard": {
+                    "title": {
+                      "text": "Costo adicional",
+                      "variant": "h3",
+                      "align": "center"
+                    },
+                    "text": {
+                      "text": "Cuando solicitas un préstamo, es posible que debas devolver más dinero del que recibiste. Ese costo adicional se llama interés",
+                      "variant": "bodySm",
+                      "align": "center"
+                    }
+                  }
                 }
               }
-            }
+            ]
           }
         ]
+      },
+      "navigation": {
+        "mode": "lockedUntilComplete",
+        "label": "Toca todas las tarjetas para continuar"
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "reviewCards"
       }
-    ]
-  },
-  "navigation": {
-    "mode": "lockedUntilComplete",
-    "label": "Toca todas las tarjetas para continuar"
-  },
-  "completionCriteria": {
-    "type": "interaction",
-    "required": "reviewCards"
-  }
-},
+    },
     {
       "viewId": "m5_1_v5",
       "order": 5,
@@ -599,644 +600,648 @@
         "type": "reading"
       }
     },
-   {
-  "viewId": "m5_1_v6",
-  "order": 6,
-  "name": "VISTA 6 - Teoria: Antes de decidir",
-  "viewType": "Teoria",
-  "objective": "Resumir las preguntas clave antes de aceptar un prestamo.",
-  "template": "simpleTheory",
-  "variant": "simple",
-  "slots": {
-    "title": {
-      "text": "Antes de aceptar un préstamo",
-      "variant": "h1",
-      "align": "center"
-    },
-    "media": {
-      "src": "5/v6x1c.webp",
-      "alt": "Estudiante reflexionando antes de aceptar un préstamo",
-      "variant": "horizontal"
-    },
-    "body": {
-      "paragraphs": [
-        "Antes de tomar una decisión, conviene hacerse preguntas como: ¿Lo necesito de verdad? ¿Cuánto costará? ¿Cuándo tendré que pagarlo? ¿Podré hacerlo sin afectar otras prioridades?"
-      ],
-      "variant": "body1",
-      "align": "center"
-    },
-    "feedback": {
-      "paragraphs": [
-        "Pensar antes de endeudarse ayuda a evitar problemas futuros."
-      ],
-      "variant": "body2",
-      "align": "center"
-    }
-  },
-  "elements": {
-    "base": [
-      {
-        "component": "heading",
-        "slot": "title",
-        "area": "title",
-        "order": 10
-      },
-      {
-        "component": "image",
-        "slot": "media",
-        "area": "media",
-        "order": 20
-      },
-      {
-        "component": "text",
-        "slot": "body",
-        "area": "body1",
-        "order": 30
-      },
-      {
-        "component": "text",
-        "slot": "feedback",
-        "area": "feedback",
-        "order": 40
-      }
-    ],
-    "compound": []
-  },
-  "navigation": {
-    "mode": "normal"
-  },
-  "completionCriteria": {
-    "type": "reading"
-  }
-},{
-  "viewId": "m5_1_v7",
-  "order": 7,
-  "name": "VISTA 7 - Interaccion: Cual es un prestamo",
-  "viewType": "Interaccion",
-  "objective": "Identificar cual de las situaciones representa un prestamo.",
-  "template": "assessmentTheory",
-  "variant": "assessment",
-  "slots": {
-    "title": {
-      "text": "¿Cuál de estas situaciones representa un préstamo?",
-      "variant": "h1",
-      "align": "center"
-    },
-    "subtitle": {
-      "text": "Observa las imágenes y selecciona la respuesta correcta.",
-      "variant": "body1",
-      "align": "center"
-    }
-  },
-  "elements": {
-    "base": [
-      {
-        "component": "heading",
-        "slot": "title",
-        "area": "title",
-        "order": 10
-      },
-      {
-        "component": "heading",
-        "slot": "subtitle",
-        "area": "subtitle",
-        "order": 20
-      }
-    ],
-    "compound": [
-      {
-        "type": "chooseOne",
-        "component": "chooseOne",
-        "category": "interactive",
-        "area": "assessment",
-        "feedbackReserve": true,
-        "items": [
-          {
-            "id": "q1-prestamo",
-            "options": [
-              {
-                "id": "opt-prestamo-correcto",
-                "title": {
-                  "text": "Un adolescente recibe S/50.",
-                  "variant": "label",
-                  "align": "center"
-                },
-                "media": {
-                  "src": "5/v7x1c.webp",
-                  "alt": "Recibir dinero que deberá devolverse después.",
-                  "variant": "horizontal"
-                },
-                "correct": true,
-                "feedback": {
-                  "text": "¡Muy bien! Un préstamo ocurre cuando una persona recibe dinero que deberá devolver más adelante.",
-                  "variant": "helper",
-                  "align": "center"
-                }
-              },
-              {
-                "id": "opt-regalo",
-                "title": {
-                  "text": "Regalo de cumpleaños",
-                  "variant": "label",
-                  "align": "center"
-                },
-                "media": {
-                  "src": "5/v7x2c.webp",
-                  "alt": "Un adolescente recibe un sobre con dinero y un globo de cumpleaños. El familiar dice: Feliz cumpleaños.",
-                  "variant": "horizontal"
-                },
-                "correct": false,
-                "feedback": {
-                  "text": "Observa nuevamente las situaciones. Un préstamo implica recibir dinero con el compromiso de devolverlo.",
-                  "variant": "helper",
-                  "align": "center"
-                }
-              },
-              {
-                "id": "opt-ahorros",
-                "title": {
-                  "text": "Uso de mis ahorros",
-                  "variant": "label",
-                  "align": "center"
-                },
-                "media": {
-                  "src": "5/v7x3c.webp",
-                  "alt": "Un adolescente abre su alcancía y utiliza dinero que había guardado previamente. El dinero ya era suyo.",
-                  "variant": "horizontal"
-                },
-                "correct": false,
-                "feedback": {
-                  "text": "Observa nuevamente las situaciones. Un préstamo implica recibir dinero con el compromiso de devolverlo.",
-                  "variant": "helper",
-                  "align": "center"
-                }
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  },
-  "navigation": {
-    "mode": "lockedUntilComplete",
-    "label": "Escoge la opción correcta para continuar"
-  },
-  "completionCriteria": {
-    "type": "interaction",
-    "required": "selectCorrectOption"
-  }
-},{
-  "viewId": "m5_1_v8",
-  "order": 8,
-  "name": "VISTA 8 - Interaccion: Cual representa una deuda",
-  "viewType": "Interaccion",
-  "objective": "Identificar cual de las situaciones representa una deuda.",
-  "template": "assessmentTheory",
-  "variant": "assessment",
-  "slots": {
-    "title": {
-      "text": "¿Cuál de estas situaciones representa una deuda?",
-      "variant": "h1",
-      "align": "center"
-    },
-    "subtitle": {
-      "text": "Observa las siguientes situaciones y selecciona aquella que representa una deuda.",
-      "variant": "body1",
-      "align": "center"
-    }
-  },
-  "elements": {
-    "base": [
-      {
-        "component": "heading",
-        "slot": "title",
-        "area": "title",
-        "order": 10
-      },
-      {
-        "component": "heading",
-        "slot": "subtitle",
-        "area": "subtitle",
-        "order": 20
-      }
-    ],
-    "compound": [
-      {
-        "type": "chooseOne",
-        "component": "chooseOne",
-        "category": "interactive",
-        "area": "assessment",
-        "feedbackReserve": true,
-        "items": [
-          {
-            "id": "q1-deuda",
-            "options": [
-              {
-                "id": "opt-deuda-correcta",
-                "title": {
-                  "text": "Un adolescente recibió S/50",
-                  "variant": "label",
-                  "align": "center"
-                },
-                "media": {
-                  "src": "5/v8x1c.webp",
-                  "alt": "Un adolescente recibió S/50 prestados y aún debe devolverlos.",
-                  "variant": "horizontal"
-                },
-                "correct": true,
-                "feedback": {
-                  "text": "Una deuda existe cuando una persona recibe dinero prestado y aún tiene el compromiso de devolverlo.",
-                  "variant": "helper",
-                  "align": "center"
-                }
-              },
-              {
-                "id": "opt-cumpleanos",
-                "title": {
-                  "text": "Regalo de cumpleaños",
-                  "variant": "label",
-                  "align": "center"
-                },
-                "media": {
-                  "src": "5/v8x2c.webp",
-                  "alt": "Un adolescente recibe dinero durante su cumpleaños. La imagen muestra globos y decoración de cumpleaños.",
-                  "variant": "horizontal"
-                },
-                "correct": false,
-                "feedback": {
-                  "text": "Piensa nuevamente. Una deuda implica haber recibido dinero prestado y tener una obligación pendiente de pago.",
-                  "variant": "helper",
-                  "align": "center"
-                }
-              },
-              {
-                "id": "opt-sin-planificar",
-                "title": {
-                  "text": "Comprar sin planificar.",
-                  "variant": "label",
-                  "align": "center"
-                },
-                "media": {
-                  "src": "5/v8x3c.webp",
-                  "alt": "Un adolescente abre una alcancía y utiliza dinero que había guardado anteriormente.",
-                  "variant": "horizontal"
-                },
-                "correct": false,
-                "feedback": {
-                  "text": "Piensa nuevamente. Una deuda implica haber recibido dinero prestado y tener una obligación pendiente de pago.",
-                  "variant": "helper",
-                  "align": "center"
-                }
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  },
-  "navigation": {
-    "mode": "lockedUntilComplete",
-    "label": "Escoge la opción correcta para continuar"
-  },
-  "completionCriteria": {
-    "type": "interaction",
-    "required": "selectCorrectOption"
-  }
-},  {
-  "viewId": "m5_1_v9",
-  "order": 9,
-  "name": "VISTA 9 - Interaccion: Que representa el interes",
-  "viewType": "Interaccion",
-  "objective": "Identificar correctamente que representa el interes en un prestamo.",
-  "template": "assessmentTheory",
-  "variant": "assessment",
-  "slots": {
-    "title": {
-      "text": "¿Qué representa el interés?",
-      "variant": "h1",
-      "align": "center"
-    }
-  },
-  "elements": {
-    "base": [
-      {
-        "component": "heading",
-        "slot": "title",
-        "area": "title",
-        "order": 10
-      }
-    ],
-    "compound": [
-      {
-        "type": "chooseOne",
-        "component": "chooseOne",
-        "category": "interactive",
-        "area": "assessment",
-        "feedbackReserve": true,
-        "items": [
-          {
-            "id": "q1-interes",
-            "options": [
-              {
-                "id": "opt-dinero-inicial",
-                "title": {
-                  "text": "El dinero recibido inicialmente.",
-                  "variant": "label",
-                  "align": "center"
-                },
-                "media": {
-                  "src": "5/v9x1c.webp",
-                  "alt": "El dinero recibido inicialmente en un préstamo.",
-                  "variant": "horizontal"
-                },
-                "correct": false,
-                "feedback": {
-                  "text": "Piensa otra vez. El interés no es el dinero prestado, sino la cantidad adicional que puede pagarse al devolverlo.",
-                  "variant": "helper",
-                  "align": "center"
-                }
-              },
-              {
-                "id": "opt-monto-adicional",
-                "title": {
-                  "text": "El monto adicional que puede pagarse al devolver un préstamo.",
-                  "variant": "label",
-                  "align": "center"
-                },
-                "media": {
-                  "src": "5/v9x2c.webp",
-                  "alt": "El monto adicional que puede pagarse al devolver un préstamo.",
-                  "variant": "horizontal"
-                },
-                "correct": true,
-                "feedback": {
-                  "text": "¡Muy bien! El interés es el monto adicional que puede pagarse al devolver un préstamo.",
-                  "variant": "helper",
-                  "align": "center"
-                }
-              },
-              {
-                "id": "opt-regalo",
-                "title": {
-                  "text": "Un regalo recibido.",
-                  "variant": "label",
-                  "align": "center"
-                },
-                "media": {
-                  "src": "5/v9x3c.webp",
-                  "alt": "Un regalo recibido sin compromiso de devolución.",
-                  "variant": "horizontal"
-                },
-                "correct": false,
-                "feedback": {
-                  "text": "Piensa otra vez. El interés no es el dinero prestado, sino la cantidad adicional que puede pagarse al devolverlo.",
-                  "variant": "helper",
-                  "align": "center"
-                }
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  },
-  "navigation": {
-    "mode": "lockedUntilComplete",
-    "label": "Escoge la opción correcta para continuar"
-  },
-  "completionCriteria": {
-    "type": "interaction",
-    "required": "selectCorrectOption"
-  }
-},{
-  "viewId": "m5_1_v10",
-  "order": 10,
-  "name": "VISTA 10 - Interaccion: Por que conocer los riesgos financieros",
-  "viewType": "Interaccion",
-  "objective": "Identificar por que es importante conocer los riesgos financieros antes de tomar una decision.",
-  "template": "assessmentTheory",
-  "variant": "assessment",
-  "slots": {
-    "title": {
-      "text": "¿Por qué es importante conocer los riesgos financieros?",
-      "variant": "h1",
-      "align": "center"
-    }
-  },
-  "elements": {
-    "base": [
-      {
-        "component": "heading",
-        "slot": "title",
-        "area": "title",
-        "order": 10
-      }
-    ],
-    "compound": [
-      {
-        "type": "chooseOne",
-        "component": "chooseOne",
-        "category": "interactive",
-        "area": "assessment",
-        "feedbackReserve": true,
-        "items": [
-          {
-            "id": "q1-riesgos",
-            "options": [
-              {
-                "id": "opt-gastar-mas",
-                "title": {
-                  "text": "Para gastar más dinero.",
-                  "variant": "label",
-                  "align": "center"
-                },
-                "media": {
-                  "src": "5/v10x1c.webp",
-                  "alt": "Para gastar más dinero.",
-                  "variant": "horizontal"
-                },
-                "correct": false,
-                "feedback": {
-                  "text": "Piensa nuevamente. Conocer los riesgos financieros ayuda a comprender las posibles consecuencias antes de tomar una decisión.",
-                  "variant": "helper",
-                  "align": "center"
-                }
-              },
-              {
-                "id": "opt-comprender-consecuencias",
-                "title": {
-                  "text": "Para comprender posibles consecuencias antes de tomar una decisión.",
-                  "variant": "label",
-                  "align": "center"
-                },
-                "media": {
-                  "src": "5/v10x2c.webp",
-                  "alt": "Para comprender posibles consecuencias antes de tomar una decisión.",
-                  "variant": "horizontal"
-                },
-                "correct": true,
-                "feedback": {
-                  "text": "¡Correcto! Conocer los riesgos financieros ayuda a comprender las posibles consecuencias antes de tomar una decisión.",
-                  "variant": "helper",
-                  "align": "center"
-                }
-              },
-              {
-                "id": "opt-recibir-prestamos",
-                "title": {
-                  "text": "Para recibir más préstamos.",
-                  "variant": "label",
-                  "align": "center"
-                },
-                "media": {
-                  "src": "5/v10x3c.webp",
-                  "alt": "Para recibir más préstamos.",
-                  "variant": "horizontal"
-                },
-                "correct": false,
-                "feedback": {
-                  "text": "Piensa nuevamente. Conocer los riesgos financieros ayuda a comprender las posibles consecuencias antes de tomar una decisión.",
-                  "variant": "helper",
-                  "align": "center"
-                }
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  },
-  "navigation": {
-    "mode": "lockedUntilComplete",
-    "label": "Escoge la opción correcta para continuar"
-  },
-  "completionCriteria": {
-    "type": "interaction",
-    "required": "selectCorrectOption"
-  }
-},
-{
-  "viewId": "m5_1_v7",
-  "order": 11,
-  "name": "VISTA 7 - Crucigrama - Variacion B (intercalando largas y cortas)",
-  "viewType": "Interaccion",
-  "objective": "Reforzar los conceptos clave de prestamo, deuda, costo y riesgo con un crucigrama.",
-  "template": "assessmentTheory",
-  "variant": "assessment",
-  "slots": {
-    "title": {
-      "text": "Crucigrama del préstamo responsable",
-      "variant": "h1",
-      "align": "center"
-    }
-  },
-  "elements": {
-    "base": [
-      {
-        "component": "heading",
-        "slot": "title",
-        "area": "title",
-        "order": 10
-      }
-    ],
-    "compound": [
-      {
-        "type": "crossword",
-        "component": "crossword",
-        "category": "interactive",
-        "area": "assessment",
+    {
+      "viewId": "m5_1_v6",
+      "order": 6,
+      "name": "VISTA 6 - Teoria: Antes de decidir",
+      "viewType": "Teoria",
+      "objective": "Resumir las preguntas clave antes de aceptar un prestamo.",
+      "template": "simpleTheory",
+      "variant": "simple",
+      "slots": {
         "title": {
-          "text": "Palabras clave del módulo 5",
-          "variant": "h3",
-          "align": "left"
+          "text": "Antes de aceptar un préstamo",
+          "variant": "h1",
+          "align": "center"
         },
-        "instruction": {
-          "text": "Haz click en el tablero para cambiar entre palabras y responder su pista.",
-          "variant": "bodySm",
-          "align": "left"
+        "media": {
+          "src": "5/v6x1c.webp",
+          "alt": "Estudiante reflexionando antes de aceptar un préstamo",
+          "variant": "horizontal"
         },
-        "crossword": {
-          "minimumScore": 60,
-          "maximumScore": 100,
-          "boardBackground": {
-            "src": "3/v8x1c.webp",
-            "alt": "Fondo del crucigrama"
-          },
-          "sidebarImage": {
-            "src": "1/pensar.webp",
-            "alt": "Imagen de apoyo para reflexionar antes de decidir"
-          },
-          "words": [
-            {
-              "id": "prestamo",
-              "answer": "PRESTAMO",
-              "clue": "Dinero que se recibe por un tiempo y debe devolverse después.",
-              "image": {
-                "src": "5/5v2x1c.webp",
-                "alt": "Persona recibiendo dinero"
-              }
-            },
-            {
-              "id": "deuda",
-              "answer": "DEUDA",
-              "clue": "Obligación de devolver el dinero prestado.",
-              "image": {
-                "src": "5/5v2x2c.webp",
-                "alt": "Persona pagando dinero"
-              }
-            },
-            {
-              "id": "Clandestino",
-              "answer": "Clandestino",
-              "clue": "Tipo de préstamo que opera fuera de las reglas y sin protección oficial.",
-              "image": {
-                "src": "5/v11x2c.webp",
-                "alt": "Decision sin condiciones claras"
-              }
-            },
-            {
-              "id": "plazo",
-              "answer": "PLAZO",
-              "clue": "Tiempo acordado para devolver el dinero.",
-              "image": {
-                "src": "5/v5x3c.webp",
-                "alt": "Tiempo para organizar un pago"
-              }
-            },
-            {
-              "id": "interes",
-              "answer": "INTERES",
-              "clue": "Costo adicional que puede cobrarse por prestar dinero.",
-              "image": {
-                "src": "5/v4x3c.webp",
-                "alt": "Costo adicional de un prestamo"
-              }
-            },
-            {
-              "id": "riesgo",
-              "answer": "RIESGO",
-              "clue": "Posibilidad de tener problemas o perder dinero por una mala decisión.",
-              "image": {
-                "src": "5/v11x1c.webp",
-                "alt": "Analisis del riesgo"
-              }
-            }
-          ]
+        "body": {
+          "paragraphs": [
+            "Antes de tomar una decisión, conviene hacerse preguntas como: ¿Lo necesito de verdad? ¿Cuánto costará? ¿Cuándo tendré que pagarlo? ¿Podré hacerlo sin afectar otras prioridades?"
+          ],
+          "variant": "body1",
+          "align": "center"
+        },
+        "feedback": {
+          "paragraphs": [
+            "Pensar antes de endeudarse ayuda a evitar problemas futuros."
+          ],
+          "variant": "body2",
+          "align": "center"
         }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "image",
+            "slot": "media",
+            "area": "media",
+            "order": 20
+          },
+          {
+            "component": "text",
+            "slot": "body",
+            "area": "body1",
+            "order": 30
+          },
+          {
+            "component": "text",
+            "slot": "feedback",
+            "area": "feedback",
+            "order": 40
+          }
+        ],
+        "compound": []
+      },
+      "navigation": {
+        "mode": "normal"
+      },
+      "completionCriteria": {
+        "type": "reading"
       }
-    ]
-  },
-  "navigation": {
-    "mode": "lockedUntilComplete",
-    "label": "Completa el crucigrama para continuar"
-  },
-  "completionCriteria": {
-    "type": "interaction",
-    "required": "completeCrossword"
-  }
-},
+    },
+    {
+      "viewId": "m5_1_v7",
+      "order": 7,
+      "name": "VISTA 7 - Interaccion: Cual es un prestamo",
+      "viewType": "Interaccion",
+      "objective": "Identificar cual de las situaciones representa un prestamo.",
+      "template": "assessmentTheory",
+      "variant": "assessment",
+      "slots": {
+        "title": {
+          "text": "¿Cuál de estas situaciones representa un préstamo?",
+          "variant": "h1",
+          "align": "center"
+        },
+        "subtitle": {
+          "text": "Observa las imágenes y selecciona la respuesta correcta.",
+          "variant": "body1",
+          "align": "center"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "heading",
+            "slot": "subtitle",
+            "area": "subtitle",
+            "order": 20
+          }
+        ],
+        "compound": [
+          {
+            "type": "chooseOne",
+            "component": "chooseOne",
+            "category": "interactive",
+            "area": "assessment",
+            "feedbackReserve": true,
+            "items": [
+              {
+                "id": "q1-prestamo",
+                "options": [
+                  {
+                    "id": "opt-prestamo-correcto",
+                    "title": {
+                      "text": "Un adolescente recibe S/50.",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "5/v7x1c.webp",
+                      "alt": "Recibir dinero que deberá devolverse después.",
+                      "variant": "horizontal"
+                    },
+                    "correct": true,
+                    "feedback": {
+                      "text": "¡Muy bien! Un préstamo ocurre cuando una persona recibe dinero que deberá devolver más adelante.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "opt-regalo",
+                    "title": {
+                      "text": "Regalo de cumpleaños",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "5/v7x2c.webp",
+                      "alt": "Un adolescente recibe un sobre con dinero y un globo de cumpleaños. El familiar dice: Feliz cumpleaños.",
+                      "variant": "horizontal"
+                    },
+                    "correct": false,
+                    "feedback": {
+                      "text": "Observa nuevamente las situaciones. Un préstamo implica recibir dinero con el compromiso de devolverlo.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "opt-ahorros",
+                    "title": {
+                      "text": "Uso de mis ahorros",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "5/v7x3c.webp",
+                      "alt": "Un adolescente abre su alcancía y utiliza dinero que había guardado previamente. El dinero ya era suyo.",
+                      "variant": "horizontal"
+                    },
+                    "correct": false,
+                    "feedback": {
+                      "text": "Observa nuevamente las situaciones. Un préstamo implica recibir dinero con el compromiso de devolverlo.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "lockedUntilComplete",
+        "label": "Escoge la opción correcta para continuar"
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "selectCorrectOption"
+      }
+    },
     {
       "viewId": "m5_1_v8",
+      "order": 8,
+      "name": "VISTA 8 - Interaccion: Cual representa una deuda",
+      "viewType": "Interaccion",
+      "objective": "Identificar cual de las situaciones representa una deuda.",
+      "template": "assessmentTheory",
+      "variant": "assessment",
+      "slots": {
+        "title": {
+          "text": "¿Cuál de estas situaciones representa una deuda?",
+          "variant": "h1",
+          "align": "center"
+        },
+        "subtitle": {
+          "text": "Observa las siguientes situaciones y selecciona aquella que representa una deuda.",
+          "variant": "body1",
+          "align": "center"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "heading",
+            "slot": "subtitle",
+            "area": "subtitle",
+            "order": 20
+          }
+        ],
+        "compound": [
+          {
+            "type": "chooseOne",
+            "component": "chooseOne",
+            "category": "interactive",
+            "area": "assessment",
+            "feedbackReserve": true,
+            "items": [
+              {
+                "id": "q1-deuda",
+                "options": [
+                  {
+                    "id": "opt-deuda-correcta",
+                    "title": {
+                      "text": "Un adolescente recibió S/50",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "5/v8x1c.webp",
+                      "alt": "Un adolescente recibió S/50 prestados y aún debe devolverlos.",
+                      "variant": "horizontal"
+                    },
+                    "correct": true,
+                    "feedback": {
+                      "text": "Una deuda existe cuando una persona recibe dinero prestado y aún tiene el compromiso de devolverlo.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "opt-cumpleanos",
+                    "title": {
+                      "text": "Regalo de cumpleaños",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "5/v8x2c.webp",
+                      "alt": "Un adolescente recibe dinero durante su cumpleaños. La imagen muestra globos y decoración de cumpleaños.",
+                      "variant": "horizontal"
+                    },
+                    "correct": false,
+                    "feedback": {
+                      "text": "Piensa nuevamente. Una deuda implica haber recibido dinero prestado y tener una obligación pendiente de pago.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "opt-sin-planificar",
+                    "title": {
+                      "text": "Comprar sin planificar.",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "5/v8x3c.webp",
+                      "alt": "Un adolescente abre una alcancía y utiliza dinero que había guardado anteriormente.",
+                      "variant": "horizontal"
+                    },
+                    "correct": false,
+                    "feedback": {
+                      "text": "Piensa nuevamente. Una deuda implica haber recibido dinero prestado y tener una obligación pendiente de pago.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "lockedUntilComplete",
+        "label": "Escoge la opción correcta para continuar"
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "selectCorrectOption"
+      }
+    },
+    {
+      "viewId": "m5_1_v9",
+      "order": 9,
+      "name": "VISTA 9 - Interaccion: Que representa el interes",
+      "viewType": "Interaccion",
+      "objective": "Identificar correctamente que representa el interes en un prestamo.",
+      "template": "assessmentTheory",
+      "variant": "assessment",
+      "slots": {
+        "title": {
+          "text": "¿Qué representa el interés?",
+          "variant": "h1",
+          "align": "center"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          }
+        ],
+        "compound": [
+          {
+            "type": "chooseOne",
+            "component": "chooseOne",
+            "category": "interactive",
+            "area": "assessment",
+            "feedbackReserve": true,
+            "items": [
+              {
+                "id": "q1-interes",
+                "options": [
+                  {
+                    "id": "opt-dinero-inicial",
+                    "title": {
+                      "text": "El dinero recibido inicialmente.",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "5/v9x1c.webp",
+                      "alt": "El dinero recibido inicialmente en un préstamo.",
+                      "variant": "horizontal"
+                    },
+                    "correct": false,
+                    "feedback": {
+                      "text": "Piensa otra vez. El interés no es el dinero prestado, sino la cantidad adicional que puede pagarse al devolverlo.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "opt-monto-adicional",
+                    "title": {
+                      "text": "El monto adicional que puede pagarse al devolver un préstamo.",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "5/v9x2c.webp",
+                      "alt": "El monto adicional que puede pagarse al devolver un préstamo.",
+                      "variant": "horizontal"
+                    },
+                    "correct": true,
+                    "feedback": {
+                      "text": "¡Muy bien! El interés es el monto adicional que puede pagarse al devolver un préstamo.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "opt-regalo",
+                    "title": {
+                      "text": "Un regalo recibido.",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "5/v9x3c.webp",
+                      "alt": "Un regalo recibido sin compromiso de devolución.",
+                      "variant": "horizontal"
+                    },
+                    "correct": false,
+                    "feedback": {
+                      "text": "Piensa otra vez. El interés no es el dinero prestado, sino la cantidad adicional que puede pagarse al devolverlo.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "lockedUntilComplete",
+        "label": "Escoge la opción correcta para continuar"
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "selectCorrectOption"
+      }
+    },
+    {
+      "viewId": "m5_1_v10",
+      "order": 10,
+      "name": "VISTA 10 - Interaccion: Por que conocer los riesgos financieros",
+      "viewType": "Interaccion",
+      "objective": "Identificar por que es importante conocer los riesgos financieros antes de tomar una decision.",
+      "template": "assessmentTheory",
+      "variant": "assessment",
+      "slots": {
+        "title": {
+          "text": "¿Por qué es importante conocer los riesgos financieros?",
+          "variant": "h1",
+          "align": "center"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          }
+        ],
+        "compound": [
+          {
+            "type": "chooseOne",
+            "component": "chooseOne",
+            "category": "interactive",
+            "area": "assessment",
+            "feedbackReserve": true,
+            "items": [
+              {
+                "id": "q1-riesgos",
+                "options": [
+                  {
+                    "id": "opt-gastar-mas",
+                    "title": {
+                      "text": "Para gastar más dinero.",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "5/v10x1c.webp",
+                      "alt": "Para gastar más dinero.",
+                      "variant": "horizontal"
+                    },
+                    "correct": false,
+                    "feedback": {
+                      "text": "Piensa nuevamente. Conocer los riesgos financieros ayuda a comprender las posibles consecuencias antes de tomar una decisión.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "opt-comprender-consecuencias",
+                    "title": {
+                      "text": "Para comprender posibles consecuencias antes de tomar una decisión.",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "5/v10x2c.webp",
+                      "alt": "Para comprender posibles consecuencias antes de tomar una decisión.",
+                      "variant": "horizontal"
+                    },
+                    "correct": true,
+                    "feedback": {
+                      "text": "¡Correcto! Conocer los riesgos financieros ayuda a comprender las posibles consecuencias antes de tomar una decisión.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "id": "opt-recibir-prestamos",
+                    "title": {
+                      "text": "Para recibir más préstamos.",
+                      "variant": "label",
+                      "align": "center"
+                    },
+                    "media": {
+                      "src": "5/v10x3c.webp",
+                      "alt": "Para recibir más préstamos.",
+                      "variant": "horizontal"
+                    },
+                    "correct": false,
+                    "feedback": {
+                      "text": "Piensa nuevamente. Conocer los riesgos financieros ayuda a comprender las posibles consecuencias antes de tomar una decisión.",
+                      "variant": "helper",
+                      "align": "center"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "lockedUntilComplete",
+        "label": "Escoge la opción correcta para continuar"
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "selectCorrectOption"
+      }
+    },
+    {
+      "viewId": "m5_1_v11",
+      "order": 11,
+      "name": "VISTA 7 - Crucigrama - Variacion B (intercalando largas y cortas)",
+      "viewType": "Interaccion",
+      "objective": "Reforzar los conceptos clave de prestamo, deuda, costo y riesgo con un crucigrama.",
+      "template": "assessmentTheory",
+      "variant": "assessment",
+      "slots": {
+        "title": {
+          "text": "Crucigrama del préstamo responsable",
+          "variant": "h1",
+          "align": "center"
+        }
+      },
+      "elements": {
+        "base": [
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          }
+        ],
+        "compound": [
+          {
+            "type": "crossword",
+            "component": "crossword",
+            "category": "interactive",
+            "area": "assessment",
+            "title": {
+              "text": "Palabras clave del módulo 5",
+              "variant": "h3",
+              "align": "left"
+            },
+            "instruction": {
+              "text": "Haz click en el tablero para cambiar entre palabras y responder su pista.",
+              "variant": "bodySm",
+              "align": "left"
+            },
+            "crossword": {
+              "minimumScore": 60,
+              "maximumScore": 100,
+              "boardBackground": {
+                "src": "3/v8x1c.webp",
+                "alt": "Fondo del crucigrama"
+              },
+              "sidebarImage": {
+                "src": "1/pensar.webp",
+                "alt": "Imagen de apoyo para reflexionar antes de decidir"
+              },
+              "words": [
+                {
+                  "id": "prestamo",
+                  "answer": "PRESTAMO",
+                  "clue": "Dinero que se recibe por un tiempo y debe devolverse después.",
+                  "image": {
+                    "src": "5/5v2x1c.webp",
+                    "alt": "Persona recibiendo dinero"
+                  }
+                },
+                {
+                  "id": "deuda",
+                  "answer": "DEUDA",
+                  "clue": "Obligación de devolver el dinero prestado.",
+                  "image": {
+                    "src": "5/5v2x2c.webp",
+                    "alt": "Persona pagando dinero"
+                  }
+                },
+                {
+                  "id": "Clandestino",
+                  "answer": "Clandestino",
+                  "clue": "Tipo de préstamo que opera fuera de las reglas y sin protección oficial.",
+                  "image": {
+                    "src": "5/v11x2c.webp",
+                    "alt": "Decision sin condiciones claras"
+                  }
+                },
+                {
+                  "id": "plazo",
+                  "answer": "PLAZO",
+                  "clue": "Tiempo acordado para devolver el dinero.",
+                  "image": {
+                    "src": "5/v5x3c.webp",
+                    "alt": "Tiempo para organizar un pago"
+                  }
+                },
+                {
+                  "id": "interes",
+                  "answer": "INTERES",
+                  "clue": "Costo adicional que puede cobrarse por prestar dinero.",
+                  "image": {
+                    "src": "5/v4x3c.webp",
+                    "alt": "Costo adicional de un prestamo"
+                  }
+                },
+                {
+                  "id": "riesgo",
+                  "answer": "RIESGO",
+                  "clue": "Posibilidad de tener problemas o perder dinero por una mala decisión.",
+                  "image": {
+                    "src": "5/v11x1c.webp",
+                    "alt": "Analisis del riesgo"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "navigation": {
+        "mode": "lockedUntilComplete",
+        "label": "Completa el crucigrama para continuar"
+      },
+      "completionCriteria": {
+        "type": "interaction",
+        "required": "completeCrossword"
+      }
+    },
+    {
+      "viewId": "m5_1_v12",
       "order": 12,
       "name": "VISTA 8 - Final: Mision completada",
       "viewType": "Final",

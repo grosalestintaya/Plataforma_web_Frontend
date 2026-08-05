@@ -1,4 +1,5 @@
 {
+  "schemaVersion": "1.0",
   "id": "actitudinal",
   "activityId": "15",
   "backendActivityId": "15",
@@ -37,9 +38,24 @@
       },
       "elements": {
         "base": [
-          { "component": "heading", "slot": "title", "area": "title", "order": 10 },
-          { "component": "text", "slot": "body", "area": "body", "order": 20 },
-          { "component": "image", "slot": "media", "area": "media", "order": 30 }
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "text",
+            "slot": "body",
+            "area": "body",
+            "order": 20
+          },
+          {
+            "component": "image",
+            "slot": "media",
+            "area": "media",
+            "order": 30
+          }
         ],
         "compound": []
       },
@@ -81,9 +97,24 @@
       },
       "elements": {
         "base": [
-          { "component": "heading", "slot": "title", "area": "title", "order": 10 },
-          { "component": "image", "slot": "media", "area": "media", "order": 20 },
-          { "component": "text", "slot": "feedback", "area": "feedback", "order": 30 }
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "image",
+            "slot": "media",
+            "area": "media",
+            "order": 20
+          },
+          {
+            "component": "text",
+            "slot": "feedback",
+            "area": "feedback",
+            "order": 30
+          }
         ],
         "compound": [
           {
@@ -97,9 +128,30 @@
               "align": "justify"
             },
             "options": [
-              { "id": "m5a_s1_rush", "label": { "text": "a) Aceptaría el préstamo sin preguntar más detalles.", "variant": "body2" }, "score": 70 },
-              { "id": "m5a_s1_review", "label": { "text": "b) Buscaría información antes de tomar una decisión.", "variant": "body2" }, "score": 100 },
-              { "id": "m5a_s1_alt", "label": { "text": "c) Preferiría buscar otra alternativa antes de aceptar el préstamo.", "variant": "body2" }, "score": 85 }
+              {
+                "id": "m5a_s1_rush",
+                "label": {
+                  "text": "a) Aceptaría el préstamo sin preguntar más detalles.",
+                  "variant": "body2"
+                },
+                "score": 70
+              },
+              {
+                "id": "m5a_s1_review",
+                "label": {
+                  "text": "b) Buscaría información antes de tomar una decisión.",
+                  "variant": "body2"
+                },
+                "score": 100
+              },
+              {
+                "id": "m5a_s1_alt",
+                "label": {
+                  "text": "c) Preferiría buscar otra alternativa antes de aceptar el préstamo.",
+                  "variant": "body2"
+                },
+                "score": 85
+              }
             ],
             "prompt": {
               "text": "¿Por qué elegirías esa opción? (Opcional)",
@@ -141,8 +193,18 @@
       },
       "elements": {
         "base": [
-          { "component": "heading", "slot": "title", "area": "title", "order": 10 },
-          { "component": "image", "slot": "media", "area": "media", "order": 20 }
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "image",
+            "slot": "media",
+            "area": "media",
+            "order": 20
+          }
         ],
         "compound": [
           {
@@ -156,9 +218,30 @@
               "align": "justify"
             },
             "options": [
-              { "id": "m5a_s2_accept", "label": { "text": "a) Aceptaría la oferta antes de que termine.", "variant": "body2" }, "score": 70 },
-              { "id": "m5a_s2_review", "label": { "text": "b) Revisaría toda la información antes de decidir.", "variant": "body2" }, "score": 100 },
-              { "id": "m5a_s2_wait", "label": { "text": "c) Esperaría hasta tener más información o dinero disponible.", "variant": "body2" }, "score": 85 }
+              {
+                "id": "m5a_s2_accept",
+                "label": {
+                  "text": "a) Aceptaría la oferta antes de que termine.",
+                  "variant": "body2"
+                },
+                "score": 70
+              },
+              {
+                "id": "m5a_s2_review",
+                "label": {
+                  "text": "b) Revisaría toda la información antes de decidir.",
+                  "variant": "body2"
+                },
+                "score": 100
+              },
+              {
+                "id": "m5a_s2_wait",
+                "label": {
+                  "text": "c) Esperaría hasta tener más información o dinero disponible.",
+                  "variant": "body2"
+                },
+                "score": 85
+              }
             ],
             "prompt": {
               "text": "¿Por qué elegirías esa opción? (Opcional)",
@@ -200,8 +283,18 @@
       },
       "elements": {
         "base": [
-          { "component": "heading", "slot": "title", "area": "title", "order": 10 },
-          { "component": "image", "slot": "media", "area": "media", "order": 20 }
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "image",
+            "slot": "media",
+            "area": "media",
+            "order": 20
+          }
         ],
         "compound": [
           {
@@ -215,9 +308,30 @@
               "align": "justify"
             },
             "options": [
-              { "id": "m5a_s3_easy", "label": { "text": "a) Que si se ve facil, seguramente conviene aceptarlo.", "variant": "body2" }, "score": 70 },
-              { "id": "m5a_s3_verify", "label": { "text": "b) Que puede ser una oferta enganiosa y conviene revisar el costo y las condiciones.", "variant": "body2" }, "score": 100 },
-              { "id": "m5a_s3_friends", "label": { "text": "c) Que basta con preguntar a otra persona si le parece buena idea.", "variant": "body2" }, "score": 80 }
+              {
+                "id": "m5a_s3_easy",
+                "label": {
+                  "text": "a) Que si se ve facil, seguramente conviene aceptarlo.",
+                  "variant": "body2"
+                },
+                "score": 70
+              },
+              {
+                "id": "m5a_s3_verify",
+                "label": {
+                  "text": "b) Que puede ser una oferta enganiosa y conviene revisar el costo y las condiciones.",
+                  "variant": "body2"
+                },
+                "score": 100
+              },
+              {
+                "id": "m5a_s3_friends",
+                "label": {
+                  "text": "c) Que basta con preguntar a otra persona si le parece buena idea.",
+                  "variant": "body2"
+                },
+                "score": 80
+              }
             ],
             "prompt": {
               "text": "Por que elegirias esa respuesta? (Opcional)",
@@ -259,8 +373,18 @@
       },
       "elements": {
         "base": [
-          { "component": "heading", "slot": "title", "area": "title", "order": 10 },
-          { "component": "image", "slot": "media", "area": "media", "order": 20 }
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "image",
+            "slot": "media",
+            "area": "media",
+            "order": 20
+          }
         ],
         "compound": [
           {
@@ -274,9 +398,30 @@
               "align": "justify"
             },
             "options": [
-              { "id": "m5a_s4_accept", "label": { "text": "a) Aceptaría el dinero sin hacer preguntas.", "variant": "body2" }, "score": 70 },
-              { "id": "m5a_s4_talk", "label": { "text": "b) Conversaría primero sobre las condiciones antes de aceptar.", "variant": "body2" }, "score": 100 },
-              { "id": "m5a_s4_other", "label": { "text": "c) Buscaría otra forma de resolver mi necesidad.", "variant": "body2" }, "score": 85 }
+              {
+                "id": "m5a_s4_accept",
+                "label": {
+                  "text": "a) Aceptaría el dinero sin hacer preguntas.",
+                  "variant": "body2"
+                },
+                "score": 70
+              },
+              {
+                "id": "m5a_s4_talk",
+                "label": {
+                  "text": "b) Conversaría primero sobre las condiciones antes de aceptar.",
+                  "variant": "body2"
+                },
+                "score": 100
+              },
+              {
+                "id": "m5a_s4_other",
+                "label": {
+                  "text": "c) Buscaría otra forma de resolver mi necesidad.",
+                  "variant": "body2"
+                },
+                "score": 85
+              }
             ],
             "prompt": {
               "text": "¿Por qué elegirías esa opción? (Opcional)",
@@ -318,8 +463,18 @@
       },
       "elements": {
         "base": [
-          { "component": "heading", "slot": "title", "area": "title", "order": 10 },
-          { "component": "image", "slot": "media", "area": "media", "order": 20 }
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "image",
+            "slot": "media",
+            "area": "media",
+            "order": 20
+          }
         ],
         "compound": [
           {
@@ -333,9 +488,30 @@
               "align": "justify"
             },
             "options": [
-              { "id": "m5a_s5_rush", "label": { "text": "a) Decidiría rápidamente para no perder la oportunidad.", "variant": "body2" }, "score": 70 },
-              { "id": "m5a_s5_info", "label": { "text": "b) Buscaría toda la información antes de tomar una decisión.", "variant": "body2" }, "score": 100 },
-              { "id": "m5a_s5_wait", "label": { "text": "c) Esperaría hasta sentirme seguro de la decisión.", "variant": "body2" }, "score": 85 }
+              {
+                "id": "m5a_s5_rush",
+                "label": {
+                  "text": "a) Decidiría rápidamente para no perder la oportunidad.",
+                  "variant": "body2"
+                },
+                "score": 70
+              },
+              {
+                "id": "m5a_s5_info",
+                "label": {
+                  "text": "b) Buscaría toda la información antes de tomar una decisión.",
+                  "variant": "body2"
+                },
+                "score": 100
+              },
+              {
+                "id": "m5a_s5_wait",
+                "label": {
+                  "text": "c) Esperaría hasta sentirme seguro de la decisión.",
+                  "variant": "body2"
+                },
+                "score": 85
+              }
             ],
             "prompt": {
               "text": "¿Por qué elegirías esa opción? (Opcional)",
@@ -378,8 +554,18 @@
       },
       "elements": {
         "base": [
-          { "component": "heading", "slot": "title", "area": "title", "order": 10 },
-          { "component": "text", "slot": "feedback", "area": "feedback", "order": 20 }
+          {
+            "component": "heading",
+            "slot": "title",
+            "area": "title",
+            "order": 10
+          },
+          {
+            "component": "text",
+            "slot": "feedback",
+            "area": "feedback",
+            "order": 20
+          }
         ],
         "compound": [
           {
@@ -390,15 +576,37 @@
             "items": [
               {
                 "id": "reward-xp",
-                "title": { "text": "XP", "variant": "label" },
-                "text": { "text": "+10", "variant": "body1", "color": "secondary" },
-                "media": { "src": "", "alt": "Recompensa de XP", "variant": "square" }
+                "title": {
+                  "text": "XP",
+                  "variant": "label"
+                },
+                "text": {
+                  "text": "+10",
+                  "variant": "body1",
+                  "color": "secondary"
+                },
+                "media": {
+                  "src": "",
+                  "alt": "Recompensa de XP",
+                  "variant": "square"
+                }
               },
               {
                 "id": "reward-intis",
-                "title": { "text": "INTIS", "variant": "label" },
-                "text": { "text": "+10", "variant": "body1", "color": "secondary" },
-                "media": { "src": "", "alt": "Recompensa de INTIS", "variant": "square" }
+                "title": {
+                  "text": "INTIS",
+                  "variant": "label"
+                },
+                "text": {
+                  "text": "+10",
+                  "variant": "body1",
+                  "color": "secondary"
+                },
+                "media": {
+                  "src": "",
+                  "alt": "Recompensa de INTIS",
+                  "variant": "square"
+                }
               }
             ]
           }

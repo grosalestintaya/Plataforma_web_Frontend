@@ -1,45 +1,37 @@
-import TheoryTemplate from "./views/theory/TheoryTemplate";
-import QuizTemplate from "./views/quiz/QuizTemplate";
-import LobbyTemplate from "./views/lobby/LobbyTemplate";
-
-import DailySpendingTemplate from "./game/dailySpending/DailySpendingTemplate";
-import ObjectClassificationTemplate from "./game/objectClassification/ObjectClassificationTemplate";
-import BudgetAdjustmentTemplate from "./game/budgetAdjustment/BudgetAdjustmentTemplate";
-import CollectObjectsTemplate from "./game/collectObjects/CollectObjectsTemplate";
-import WhatWouldYouDoTemplate from "./game/whatWouldYouDo/WhatWouldYouDoTemplate";
+import MissionViewTemplate from "./views/mission/MissionViewTemplate";
 
 import MemoryPairs from "@/features/module/blocks/compounds/iteractive/MemoryPairs";
 
 export const templates = {
-  // Views (guia nueva)
-  preGameLobby: LobbyTemplate,
-  postGameLobby: LobbyTemplate,
-  waitLobby: LobbyTemplate,
-  simpleTheory: TheoryTemplate,
-  explanationTheory: TheoryTemplate,
-  splitTheory: TheoryTemplate,
-  assessmentTheory: TheoryTemplate,
-  simpleQuiz: QuizTemplate,
-  extendedQuiz: QuizTemplate,
+  // Todas las vistas declarativas se resuelven dentro de MissionViewTemplate.
+  preGameLobby: MissionViewTemplate,
+  postGameLobby: MissionViewTemplate,
+  waitLobby: MissionViewTemplate,
+  simpleTheory: MissionViewTemplate,
+  explanationTheory: MissionViewTemplate,
+  splitTheory: MissionViewTemplate,
+  assessmentTheory: MissionViewTemplate,
+  simpleQuiz: MissionViewTemplate,
+  extendedQuiz: MissionViewTemplate,
 
-  // Game templates (guia nueva)
-  decisionDailySpending: DailySpendingTemplate,
-  shopDailySpending: DailySpendingTemplate,
-  eventDailySpending: DailySpendingTemplate,
-  assessmentDailySpending: DailySpendingTemplate,
-  DailySpending: DailySpendingTemplate,
-  objectClassification: ObjectClassificationTemplate,
-  ObjectClassification: ObjectClassificationTemplate,
-  budgetAdjustment: BudgetAdjustmentTemplate,
-  BudgetAdjustment: BudgetAdjustmentTemplate,
-  collectObjects: CollectObjectsTemplate,
-  CollectObjects: CollectObjectsTemplate,
-  whatWouldYouDo: WhatWouldYouDoTemplate,
-  WhatWouldYouDo: WhatWouldYouDoTemplate,
+  // Layout/runtime ids resueltos dentro de MissionViewTemplate.
+  decisionDailySpending: MissionViewTemplate,
+  shopDailySpending: MissionViewTemplate,
+  eventDailySpending: MissionViewTemplate,
+  assessmentDailySpending: MissionViewTemplate,
+  DailySpending: MissionViewTemplate,
+  objectClassification: MissionViewTemplate,
+  ObjectClassification: MissionViewTemplate,
+  budgetAdjustment: MissionViewTemplate,
+  BudgetAdjustment: MissionViewTemplate,
+  collectObjects: MissionViewTemplate,
+  CollectObjects: MissionViewTemplate,
+  whatWouldYouDo: MissionViewTemplate,
+  WhatWouldYouDo: MissionViewTemplate,
 
-  // Compatibilidad legacy
-  teoria: TheoryTemplate,
-  choiceReveal: QuizTemplate,
+  // Compatibilidad legacy.
+  teoria: MissionViewTemplate,
+  choiceReveal: MissionViewTemplate,
   memoryGame: MemoryPairs,
   memoryPairs: MemoryPairs,
 };
